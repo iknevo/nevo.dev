@@ -1,5 +1,67 @@
 @import "tailwindcss";
 
 @theme {
+  /* Colors */
   --color-primary: #d84e2c;
+  --container-padding: 1rem;
+  --container-padding-sm: 1.5rem;
+  --container-padding-lg: 2rem;
+  --container-max-width-sm: 640px;
+  --container-max-width-md: 768px;
+  --container-max-width-lg: 1024px;
+  --container-max-width-xl: 1148px;
+  --container-max-width-2xl: 1148px;
+  --container-center: "true";
+  --padding-section: 250px;
+}
+
+/* Custom container utility */
+.container-custom {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+  max-width: var(--container-max-width-2xl);
+}
+
+@media (min-width: 640px) {
+  .container-custom {
+    padding-left: var(--container-padding-sm);
+    padding-right: var(--container-padding-sm);
+    max-width: var(--container-max-width-sm);
+  }
+}
+
+@media (min-width: 768px) {
+  .container-custom {
+    max-width: var(--container-max-width-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-custom {
+    padding-left: var(--container-padding-lg);
+    padding-right: var(--container-padding-lg);
+    max-width: var(--container-max-width-lg);
+  }
+}
+
+@media (min-width: 1280px) {
+  .container-custom {
+    max-width: var(--container-max-width-xl);
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.grid {
+  gap: 25px;
+}
+.markdown-text ul {
+  padding-left: 1.25rem;
+  margin-top: 0.5rem;
+  list-style-type: disc;
 }

@@ -1,9 +1,8 @@
+import "lenis/dist/lenis.css";
 import { ReactLenis } from "lenis/react";
 import type { Metadata } from "next";
-import { Anton, Roboto_Flex } from "next/font/google";
 
-import "lenis/dist/lenis.css";
-import CustomCursor from "./_components/CustomCursor";
+import { Josefin_Sans } from "next/font/google";
 import Footer from "./_components/Footer";
 import Navbar from "./_components/Navbar";
 import ParticleBackground from "./_components/ParticleBackground";
@@ -12,23 +11,14 @@ import ScrollProgressIndicator from "./_components/ScrollProgressIndicator";
 import StickyEmail from "./_components/StickyEmail";
 import "./globals.css";
 
-const antonFont = Anton({
-  weight: "400",
-  style: "normal",
+const josefin = Josefin_Sans({
   subsets: ["latin"],
-  variable: "--font-anton",
-});
-
-const robotoFlex = Roboto_Flex({
-  weight: ["100", "400", "500", "600", "700", "800"],
-  style: "normal",
-  subsets: ["latin"],
-  variable: "--font-roboto-flex",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio - Tajmirul Islam",
-  description: "Personal portfolio of Tajmirul Islam",
+  title: "NEVO | Front-End Developer",
+  description: "Personal portfolio of Ahmed (NEVO) Abdelhafiez",
 };
 
 export default function RootLayout({
@@ -39,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${antonFont.variable} ${robotoFlex.variable} antialiased bg-black text-white`}
+        className={`${josefin.className}  select-none font-roboto-flex antialiased bg-black text-white`}
       >
         <ReactLenis
           root
@@ -49,10 +39,9 @@ export default function RootLayout({
           }}
         >
           <Navbar />
-          <main>{children}</main>
+          <main className="container-custom">{children}</main>
           <Footer />
 
-          <CustomCursor />
           <Preloader />
           <ScrollProgressIndicator />
           <ParticleBackground />
