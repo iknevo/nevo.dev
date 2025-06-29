@@ -9,7 +9,7 @@ export const GENERAL_INFO = {
 
 export const SOCIAL_LINKS = [
   { name: "github", url: "https://github.com/iknevo" },
-  { name: "linkedin", url: "https://www.linkedin.com/in/tajmirul" },
+  { name: "linkedin", url: "https://www.linkedin.com/in/ahmed-abdelhafiez" },
   { name: "CV", url: GENERAL_INFO.cv },
 ];
 

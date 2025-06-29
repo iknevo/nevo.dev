@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 @theme {
-  /* Colors */
   --color-primary: #d84e2c;
   --container-padding: 1rem;
   --container-padding-sm: 1.5rem;
@@ -15,7 +14,6 @@
   --padding-section: 250px;
 }
 
-/* Custom container utility */
 .container-custom {
   width: 100%;
   margin-left: auto;

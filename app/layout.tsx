@@ -1,7 +1,6 @@
 import "lenis/dist/lenis.css";
 import { ReactLenis } from "lenis/react";
 import type { Metadata } from "next";
-
 import { Josefin_Sans } from "next/font/google";
 import Footer from "./_components/Footer";
 import Navbar from "./_components/Navbar";
@@ -41,7 +40,6 @@ export default function RootLayout({
           <Navbar />
           <main className="container-custom">{children}</main>
           <Footer />
-
           <Preloader />
           <ScrollProgressIndicator />
           <ParticleBackground />
