@@ -5,14 +5,13 @@ import { GENERAL_INFO } from "@/app/_lib/data";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import React from "react";
+import { useRef } from "react";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const Banner = () => {
-  const containerRef = React.useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // move the content a little up on scroll
   useGSAP(
     () => {
       const tl = gsap.timeline({
@@ -34,7 +33,7 @@ const Banner = () => {
   );
 
   return (
-    <section className="relative overflow-hidden" id="banner">
+    <section className="overflow-hidden" id="banner">
       <ArrowAnimation />
       <div
         className="container h-svh min-h-[530px] max-md:pb-10 flex justify-between items-center max-md:flex-col"
@@ -47,9 +46,9 @@ const Banner = () => {
           </h1>
           <p className="banner-description slide-up-and-fade mt-6 text-lg text-muted-foreground">
             Hi! I&apos;m{" "}
-            <span className="font-medium text-foreground">Tajmirul</span>. A
-            creative Frontend Developer with 3+ years of experience in building
-            high-performance, scalable, and responsive web solutions.
+            <span className="font-medium text-foreground">Nevo</span>. A
+            creative Frontend Developer with hands-on experience through
+            building high-performance, scalable, and responsive web solutions.
           </p>
           <Button
             as="link"
@@ -63,7 +62,7 @@ const Banner = () => {
           </Button>
         </div>
 
-        <div className="md:absolute bottom-[10%] right-[4%] flex md:flex-col gap-4 md:gap-8 text-center md:text-right">
+        <div className="md:absolute md:bottom-[10%] md:right-[5%] flex md:flex-col gap-4 md:gap-8 text-center md:text-right">
           <div className="slide-up-and-fade">
             <h5 className="text-3xl sm:text-4xl font-anton text-primary mb-1.5">
               3+
