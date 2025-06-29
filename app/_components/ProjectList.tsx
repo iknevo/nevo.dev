@@ -6,7 +6,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import Image from "next/image";
-import React, { MouseEvent, useRef, useState } from "react";
+import { MouseEvent, useRef, useState } from "react";
 import Project from "./Project";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -20,11 +20,8 @@ const ProjectList = () => {
     PROJECTS[0].slug
   );
 
-  // update imageRef.current href based on the cursor hover position
-  // also update image position
   useGSAP(
-    (context, contextSafe) => {
-      // show image on hover
+    (_, contextSafe) => {
       if (window.innerWidth < 768) {
         setSelectedProject(null);
         return;
@@ -43,7 +40,6 @@ const ProjectList = () => {
         const imageRect = imageContainer.current.getBoundingClientRect();
         const offsetTop = e.clientY - containerRect.y;
 
-        // if cursor is outside the container, hide the image
         if (
           containerRect.y > e.clientY ||
           containerRect.bottom < e.clientY ||

@@ -4,7 +4,6 @@ import gsap from "gsap";
 import { useRef } from "react";
 
 gsap.registerPlugin(useGSAP);
-
 const Preloader = () => {
   const preloaderRef = useRef<HTMLDivElement>(null);
 
@@ -42,22 +41,18 @@ const Preloader = () => {
 
   return (
     <div className="fixed inset-0 z-6 flex" ref={preloaderRef}>
-      <div className="preloader-item h-full w-[10%] bg-primary"></div>
-      <div className="preloader-item h-full w-[10%] bg-primary"></div>
-      <div className="preloader-item h-full w-[10%] bg-primary"></div>
-      <div className="preloader-item h-full w-[10%] bg-primary"></div>
-      <div className="preloader-item h-full w-[10%] bg-primary"></div>
-      <div className="preloader-item h-full w-[10%] bg-primary"></div>
-      <div className="preloader-item h-full w-[10%] bg-primary"></div>
-      <div className="preloader-item h-full w-[10%] bg-primary"></div>
-      <div className="preloader-item h-full w-[10%] bg-primary"></div>
-      <div className="preloader-item h-full w-[10%] bg-primary"></div>
-
+      {[...Array(20)].map((_, i) => (
+        <div
+          className="preloader-item h-full w-[10%] bg-primary"
+          key={Math.random()}
+        ></div>
+      ))}
       <p className="name-text flex text-[20vw] lg:text-[200px] font-anton text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 leading-none overflow-hidden">
-        <span className="inline-block translate-y-full">N</span>
-        <span className="inline-block translate-y-full">E</span>
-        <span className="inline-block translate-y-full">V</span>
-        <span className="inline-block translate-y-full">O</span>
+        {["N", "E", "V", "O"].map((letter) => (
+          <span className="inline-block translate-y-full" key={Math.random()}>
+            {letter}
+          </span>
+        ))}
       </p>
     </div>
   );

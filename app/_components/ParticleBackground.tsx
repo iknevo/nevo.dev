@@ -23,15 +23,14 @@ const ParticleBackground = () => {
         duration: Math.random() * 10 + 10,
         opacity: 0,
         repeat: -1,
-        ease: "none",
-        // yoyo: true,
+        ease: "back.inOut",
       });
     });
   }, []);
 
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none">
-      {[...Array(100)].map((_, i) => (
+    <div className="fixed inset-0 pointer-events-none">
+      {[...Array(150)].map((_, i) => (
         <div
           key={i}
           ref={(el) => {
