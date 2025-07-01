@@ -9,7 +9,7 @@ interface RepoStats {
 const Footer = async () => {
   return (
     <footer className="text-center pb-5" id="contact">
-      <div className="container">
+      <div className="container mx-auto">
         <p className="text-lg">Have a project in mind?</p>
         <a
           href={`mailto:${GENERAL_INFO.email}`}
