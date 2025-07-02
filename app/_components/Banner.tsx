@@ -5,14 +5,15 @@ import { GENERAL_INFO } from "@/app/_lib/data";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Magnet from "./Magnet";
 import ShinyText from "./ShinyText";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const Banner = () => {
+export default function Banner() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const scope = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
@@ -33,7 +34,34 @@ const Banner = () => {
     },
     { scope: containerRef }
   );
-
+  useGSAP(
+    () => {
+      const wrapperTl = gsap.timeline();
+      if (document.querySelector(".animateUp")) {
+        wrapperTl
+          .to(".wrapper", {
+            overflow: "hidden",
+            duration: 0.4,
+          })
+          .from(".animateUp", {
+            y: "100%",
+            duration: 1,
+            delay: 2,
+            ease: "power2.inOut",
+            scrollTrigger: {
+              trigger: ".animateUp",
+              start: "top 80%",
+            },
+          })
+          .to(".wrapper", {
+            overflow: "unset",
+            delay: 2,
+            duration: 0,
+          });
+      }
+    },
+    { scope }
+  );
   return (
     <section className="" id="banner">
       <ArrowAnimation />
@@ -46,12 +74,6 @@ const Banner = () => {
             <span className="text-primary">FRONTEND</span>
             <br /> <span className="ml-4">DEVELOPER</span>
           </h1>
-          {/* <p className="banner-description slide-up-and-fade mt-6 text-lg text-muted-foreground">
-            Hi! I&apos;m{" "}
-            <span className="font-medium text-foreground">Nevo</span>. A
-            creative Frontend Developer with hands-on experience through
-            building high-performance, scalable, and responsive web solutions.
-          </p> */}
           <ShinyText
             className="text-lg"
             text="
@@ -73,29 +95,35 @@ const Banner = () => {
           </Magnet>
         </div>
 
-        <div className="md:absolute md:bottom-[10%] md:right-[5%] flex md:flex-col gap-4 md:gap-8 text-center md:text-right">
-          <div className="slide-up-and-fade">
-            <h5 className="text-3xl sm:text-4xl font-anton text-primary mb-1.5">
-              1+
-            </h5>
-            <p className="text-muted-foreground">Years of Experience</p>
+        <code
+          ref={scope}
+          className="text-white flex flex-col link absolute bottom-20 right-1/2 translate-x-1/2 md:translate-x-0 md:right-20 md:bottom-25 md:text-sm tracking-widest"
+        >
+          <span className="block md:text-lg font-bold text-primary">
+            {"<span>"}
+          </span>
+          <div className="inline-block translate-x-5 leading-7">
+            <div className="wrapper">
+              <span className="animateUp w-max inline-block">
+                Proficient in the latest web technologies and
+              </span>
+            </div>
+            <div className="wrapper">
+              <span className="animateUp w-max inline-block">
+                frameworks, continuously expanding my skill set
+              </span>
+            </div>
+            <div className="wrapper">
+              <span className="animateUp w-max inline-block">
+                to stay at the forefront of the industry.
+              </span>
+            </div>
           </div>
-          <div className="slide-up-and-fade">
-            <h5 className="text-3xl sm:text-4xl font-anton text-primary mb-1.5">
-              3+
-            </h5>
-            <p className="text-muted-foreground">Completed Projects</p>
-          </div>
-          <div className="slide-up-and-fade">
-            <h5 className="text-3xl sm:text-4xl font-anton text-primary mb-1.5">
-              1k+
-            </h5>
-            <p className="text-muted-foreground">Hours Worked</p>
-          </div>
-        </div>
+          <span className="block text-primary font-bold text-lg">
+            {"</span>"}
+          </span>
+        </code>
       </div>
     </section>
   );
-};
-
-export default Banner;
+}
