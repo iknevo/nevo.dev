@@ -66,13 +66,20 @@ export default function AboutMe() {
           />
         </h2>
 
-        <p className="pb-3 border-b text-muted-foreground slide-up-and-fade">
+        <p className="pb-3 border-b text-gray-400 slide-up-and-fade">
           This is me.
         </p>
 
         <div className="grid md:grid-cols-12 mt-9">
           <div className="md:col-span-5">
-            <p className="text-5xl slide-up-and-fade">Hi, I&apos;m Nevo</p>
+            <p className="text-5xl slide-up-and-fade">
+              Hi, I&apos;m Nevo
+              <span className="text-2xl text-white/75 mt-10 inline-block">
+                Proficient in the latest web technologies and frameworks,
+                continuously expanding my skill set to stay at the forefront of
+                the industry.
+              </span>
+            </p>
           </div>
           <div className="md:col-span-7">
             <div className="text-lg text-muted-foreground max-w-[450px]">

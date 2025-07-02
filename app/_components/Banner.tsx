@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function Banner() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const scope = useRef<HTMLDivElement>(null);
+  const codeRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
@@ -60,7 +60,7 @@ export default function Banner() {
           });
       }
     },
-    { scope }
+    { scope: codeRef }
   );
   return (
     <section className="" id="banner">
@@ -75,7 +75,7 @@ export default function Banner() {
             <br /> <span className="ml-4">DEVELOPER</span>
           </h1>
           <ShinyText
-            className="text-lg"
+            className="text-lg slide-up-and-fade"
             text="
             Hi! I'm NEVO. A Frontend Developer with hands-on experience through
             building high-performance, scalable, and responsive web solutions.
@@ -94,35 +94,36 @@ export default function Banner() {
             </Button>
           </Magnet>
         </div>
-
-        <code
-          ref={scope}
-          className="text-white flex flex-col link absolute bottom-20 right-1/2 translate-x-1/2 md:translate-x-0 md:right-20 md:bottom-25 md:text-sm tracking-widest"
-        >
-          <span className="block md:text-lg font-bold text-primary">
-            {"<span>"}
-          </span>
-          <div className="inline-block translate-x-5 leading-7">
-            <div className="wrapper">
-              <span className="animateUp w-max inline-block">
-                Proficient in the latest web technologies and
-              </span>
+        <div className="slide-up-and-fade absolute bottom-20 right-1/2 translate-x-1/2 md:translate-x-0 md:right-20 md:bottom-25">
+          <code
+            ref={codeRef}
+            className="text-white flex flex-col text-xs md:text-sm tracking-widest"
+          >
+            <span className="block md:text-lg font-bold text-primary">
+              {"<span>"}
+            </span>
+            <div className="inline-block translate-x-5 leading-7">
+              <div className="wrapper">
+                <span className="animateUp w-max inline-block">
+                  Proficient in the latest web technologies and
+                </span>
+              </div>
+              <div className="wrapper">
+                <span className="animateUp w-max inline-block">
+                  frameworks, continuously expanding my skill set
+                </span>
+              </div>
+              <div className="wrapper">
+                <span className="animateUp w-max inline-block">
+                  to stay at the forefront of the industry.
+                </span>
+              </div>
             </div>
-            <div className="wrapper">
-              <span className="animateUp w-max inline-block">
-                frameworks, continuously expanding my skill set
-              </span>
-            </div>
-            <div className="wrapper">
-              <span className="animateUp w-max inline-block">
-                to stay at the forefront of the industry.
-              </span>
-            </div>
-          </div>
-          <span className="block text-primary font-bold text-lg">
-            {"</span>"}
-          </span>
-        </code>
+            <span className="block text-primary font-bold text-lg">
+              {"</span>"}
+            </span>
+          </code>
+        </div>
       </div>
     </section>
   );
