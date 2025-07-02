@@ -5,7 +5,7 @@ import { useRef } from "react";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const ArrowAnimation = () => {
+export default function ArrowAnimation() {
   const svgRef = useRef<SVGSVGElement>(null);
   const arrow1Ref = useRef<SVGPathElement>(null);
   const arrow2Ref = useRef<SVGPathElement>(null);
@@ -69,6 +69,4 @@ const ArrowAnimation = () => {
       />
     </svg>
   );
-};
-
-export default ArrowAnimation;
+}
