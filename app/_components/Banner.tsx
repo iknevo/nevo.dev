@@ -35,7 +35,7 @@ const Banner = () => {
   );
 
   return (
-    <section className="overflow-hidden" id="banner">
+    <section className="" id="banner">
       <ArrowAnimation />
       <div
         className="container h-svh min-h-[530px] max-md:pb-10 flex justify-between items-center max-md:flex-col"

@@ -6,50 +6,74 @@ import { useRef } from "react";
 gsap.registerPlugin(useGSAP);
 const Preloader = () => {
   const preloaderRef = useRef<HTMLDivElement>(null);
+  const letters = ["N", "E", "V", "O"];
+  const numColumns = 10;
 
   useGSAP(
     () => {
       const tl = gsap.timeline({
         defaults: {
-          ease: "power1.inOut",
+          ease: "power2.inOut",
         },
       });
 
       tl.to(".name-text span", {
         y: 0,
-        stagger: 0.05,
-        duration: 0.2,
+        opacity: 1,
+        stagger: 0.07,
+        duration: 0.5,
       });
 
-      tl.to(".preloader-item", {
-        delay: 1,
-        y: "100%",
-        duration: 0.5,
-        stagger: 0.1,
-      })
-        .to(".name-text span", { autoAlpha: 0 }, "<0.5")
-        .to(
-          preloaderRef.current,
-          {
-            autoAlpha: 0,
-          },
-          "<1"
-        );
+      tl.to(
+        ".preloader-item",
+        {
+          delay: 0.7,
+          y: "100%",
+          scaleY: 0.7,
+          opacity: 0,
+          duration: 0.7,
+          stagger: 0.05,
+        },
+        ">"
+      );
+
+      tl.to(
+        ".name-text span",
+        {
+          y: 40,
+          opacity: 0,
+          stagger: 0.05,
+          duration: 0.4,
+        },
+        "<0.2"
+      );
+
+      tl.to(
+        preloaderRef.current,
+        {
+          autoAlpha: 0,
+          duration: 0.5,
+        },
+        ">"
+      );
     },
     { scope: preloaderRef }
   );
 
   return (
-    <div className="fixed inset-0 z-6 flex" ref={preloaderRef}>
-      {[...Array(20)].map((_, i) => (
+    <div className="fixed inset-0 z-50 flex bg-black" ref={preloaderRef}>
+      {[...Array(numColumns)].map((_, i) => (
         <div
-          className="preloader-item h-full w-[10%] bg-primary"
-          key={Math.random()}
+          className="preloader-item h-full w-[10%] bg-primary-dark will-change-transform"
+          key={i}
         ></div>
       ))}
       <p className="name-text flex text-[20vw] lg:text-[200px] font-anton text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 leading-none overflow-hidden">
-        {["N", "E", "V", "O"].map((letter) => (
-          <span className="inline-block translate-y-full" key={Math.random()}>
+        {letters.map((letter, i) => (
+          <span
+            className="inline-block translate-y-full opacity-0 will-change-transform"
+            key={i}
+          >
             {letter}
           </span>
         ))}

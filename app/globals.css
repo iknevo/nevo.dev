@@ -2,6 +2,7 @@
 
 @theme {
   --color-primary: #d84e2c;
+  --color-primary-dark: #6c2716;
   --container-padding: 1rem;
   --container-padding-sm: 1.5rem;
   --container-padding-lg: 2rem;
@@ -12,7 +13,7 @@
   --container-max-width-2xl: 1148px;
   --container-center: "true";
   --padding-section: 250px;
-  --animate-shine: shine 5s linear infinite;
+  --animate-shine: shine 2s linear infinite;
 
   @keyframes shine {
     0% {
