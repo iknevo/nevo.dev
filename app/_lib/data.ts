@@ -107,36 +107,28 @@ export const PROJECTS: IProject[] = [
     liveUrl: "https://egy-railway.vercel.app",
     year: 2025,
     description: `
-      A complete agency portfolio platform built for MTI Electronics to showcase their services, blog content, and product offerings. <br/> <br/>
+       my graduation project , A web application designed to provide a seamless user experience for railway services. It allows users to search for train schedules, book tickets, and manage their travel plans efficiently. The application is built with a focus on performance, scalability, and user-friendly design. <br/> <br/>
 
       Key Features:<br/>
       <ul>
-        <li>🛠️ Service Display System: Interactive service showcase with synchronized sliders</li>
-        <li>✍️ Blog Management: SEO-friendly blog with categorization and search</li>
-        <li>🛒 Product Catalog: Organized product display with filtering capabilities</li>
-        <li>📱 Fully Responsive: Optimized for all device sizes</li>
-        <li>⚡ Fast Performance: Optimized Next.js frontend with ISR (Incremental Static Regeneration)</li>
+        <li>Easy and Fast train search using origin and arrival stations</li>
+        <li>Booking a ticket</li>
+        <li>Download a PDF format ticket</li>
+        <li>Easy login and signup with email & password , Google and Facebook</li>
+        <li>Responsive design supporting various devices</li>
       </ul><br/>
 
       Technical Highlights:
       <ul>
-        <li>Implemented complex slider synchronization logic using Swiper.js</li>
-        <li>Customized Payload CMS admin panel for intuitive content management</li>
-        <li>Developed reusable UI components with shadcn for design consistency</li>
-        <li>Configured efficient data fetching strategies in Next.js</li>
+        <li>Simplifies server-state management with powerful caching, background syncing, and automatic re-fetching using TanstackQuery.</li>
+        <li>A full Postgres backend with real-time data, auth, and storage through a simple JavaScript client using supabase.</li>
+        <li>Utility-first CSS framework enabling rapid, responsive UI development with consistent design tokens using TailwindCSS.</li>
+        <li>Streamlines form state management in React with easy handling of inputs, validation, and submission using Formik.</li>
+        <li>Schema-based validation library that integrates seamlessly with Formik for robust and reusable form validations using Yup.</li>
       </ul>
       `,
     role: `
-      Full-Stack Developer <br/>
-      Owned the entire development lifecycle:
-      <ul>
-        <li>✅ Backend: Configured Payload CMS with custom collections for services, blogs, and products</li>
-        <li>🎨 Frontend: Built all UI components using Tailwind CSS and shadcn</li>
-        <li>🔄 State Management: Implemented client-side data fetching and caching</li>
-        <li>🖥️ CMS Customization: Created admin interfaces for content editors</li>
-        <li>🚀 Deployment: Set up CI/CD pipeline for Vercel hosting</li>
-        <li>🧩 Third-Party Integration: Added Swiper.js for interactive sliders</li>
-      </ul>
+      <p>As a Front-End Developer, I was responsible for building responsive user interfaces with Tailwind CSS, managing server-state efficiently using React Query, and integrating Supabase for authentication and real-time data handling. I implemented dynamic forms with Formik and enforced robust validations using Yup to ensure a smooth user experience and data integrity.</p>
       `,
     techStack: [
       "React",
