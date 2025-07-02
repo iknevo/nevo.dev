@@ -76,7 +76,7 @@ const ProjectDetails = ({ project }: Props) => {
               start: () => (i ? "top bottom" : "top 50%"),
               end: "bottom top",
               scrub: true,
-              // invalidateOnRefresh: true, // to make it responsive
+              invalidateOnRefresh: true, // to make it responsive
             },
           });
         });
@@ -171,11 +171,11 @@ const ProjectDetails = ({ project }: Props) => {
           {project.images.map((image) => (
             <div
               key={image}
-              className="group relative w-full aspect-[750/400] bg-background-light"
+              className="group relative w-full aspect-[750/400] bg-white"
               style={{
                 backgroundImage: `url(${image})`,
                 backgroundSize: "cover",
-                backgroundPosition: "center 50%",
+                backgroundPosition: "center 0%",
                 backgroundRepeat: "no-repeat",
               }}
             >

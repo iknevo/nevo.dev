@@ -115,7 +115,7 @@ const ProjectList = () => {
                   width="400"
                   height="500"
                   className={cn(
-                    "absolute inset-0 transition-all duration-500 w-full h-full object-cover",
+                    "absolute inset-0 transition-all duration-500 w-full h-full object-cover object-top",
                     {
                       "opacity-0": project.slug !== selectedProject,
                     }
