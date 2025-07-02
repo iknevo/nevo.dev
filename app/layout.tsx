@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${josefin.className}  select-none font-roboto-flex antialiased bg-black text-white`}
+        className={`${josefin.className} select-none font-roboto-flex antialiased bg-black text-white`}
       >
         <ReactLenis
           root

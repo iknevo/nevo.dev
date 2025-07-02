@@ -12,6 +12,16 @@
   --container-max-width-2xl: 1148px;
   --container-center: "true";
   --padding-section: 250px;
+  --animate-shine: shine 5s linear infinite;
+
+  @keyframes shine {
+    0% {
+      background-position: 100%;
+    }
+    100% {
+      background-position: -100%;
+    }
+  }
 }
 
 .container-custom {

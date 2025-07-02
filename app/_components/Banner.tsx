@@ -6,6 +6,8 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useRef } from "react";
+import Magnet from "./Magnet";
+import ShinyText from "./ShinyText";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -44,22 +46,31 @@ const Banner = () => {
             <span className="text-primary">FRONTEND</span>
             <br /> <span className="ml-4">DEVELOPER</span>
           </h1>
-          <p className="banner-description slide-up-and-fade mt-6 text-lg text-muted-foreground">
+          {/* <p className="banner-description slide-up-and-fade mt-6 text-lg text-muted-foreground">
             Hi! I&apos;m{" "}
             <span className="font-medium text-foreground">Nevo</span>. A
             creative Frontend Developer with hands-on experience through
             building high-performance, scalable, and responsive web solutions.
-          </p>
-          <Button
-            as="link"
-            target="_blank"
-            rel="noopener noreferrer"
-            href={GENERAL_INFO.cv}
-            variant="primary"
-            className="mt-9 banner-button slide-up-and-fade"
-          >
-            Resume
-          </Button>
+          </p> */}
+          <ShinyText
+            className="text-lg"
+            text="
+            Hi! I'm NEVO. A creative Frontend Developer with hands-on experience through
+            building high-performance, scalable, and responsive web solutions.
+          "
+          />
+          <Magnet magnetStrength={4}>
+            <Button
+              as="link"
+              target="_blank"
+              rel="noopener noreferrer"
+              href={GENERAL_INFO.cv}
+              variant="primary"
+              className="mt-9 banner-button slide-up-and-fade rounded-md"
+            >
+              Resume
+            </Button>
+          </Magnet>
         </div>
 
         <div className="md:absolute md:bottom-[10%] md:right-[5%] flex md:flex-col gap-4 md:gap-8 text-center md:text-right">

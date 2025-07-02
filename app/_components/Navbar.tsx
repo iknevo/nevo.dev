@@ -4,6 +4,7 @@ import { cn } from "@/app/_lib/utils";
 import { MoveUpRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Magnet from "./Magnet";
 
 const COLORS = [
   "bg-yellow-500 text-black",
@@ -39,7 +40,9 @@ const Navbar = () => {
     <>
       <div className="sticky top-0 z-4">
         <button
-          className={cn("group size-12 absolute top-5 right-5 md:right-10 z-2")}
+          className={cn(
+            "group size-12 absolute top-5 right-5 md:right-10 z-2 cursor-pointer"
+          )}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           <span

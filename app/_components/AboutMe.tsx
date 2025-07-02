@@ -3,6 +3,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useRef } from "react";
+import ShinyText from "./ShinyText";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -54,9 +55,13 @@ const AboutMe = () => {
   return (
     <section className="pb-section" id="about-me">
       <div className="container" ref={container}>
-        <h2 className="text-4xl md:text-6xl font-thin mb-20 slide-up-and-fade">
+        <h2 className="text-4xl md:text-6xl mb-20 slide-up-and-fade">
+          <ShinyText
+            text="
           I believe in a user centered design approach, ensuring that every
           project I work on is tailored to meet the specific needs of its users.
+          "
+          />
         </h2>
 
         <p className="pb-3 border-b text-muted-foreground slide-up-and-fade">
