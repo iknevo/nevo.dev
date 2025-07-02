@@ -22,4 +22,6 @@ export interface IProject {
   slug: string;
   liveUrl?: string;
   sourceCode?: string;
+  description?: string;
+  role?: string;
 }

@@ -55,7 +55,7 @@ const Banner = () => {
           <ShinyText
             className="text-lg"
             text="
-            Hi! I'm NEVO. A creative Frontend Developer with hands-on experience through
+            Hi! I'm NEVO. A Frontend Developer with hands-on experience through
             building high-performance, scalable, and responsive web solutions.
           "
           />
