@@ -45,7 +45,7 @@ export default function Banner() {
           })
           .from(".animateUp", {
             y: "100%",
-            duration: 1,
+            duration: 2,
             delay: 2,
             ease: "power2.inOut",
             scrollTrigger: {
