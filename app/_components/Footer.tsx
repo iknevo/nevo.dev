@@ -22,7 +22,7 @@ const Footer = async () => {
           <a
             href="https://github.com/Tajmirul/portfolio-2.0"
             target="_blank"
-            className="leading-none text-muted-foreground hover:underline hover:text-white"
+            className="leading-none text-white/80 hover:underline hover:text-white"
           >
             built by NEVO {"<3"}
           </a>

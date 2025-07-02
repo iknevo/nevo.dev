@@ -129,21 +129,19 @@ const ProjectDetails = ({ project }: Props) => {
 
             <div className="max-w-[635px] space-y-7 pb-20 mx-auto">
               <div className="fade-in-later">
-                <p className="text-muted-foreground font-anton mb-3">Year</p>
+                <p className="text-white/80 font-anton mb-3">Year</p>
 
                 <div className="text-lg">{project.year}</div>
               </div>
               <div className="fade-in-later">
-                <p className="text-muted-foreground font-anton mb-3">
+                <p className="text-white/80 font-anton mb-3">
                   Tech & Technique
                 </p>
 
                 <div className="text-lg">{project.techStack.join(", ")}</div>
               </div>
               <div className="fade-in-later">
-                <p className="text-muted-foreground font-anton mb-3">
-                  Description
-                </p>
+                <p className="text-white/80 font-anton mb-3">Description</p>
 
                 <div className="text-lg prose-xl markdown-text">
                   {project.description && parse(project.description)}
@@ -151,9 +149,7 @@ const ProjectDetails = ({ project }: Props) => {
               </div>
               {project.role && (
                 <div className="fade-in-later">
-                  <p className="text-muted-foreground font-anton mb-3">
-                    My Role
-                  </p>
+                  <p className="text-white/80 font-anton mb-3">My Role</p>
 
                   <div className="text-lg">{parse(project.role)}</div>
                 </div>
@@ -182,7 +178,7 @@ const ProjectDetails = ({ project }: Props) => {
               <a
                 href={image}
                 target="_blank"
-                className="absolute top-4 right-4 bg-background/70 text-foreground size-12 inline-flex justify-center items-center transition-all opacity-0 hover:bg-primary hover:text-primary-foreground group-hover:opacity-100"
+                className="absolute top-4 right-4 bg-background/70 text-white size-12 inline-flex justify-center items-center transition-all opacity-0 hover:bg-primary hover:text-primary-dark group-hover:opacity-100"
               >
                 <ExternalLink />
               </a>

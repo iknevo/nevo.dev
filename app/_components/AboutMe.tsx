@@ -82,7 +82,7 @@ export default function AboutMe() {
             </p>
           </div>
           <div className="md:col-span-7">
-            <div className="text-lg text-muted-foreground max-w-[450px]">
+            <div className="text-lg text-white/80 max-w-[450px]">
               <p className="slide-up-and-fade">
                 I&apos;m a {age} year old frontend web developer based in Cairo,
                 Egypt. Dedicated to turning ideas into creative solutions. I
