@@ -4,7 +4,6 @@ import { cn } from "@/app/_lib/utils";
 import { MoveUpRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Magnet from "./Magnet";
 
 const COLORS = [
   "bg-yellow-500 text-black",

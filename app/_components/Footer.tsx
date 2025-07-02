@@ -1,10 +1,4 @@
 import { GENERAL_INFO } from "@/app/_lib/data";
-import { GitFork, Star } from "lucide-react";
-
-interface RepoStats {
-  stargazers_count: number;
-  forks_count: number;
-}
 
 const Footer = async () => {
   return (

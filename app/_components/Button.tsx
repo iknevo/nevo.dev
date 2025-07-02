@@ -3,32 +3,6 @@ import { Variant } from "@/app/_types";
 import Link from "next/link";
 import React, { ButtonHTMLAttributes, ComponentProps, ReactNode } from "react";
 
-const Child = ({ icon }: any) => (
-  <span className="flex items-center justify-center gap-3">
-    <svg
-      className="animate-spin h-5 w-5 text-white"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-    >
-      <circle
-        className="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="4"
-      ></circle>
-      <path
-        className="opacity-75"
-        fill="currentColor"
-        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-      ></path>
-    </svg>
-    {!icon && "Processing..."}
-  </span>
-);
-
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
 type Props = {
@@ -46,7 +20,6 @@ const Button = ({
   className,
   children,
   as = "link",
-  icon = false,
   ...rest
 }: Props) => {
   const variantClasses = {
@@ -70,7 +43,6 @@ const Button = ({
   const buttonClasses = cn(
     `group h-12 px-8 inline-flex justify-center items-center gap-2 text-lg uppercase tracking-widest outline-none transition-colors relative overflow-hidden`,
     variantClasses,
-    { [iconClasses]: icon },
     className
   );
 
@@ -87,9 +59,7 @@ const Button = ({
           {variant !== "link" && (
             <span className="absolute top-[200%] left-0 right-0 h-full bg-white rounded-[50%] group-hover:top-0 transition-all duration-500 scale-150"></span>
           )}
-          <span className="z-1">
-            {loading ? <Child icon={icon} /> : children}
-          </span>
+          <span className="z-1">{children}</span>
         </a>
       );
     }
@@ -99,9 +69,7 @@ const Button = ({
         {variant !== "link" && (
           <span className="absolute top-[200%] left-0 right-0 h-full bg-white rounded-[50%] group-hover:top-0 transition-all duration-500 scale-150"></span>
         )}
-        <span className="z-1">
-          {loading ? <Child icon={icon} /> : children}
-        </span>
+        <span className="z-1">{children}</span>
       </Link>
     );
   } else if (as === "button") {
@@ -112,9 +80,7 @@ const Button = ({
         {variant !== "link" && (
           <span className="absolute top-[200%] left-0 right-0 h-full bg-white rounded-[50%] group-hover:top-0 transition-all duration-500 scale-150"></span>
         )}
-        <span className="z-1">
-          {loading ? <Child icon={icon} /> : children}
-        </span>
+        <span className="z-1">{children}</span>
       </button>
     );
   }
