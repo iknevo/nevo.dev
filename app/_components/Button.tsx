@@ -7,15 +7,12 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
 type Props = {
   as?: "link" | "button";
-  loading?: boolean;
-  icon?: boolean;
   children: ReactNode | ReactNode[];
   className?: string;
   variant?: Variant;
 } & (ComponentProps<typeof Link> | ButtonProps);
 
 const Button = ({
-  loading,
   variant,
   className,
   children,
@@ -34,11 +31,6 @@ const Button = ({
     link: `text-foreground hover:text-primary`,
     "no-color": "",
   }[variant || "primary"];
-
-  const iconClasses = cn(
-    "min-w-9 aspect-square text-xl p-0 inline-flex items-center justify-center rounded-md",
-    variantClasses
-  );
 
   const buttonClasses = cn(
     `group h-12 px-8 inline-flex justify-center items-center gap-2 text-lg uppercase tracking-widest outline-none transition-colors relative overflow-hidden`,
