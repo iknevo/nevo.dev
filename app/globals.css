@@ -39,6 +39,7 @@
     padding-left: var(--container-padding-sm);
     padding-right: var(--container-padding-sm);
     max-width: var(--container-max-width-sm);
+    overflow: hidden;
   }
 }
 

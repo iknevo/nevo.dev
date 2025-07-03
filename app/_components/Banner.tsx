@@ -102,7 +102,7 @@ export default function Banner() {
             <span className="block md:text-lg font-bold text-primary">
               {"<span>"}
             </span>
-            <div className="inline-block translate-x-5 leading-7">
+            <div className="inline-block md:translate-x-5 leading-7">
               <div className="wrapper">
                 <span className="animateUp w-max inline-block">
                   Proficient in the latest web technologies and
