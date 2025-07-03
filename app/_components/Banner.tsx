@@ -119,7 +119,7 @@ export default function Banner() {
                 </span>
               </div>
             </div>
-            <span className="block text-primary font-bold text-lg">
+            <span className="block text-primary font-bold md:text-lg">
               {"</span>"}
             </span>
           </code>
