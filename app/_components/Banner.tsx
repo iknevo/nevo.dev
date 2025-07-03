@@ -86,7 +86,7 @@ export default function Banner() {
               as="link"
               target="_blank"
               rel="noopener noreferrer"
-              href={GENERAL_INFO.cv}
+              href={GENERAL_INFO.resume}
               variant="primary"
               className="mt-9 banner-button slide-up-and-fade rounded-md"
             >
