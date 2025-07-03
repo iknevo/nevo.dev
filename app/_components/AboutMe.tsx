@@ -73,20 +73,20 @@ export default function AboutMe() {
         <div className="grid md:grid-cols-12 mt-9">
           <div className="md:col-span-5">
             <p className="text-5xl slide-up-and-fade">
-              Hi, I&apos;m Nevo
+              I&apos;m Nevo
               <span className="text-2xl text-white/75 mt-10 inline-block">
-                Proficient in the latest web technologies and frameworks,
-                continuously expanding my skill set to stay at the forefront of
-                the industry.
+                Web developer with a relentless drive for excellence, skilled in
+                creating and maintaining functional and responsive web
+                applications and websites.
               </span>
             </p>
           </div>
           <div className="md:col-span-7">
             <div className="text-lg text-white/80 max-w-[450px]">
               <p className="slide-up-and-fade">
-                I&apos;m a {age} year old frontend web developer based in Cairo,
-                Egypt. Dedicated to turning ideas into creative solutions. I
-                specialize in creating seamless and intuitive user experiences.
+                A {age} year old frontend web developer based in Cairo, Egypt.
+                Dedicated to turning ideas into creative solutions. I specialize
+                in creating seamless and intuitive user experiences.
               </p>
               <p className="mt-3 slide-up-and-fade">
                 My approach focuses on creating scalable, high-performing
@@ -96,6 +96,11 @@ export default function AboutMe() {
                 also drive tangible results.
               </p>
             </div>
+          </div>
+          <div className="slide-up-and-fade col-span-full text-center">
+            <p className="text-4xl text-primary uppercase mt-10">
+              i can't stop configuring my code editor
+            </p>
           </div>
         </div>
       </div>
