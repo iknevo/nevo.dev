@@ -8,7 +8,7 @@ import { useRef } from "react";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const Experiences = () => {
+export default function Experiences() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -70,6 +70,4 @@ const Experiences = () => {
       </div>
     </section>
   );
-};
-
-export default Experiences;
+}

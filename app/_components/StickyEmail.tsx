@@ -1,7 +1,7 @@
 import { GENERAL_INFO } from "@/app/_lib/data";
 import React from "react";
 
-const StickyEmail = () => {
+export default function StickyEmail() {
   return (
     <div className="max-xl:hidden fixed bottom-32 left-0 block">
       <a
@@ -16,6 +16,4 @@ const StickyEmail = () => {
       </a>
     </div>
   );
-};
-
-export default StickyEmail;
+}

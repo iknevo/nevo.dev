@@ -11,7 +11,7 @@ import Project from "./Project";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const ProjectList = () => {
+export default function ProjectList() {
   const containerRef = useRef<HTMLDivElement>(null);
   const projectListRef = useRef<HTMLDivElement>(null);
   const imageContainer = useRef<HTMLDivElement>(null);
@@ -142,6 +142,4 @@ const ProjectList = () => {
       </div>
     </section>
   );
-};
-
-export default ProjectList;
+}

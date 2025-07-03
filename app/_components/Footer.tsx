@@ -1,6 +1,6 @@
 import { GENERAL_INFO } from "@/app/_lib/data";
 
-const Footer = async () => {
+export default async function Footer() {
   return (
     <footer className="text-center pb-5" id="contact">
       <div className="container mx-auto">
@@ -24,6 +24,4 @@ const Footer = async () => {
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

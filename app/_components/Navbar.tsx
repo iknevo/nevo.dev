@@ -31,7 +31,7 @@ const MENU_LINKS = [
   },
 ];
 
-const Navbar = () => {
+export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
 
@@ -149,6 +149,4 @@ const Navbar = () => {
       </div>
     </>
   );
-};
-
-export default Navbar;
+}

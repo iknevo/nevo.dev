@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-const ScrollProgressIndicator = () => {
+export default function ScrollProgressIndicator() {
   const scrollBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -32,6 +32,4 @@ const ScrollProgressIndicator = () => {
       ></div>
     </div>
   );
-};
-
-export default ScrollProgressIndicator;
+}

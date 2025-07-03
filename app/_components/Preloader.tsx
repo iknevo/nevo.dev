@@ -4,7 +4,7 @@ import gsap from "gsap";
 import { useRef } from "react";
 
 gsap.registerPlugin(useGSAP);
-const Preloader = () => {
+export default function Preloader() {
   const preloaderRef = useRef<HTMLDivElement>(null);
   const letters = ["N", "E", "V", "O"];
   const numColumns = 10;
@@ -80,6 +80,4 @@ const Preloader = () => {
       </p>
     </div>
   );
-};
-
-export default Preloader;
+}

@@ -5,7 +5,7 @@ import { useRef } from "react";
 
 gsap.registerPlugin(useGSAP);
 
-const ParticleBackground = () => {
+export default function ParticleBackground() {
   const particlesRef = useRef<HTMLDivElement[]>([]);
 
   useGSAP(() => {
@@ -48,6 +48,4 @@ const ParticleBackground = () => {
       ))}
     </div>
   );
-};
-
-export default ParticleBackground;
+}

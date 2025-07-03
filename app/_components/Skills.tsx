@@ -9,7 +9,7 @@ import { useRef } from "react";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const Skills = () => {
+export default function Skills() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -95,6 +95,4 @@ const Skills = () => {
       </div>
     </section>
   );
-};
-
-export default Skills;
+}
