@@ -87,6 +87,19 @@ export const MY_STACK = {
       name: "Git",
       icon: "/logo/git.png",
     },
+    {
+      name: "GitHub",
+      icon: "/logo/github.png",
+    },
+    {
+      name: "VSCODE",
+      icon: "/logo/vscode.png",
+    },
+    {
+      name: "VIM",
+      icon: "/logo/vim.png",
+    },
+
     // {
     //   name: "Docker",
     //   icon: "/logo/docker.svg",
