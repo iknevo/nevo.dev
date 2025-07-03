@@ -10,31 +10,38 @@ const ParticleBackground = () => {
 
   useGSAP(() => {
     particlesRef.current.forEach((particle) => {
+      const width = Math.random() * 3 + 1;
+      const height = Math.random() * 3 + 1;
+      const opacity = Math.random();
+      const left = Math.random() * window.innerWidth;
+      const top = Math.random() * (window.innerHeight + 1);
       gsap.set(particle, {
-        width: Math.random() * 3 + 1,
-        height: Math.random() * 3 + 1,
-        opacity: Math.random(),
-        left: Math.random() * window.innerWidth,
-        top: Math.random() * (window.innerHeight + 1),
+        width,
+        height,
+        opacity,
+        left,
+        top,
+        willChange: "transform, opacity",
+        transform: `translate3d(0, 0, 0)`,
       });
-
       gsap.to(particle, {
         y: window.innerHeight,
         duration: Math.random() * 10 + 10,
         opacity: 0,
         repeat: -1,
         ease: "back.inOut",
+        force3D: true,
       });
     });
   }, []);
 
   return (
     <div className="fixed inset-0 pointer-events-none">
-      {[...Array(150)].map((_, i) => (
+      {[...Array(120)].map((_, i) => (
         <div
           key={i}
           ref={(el) => {
-            particlesRef.current.push(el!);
+            if (el) particlesRef.current[i] = el;
           }}
           className="absolute rounded-full bg-white"
         />

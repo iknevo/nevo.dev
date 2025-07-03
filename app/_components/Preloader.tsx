@@ -20,8 +20,9 @@ const Preloader = () => {
       tl.to(".name-text span", {
         y: 0,
         opacity: 1,
-        stagger: 0.07,
+        stagger: 0.12,
         duration: 0.5,
+        willChange: "transform, opacity",
       });
 
       tl.to(
@@ -32,7 +33,8 @@ const Preloader = () => {
           scaleY: 0.7,
           opacity: 0,
           duration: 0.7,
-          stagger: 0.05,
+          stagger: 0.09,
+          willChange: "transform, opacity",
         },
         ">"
       );
@@ -42,8 +44,9 @@ const Preloader = () => {
         {
           y: 40,
           opacity: 0,
-          stagger: 0.05,
+          stagger: 0.09,
           duration: 0.4,
+          willChange: "transform, opacity",
         },
         "<0.2"
       );

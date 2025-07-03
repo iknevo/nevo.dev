@@ -94,7 +94,7 @@ export default function Banner() {
             </Button>
           </Magnet>
         </div>
-        <div className="slide-up-and-fade absolute bottom-20 right-1/2 translate-x-1/2 md:translate-x-0 md:right-20 md:bottom-25">
+        <div className="slide-up-and-fade  absolute bottom-15 right-1/2 translate-x-1/2 md:translate-x-0 md:right-20 md:bottom-25">
           <code
             ref={codeRef}
             className="text-white flex flex-col text-xs md:text-sm tracking-widest"
