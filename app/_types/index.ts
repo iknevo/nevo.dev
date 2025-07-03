@@ -17,7 +17,6 @@ export interface IProject {
   year: number;
   techStack: string[];
   thumbnail: string;
-  longThumbnail: string;
   images: string[];
   slug: string;
   liveUrl?: string;

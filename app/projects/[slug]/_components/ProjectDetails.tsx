@@ -6,7 +6,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import parse from "html-react-parser";
-import { ArrowLeft, ExternalLink, Github } from "lucide-react";
+import { ArrowLeft, Code, ExternalLink } from "lucide-react";
 import { useRef } from "react";
 
 interface Props {
@@ -48,7 +48,7 @@ const ProjectDetails = ({ project }: Props) => {
         filter: "blur(3px)",
         autoAlpha: 0,
         scale: 0.9,
-        // position: 'sticky',
+        position: "sticky",
         scrollTrigger: {
           trigger: "#info",
           start: "bottom bottom",
@@ -76,7 +76,7 @@ const ProjectDetails = ({ project }: Props) => {
               start: () => (i ? "top bottom" : "top 50%"),
               end: "bottom top",
               scrub: true,
-              invalidateOnRefresh: true, // to make it responsive
+              invalidateOnRefresh: true,
             },
           });
         });
@@ -98,12 +98,12 @@ const ProjectDetails = ({ project }: Props) => {
 
         <div className="top-0 min-h-[calc(100svh-100px)] flex" id="info">
           <div className="relative w-full">
-            <div className="flex items-start gap-6 mx-auto mb-10 max-w-[635px]">
-              <h1 className="fade-in-later opacity-0 text-4xl md:text-[60px] leading-none font-anton overflow-hidden">
+            <div className="flex items-start gap-6 mx-auto mb-10 max-w-7xl">
+              <h1 className="fade-in-later opacity-0 text-4xl md:text-[60px] leading-none overflow-hidden">
                 <span className="inline-block">{project.title}</span>
               </h1>
 
-              <div className="fade-in-later opacity-0 flex gap-2">
+              <div className="fade-in-later opacity-0 flex gap-4 items-center">
                 {project.sourceCode && (
                   <a
                     href={project.sourceCode}
@@ -111,7 +111,7 @@ const ProjectDetails = ({ project }: Props) => {
                     rel="noreferrer noopener"
                     className="hover:text-primary"
                   >
-                    <Github size={30} />
+                    <Code size={30} />
                   </a>
                 )}
                 {project.liveUrl && (
@@ -127,29 +127,27 @@ const ProjectDetails = ({ project }: Props) => {
               </div>
             </div>
 
-            <div className="max-w-[635px] space-y-7 pb-20 mx-auto">
+            <div className="max-w-7xl space-y-7 pb-20 mx-auto">
               <div className="fade-in-later">
-                <p className="text-white/80 font-anton mb-3">Year</p>
+                <p className="text-white/80 mb-3">Year</p>
 
                 <div className="text-lg">{project.year}</div>
               </div>
               <div className="fade-in-later">
-                <p className="text-white/80 font-anton mb-3">
-                  Tech & Technique
-                </p>
+                <p className="text-white/80 mb-3">Tech & Technique</p>
 
                 <div className="text-lg">{project.techStack.join(", ")}</div>
               </div>
               <div className="fade-in-later">
-                <p className="text-white/80 font-anton mb-3">Description</p>
+                <p className="text-white/80 mb-3">Description</p>
 
-                <div className="text-lg prose-xl markdown-text">
+                <div className="text-lg markdown-text">
                   {project.description && parse(project.description)}
                 </div>
               </div>
               {project.role && (
                 <div className="fade-in-later">
-                  <p className="text-white/80 font-anton mb-3">My Role</p>
+                  <p className="text-white/80 mb-3">My Role</p>
 
                   <div className="text-lg">{parse(project.role)}</div>
                 </div>
@@ -161,24 +159,24 @@ const ProjectDetails = ({ project }: Props) => {
         </div>
 
         <div
-          className="fade-in-later relative flex flex-col gap-2 max-w-[800px] mx-auto"
+          className="fade-in-later relative flex flex-col gap-2 max-w-7xl mx-auto"
           id="images"
         >
           {project.images.map((image) => (
             <div
               key={image}
-              className="group relative w-full aspect-[750/400] bg-white"
+              className="group relative w-full aspect-[750/400] bg-black"
               style={{
                 backgroundImage: `url(${image})`,
                 backgroundSize: "cover",
-                backgroundPosition: "center 0%",
+                backgroundPosition: "center 50%",
                 backgroundRepeat: "no-repeat",
               }}
             >
               <a
                 href={image}
                 target="_blank"
-                className="absolute top-4 right-4 bg-background/70 text-white size-12 inline-flex justify-center items-center transition-all opacity-0 hover:bg-primary hover:text-primary-dark group-hover:opacity-100"
+                className="absolute top-4 right-4 bg-gray-950/70 text-white size-12 inline-flex justify-center items-center transition-all opacity-0 hover:bg-primary hover:text-white group-hover:opacity-100"
               >
                 <ExternalLink />
               </a>

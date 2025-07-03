@@ -2,8 +2,6 @@ import { IProject } from "@/app/_types";
 
 export const GENERAL_INFO = {
   email: "iknevo.dev@gmail.com",
-  emailSubject: "Let's collaborate on a project",
-  emailBody: "Hi NEVO, I am reaching out to you because...",
   cv: "/resume.pdf",
 };
 
@@ -115,6 +113,7 @@ export const PROJECTS: IProject[] = [
         <li>Booking a ticket</li>
         <li>Download a PDF format ticket</li>
         <li>Easy login and signup with email & password , Google and Facebook</li>
+        <li>An AI chatbot to answer questions about trains schedules</li>
         <li>Responsive design supporting various devices</li>
       </ul><br/>
 
@@ -128,7 +127,7 @@ export const PROJECTS: IProject[] = [
       </ul>
       `,
     role: `
-      <p>As a Front-End Developer, I was responsible for building responsive user interfaces with Tailwind CSS, managing server-state efficiently using React Query, and integrating Supabase for authentication and real-time data handling. I implemented dynamic forms with Formik and enforced robust validations using Yup to ensure a smooth user experience and data integrity.</p>
+      <p>As a Front-End Developer, I was responsible for building responsive user interface with Tailwind CSS, managing server-state efficiently using React Query, and integrating Supabase for authentication and real-time data handling. I implemented dynamic forms with Formik and enforced robust validations using Yup to ensure a smooth user experience and data integrity.</p>
       `,
     techStack: [
       "React",
@@ -140,59 +139,42 @@ export const PROJECTS: IProject[] = [
       "Formik + Yup",
       "MUI",
     ],
-    thumbnail: "/projects/thumbnail/egyrailway.png",
-    longThumbnail: "/projects/long/egyrailway.png",
+    thumbnail: "/projects/egyrailway/thumbnail/egyrailway.png",
+    sourceCode: "https://github.com/iknevo/egy-railway",
     images: [
-      "/projects/thumbnail/egyrailway.png",
-      "/projects/images/egyrailway12.png",
-      "/projects/images/egyrailway2.png",
-      "/projects/images/egyrailway3.png",
-      "/projects/images/egyrailway4.png",
-      "/projects/images/egyrailway5.png",
-      "/projects/images/egyrailway6.png",
-      "/projects/images/egyrailway7.png",
-      "/projects/images/egyrailway8.png",
-      "/projects/images/egyrailway9.png",
-      "/projects/images/egyrailway10.png",
-      "/projects/images/egyrailway11.png",
+      "/projects/egyrailway/thumbnail/egyrailway.png",
+      "/projects/egyrailway/images/11.png",
+      "/projects/egyrailway/images/1.png",
+      "/projects/egyrailway/images/2.png",
+      "/projects/egyrailway/images/3.png",
+      "/projects/egyrailway/images/4.png",
+      "/projects/egyrailway/images/5.png",
+      "/projects/egyrailway/images/6.png",
+      "/projects/egyrailway/images/7.png",
+      "/projects/egyrailway/images/8.png",
+      "/projects/egyrailway/images/9.png",
+      "/projects/egyrailway/images/10.png",
     ],
   },
   {
     title: "Green Shop",
     slug: "greenshop",
     liveUrl: "https://green-shop-nevo.vercel.app",
+    sourceCode: "https://github.com/iknevo/green-shop",
     year: 2025,
     description: `
-      A complete agency portfolio platform built for MTI Electronics to showcase their services, blog content, and product offerings. <br/> <br/>
+      My first react application. An e-shop plants web app<br/> <br/>
 
       Key Features:<br/>
       <ul>
-        <li>🛠️ Service Display System: Interactive service showcase with synchronized sliders</li>
-        <li>✍️ Blog Management: SEO-friendly blog with categorization and search</li>
-        <li>🛒 Product Catalog: Organized product display with filtering capabilities</li>
-        <li>📱 Fully Responsive: Optimized for all device sizes</li>
-        <li>⚡ Fast Performance: Optimized Next.js frontend with ISR (Incremental Static Regeneration)</li>
+        <li>A clean modern design.</li>
+        <li>Products filteration By Discount, Category, Size and Price range.</li>
+        <li>Products Pagination to make browsing products more easier.</li>
+        <li>Cart with the ability to apply a discount code (try "disc50" or "free") codes</li>
+        <li>Authentication with Google or Facebook, and normal email & password</li>
+        <li>User's profile</li>
       </ul><br/>
-
-      Technical Highlights:
-      <ul>
-        <li>Implemented complex slider synchronization logic using Swiper.js</li>
-        <li>Customized Payload CMS admin panel for intuitive content management</li>
-        <li>Developed reusable UI components with shadcn for design consistency</li>
-        <li>Configured efficient data fetching strategies in Next.js</li>
-      </ul>
-      `,
-    role: `
-      Full-Stack Developer <br/>
-      Owned the entire development lifecycle:
-      <ul>
-        <li>✅ Backend: Configured Payload CMS with custom collections for services, blogs, and products</li>
-        <li>🎨 Frontend: Built all UI components using Tailwind CSS and shadcn</li>
-        <li>🔄 State Management: Implemented client-side data fetching and caching</li>
-        <li>🖥️ CMS Customization: Created admin interfaces for content editors</li>
-        <li>🚀 Deployment: Set up CI/CD pipeline for Vercel hosting</li>
-        <li>🧩 Third-Party Integration: Added Swiper.js for interactive sliders</li>
-      </ul>
+      <p>Didn't have the time to finish it unfortunately, But i did enjoy and learn a lot during the development of this app.</p>
       `,
     techStack: [
       "React",
@@ -203,15 +185,41 @@ export const PROJECTS: IProject[] = [
       "react-hook-form",
       "MUI",
     ],
-    thumbnail: "/projects/thumbnail/greenshop.png",
-    longThumbnail: "/projects/long/greenshop.png",
+    thumbnail: "/projects/greenshop/thumbnail/greenshop.png",
     images: [
-      "/projects/thumbnail/greenshop.png",
-      "/projects/images/greenshop2.png",
-      "/projects/images/greenshop3.png",
-      "/projects/images/greenshop4.png",
-      "/projects/images/greenshop5.png",
-      "/projects/images/greenshop6.png",
+      "/projects/greenshop/thumbnail/greenshop.png",
+      "/projects/greenshop/images/1.png",
+      "/projects/greenshop/images/2.png",
+      "/projects/greenshop/images/3.png",
+      "/projects/greenshop/images/4.png",
+    ],
+  },
+  {
+    title: "Foodie",
+    slug: "foodie",
+    liveUrl: "https://nevo-foodie.vercel.app/",
+    sourceCode: "https://github.com/iknevo/foodie",
+    year: 2024,
+    description: `
+      A food recipies web application<br/> <br/>
+
+      Key Features:<br/>
+      <ul>
+        <li>simple & easy to use design.</li>
+        <li>Search & Select recipies.</li>
+        <li>The ability to bookmark a recipe and change servings.</li>
+        <li>Directions on how to cook the selected recipe.</li>
+        <li>Responsive Design.</li>
+        <li>Upload your custom recipies.</li>
+      </ul><br/>
+      `,
+    techStack: ["JavaScript", "OOP", "RESTFull api", "SCSS", "Parcel"],
+    thumbnail: "/projects/foodie/thumbnail/foodie.png",
+    images: [
+      "/projects/foodie/thumbnail/foodie.png",
+      "/projects/foodie/images/1.png",
+      "/projects/foodie/images/2.png",
+      "/projects/foodie/images/3.png",
     ],
   },
 ];
