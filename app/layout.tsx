@@ -5,6 +5,7 @@ import ParticleBackground from "@/app/_components/ParticleBackground";
 import Preloader from "@/app/_components/Preloader";
 import ScrollProgressIndicator from "@/app/_components/ScrollProgressIndicator";
 import StickyEmail from "@/app/_components/StickyEmail";
+import { Analytics } from "@vercel/analytics/next";
 import "lenis/dist/lenis.css";
 import { ReactLenis } from "lenis/react";
 import type { Metadata } from "next";
@@ -47,6 +48,7 @@ export default function RootLayout({
           <Cursor />
           <StickyEmail />
         </ReactLenis>
+        <Analytics />
       </body>
     </html>
   );
