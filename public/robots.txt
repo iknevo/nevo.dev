@@ -1,2 +1,9 @@
+# *
 User-agent: *
 Allow: /
+
+# Host
+Host: https://iknevo-dev.vercel.app
+
+# Sitemaps
+Sitemap: https://iknevo-dev.vercel.app/sitemap.xml
