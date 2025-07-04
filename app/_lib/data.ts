@@ -14,11 +14,19 @@ export const SOCIAL_LINKS = [
 export const MY_STACK = {
   frontend: [
     {
-      name: "Javascript",
+      name: "HTML",
+      icon: "/logo/html.png",
+    },
+    {
+      name: "CSS",
+      icon: "/logo/css.png",
+    },
+    {
+      name: "JavaScript",
       icon: "/logo/js.png",
     },
     {
-      name: "Typescript",
+      name: "TypeScript",
       icon: "/logo/ts.png",
     },
     {
@@ -26,12 +34,12 @@ export const MY_STACK = {
       icon: "/logo/react.png",
     },
     {
-      name: "Next.js",
-      icon: "/logo/next.png",
-    },
-    {
       name: "Redux",
       icon: "/logo/redux.png",
+    },
+    {
+      name: "Zustand",
+      icon: "/logo/zustand.png",
     },
     {
       name: "Tailwind CSS",
@@ -50,20 +58,24 @@ export const MY_STACK = {
       icon: "/logo/sass.png",
     },
   ],
-  // backend: [
-  //   {
-  //     name: "Node.js",
-  //     icon: "/logo/node.png",
-  //   },
-  //   {
-  //     name: "Nest.js",
-  //     icon: "/logo/nest.svg",
-  //   },
-  //   {
-  //     name: "Express.js",
-  //     icon: "/logo/express.png",
-  //   },
-  // ],
+  backend: [
+    {
+      name: "Supabase",
+      icon: "/logo/supabase.png",
+    },
+    // {
+    //   name: "Node.js",
+    //   icon: "/logo/node.png",
+    // },
+    // {
+    //   name: "Nest.js",
+    //   icon: "/logo/nest.svg",
+    // },
+    // {
+    //   name: "Express.js",
+    //   icon: "/logo/express.png",
+    // },
+  ],
   // database: [
   //   {
   //     name: "MySQL",
@@ -92,12 +104,28 @@ export const MY_STACK = {
       icon: "/logo/github.png",
     },
     {
+      name: "Postman",
+      icon: "/logo/postman.png",
+    },
+    {
       name: "VSCODE",
       icon: "/logo/vscode.png",
     },
     {
       name: "VIM",
       icon: "/logo/vim.png",
+    },
+    {
+      name: "NPM",
+      icon: "/logo/npm.png",
+    },
+    {
+      name: "PNPM",
+      icon: "/logo/pnpm.png",
+    },
+    {
+      name: "Yarn",
+      icon: "/logo/yarn.png",
     },
 
     // {
@@ -108,6 +136,21 @@ export const MY_STACK = {
     //   name: "AWS",
     //   icon: "/logo/aws.png",
     // },
+  ],
+
+  studying: [
+    {
+      name: "Next.js",
+      icon: "/logo/next.png",
+    },
+    {
+      name: "GSAP",
+      icon: "/logo/gsap.png",
+    },
+    {
+      name: "Frammer Motion",
+      icon: "/logo/framer-motion.png",
+    },
   ],
 };
 
