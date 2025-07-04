@@ -68,6 +68,14 @@ body {
   }
 }
 
+@media (pointer: coarse) {
+  .animated-cursor,
+  .animated-cursor-inner,
+  .animated-cursor-outer {
+    display: none !important;
+  }
+}
+
 ::-webkit-scrollbar {
   display: none;
 }
