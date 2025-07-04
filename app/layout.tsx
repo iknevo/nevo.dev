@@ -1,13 +1,14 @@
+import Cursor from "@/app/_components/Cursor";
+import Footer from "@/app/_components/Footer";
+import Navbar from "@/app/_components/Navbar";
+import ParticleBackground from "@/app/_components/ParticleBackground";
+import Preloader from "@/app/_components/Preloader";
+import ScrollProgressIndicator from "@/app/_components/ScrollProgressIndicator";
+import StickyEmail from "@/app/_components/StickyEmail";
 import "lenis/dist/lenis.css";
 import { ReactLenis } from "lenis/react";
 import type { Metadata } from "next";
 import { Josefin_Sans } from "next/font/google";
-import Footer from "./_components/Footer";
-import Navbar from "./_components/Navbar";
-import ParticleBackground from "./_components/ParticleBackground";
-import Preloader from "./_components/Preloader";
-import ScrollProgressIndicator from "./_components/ScrollProgressIndicator";
-import StickyEmail from "./_components/StickyEmail";
 import "./globals.css";
 
 const josefin = Josefin_Sans({
@@ -43,6 +44,7 @@ export default function RootLayout({
           <Preloader />
           <ScrollProgressIndicator />
           <ParticleBackground />
+          <Cursor />
           <StickyEmail />
         </ReactLenis>
       </body>

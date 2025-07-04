@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+* {
+  cursor: none;
+}
+
 @theme {
   --color-primary: #d84e2c;
   --color-primary-dark: #6c2716;

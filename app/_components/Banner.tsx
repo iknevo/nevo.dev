@@ -34,6 +34,7 @@ export default function Banner() {
     },
     { scope: containerRef }
   );
+
   useGSAP(
     () => {
       const wrapperTl = gsap.timeline();
@@ -63,7 +64,7 @@ export default function Banner() {
     { scope: codeRef }
   );
   return (
-    <section className="" id="banner">
+    <section id="banner">
       <ArrowAnimation />
       <div
         className="container h-svh min-h-[530px] max-md:pb-10 flex justify-between items-center max-md:flex-col"
@@ -71,8 +72,8 @@ export default function Banner() {
       >
         <div className="max-md:grow max-md:flex flex-col justify-center items-start max-w-[544px]">
           <h1 className="banner-title slide-up-and-fade leading-[.95] text-6xl sm:text-[80px] font-anton">
-            <span className="text-primary">FRONTEND</span>
-            <br /> <span className="ml-4">DEVELOPER</span>
+            <span className="text-primary cursor">FRONTEND</span>
+            <br /> <span className="ml-4 cursor">DEVELOPER</span>
           </h1>
           <ShinyText
             className="text-lg slide-up-and-fade"
@@ -88,13 +89,13 @@ export default function Banner() {
               rel="noopener noreferrer"
               href={GENERAL_INFO.resume}
               variant="primary"
-              className="mt-9 banner-button slide-up-and-fade rounded-md"
+              className="mt-9 banner-button slide-up-and-fade rounded-md cursor"
             >
               Resume
             </Button>
           </Magnet>
         </div>
-        <div className="slide-up-and-fade  absolute bottom-15 right-1/2 translate-x-1/2 md:translate-x-0 md:right-20 md:bottom-25">
+        <div className="slide-up-and-fade  absolute bottom-15 right-1/2 cursor translate-x-1/2 md:translate-x-0 md:right-20 md:bottom-25">
           <code
             ref={codeRef}
             className="text-white flex flex-col text-xs md:text-sm tracking-widest"
