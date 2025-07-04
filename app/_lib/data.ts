@@ -57,6 +57,10 @@ export const MY_STACK = {
       name: "SASS",
       icon: "/logo/sass.png",
     },
+    {
+      name: "Styled-Components",
+      icon: "/logo/styled-components.png",
+    },
   ],
   backend: [
     {
