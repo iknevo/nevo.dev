@@ -144,7 +144,9 @@ export default function Navbar() {
 
         <div className="w-full max-w-[300px] mx-8 sm:mx-auto">
           <p className="text-muted-white mb-4">GET IN TOUCH</p>
-          <a href={`mailto:${GENERAL_INFO.email}`}>{GENERAL_INFO.email}</a>
+          <a className="text-lg" href={`mailto:${GENERAL_INFO.email}`}>
+            {GENERAL_INFO.email}
+          </a>
         </div>
       </div>
     </>
