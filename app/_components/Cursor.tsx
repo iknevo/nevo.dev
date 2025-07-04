@@ -5,14 +5,14 @@ export default function Cursor() {
     <AnimatedCursor
       innerSize={10}
       outerSize={50}
-      color="216, 78, 44"
+      color="255,255,255"
       outerAlpha={1}
-      innerScale={1.25}
-      outerScale={2.5}
+      innerScale={1}
+      outerScale={3.5}
       trailingSpeed={10}
-      clickables={[".cursor", "a", "button"]}
+      clickables={["a", "button", ".cursor"]}
       outerStyle={{ mixBlendMode: "exclusion" }}
-      innerStyle={{ mixBlendMode: "exclusion", backgroundColor: "#ffffff" }}
+      innerStyle={{ mixBlendMode: "exclusion" }}
     />
   );
 }

@@ -100,7 +100,7 @@ const ProjectDetails = ({ project }: Props) => {
           <div className="relative w-full">
             <div className="flex items-start gap-6 mx-auto mb-10 max-w-7xl">
               <h1 className="fade-in-later opacity-0 text-4xl md:text-[60px] leading-none overflow-hidden">
-                <span className="inline-block">{project.title}</span>
+                <span className="inline-block cursor">{project.title}</span>
               </h1>
 
               <div className="fade-in-later opacity-0 flex gap-4 items-center">
@@ -130,26 +130,26 @@ const ProjectDetails = ({ project }: Props) => {
             <div className="max-w-7xl space-y-7 pb-20 mx-auto">
               <div className="fade-in-later">
                 <p className="text-white/80 mb-3">Year</p>
-
-                <div className="text-lg">{project.year}</div>
+                <span className="text-lg cursor">{project.year}</span>
               </div>
               <div className="fade-in-later">
                 <p className="text-white/80 mb-3">Tech & Technique</p>
 
-                <div className="text-lg">{project.techStack.join(", ")}</div>
+                <div className="text-lg">
+                  <span className="cursor">{project.techStack.join(", ")}</span>
+                </div>
               </div>
               <div className="fade-in-later">
                 <p className="text-white/80 mb-3">Description</p>
 
-                <div className="text-lg markdown-text">
+                <div className="text-lg markdown-text cursor">
                   {project.description && parse(project.description)}
                 </div>
               </div>
               {project.role && (
                 <div className="fade-in-later">
                   <p className="text-white/80 mb-3">My Role</p>
-
-                  <div className="text-lg">{parse(project.role)}</div>
+                  <div className="text-lg cursor">{parse(project.role)}</div>
                 </div>
               )}
             </div>

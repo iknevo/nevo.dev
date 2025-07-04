@@ -65,7 +65,7 @@ export default function Skills() {
           {Object.entries(MY_STACK).map(([key, value]) => (
             <div className="grid sm:grid-cols-12" key={key}>
               <div className="sm:col-span-5">
-                <p className="slide-up text-5xl leading-none text-white/80 uppercase">
+                <p className="slide-up text-5xl leading-none text-white/80 uppercase cursor">
                   {key}
                 </p>
               </div>
@@ -73,7 +73,7 @@ export default function Skills() {
               <div className="sm:col-span-7 flex gap-x-11 gap-y-9 flex-wrap">
                 {value.map((item) => (
                   <div
-                    className="slide-up flex gap-3.5 items-center leading-none"
+                    className="slide-up flex gap-3.5 items-center leading-none cursor"
                     key={item.name}
                   >
                     <div>

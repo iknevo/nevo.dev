@@ -59,6 +59,7 @@ export default function AboutMe() {
       <div className="container" ref={container}>
         <h2 className="text-4xl md:text-6xl mb-20 slide-up-and-fade">
           <ShinyText
+            className="cursor"
             text="
           I believe in a user centered design approach, ensuring that every
           project I work on is tailored to meet the specific needs of its users.
@@ -71,7 +72,7 @@ export default function AboutMe() {
         </p>
 
         <div className="grid md:grid-cols-12 mt-9">
-          <div className="md:col-span-5">
+          <div className="md:col-span-5 cursor">
             <p className="text-5xl slide-up-and-fade">
               I&apos;m Nevo
               <span className="text-2xl text-white/75 mt-10 inline-block">
@@ -82,7 +83,7 @@ export default function AboutMe() {
             </p>
           </div>
           <div className="md:col-span-7">
-            <div className="text-lg text-white/80 max-w-[450px]">
+            <div className="text-lg text-white/80 max-w-[450px] cursor">
               <p className="slide-up-and-fade">
                 A {age} year old frontend web developer based in Cairo, Egypt.
                 Dedicated to turning ideas into creative solutions. I specialize
@@ -97,8 +98,8 @@ export default function AboutMe() {
               </p>
             </div>
           </div>
-          <div className="slide-up-and-fade col-span-full text-center">
-            <p className="text-4xl text-primary uppercase mt-10">
+          <div className="slide-up-and-fade col-span-full text-center cursor">
+            <p className="text-4xl text-primary uppercase mt-5 md:mt-10">
               i can&apos;t stop configuring my code editor
             </p>
           </div>

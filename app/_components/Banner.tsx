@@ -76,7 +76,7 @@ export default function Banner() {
             <br /> <span className="ml-4 cursor">DEVELOPER</span>
           </h1>
           <ShinyText
-            className="text-lg slide-up-and-fade"
+            className="text-lg slide-up-and-fade cursor"
             text="
             Hi! I'm Ahmed also known as NEVO. A Frontend Developer with hands-on experience through
             building high-performance, scalable, and responsive web solutions.
