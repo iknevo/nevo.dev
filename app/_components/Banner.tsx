@@ -78,7 +78,7 @@ export default function Banner() {
           <ShinyText
             className="text-lg slide-up-and-fade"
             text="
-            Hi! I'm NEVO. A Frontend Developer with hands-on experience through
+            Hi! I'm Ahmed also known as NEVO. A Frontend Developer with hands-on experience through
             building high-performance, scalable, and responsive web solutions.
           "
           />
