@@ -65,7 +65,7 @@ export default function Preloader() {
 
   return (
     <div className="fixed inset-0 z-50 flex bg-black" ref={preloaderRef}>
-      {[...Array(numColumns)].map((_, i) => (
+      {[...Array(numColumns)].map(() => (
         <div
           className="preloader-item h-full w-[10%] bg-primary-dark"
           key={Math.random()}
