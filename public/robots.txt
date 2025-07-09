@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://iknevo-dev.vercel.app
+Host: https://nevo.is-a.dev
 
 # Sitemaps
-Sitemap: https://iknevo-dev.vercel.app/sitemap.xml
+Sitemap: https://nevo.is-a.dev/sitemap.xml

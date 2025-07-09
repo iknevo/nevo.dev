@@ -1,5 +1,5 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: "https://iknevo-dev.vercel.app",
+  siteUrl: "https://nevo.is-a.dev",
   generateRobotsTxt: true,
 };
