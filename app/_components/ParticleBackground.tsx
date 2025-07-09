@@ -39,7 +39,7 @@ export default function ParticleBackground() {
     <div className="fixed inset-0 pointer-events-none">
       {[...Array(120)].map((_, i) => (
         <div
-          key={i}
+          key={Math.random()}
           ref={(el) => {
             if (el) particlesRef.current[i] = el;
           }}
