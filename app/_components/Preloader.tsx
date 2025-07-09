@@ -1,13 +1,27 @@
 "use client";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 gsap.registerPlugin(useGSAP);
 export default function Preloader() {
   const preloaderRef = useRef<HTMLDivElement>(null);
+  const [numColumns, setNumColumns] = useState(10);
+  const [isVisible, setIsVisible] = useState(true);
   const letters = ["N", "E", "V", "O"];
-  const numColumns = 10;
+
+  // Responsive columns (only update if preloader is visible)
+  useEffect(() => {
+    if (!isVisible) return;
+    const updateColumns = () => {
+      if (window.innerWidth < 640) setNumColumns(5); // mobile
+      else if (window.innerWidth < 1024) setNumColumns(8); // tablet
+      else setNumColumns(10); // desktop
+    };
+    updateColumns();
+    window.addEventListener("resize", updateColumns);
+    return () => window.removeEventListener("resize", updateColumns);
+  }, [isVisible]);
 
   useGSAP(
     () => {
@@ -56,12 +70,15 @@ export default function Preloader() {
         {
           autoAlpha: 0,
           duration: 0.5,
+          onComplete: () => setIsVisible(false),
         },
         ">"
       );
     },
     { scope: preloaderRef }
   );
+
+  if (!isVisible) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex bg-black" ref={preloaderRef}>

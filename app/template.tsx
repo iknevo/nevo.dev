@@ -2,10 +2,25 @@
 
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 
 gsap.registerPlugin(useGSAP);
 
 export default function Template({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
+  useEffect(() => {
+    // Reset transition on route change or resize
+    const resetTransition = () => {
+      gsap.set(".page-transition", { yPercent: 100 });
+      gsap.set(".page-transition--inner", { yPercent: 100 });
+    };
+    resetTransition();
+    window.addEventListener("resize", resetTransition);
+    return () => window.removeEventListener("resize", resetTransition);
+  }, [pathname]);
+
   useGSAP(() => {
     const tl = gsap.timeline();
 
