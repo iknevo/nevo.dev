@@ -2,7 +2,6 @@ import Cursor from "@/app/_components/Cursor";
 import Footer from "@/app/_components/Footer";
 import Navbar from "@/app/_components/Navbar";
 import ParticleBackground from "@/app/_components/ParticleBackground";
-import Preloader from "@/app/_components/Preloader";
 import ScrollProgressIndicator from "@/app/_components/ScrollProgressIndicator";
 import StickyEmail from "@/app/_components/StickyEmail";
 import { Analytics } from "@vercel/analytics/next";
@@ -42,7 +41,6 @@ export default function RootLayout({
           <Navbar />
           <main className="container">{children}</main>
           <Footer />
-          {/* <Preloader /> */}
           <ScrollProgressIndicator />
           <ParticleBackground />
           <Cursor />
