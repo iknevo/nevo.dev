@@ -25,11 +25,11 @@ export default function ScrollProgressIndicator() {
   }, []);
 
   return (
-    <div className="fixed top-[50svh] right-[2%] -translate-y-1/2 w-1.5 h-[100px] rounded-full bg-white/10 overflow-hidden">
+    <div className="fixed top-1/2 right-[2%] -translate-y-1/2 w-1.5 h-[100px] rounded-full bg-white/10 overflow-hidden">
       <div
         className="w-full bg-primary rounded-full h-full"
         ref={scrollBarRef}
-      ></div>
+      />
     </div>
   );
 }

@@ -96,7 +96,7 @@ const ProjectDetails = ({ project }: Props) => {
           Back
         </TransitionLink>
 
-        <div className="top-0 min-h-[calc(100svh-100px)] flex" id="info">
+        <div className="top-0 min-h-[calc(100dvh-100px)] flex" id="info">
           <div className="relative w-full">
             <div className="flex items-start gap-6 mx-auto mb-10 max-w-7xl">
               <h1 className="fade-in-later opacity-0 text-4xl md:text-[60px] leading-none overflow-hidden">
