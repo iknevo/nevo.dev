@@ -6,7 +6,7 @@ import Skills from "@/app/_components/Skills";
 
 export default function Home() {
   return (
-    <div>
+    <div className="container">
       <Banner />
       <AboutMe />
       <Skills />

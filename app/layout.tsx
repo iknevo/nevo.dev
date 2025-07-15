@@ -40,9 +40,9 @@ export default function RootLayout({
           }}
         >
           <Navbar />
-          <main className="container-custom">{children}</main>
+          <main className="container">{children}</main>
           <Footer />
-          <Preloader />
+          {/* <Preloader /> */}
           <ScrollProgressIndicator />
           <ParticleBackground />
           <Cursor />
