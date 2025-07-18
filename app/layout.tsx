@@ -9,6 +9,7 @@ import "lenis/dist/lenis.css";
 import { ReactLenis } from "lenis/react";
 import type { Metadata } from "next";
 import { Josefin_Sans } from "next/font/google";
+import Preloader from "./_components/Preloader";
 import "./globals.css";
 
 const josefin = Josefin_Sans({
@@ -39,8 +40,9 @@ export default function RootLayout({
           }}
         >
           <Navbar />
-          <main>{children}</main>
+          <main className="container-custom">{children}</main>
           <Footer />
+          <Preloader />
           <ScrollProgressIndicator />
           <ParticleBackground />
           <Cursor />

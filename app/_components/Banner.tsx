@@ -1,20 +1,17 @@
 "use client";
-
 import ArrowAnimation from "@/app/_components/ArrowAnimation";
 import Button from "@/app/_components/Button";
 import { GENERAL_INFO } from "@/app/_lib/data";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Magnet from "./Magnet";
-import Preloader from "./Preloader";
 import ShinyText from "./ShinyText";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function Banner() {
-  const [preloaderDone, setPreloaderDone] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const codeRef = useRef<HTMLDivElement>(null);
 
@@ -40,61 +37,51 @@ export default function Banner() {
 
   useGSAP(
     () => {
-      if (!preloaderDone) return;
-
-      const lines = gsap.utils.toArray<HTMLElement>(".wrapper");
-      lines.forEach((wrapper) => {
-        const target = wrapper.querySelector(".animateUp");
-        if (!target) return;
-
-        gsap.set(wrapper, { overflow: "hidden" });
-
-        gsap.fromTo(
-          target,
-          { y: "100%" },
-          {
-            y: "0%",
-            ease: "circ.out",
-            duration: 1,
+      const wrapperTl = gsap.timeline();
+      if (document.querySelector(".animateUp")) {
+        wrapperTl
+          .to(".wrapper", {
+            overflow: "hidden",
+            duration: 0.4,
+          })
+          .from(".animateUp", {
+            y: "100%",
+            duration: 2,
+            delay: 2,
+            ease: "power2.inOut",
             scrollTrigger: {
-              trigger: wrapper,
-              start: "top 90%",
-              toggleActions: "play none none reverse",
+              trigger: ".animateUp",
+              start: "top 80%",
             },
-          }
-        );
-      });
+          })
+          .to(".wrapper", {
+            overflow: "unset",
+            delay: 2,
+            duration: 0,
+          });
+      }
     },
-    { scope: codeRef, dependencies: [preloaderDone] }
+    { scope: codeRef }
   );
-
   return (
     <section id="banner">
-      {!preloaderDone && (
-        <Preloader onComplete={() => setPreloaderDone(true)} />
-      )}
-
+      <ArrowAnimation />
       <div
-        className="container relative min-h-dvh max-md:pb-10 flex justify-between items-center max-md:flex-col"
+        className="container h-svh min-h-[530px] max-md:pb-10 flex justify-between items-center max-md:flex-col"
         ref={containerRef}
       >
-        <ArrowAnimation />
-
         <div className="max-md:grow max-md:flex flex-col justify-center items-start max-w-[544px]">
           <h1 className="banner-title slide-up-and-fade leading-[.95] text-6xl sm:text-[80px] font-anton">
             <span className="text-primary cursor">FRONTEND</span>
-            <br />
-            <span className="ml-4 cursor">DEVELOPER</span>
+            <br /> <span className="ml-4 cursor">DEVELOPER</span>
           </h1>
-
           <ShinyText
             className="text-lg slide-up-and-fade cursor"
             text="
-              Hi! I'm Ahmed also known as NEVO. A Frontend Developer with hands-on experience through
-              building high-performance, scalable, and responsive web solutions.
-            "
+            Hi! I'm Ahmed also known as NEVO. A Frontend Developer with hands-on experience through
+            building high-performance, scalable, and responsive web solutions.
+          "
           />
-
           <Magnet magnetStrength={4}>
             <Button
               as="link"
@@ -108,11 +95,8 @@ export default function Banner() {
             </Button>
           </Magnet>
         </div>
-
         <div
-          className={`absolute bottom-15 right-1/2 cursor translate-x-1/2 md:translate-x-0 md:-right-10 md:bottom-25 transition-opacity duration-500 ${
-            preloaderDone ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
+          className={`absolute bottom-15 right-1/2 cursor translate-x-1/2 md:translate-x-0 md:-right-10 md:bottom-25`}
         >
           <code
             ref={codeRef}

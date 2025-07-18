@@ -286,8 +286,8 @@ export const PROJECTS: IProject[] = [
 
 export const MY_EXPERIENCE = [
   {
-    title: "Frontend Developer",
+    title: "Frontend Developer - Internship",
     company: "All-Safe",
-    duration: "04/2025 - present",
+    duration: "04/2025 - 07/2025",
   },
 ];
