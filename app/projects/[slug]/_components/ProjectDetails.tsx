@@ -1,5 +1,4 @@
 "use client";
-import ArrowAnimation from "@/app/_components/ArrowAnimation";
 import TransitionLink from "@/app/_components/TransitionLink";
 import { IProject } from "@/app/_types";
 import { useGSAP } from "@gsap/react";
@@ -153,8 +152,6 @@ const ProjectDetails = ({ project }: Props) => {
                 </div>
               )}
             </div>
-
-            <ArrowAnimation />
           </div>
         </div>
 

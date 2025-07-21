@@ -1,5 +1,4 @@
 "use client";
-import ArrowAnimation from "@/app/_components/ArrowAnimation";
 import Button from "@/app/_components/Button";
 import { GENERAL_INFO } from "@/app/_lib/data";
 import { useGSAP } from "@gsap/react";
@@ -65,7 +64,6 @@ export default function Banner() {
   );
   return (
     <section id="banner">
-      <ArrowAnimation />
       <div
         className="container h-svh min-h-[530px] max-md:pb-10 flex justify-between items-center max-md:flex-col"
         ref={containerRef}
