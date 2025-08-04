@@ -1,16 +1,16 @@
 import Cursor from "@/app/_components/Cursor";
-import Footer from "@/app/_components/Footer";
 import Navbar from "@/app/_components/Navbar";
 import ParticleBackground from "@/app/_components/ParticleBackground";
 import ScrollProgressIndicator from "@/app/_components/ScrollProgressIndicator";
 import StickyEmail from "@/app/_components/StickyEmail";
+import "@/app/_styles/globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import "lenis/dist/lenis.css";
 import { ReactLenis } from "lenis/react";
 import type { Metadata } from "next";
 import { Josefin_Sans } from "next/font/google";
+import Footer from "./_components/Footer";
 import Preloader from "./_components/Preloader";
-import "./globals.css";
 
 const josefin = Josefin_Sans({
   subsets: ["latin"],
