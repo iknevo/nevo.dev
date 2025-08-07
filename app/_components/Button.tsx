@@ -43,7 +43,7 @@ const Button = ({
 
     if (props.target === "_blank") {
       return (
-        <a
+        <Link
           className={buttonClasses}
           {...props}
           href={props.href.toString() || "#"}
@@ -52,7 +52,7 @@ const Button = ({
             <span className="absolute top-[200%] left-0 right-0 h-full bg-white rounded-[50%] group-hover:top-0 transition-all duration-500 scale-150"></span>
           )}
           <span className="z-1">{children}</span>
-        </a>
+        </Link>
       );
     }
 

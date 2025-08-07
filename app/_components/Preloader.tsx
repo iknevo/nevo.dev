@@ -6,11 +6,7 @@ import { useRef } from "react";
 
 gsap.registerPlugin(useGSAP);
 
-type PreloaderProps = {
-  onComplete?: () => void;
-};
-
-export default function Preloader({ onComplete }: PreloaderProps) {
+export default function Preloader() {
   const preloaderRef = useRef<HTMLDivElement>(null);
   const letters = ["N", "E", "V", "O"];
   const numColumns = 10;
@@ -20,9 +16,6 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       const tl = gsap.timeline({
         defaults: {
           ease: "power2.inOut",
-        },
-        onComplete: () => {
-          onComplete?.(); // Notify parent when finished
         },
       });
 

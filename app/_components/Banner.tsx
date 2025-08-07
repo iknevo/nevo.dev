@@ -46,17 +46,12 @@ export default function Banner() {
           .from(".animateUp", {
             y: "100%",
             duration: 2,
-            delay: 2,
+            delay: 1.5,
             ease: "power2.inOut",
             scrollTrigger: {
               trigger: ".animateUp",
               start: "top 80%",
             },
-          })
-          .to(".wrapper", {
-            overflow: "unset",
-            delay: 2,
-            duration: 0,
           });
       }
     },
