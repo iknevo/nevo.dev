@@ -35,22 +35,25 @@ export default function Banner() {
   );
 
   useGSAP(
-    () => {
-      const wrapperTl = gsap.timeline();
-      if (document.querySelector(".animateUp")) {
+    (context: gsap.Context) => {
+      if (!context) return; // just to be extra safe
+
+      const animateUps = context.selector?.(".animateUp") ?? [];
+
+      if (animateUps.length > 0) {
+        const wrapperTl = gsap.timeline();
+
         wrapperTl
-          .to(".wrapper", {
-            overflow: "hidden",
-            duration: 0.4,
-          })
-          .from(".animateUp", {
+          .to(".wrapper", { overflow: "hidden", duration: 0.4 })
+          .from(animateUps, {
             y: "100%",
             duration: 2,
             delay: 1.5,
             ease: "power2.inOut",
             scrollTrigger: {
-              trigger: ".animateUp",
-              start: "top 80%",
+              trigger: codeRef.current,
+              start: "top+=100 bottom",
+              toggleActions: "play none none reverse",
             },
           });
       }
@@ -60,11 +63,11 @@ export default function Banner() {
   return (
     <section id="banner">
       <div
-        className="container h-svh min-h-[530px] max-md:pb-10 flex justify-between items-center max-md:flex-col"
+        className="container h-svh max-md:pb-10 flex items-center max-md:flex-col"
         ref={containerRef}
       >
         <div className="max-md:grow max-md:flex flex-col justify-center items-start max-w-[544px]">
-          <h1 className="banner-title slide-up-and-fade leading-[.95] text-6xl sm:text-[80px] font-anton">
+          <h1 className="banner-title slide-up-and-fade leading-[.95] text-6xl sm:text-[80px]">
             <span className="text-primary cursor">FRONTEND</span>
             <br /> <span className="ml-4 cursor">DEVELOPER</span>
           </h1>
@@ -89,13 +92,13 @@ export default function Banner() {
           </Magnet>
         </div>
         <div
-          className={`absolute bottom-15 right-1/2 cursor translate-x-1/2 md:translate-x-0 md:-right-10 md:bottom-25`}
+          className={`absolute bottom-15 right-1/2 cursor px-6 translate-x-1/2 md:translate-x-0 md:-right-10 md:bottom-25`}
         >
           <code
             ref={codeRef}
             className="text-white slide-up-and-fade flex flex-col text-xs md:text-sm tracking-widest"
           >
-            <span className="block md:text-lg font-bold text-primary">
+            <span className="block text-lg font-bold text-primary">
               {"<span>"}
             </span>
             <div className="inline-block md:translate-x-5 leading-7">
@@ -115,7 +118,7 @@ export default function Banner() {
                 </span>
               </div>
             </div>
-            <span className="block text-primary font-bold md:text-lg">
+            <span className="block text-primary font-bold text-lg">
               {"</span>"}
             </span>
           </code>
