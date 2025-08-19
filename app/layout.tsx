@@ -1,7 +1,4 @@
 import Cursor from "@/app/_components/Cursor";
-import Navbar from "@/app/_components/Navbar";
-import ParticleBackground from "@/app/_components/ParticleBackground";
-import ScrollProgressIndicator from "@/app/_components/ScrollProgressIndicator";
 import StickyEmail from "@/app/_components/StickyEmail";
 import "@/app/_styles/globals.css";
 import { Analytics } from "@vercel/analytics/next";
@@ -9,8 +6,6 @@ import "lenis/dist/lenis.css";
 import { ReactLenis } from "lenis/react";
 import type { Metadata } from "next";
 import { Josefin_Sans } from "next/font/google";
-import Footer from "./_components/Footer";
-import Preloader from "./_components/Preloader";
 
 const josefin = Josefin_Sans({
   subsets: ["latin"],
@@ -39,15 +34,10 @@ export default function RootLayout({
             duration: 1.4,
           }}
         >
-          <Navbar />
           <main className="container-custom">{children}</main>
-          <Footer />
-          <Preloader />
-          <ScrollProgressIndicator />
-          <ParticleBackground />
-          <Cursor />
-          <StickyEmail />
         </ReactLenis>
+        <Cursor />
+        <StickyEmail />
         <Analytics />
       </body>
     </html>
