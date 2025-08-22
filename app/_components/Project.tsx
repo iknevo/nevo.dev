@@ -104,7 +104,7 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
           _{(index + 1).toString().padStart(2, "0")}.
         </div>
         <div className="">
-          <h4 className="text-4xl xs:text-6xl flex gap-4 font-bold transition-all duration-700 bg-linear-to-r from-primary to-white from-50% to-50% bg-size-[200%] bg-right bg-clip-text text-transparent group-hover:bg-left">
+          <h4 className="text-3xl xs:text-6xl flex gap-4 font-bold transition-all duration-700 bg-linear-to-r from-primary to-white from-50% to-50% bg-size-[200%] bg-right bg-clip-text text-transparent group-hover:bg-left">
             {project.title}
             <span className="text-white opacity-0 group-hover:opacity-100 transition-all">
               <svg
@@ -131,7 +131,7 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
           <div className="mt-2 flex flex-wrap gap-3 text-white/80 text-sm">
             {project.techStack.slice(0, 3).map((tech, idx, stackArr) => (
               <div className="gap-3 flex items-center" key={tech}>
-                <span className="">{tech}</span>
+                <span>{tech}</span>
                 {idx !== stackArr.length - 1 && (
                   <span className="inline-block size-2 rounded-full bg-gray-600"></span>
                 )}
