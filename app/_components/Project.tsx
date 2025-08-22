@@ -94,7 +94,7 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
           alt="Project"
           width="300"
           height="200"
-          className={cn("w-full object-cover mb-6 aspect-3/2 object-top")}
+          className={cn("w-full object-contain mb-6 aspect-3/2 object-top")}
           key={project.slug}
           loading="lazy"
         />
