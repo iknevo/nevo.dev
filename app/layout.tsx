@@ -13,7 +13,10 @@ const josefin = Josefin_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "NEVO | Front-End Developer",
+  title: {
+    template: "NEVO | %s",
+    default: "NEVO | Front-End Developer",
+  },
   description: "Personal portfolio of Ahmed (NEVO) Abdelhafiez",
 };
 

@@ -99,7 +99,7 @@ export default function AboutMe() {
             </div>
           </div>
           <div className="slide-up-and-fade col-span-full text-center cursor">
-            <p className="text-4xl text-primary uppercase mt-5 md:mt-10">
+            <p className="text-2xl lg:text-4xl text-primary uppercase mt-5 md:mt-10">
               i can&apos;t stop configuring my code editor
             </p>
           </div>

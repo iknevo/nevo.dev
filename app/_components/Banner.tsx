@@ -63,13 +63,13 @@ export default function Banner() {
   return (
     <section id="banner">
       <div
-        className="container h-svh max-md:pb-10 flex items-center max-md:flex-col"
+        className="container h-svh max-md:pb-10 flex lg:items-end justify-center gap-10 lg:gap-0 lg:justify-between max-md:flex-col"
         ref={containerRef}
       >
-        <div className="max-md:grow max-md:flex flex-col justify-center items-start max-w-[544px]">
+        <div className="max-md:flex flex-col justify-center self-center items-start max-w-[544px]">
           <h1 className="banner-title slide-up-and-fade leading-[.95] text-6xl sm:text-[80px]">
             <span className="text-primary cursor">FRONTEND</span>
-            <br /> <span className="ml-4 cursor">DEVELOPER</span>
+            <br /> <span className="lg:ml-4 cursor">DEVELOPER</span>
           </h1>
           <ShinyText
             className="text-lg slide-up-and-fade cursor"
@@ -91,32 +91,47 @@ export default function Banner() {
             </Button>
           </Magnet>
         </div>
-        <div
-          className={`absolute bottom-15 right-1/2 cursor px-6 translate-x-1/2 md:translate-x-0 md:-right-10 md:bottom-25`}
-        >
+
+        <div className={`cursor lg:mb-20`}>
           <code
             ref={codeRef}
-            className="text-white slide-up-and-fade flex flex-col text-xs md:text-sm tracking-widest"
+            className="text-white slide-up-and-fade hidden md:flex flex-col text-xs md:text-sm tracking-widest"
           >
             <span className="block text-lg font-bold text-primary">
               {"<span>"}
             </span>
             <div className="inline-block md:translate-x-5 leading-7">
               <div className="wrapper">
-                <span className="animateUp w-max inline-block">
+                <span className="animateUp inline-block">
                   Proficient in the latest web technologies and
                 </span>
               </div>
               <div className="wrapper">
-                <span className="animateUp w-max inline-block">
+                <span className="animateUp inline-block">
                   frameworks, continuously expanding my skill set
                 </span>
               </div>
               <div className="wrapper">
-                <span className="animateUp w-max inline-block">
+                <span className="animateUp inline-block">
                   to stay at the forefront of the industry.
                 </span>
               </div>
+            </div>
+            <span className="block text-primary font-bold text-lg">
+              {"</span>"}
+            </span>
+          </code>
+
+          <code className="text-white slide-up-and-fade flex md:hidden flex-col text-xs md:text-sm tracking-widest">
+            <span className="block text-lg font-bold text-primary">
+              {"<span>"}
+            </span>
+            <div className="inline-block md:translate-x-5 leading-7">
+              <span className="ms-4 inline-block">
+                Proficient in the latest web technologies and frameworks,
+                continuously expanding my skill set to stay at the forefront of
+                the industry.
+              </span>
             </div>
             <span className="block text-primary font-bold text-lg">
               {"</span>"}

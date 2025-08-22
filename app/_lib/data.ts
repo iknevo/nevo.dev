@@ -160,8 +160,87 @@ export const MY_STACK = {
 
 export const PROJECTS: IProject[] = [
   {
+    title: "The Wild Oasis - Website",
+    slug: "the-wild-oasis-website",
+    liveUrl: "https://nevo-the-wild-oasis-website.vercel.app",
+    sourceCode: "https://github.com/iknevo/the-wild-oasis-website.git",
+    year: 2025,
+    description: `
+      A hotel reservations website<br/> <br/>
+
+      Key Features:<br/>
+      <ul>
+        <li>A clean modern design.</li>
+        <li>View available cabins with the ability to reserve any cabins in it's available dates.</li>
+        <li>Filtering cabins by the number of guests.</li>
+        <li>Admins's profile and the ability to add other admins to the system.</li>
+        <li>View reserved cabins with the ability to edit or cancel the reservation.</li>
+        <li>User's profile with the ability to edit user's information</li>
+      </ul><br/>
+      <p>Didn't have the time to finish it unfortunately, But i did enjoy and learn a lot during the development of this app.</p>
+      `,
+    techStack: ["Next", "Supabase", "TypeScript", "TailwindCSS"],
+    thumbnail:
+      "/projects/the-wild-oasis-website/thumbnail/the-wild-oasis-website.png",
+    images: [
+      "/projects/the-wild-oasis-website/thumbnail/the-wild-oasis-website.png",
+      "/projects/the-wild-oasis-website/images/1.png",
+      "/projects/the-wild-oasis-website/images/3.png",
+      "/projects/the-wild-oasis-website/images/2.png",
+      "/projects/the-wild-oasis-website/images/4.png",
+      "/projects/the-wild-oasis-website/images/5.png",
+      "/projects/the-wild-oasis-website/images/6.png",
+      "/projects/the-wild-oasis-website/images/7.png",
+      "/projects/the-wild-oasis-website/images/8.png",
+      "/projects/the-wild-oasis-website/images/9.png",
+    ],
+  },
+  {
+    title: "The Wild Oasis - Dashboard",
+    slug: "the-wild-oasis-dashboard",
+    liveUrl: "https://the-wild-oasis-nevo.vercel.app",
+    sourceCode: "https://github.com/iknevo/the-wild-oasis.git",
+    year: 2025,
+    description: `
+      An admin dashboard to manage the wild oasis hotel reservations website<br/> <br/>
+
+      Key Features:<br/>
+      <ul>
+        <li>A clean modern design.</li>
+        <li>Dark/Light mode variants.</li>
+        <li>View bookings with the ability to edit, delete, confirm it.</li>
+        <li>Filtering bookings by status and date, pagination.</li>
+        <li>Admins's profile and the ability to add other admins to the system.</li>
+        <li>View existing cabins with the ability to create, edit, delete them. and filtering by discount availability, sorting by name/price/capacity</li>
+        <li>Manage hotel settings (eg. minimum/maximum nights/guests per booking, breakfast price)</li>
+      </ul><br/>
+      <p>Didn't have the time to finish it unfortunately, But i did enjoy and learn a lot during the development of this app.</p>
+      `,
+    techStack: [
+      "React",
+      "React Query",
+      "Supabase",
+      "JavaScript",
+      "TailwindCSS",
+      "react-hook-form",
+      "recharts",
+      "styled-components",
+    ],
+    thumbnail:
+      "/projects/the-wild-oasis-dashboard/thumbnail/the-wild-oasis-dashboard.png",
+    images: [
+      "/projects/the-wild-oasis-dashboard/images/1.png",
+      "/projects/the-wild-oasis-dashboard/images/3.png",
+      "/projects/the-wild-oasis-dashboard/images/2.png",
+      "/projects/the-wild-oasis-dashboard/images/4.png",
+      "/projects/the-wild-oasis-dashboard/images/5.png",
+      "/projects/the-wild-oasis-dashboard/images/6.png",
+      "/projects/the-wild-oasis-dashboard/images/7.png",
+    ],
+  },
+  {
     title: "Egy-Railway",
-    slug: "egyrailway",
+    slug: "egy-railway",
     liveUrl: "https://egy-railway.vercel.app",
     year: 2025,
     description: `
@@ -199,26 +278,56 @@ export const PROJECTS: IProject[] = [
       "Formik + Yup",
       "MUI",
     ],
-    thumbnail: "/projects/egyrailway/thumbnail/egyrailway.png",
-    sourceCode: "https://github.com/iknevo/egy-railway",
+    thumbnail: "/projects/egy-railway/thumbnail/egyrailway.png",
+    sourceCode: "https://github.com/iknevo/egyrailway",
     images: [
-      "/projects/egyrailway/thumbnail/egyrailway.png",
-      "/projects/egyrailway/images/11.png",
-      "/projects/egyrailway/images/1.png",
-      "/projects/egyrailway/images/2.png",
-      "/projects/egyrailway/images/3.png",
-      "/projects/egyrailway/images/4.png",
-      "/projects/egyrailway/images/5.png",
-      "/projects/egyrailway/images/6.png",
-      "/projects/egyrailway/images/7.png",
-      "/projects/egyrailway/images/8.png",
-      "/projects/egyrailway/images/9.png",
-      "/projects/egyrailway/images/10.png",
+      "/projects/egy-railway/thumbnail/egyrailway.png",
+      "/projects/egy-railway/images/11.png",
+      "/projects/egy-railway/images/1.png",
+      "/projects/egy-railway/images/2.png",
+      "/projects/egy-railway/images/3.png",
+      "/projects/egy-railway/images/4.png",
+      "/projects/egy-railway/images/5.png",
+      "/projects/egy-railway/images/6.png",
+      "/projects/egy-railway/images/7.png",
+      "/projects/egy-railway/images/8.png",
+      "/projects/egy-railway/images/9.png",
+      "/projects/egy-railway/images/10.png",
+    ],
+  },
+  {
+    title: "World Wise",
+    slug: "world-wise",
+    liveUrl: "https://nevo-worldwise.vercel.app",
+    sourceCode: "https://github.com/iknevo/world-wise",
+    year: 2024,
+    description: `
+      A world map that tracks your footsteps into every city you can think of. Never forget your wonderful experiences, and show your friends how you have wandered the world.<br/> <br/>
+
+      Key Features:<br/>
+      <ul>
+        <li>Simple & easy to use design.</li>
+        <li>An interactive map which the user can select a location or use his current location.</li>
+        <li>Lists displaying the individual trips that the user has made, and the countries the user has visited</li>
+        <li>When clicking the map a form will appear in which the user can input city name, trip's date, and any notes the user might want to add.</li>
+        <li>When adding a trip, a popup will appear on the map</li>
+        <li>The ability to delete any trip from the list.</li>
+        <li>Simple Login/Logout (not fully functional tho) its just a placeholder.</li>
+      </ul><br/>
+      `,
+    techStack: ["React", "SCSS", "TailwindCSS", "RESTFull api"],
+    thumbnail: "/projects/world-wise/thumbnail/world-wise.png",
+    images: [
+      "/projects/world-wise/thumbnail/world-wise.png",
+      "/projects/world-wise/images/1.png",
+      "/projects/world-wise/images/2.png",
+      "/projects/world-wise/images/3.png",
+      "/projects/world-wise/images/4.png",
     ],
   },
   {
     title: "Green Shop",
-    slug: "greenshop",
+    slug: "green-shop",
     liveUrl: "https://green-shop-nevo.vercel.app",
     sourceCode: "https://github.com/iknevo/green-shop",
     year: 2025,
@@ -245,13 +354,13 @@ export const PROJECTS: IProject[] = [
       "react-hook-form",
       "MUI",
     ],
-    thumbnail: "/projects/greenshop/thumbnail/greenshop.png",
+    thumbnail: "/projects/green-shop/thumbnail/greenshop.png",
     images: [
-      "/projects/greenshop/thumbnail/greenshop.png",
-      "/projects/greenshop/images/1.png",
-      "/projects/greenshop/images/2.png",
-      "/projects/greenshop/images/3.png",
-      "/projects/greenshop/images/4.png",
+      "/projects/green-shop/thumbnail/greenshop.png",
+      "/projects/green-shop/images/1.png",
+      "/projects/green-shop/images/2.png",
+      "/projects/green-shop/images/3.png",
+      "/projects/green-shop/images/4.png",
     ],
   },
   {
@@ -265,7 +374,7 @@ export const PROJECTS: IProject[] = [
 
       Key Features:<br/>
       <ul>
-        <li>simple & easy to use design.</li>
+        <li>Simple & easy to use design.</li>
         <li>Search & Select recipies.</li>
         <li>The ability to bookmark a recipe and change servings.</li>
         <li>Directions on how to cook the selected recipe.</li>
