@@ -6,6 +6,7 @@ import "lenis/dist/lenis.css";
 import { ReactLenis } from "lenis/react";
 import type { Metadata } from "next";
 import { Josefin_Sans } from "next/font/google";
+import { Signature } from "./_components/signature";
 
 const josefin = Josefin_Sans({
   subsets: ["latin"],
@@ -41,6 +42,7 @@ export default function RootLayout({
         </ReactLenis>
         <Cursor />
         <StickyEmail />
+        <Signature />
         <Analytics />
       </body>
     </html>
