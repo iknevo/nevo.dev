@@ -36,7 +36,7 @@ export default function Banner() {
 
   useGSAP(
     (context: gsap.Context) => {
-      if (!context) return; // just to be extra safe
+      if (!context) return;
 
       const animateUps = context.selector?.(".animateUp") ?? [];
 

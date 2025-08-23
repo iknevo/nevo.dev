@@ -185,10 +185,11 @@ export const PROJECTS: IProject[] = [
       </ul><br/>`,
     techStack: [
       "Next",
+      "Hono",
+      "Clerk",
       "TypeScript",
       "Neon Postgres",
       "Drizzle ORM",
-      "Hono",
       "Shadcn",
       "TailwindCSS",
       "recharts",
