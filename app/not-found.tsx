@@ -2,6 +2,7 @@
 
 import Button from "@/app/_components/Button";
 import { Flag } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const animations = ["float", "floatReverse", "float2", "floatReverse2"];

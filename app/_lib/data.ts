@@ -160,6 +160,59 @@ export const MY_STACK = {
 
 export const PROJECTS: IProject[] = [
   {
+    title: "Meowney",
+    slug: "meowney",
+    liveUrl: "https://meowney.vercel.app",
+    sourceCode: "https://github.com/iknevo/meowney.git",
+    year: 2025,
+    description: `
+      Finance tracking app<br/> <br/>
+
+      Key Features:<br/>
+      <ul>
+        <li>A clean modern fully responsive design.</li>
+        <li>Dynamic dashboard displaying finance summary with charts and the ability to select the prefered chart type.</li>
+        <li>Filter dashboard summary with date range and account.</li>
+        <li>All tables have column sort functionality, search, pagination, and selecting multiple rows.</li>
+        <li>Transactions table displaying the transactions and the ability add, edit, delete transactions.</li>
+        <li>chunk add transactions via CSV files.</li>
+        <li>chunk delete transactions.</li>
+        <li>Accounts table displaying the current accounts and the ability add, edit, delete accounts.</li>
+        <li>chunk delete accounts.</li>
+        <li>Categories table displaying the current categories and the ability add, edit, delete categories.</li>
+        <li>chunk delete categories.</li>
+        <li>User's profile with the ability to edit user's information</li>
+      </ul><br/>`,
+    techStack: [
+      "Next",
+      "TypeScript",
+      "Neon Postgres",
+      "Drizzle ORM",
+      "Hono",
+      "Shadcn",
+      "TailwindCSS",
+      "recharts",
+      "zustand",
+    ],
+    thumbnail: "/projects/meowney/thumbnail/meowney.png",
+    images: [
+      "/projects/meowney/images/1.png",
+      "/projects/meowney/thumbnail/meowney.png",
+      "/projects/meowney/images/3.png",
+      "/projects/meowney/images/2.png",
+      "/projects/meowney/images/4.png",
+      "/projects/meowney/images/5.png",
+      "/projects/meowney/images/6.png",
+      "/projects/meowney/images/7.png",
+      "/projects/meowney/images/8.png",
+      "/projects/meowney/images/9.png",
+      "/projects/meowney/images/10.png",
+      "/projects/meowney/images/11.png",
+      "/projects/meowney/images/12.png",
+      "/projects/meowney/images/13.png",
+    ],
+  },
+  {
     title: "The Wild Oasis - Website",
     slug: "the-wild-oasis-website",
     liveUrl: "https://nevo-the-wild-oasis-website.vercel.app",
@@ -176,9 +229,7 @@ export const PROJECTS: IProject[] = [
         <li>Admins's profile and the ability to add other admins to the system.</li>
         <li>View reserved cabins with the ability to edit or cancel the reservation.</li>
         <li>User's profile with the ability to edit user's information</li>
-      </ul><br/>
-      <p>Didn't have the time to finish it unfortunately, But i did enjoy and learn a lot during the development of this app.</p>
-      `,
+      </ul><br/>`,
     techStack: ["Next", "Supabase", "TypeScript", "TailwindCSS"],
     thumbnail:
       "/projects/the-wild-oasis-website/thumbnail/the-wild-oasis-website.png",
@@ -213,9 +264,7 @@ export const PROJECTS: IProject[] = [
         <li>Admins's profile and the ability to add other admins to the system.</li>
         <li>View existing cabins with the ability to create, edit, delete them. and filtering by discount availability, sorting by name/price/capacity</li>
         <li>Manage hotel settings (eg. minimum/maximum nights/guests per booking, breakfast price)</li>
-      </ul><br/>
-      <p>Didn't have the time to finish it unfortunately, But i did enjoy and learn a lot during the development of this app.</p>
-      `,
+      </ul><br/>`,
     techStack: [
       "React",
       "React Query",

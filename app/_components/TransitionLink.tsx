@@ -38,7 +38,7 @@ const TransitionLink = ({
 
       tl.then(() => {
         if (back) {
-          router.back();
+          router.push("/");
         } else if (href) {
           router.push(href.toString());
         } else if (onClick) {
