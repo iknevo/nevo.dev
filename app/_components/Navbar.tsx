@@ -1,8 +1,8 @@
 "use client";
 import { GENERAL_INFO, SOCIAL_LINKS } from "@/app/_lib/data";
 import { cn } from "@/app/_lib/utils";
+import { useLenis } from "lenis/react";
 import { MoveUpRight } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const COLORS = [
@@ -15,25 +15,35 @@ const COLORS = [
 const MENU_LINKS = [
   {
     name: "Home",
-    url: "/",
+    url: "#",
   },
   {
     name: "About Me",
-    url: "/#about-me",
+    url: "#about-me",
   },
   {
     name: "Experience",
-    url: "/#my-experience",
+    url: "#my-experience",
   },
   {
     name: "Projects",
-    url: "/#selected-projects",
+    url: "#selected-projects",
   },
 ];
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const router = useRouter();
+  const lenis = useLenis();
+
+  const handleClick = (target: string) => {
+    if (lenis) {
+      if (target === "#") {
+        lenis.scrollTo(0);
+      } else {
+        lenis.scrollTo(target);
+      }
+    }
+  };
 
   return (
     <>
@@ -117,7 +127,7 @@ export default function Navbar() {
                   <li key={link.name}>
                     <button
                       onClick={() => {
-                        router.push(link.url);
+                        handleClick(link.url);
                         setIsMenuOpen(false);
                       }}
                       className="group text-xl flex items-center gap-3"
