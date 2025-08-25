@@ -64,21 +64,19 @@ const ProjectDetails = ({ project }: Props) => {
   // parallax effect on images
   useGSAP(
     () => {
-      gsap.utils
-        .toArray<HTMLDivElement>("#images > div")
-        .forEach((imageDiv, i) => {
-          gsap.to(imageDiv, {
-            backgroundPosition: `center 0%`,
-            ease: "none",
-            scrollTrigger: {
-              trigger: imageDiv,
-              start: () => (i ? "top bottom" : "top 50%"),
-              end: "bottom top",
-              scrub: true,
-              invalidateOnRefresh: true,
-            },
-          });
+      gsap.utils.toArray<HTMLDivElement>("#images > div").forEach((imageDiv, i) => {
+        gsap.to(imageDiv, {
+          backgroundPosition: `center 0%`,
+          ease: "none",
+          scrollTrigger: {
+            trigger: imageDiv,
+            start: () => (i ? "top bottom" : "top 50%"),
+            end: "bottom top",
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
         });
+      });
     },
     { scope: containerRef }
   );
@@ -86,11 +84,7 @@ const ProjectDetails = ({ project }: Props) => {
   return (
     <section className="pt-5 pb-14">
       <div className="container" ref={containerRef}>
-        <TransitionLink
-          back
-          href="/"
-          className="mb-16 inline-flex gap-2 items-center group h-12"
-        >
+        <TransitionLink back href="/" className="mb-16 inline-flex gap-2 items-center group h-12">
           <ArrowLeft className="group-hover:-translate-x-1 group-hover:text-primary transition-all duration-300" />
           Back
         </TransitionLink>
@@ -155,10 +149,7 @@ const ProjectDetails = ({ project }: Props) => {
           </div>
         </div>
 
-        <div
-          className="fade-in-later relative flex flex-col gap-2 max-w-7xl mx-auto"
-          id="images"
-        >
+        <div className="fade-in-later relative flex flex-col gap-2 max-w-7xl mx-auto" id="images">
           {project.images.map((image) => (
             <div
               key={image}
