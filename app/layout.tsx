@@ -20,6 +20,10 @@ export const metadata: Metadata = {
     default: "NEVO | Front-End Developer",
   },
   description: "Personal portfolio of Ahmed (NEVO) Abdelhafiez",
+  metadataBase: new URL("https://nevo.is-a.dev"),
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({
