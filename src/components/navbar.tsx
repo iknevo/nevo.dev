@@ -1,6 +1,6 @@
 "use client";
-import { GENERAL_INFO, SOCIAL_LINKS } from "@/app/_lib/data";
-import { cn } from "@/app/_lib/utils";
+import { GENERAL_INFO, SOCIAL_LINKS } from "@/src/lib/data";
+import { cn } from "@/src/lib/utils";
 import { useLenis } from "lenis/react";
 import { MoveUpRight } from "lucide-react";
 import { useState } from "react";

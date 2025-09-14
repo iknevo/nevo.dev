@@ -1,5 +1,5 @@
-import { cn } from "@/app/_lib/utils";
-import { Variant } from "@/app/_types";
+import { cn } from "@/src/lib/utils";
+import { Variant } from "@/src/types";
 import Link from "next/link";
 import React, { ButtonHTMLAttributes, ComponentProps, ReactNode } from "react";
 

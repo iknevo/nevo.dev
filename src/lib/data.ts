@@ -1,4 +1,4 @@
-import { IProject } from "@/app/_types";
+import { IProject } from "@/src/types";
 
 export const GENERAL_INFO = {
   email: "iknevo.dev@gmail.com",

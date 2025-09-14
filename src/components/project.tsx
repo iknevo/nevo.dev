@@ -1,6 +1,6 @@
-import TransitionLink from "@/app/_components/TransitionLink";
-import { cn } from "@/app/_lib/utils";
-import { IProject } from "@/app/_types";
+import TransitionLink from "@/src/components/transition-link";
+import { cn } from "@/src/lib/utils";
+import { IProject } from "@/src/types";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Image from "next/image";

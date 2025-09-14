@@ -1,4 +1,4 @@
-import { GENERAL_INFO } from "@/app/_lib/data";
+import { GENERAL_INFO } from "@/src/lib/data";
 import React from "react";
 
 export default function StickyEmail() {

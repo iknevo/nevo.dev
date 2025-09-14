@@ -1,7 +1,7 @@
-import { PROJECTS } from "@/app/_lib/data";
+import ProjectDetails from "@/src/components/project-details";
+import { PROJECTS } from "@/src/lib/data";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import ProjectDetails from "./_components/ProjectDetails";
 
 export const generateStaticParams = async () => {
   return PROJECTS.map((project) => ({ slug: project.slug }));

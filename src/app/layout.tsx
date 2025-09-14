@@ -1,12 +1,12 @@
-import Cursor from "@/app/_components/Cursor";
-import StickyEmail from "@/app/_components/StickyEmail";
-import "@/app/_styles/globals.css";
+import Cursor from "@/src/components/cursor";
+import { Signature } from "@/src/components/me/signature";
+import StickyEmail from "@/src/components/sticky-email";
+import "@/src/styles/globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import "lenis/dist/lenis.css";
 import { ReactLenis } from "lenis/react";
 import type { Metadata } from "next";
 import { Josefin_Sans } from "next/font/google";
-import { Signature } from "./_components/signature";
 
 const josefin = Josefin_Sans({
   subsets: ["latin"],

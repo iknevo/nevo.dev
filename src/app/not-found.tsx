@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/app/_components/Button";
+import Button from "@/src/components/button";
 import { Flag } from "lucide-react";
 import { useEffect, useState } from "react";
 

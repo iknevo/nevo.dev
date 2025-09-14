@@ -1,14 +1,14 @@
 "use client";
-import Button from "@/app/_components/Button";
-import { GENERAL_INFO } from "@/app/_lib/data";
+import Button from "@/src/components/button";
+import Magnet from "@/src/components/magnet";
+import ScrollButton from "@/src/components/scroll-button";
+import ShinyText from "@/src/components/shiny-text";
+import { GENERAL_INFO } from "@/src/lib/data";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useRef } from "react";
 import { useMedia } from "react-use";
-import Magnet from "./Magnet";
-import ScrollButton from "./scroll-button";
-import ShinyText from "./ShinyText";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
