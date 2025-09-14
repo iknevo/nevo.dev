@@ -1,13 +1,13 @@
 "use client";
-import SectionTitle from "@/app/_components/SectionTitle";
-import { PROJECTS } from "@/app/_lib/data";
-import { cn } from "@/app/_lib/utils";
+import Project from "@/src/components/project";
+import SectionTitle from "@/src/components/section-title";
+import { PROJECTS } from "@/src/lib/data";
+import { cn } from "@/src/lib/utils";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import Image from "next/image";
 import { MouseEvent, useRef, useState } from "react";
-import Project from "./Project";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 

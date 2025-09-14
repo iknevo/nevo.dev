@@ -1,11 +1,11 @@
-import Footer from "@/app/_components/Footer";
-import Navbar from "@/app/_components/Navbar";
-import ParticleBackground from "@/app/_components/ParticleBackground";
-import Preloader from "@/app/_components/Preloader";
-import ScrollProgressIndicator from "@/app/_components/ScrollProgressIndicator";
-import "@/app/_styles/globals.css";
+import Footer from "@/src/components/footer";
+import Navbar from "@/src/components/navbar";
+import ParticleBackground from "@/src/components/particle-background";
+import Preloader from "@/src/components/preloader";
+import ScrollButton from "@/src/components/scroll-button";
+import ScrollProgressIndicator from "@/src/components/scroll-progress-indicator";
+import "@/src/styles/globals.css";
 import "lenis/dist/lenis.css";
-import ScrollButton from "../_components/scroll-button";
 
 type Props = {
   children: React.ReactNode;
