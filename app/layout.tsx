@@ -6,7 +6,6 @@ import "lenis/dist/lenis.css";
 import { ReactLenis } from "lenis/react";
 import type { Metadata } from "next";
 import { Josefin_Sans } from "next/font/google";
-import ScrollButton from "./_components/scroll-button";
 import { Signature } from "./_components/signature";
 
 const josefin = Josefin_Sans({
@@ -47,10 +46,6 @@ export default function RootLayout({
         </ReactLenis>
         <Cursor />
         <StickyEmail />
-
-        <div className="max-xl:hidden absolute bottom-5 right-5 block">
-          <ScrollButton scrollToTop />
-        </div>
         <Signature />
         <Analytics />
       </body>

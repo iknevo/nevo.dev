@@ -143,7 +143,7 @@ export default function Banner() {
         </div>
       </div>
       {isDesktop && (
-        <div className="-right-40 bottom-10 hidden md:block  absolute">
+        <div className="-right-35 bottom-10 hidden md:block  absolute">
           <ScrollButton />
         </div>
       )}
