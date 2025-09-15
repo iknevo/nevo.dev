@@ -15,4 +15,4 @@ export const POST = handler;
 export const PATCH = handler;
 export const DELETE = handler;
 
-export type AppType = typeof routes;
+export type AppTypes = typeof routes;

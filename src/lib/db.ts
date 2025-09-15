@@ -1,4 +1,4 @@
-import config from "@/src/lib/config";
+import { env } from "@/src/config/env";
 import mongoose from "mongoose";
 
 let isConnected = false;
@@ -9,8 +9,8 @@ const dbConnect = async (): Promise<typeof mongoose> => {
   }
 
   try {
-    await mongoose.connect(config.database, {
-      dbName: config.databaseName,
+    await mongoose.connect(env.database, {
+      dbName: env.databaseName,
     });
     isConnected = true;
 

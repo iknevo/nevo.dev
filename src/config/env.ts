@@ -6,7 +6,8 @@ function getEnv(key: string, required = true): string {
   return value || "";
 }
 
-const config = {
+export const env = {
+  NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL!,
   nodeEnv: process.env.NODE_ENV || "development",
   development: process.env.NODE_ENV === "development",
   production: process.env.NODE_ENV === "production",
@@ -21,5 +22,3 @@ const config = {
   },
   cookiesMaxAge: 7 * 24 * 60 * 60, // 7 days
 };
-
-export default config;
