@@ -57,6 +57,7 @@ export default function LoginForm() {
                   className="md:py-6"
                   disabled={isPending}
                   placeholder="example@gmail.com"
+                  autoComplete="on"
                 />
               </FormControl>
             </FormItem>
@@ -75,6 +76,7 @@ export default function LoginForm() {
                   type="password"
                   placeholder="password"
                   className="md:py-6"
+                  autoComplete="current-password"
                 />
               </FormControl>
             </FormItem>

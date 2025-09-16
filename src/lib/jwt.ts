@@ -3,7 +3,6 @@ import { Context } from "hono";
 import { setCookie } from "hono/cookie";
 import { sign, verify } from "hono/jwt";
 
-// Generate an access token using hono/jwt
 export async function generateAccessToken(id: any): Promise<string> {
   const payload = {
     id,
@@ -12,7 +11,6 @@ export async function generateAccessToken(id: any): Promise<string> {
   return await sign(payload, env.jwt.secret, "HS256");
 }
 
-// Generate a refresh token using hono/jwt
 export async function generateRefreshToken(id: any): Promise<string> {
   const payload = {
     id,
@@ -22,7 +20,6 @@ export async function generateRefreshToken(id: any): Promise<string> {
   return await sign(payload, env.jwt.refreshSecret, "HS256");
 }
 
-// Send tokens in response, setting refresh token as a cookie
 export async function sendTokens(c: Context, id: any): Promise<string> {
   const accessToken = await generateAccessToken(id);
   const refreshToken = await generateRefreshToken(id);

@@ -34,6 +34,7 @@ export async function middleware(req: NextRequest) {
     const requestHeaders = new Headers(req.headers);
     requestHeaders.set("x-user-id", decoded.id);
 
+    // Prevent auto-redirectsequest);
     return NextResponse.next({
       request: { headers: requestHeaders },
     });
