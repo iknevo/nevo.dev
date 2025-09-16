@@ -231,3 +231,16 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    @apply bg-black text-white rounded-md border border-gray-500;
+    -webkit-box-shadow: 0 0 0 1000px theme("colors.black") inset;
+    -webkit-text-fill-color: theme("colors.white");
+    caret-color: theme("colors.white"); /* ✅ makes the cursor visible */
+    transition: background-color 5000s ease-in-out 0s;
+  }
+}

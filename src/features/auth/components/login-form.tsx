@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/src/components/ui/button";
+import Button from "@/src/components/button";
 import {
   Form,
   FormControl,
@@ -11,6 +11,7 @@ import { Input } from "@/src/components/ui/input";
 import { LoginFormSchema } from "@/src/definitions/login.definition";
 import useLogin from "@/src/features/auth/api/use-login";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -42,7 +43,7 @@ export default function LoginForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-4 pt-4"
+        className="space-y-4 w-full md:w-150 px-4 md:px-0 flex flex-col gap-2"
       >
         <FormField
           name="email"
@@ -53,6 +54,7 @@ export default function LoginForm() {
               <FormControl>
                 <Input
                   {...field}
+                  className="md:py-6"
                   disabled={isPending}
                   placeholder="example@gmail.com"
                 />
@@ -67,13 +69,19 @@ export default function LoginForm() {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input {...field} disabled={isPending} placeholder="password" />
+                <Input
+                  {...field}
+                  disabled={isPending}
+                  type="password"
+                  placeholder="password"
+                  className="md:py-6"
+                />
               </FormControl>
             </FormItem>
           )}
         />
-        <Button className="w-full" disabled={isPending}>
-          Login
+        <Button as="button" disabled={isPending} className="rounded-md cursor">
+          {isPending ? <Loader2 className="animate-spin" /> : "Login"}
         </Button>
       </form>
     </Form>
