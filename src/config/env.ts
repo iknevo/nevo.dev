@@ -20,5 +20,5 @@ export const env = {
     refreshExpiresIn: +getEnv("JWT_REFRESH_EXPIRES_IN"),
     accessExpiresIn: +getEnv("JWT_ACCESS_EXPIRES_IN"),
   },
-  cookiesMaxAge: 7 * 24 * 60 * 60, // 7 days
+  refreshCookiesMaxAge: 7 * 24 * 60 * 60, // 7 days
 };

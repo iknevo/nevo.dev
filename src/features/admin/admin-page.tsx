@@ -1,13 +1,17 @@
 "use client";
 import LogoutButton from "../auth/components/logout-button";
-import { useAuthState } from "../auth/state/auth-state";
+import useMe from "./api/use-me";
 
 export default function AdminPage() {
-  const { user, accessToken } = useAuthState();
-  console.log({ user, accessToken });
+  const meQuery = useMe();
+  if (!meQuery.data) {
+    return <p>empty</p>;
+  }
+  const { user } = meQuery.data;
+
   return (
-    <div>
-      admin-page
+    <div className="min-h-screen flex justify-between">
+      <p className="text-2xl">{user.name.toUpperCase()}</p>
       <LogoutButton />
     </div>
   );

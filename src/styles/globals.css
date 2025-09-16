@@ -35,7 +35,6 @@ body {
 .container {
   width: 100%;
   margin: 0 auto;
-  /* position: relative; */
   max-width: var(--container-max-width-2xl);
   @apply py-4;
 }
@@ -43,7 +42,6 @@ body {
 @media (min-width: 640px) {
   .container {
     max-width: var(--container-max-width-sm);
-    /* overflow: hidden; */
   }
 }
 
@@ -129,7 +127,6 @@ body {
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-  /* --color-primary: var(--primary); */
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);

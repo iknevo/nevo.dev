@@ -1,4 +1,3 @@
-import { useAuthState } from "@/src/features/auth/state/auth-state";
 import { api } from "@/src/lib/hono";
 import { useMutation } from "@tanstack/react-query";
 import { InferResponseType } from "hono";
@@ -7,16 +6,11 @@ import { toast } from "sonner";
 type ResponseType = InferResponseType<typeof api.auth.logout.$post>;
 
 export default function useLogout() {
-  const { clearAuth } = useAuthState();
   const mutation = useMutation<ResponseType, Error>({
     mutationFn: async () => {
       const res = await api.auth.logout.$post();
       const data: ResponseType = await res.json();
       return data;
-    },
-    onSuccess: ({ message }) => {
-      clearAuth();
-      toast.success(message);
     },
     onError: (err) => {
       console.error(err);

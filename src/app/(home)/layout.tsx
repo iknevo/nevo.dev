@@ -14,7 +14,7 @@ export default function Layout({ children }: Props) {
   return (
     <>
       <Navbar />
-      <main className="container-custom relative">{children}</main>
+      <main className="relative">{children}</main>
       <Footer />
       <ScrollProgressIndicator />
       <Preloader />

@@ -43,7 +43,7 @@ export default function RootLayout({
             duration: 1.4,
           }}
         >
-          <main className="container-custom">
+          <main className="container">
             <Providers>{children}</Providers>
           </main>
         </ReactLenis>

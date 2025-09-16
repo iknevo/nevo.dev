@@ -5,9 +5,5 @@ export const metadata: Metadata = {
   title: "ADMIN",
 };
 export default function Page() {
-  return (
-    <div>
-      <AdminPage />
-    </div>
-  );
+  return <AdminPage />;
 }
