@@ -50,5 +50,5 @@ function redirectToLogin(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/auth/login"],
+  matcher: ["/admin/:path*", "/auth/reset-password/:path*", "/auth/login"],
 };

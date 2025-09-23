@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
-import { PasswordResetSchema } from "@/src/definitions/auth.definition";
+import { PasswordResetSchema } from "@/src/definitions/auth.validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";

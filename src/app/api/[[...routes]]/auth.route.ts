@@ -2,7 +2,8 @@ import { env } from "@/src/config/env";
 import {
   LoginFormSchema,
   PasswordResetSchema,
-} from "@/src/definitions/auth.definition";
+  PasswordUpdateSchema,
+} from "@/src/definitions/auth.validations";
 import dbConnect from "@/src/lib/db";
 import { sendEmail } from "@/src/lib/email";
 import type { AccessPayload } from "@/src/lib/jwt";
@@ -151,6 +152,39 @@ const app = new Hono<Env>()
         {
           success: true,
           message: "Password Reset Successfully",
+        },
+        status.OK
+      );
+    }
+  )
+  .patch(
+    "/update-password",
+    zValidator("json", PasswordUpdateSchema),
+    authMiddleware,
+    async (c) => {
+      const userPayload = c.get("user");
+      const { password, passwordConfirm, passwordCurrent } =
+        c.req.valid("json");
+      await dbConnect();
+      const user = await User.findById(userPayload.id).select("+password");
+      if (
+        !user ||
+        !(await user.checkPassword(passwordCurrent, user.password))
+      ) {
+        return c.json(
+          { success: false, message: "Your current password is wrong!" },
+          status.UNAUTHORIZED
+        );
+      }
+      user.password = password;
+      user.passwordConfirm = passwordConfirm;
+      await user.save();
+
+      await sendTokens(c, user._id.toString());
+      return c.json(
+        {
+          success: true,
+          message: "Password Updated Successfully",
         },
         status.OK
       );

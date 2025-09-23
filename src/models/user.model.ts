@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
+import { createHash, randomBytes } from "crypto";
 import { InferSchemaType, Model, Schema, model, models } from "mongoose";
-import { createHash, randomBytes } from "node:crypto";
 
 const userSchema = new Schema({
   name: {
@@ -65,10 +65,19 @@ userSchema.methods.createPasswordResetToken = function () {
   return resetToken;
 };
 
+userSchema.methods.changedPasswordAfter = function (issuedAt: number) {
+  if (this.passwordChangedAt) {
+    const changedAtTimeStamp = this.passwordChangedAt.getTime() / 1000;
+    return issuedAt < changedAtTimeStamp;
+  }
+  return false;
+};
+
 type UserType = InferSchemaType<typeof userSchema>;
 export interface UserDocument extends InferSchemaType<typeof userSchema> {
   checkPassword(inputPass: string, userPass: string): Promise<boolean>;
   createPasswordResetToken(): string;
+  changedPasswordAfter(issuedAt: number): boolean;
 }
 export const User: Model<UserDocument> =
   models.User || model<UserDocument>("User", userSchema);

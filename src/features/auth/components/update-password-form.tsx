@@ -9,58 +9,36 @@ import {
   FormMessage,
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
-import { LoginFormSchema } from "@/src/definitions/auth.validations";
-import useForgetPassword from "@/src/features/auth/api/use-forget-password";
-import useLogin from "@/src/features/auth/api/use-login";
+import { PasswordUpdateSchema } from "@/src/definitions/auth.validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import useUpdatePassword from "../api/use-update-password";
 
-type FormValues = z.input<typeof LoginFormSchema>;
-
-export default function LoginForm() {
+type FormValues = z.input<typeof PasswordUpdateSchema>;
+export default function UpdatePasswordForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const loginMutation = useLogin();
-  const forgotPasswordMutation = useForgetPassword();
-  const { isPending } = loginMutation;
+  const updateMutation = useUpdatePassword();
+  const { isPending } = updateMutation;
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(LoginFormSchema),
+    resolver: zodResolver(PasswordUpdateSchema),
     defaultValues: {
-      email: "",
+      passwordCurrent: "",
       password: "",
+      passwordConfirm: "",
     },
   });
   const handleSubmit = (values: FormValues) => {
-    loginMutation.mutate(values, {
-      onSuccess: () => {
-        const redirectTo = searchParams.get("from") || "/admin";
-        router.push(redirectTo);
+    updateMutation.mutate(values, {
+      onSuccess: ({ message }) => {
+        toast.success(message);
+        router.push("/admin");
       },
     });
-  };
-  const handleForget = async () => {
-    const isValid = await form.trigger("email");
-    if (!isValid) {
-      return;
-    }
-    const email = form.getValues("email");
-    if (!email) {
-      form.setError("email", {});
-      return;
-    }
-    forgotPasswordMutation.mutate(
-      { email },
-      {
-        onSuccess: ({ message }) => {
-          toast.success(message);
-        },
-      }
-    );
   };
 
   return (
@@ -70,21 +48,21 @@ export default function LoginForm() {
         className="w-full md:w-150 px-4 md:px-0 flex flex-col gap-2 space-y-4"
       >
         <FormField
-          name="email"
+          name="passwordCurrent"
           control={form.control}
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center justify-between min-h-5">
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Current Password</FormLabel>
                 <FormMessage />
               </div>
               <FormControl>
                 <Input
                   {...field}
-                  className="md:py-6"
                   disabled={isPending}
-                  placeholder="example@gmail.com"
-                  autoComplete="on"
+                  type="password"
+                  placeholder="current password"
+                  className="md:py-6"
                 />
               </FormControl>
             </FormItem>
@@ -106,21 +84,34 @@ export default function LoginForm() {
                   type="password"
                   placeholder="password"
                   className="md:py-6"
-                  autoComplete="current-password"
                 />
               </FormControl>
             </FormItem>
           )}
         />
-        <button
-          onClick={handleForget}
-          type="button"
-          className="self-end font-semibold text-primary"
-        >
-          Forgot Password?
-        </button>
+        <FormField
+          name="passwordConfirm"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <div className="flex items-center justify-between min-h-5">
+                <FormLabel>Confirm Password</FormLabel>
+                <FormMessage />
+              </div>
+              <FormControl>
+                <Input
+                  {...field}
+                  disabled={isPending}
+                  type="password"
+                  placeholder="confirm your password"
+                  className="md:py-6"
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
         <Button as="button" disabled={isPending} className="rounded-md cursor">
-          {isPending ? <Loader2 className="animate-spin" /> : "Login"}
+          {isPending ? <Loader2 className="animate-spin" /> : "Update Password"}
         </Button>
       </form>
     </Form>
