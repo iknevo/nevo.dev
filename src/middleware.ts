@@ -6,7 +6,7 @@ export async function middleware(req: NextRequest) {
   const { pathname, searchParams } = req.nextUrl;
   const refreshToken = req.cookies.get("refreshToken")?.value;
 
-  if (pathname.startsWith("/login") && refreshToken) {
+  if (pathname.startsWith("/auth") && refreshToken) {
     const decoded = (await verifyRefreshToken(refreshToken)) as {
       id: string;
     };
@@ -44,11 +44,11 @@ export async function middleware(req: NextRequest) {
 }
 
 function redirectToLogin(req: NextRequest) {
-  const loginUrl = new URL("/login", req.url);
+  const loginUrl = new URL("/auth/login", req.url);
   loginUrl.searchParams.set("from", req.nextUrl.pathname);
   return NextResponse.redirect(loginUrl);
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/login"],
+  matcher: ["/admin/:path*", "/auth/login"],
 };

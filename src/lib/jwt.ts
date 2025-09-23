@@ -1,6 +1,7 @@
 import { env } from "@/src/config/env";
-import { Context, MiddlewareHandler } from "hono";
+import { Context } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
+import { createMiddleware } from "hono/factory";
 import { sign, verify } from "hono/jwt";
 import { JWTPayload } from "hono/utils/jwt/types";
 
@@ -9,12 +10,6 @@ export interface AccessPayload extends JWTPayload {
   exp: number;
   [key: string]: any;
 }
-
-type Env = {
-  Variables: {
-    user: AccessPayload;
-  };
-};
 
 function sendAccessCookie(c: Context, token: string) {
   setCookie(c, "accessToken", token, {
@@ -38,7 +33,7 @@ function sendRefreshCookie(c: Context, token: string) {
 export async function generateAccessToken(id: string): Promise<string> {
   const payload: AccessPayload = {
     id,
-    exp: Math.floor(Date.now() / 1000) + 60 * env.jwt.accessExpiresIn, // minutes
+    exp: Math.floor(Date.now() / 1000) + 60 * env.jwt.accessExpiresIn,
   };
   return await sign(payload, env.jwt.secret, "HS256");
 }
@@ -47,12 +42,12 @@ export async function generateRefreshToken(id: string): Promise<string> {
   const payload: AccessPayload = {
     id,
     exp:
-      Math.floor(Date.now() / 1000) + 60 * 60 * 24 * env.jwt.refreshExpiresIn, // days
+      Math.floor(Date.now() / 1000) + 60 * 60 * 24 * env.jwt.refreshExpiresIn,
   };
   return await sign(payload, env.jwt.refreshSecret, "HS256");
 }
 
-export async function sendTokens(c: Context<Env>, id: string): Promise<void> {
+export async function sendTokens(c: Context, id: string): Promise<void> {
   const accessToken = await generateAccessToken(id);
   const refreshToken = await generateRefreshToken(id);
   sendAccessCookie(c, accessToken);
@@ -83,7 +78,7 @@ export async function verifyRefreshToken(
   }
 }
 
-export const authMiddleware: MiddlewareHandler<Env> = async (c, next) => {
+export const authMiddleware = createMiddleware(async (c, next) => {
   const refreshToken = getCookie(c, "refreshToken");
 
   if (!refreshToken) {
@@ -105,4 +100,4 @@ export const authMiddleware: MiddlewareHandler<Env> = async (c, next) => {
   c.header("Authorization", `Bearer ${accessToken}`);
 
   await next();
-};
+});

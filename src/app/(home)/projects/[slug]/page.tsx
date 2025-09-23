@@ -14,7 +14,6 @@ export const generateMetadata = async ({
 }) => {
   const { slug } = await params;
   const project = PROJECTS.find((project) => project.slug === slug);
-
   return {
     title: `${project?.title}`,
     description: project?.description,

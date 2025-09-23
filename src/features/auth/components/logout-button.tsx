@@ -11,7 +11,7 @@ export default function LogoutButton() {
   const handleLogout = () => {
     logoutMutation.mutate(undefined, {
       onSuccess: () => {
-        router.push("/login");
+        router.push("/auth/login");
       },
     });
   };
@@ -19,7 +19,7 @@ export default function LogoutButton() {
     <Button
       as="button"
       disabled={isPending}
-      className="rounded-md cursor"
+      className="rounded-md cursor h-10 px-4 text-sm font-bold"
       onClick={handleLogout}
     >
       {isPending ? <Loader2 className="animate-spin" /> : "Logout"}
