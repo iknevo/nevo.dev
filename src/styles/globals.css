@@ -32,7 +32,6 @@ body {
   margin: 0 auto;
   /* position: relative; */
   max-width: var(--container-max-width-2xl);
-  @apply py-4;
 }
 
 @media (min-width: 640px) {

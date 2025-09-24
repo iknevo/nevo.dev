@@ -14,13 +14,15 @@ export default function Layout({ children }: Props) {
   return (
     <>
       <Navbar />
-      <main className="container-custom relative">{children}</main>
+      <main className="container relative">{children}</main>
       <Footer />
       <ScrollProgressIndicator />
       <Preloader />
       <ParticleBackground />
-      <div className="max-xl:hidden absolute bottom-5 right-15 block">
-        <ScrollButton scrollToTop />
+      <div className="container relative">
+        <div className="hidden absolute bottom-5 -right-30 xl:block">
+          <ScrollButton scrollToTop />
+        </div>
       </div>
     </>
   );
