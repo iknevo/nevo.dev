@@ -87,7 +87,7 @@ export default function Navbar() {
 
       <div
         className={cn(
-          "fixed top-0  right-0 h-dvh w-[500px] max-w-[calc(100vw-3rem)] transform translate-x-full transition-transform duration-700 z-3 overflow-hidden gap-y-14",
+          "fixed top-0  right-0 h-svh w-[500px] max-w-[calc(100vw-3rem)] transform translate-x-full transition-transform duration-700 z-3 overflow-hidden gap-y-14",
           "flex flex-col lg:justify-center py-10",
           { "translate-x-0": isMenuOpen }
         )}

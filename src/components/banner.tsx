@@ -66,7 +66,7 @@ export default function Banner() {
   return (
     <section id="banner" className="relative">
       <div
-        className="container h-dvh max-md:pb-10 flex lg:items-end justify-center gap-10 lg:gap-0 lg:justify-between max-md:flex-col"
+        className="container h-svh max-md:pb-10 flex lg:items-end justify-center gap-10 lg:gap-0 lg:justify-between max-md:flex-col"
         ref={containerRef}
       >
         <div className="max-md:flex flex-col justify-center self-center items-start max-w-[544px]">
