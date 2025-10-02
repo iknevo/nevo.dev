@@ -42,7 +42,7 @@ export default function RootLayout({
             duration: 1.4,
           }}
         >
-          <main className="container">{children}</main>
+          <main>{children}</main>
         </ReactLenis>
         <Cursor />
         <StickyEmail />
