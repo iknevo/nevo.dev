@@ -1,6 +1,7 @@
 "use client";
+import useMe from "../auth/api/use-me";
 import LogoutButton from "../auth/components/logout-button";
-import useMe from "./api/use-me";
+import ProjectsPage from "./projects/projects-page";
 
 export default function AdminPage() {
   const meQuery = useMe();
@@ -10,9 +11,12 @@ export default function AdminPage() {
   const { user } = meQuery.data;
 
   return (
-    <div className="min-h-screen flex justify-between">
-      <p className="text-2xl">{user.name.toUpperCase()}</p>
-      <LogoutButton />
-    </div>
+    <section className="min-h-screen container space-y-5">
+      <div className="flex justify-between">
+        <p className="text-2xl">{user.name.toUpperCase()}</p>
+        <LogoutButton />
+      </div>
+      <ProjectsPage />
+    </section>
   );
 }

@@ -1,0 +1,4 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "cSpell.words": ["Abdelhafiez", "GSAP", "lerp", "NEVO"]
+}
