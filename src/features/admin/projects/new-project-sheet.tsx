@@ -6,31 +6,24 @@ import {
   SheetTitle,
 } from "@/src/components/ui/sheet";
 // import { insertAccountSchema } from "@/src/db/schema";
+import { CreateProjectSchema } from "@/src/definitions/projects.validations";
 import { z } from "zod";
+import useCreateProject from "./api/use-create-project";
 import ProjectForm from "./project-form";
 import { useNewProject } from "./state/use-new-project";
 
-// const formSchema = insertAccountSchema.pick({
-//   name: true,
-// });
-
-const formSchema = z.object({
-  name: z.string(),
-});
-
-type FormValues = z.input<typeof formSchema>;
+type FormValues = z.input<typeof CreateProjectSchema>;
 
 export const NewProjectSheet = () => {
   const { isOpen, onClose } = useNewProject();
-
-  // const { mutate: createAccount, isPending } = useCreateProject();
+  const { mutate: createAccount, isPending } = useCreateProject();
 
   const onSubmit = (values: FormValues) => {
-    // createAccount(values, {
-    //   onSuccess: () => {
-    //     onClose();
-    //   },
-    // });
+    createAccount(values, {
+      onSuccess: () => {
+        onClose();
+      },
+    });
   };
 
   return (
@@ -38,13 +31,11 @@ export const NewProjectSheet = () => {
       <SheetContent className="space-y-4 dark">
         <SheetHeader>
           <SheetTitle>New Account</SheetTitle>
-          <SheetDescription>
-            Create a new account to track your transactions.
-          </SheetDescription>
+          <SheetDescription>Create a new project</SheetDescription>
         </SheetHeader>
         <ProjectForm
           onSubmit={onSubmit}
-          disabled={false}
+          disabled={isPending}
           defaultValues={{
             name: "",
           }}
