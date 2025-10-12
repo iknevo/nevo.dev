@@ -6,7 +6,10 @@ import {
   SheetTitle,
 } from "@/src/components/ui/sheet";
 // import { insertAccountSchema } from "@/src/db/schema";
-import { CreateProjectSchema } from "@/src/definitions/projects.validations";
+import {
+  CreateProjectSchema,
+  ProjectFormDefaults,
+} from "@/src/definitions/projects.validations";
 import { z } from "zod";
 import useCreateProject from "./api/use-create-project";
 import ProjectForm from "./project-form";
@@ -28,17 +31,15 @@ export const NewProjectSheet = () => {
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="space-y-4 dark">
+      <SheetContent className="space-y-4 dark sm:max-w-xl">
         <SheetHeader>
-          <SheetTitle>New Account</SheetTitle>
+          <SheetTitle>New Project</SheetTitle>
           <SheetDescription>Create a new project</SheetDescription>
         </SheetHeader>
         <ProjectForm
           onSubmit={onSubmit}
           disabled={isPending}
-          defaultValues={{
-            name: "",
-          }}
+          defaultValues={ProjectFormDefaults}
         />
       </SheetContent>
     </Sheet>

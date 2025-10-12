@@ -13,7 +13,6 @@ import { User } from "@/src/models/user.model";
 import { createHash } from "crypto";
 import { Hono } from "hono";
 import { deleteCookie } from "hono/cookie";
-import { HTTPException } from "hono/http-exception";
 import status from "http-status";
 import { z } from "zod";
 
@@ -41,9 +40,10 @@ const app = new Hono<Env>()
     await dbConnect();
     const user = await User.findOne({ email }).select("+password");
     if (!user || !(await user.checkPassword(password, user.password))) {
-      throw new HTTPException(status.FORBIDDEN, {
-        message: "Invalid Email or Password",
-      });
+      return c.json(
+        { message: "Invalid Email or Password!" },
+        status.FORBIDDEN
+      );
     }
     await sendTokens(c, user._id.toString());
     return c.json({ message: "Welcome NEVO." }, status.OK);
@@ -102,7 +102,7 @@ const app = new Hono<Env>()
           status.OK
         );
       } catch (err) {
-        console.log(err);
+        console.error(err);
         user.passwordResetToken = undefined;
         user.passwordResetExpires = undefined;
         await user.save({ validateBeforeSave: false });

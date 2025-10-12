@@ -10,6 +10,17 @@ export default function useCreateProject() {
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (json) => {
       const res = await api.projects.$post({ json });
+      if (!res.ok) {
+        let message = `Request failed with status ${res.status}`;
+        try {
+          const errData = await res.json();
+          message = errData.message || message;
+        } catch {
+          const text = await res.text();
+          if (text) message = text;
+        }
+        throw new Error(message);
+      }
       const data: ResponseType = await res.json();
       return data;
     },

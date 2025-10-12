@@ -1,5 +1,4 @@
 import Cursor from "@/src/components/cursor";
-import { Signature } from "@/src/components/me/signature";
 import StickyEmail from "@/src/components/sticky-email";
 import Providers from "@/src/providers/providers";
 import "@/src/styles/globals.css";
@@ -49,7 +48,6 @@ export default function RootLayout({
         </ReactLenis>
         <Cursor />
         <StickyEmail />
-        <Signature />
         <Analytics />
       </body>
     </html>
