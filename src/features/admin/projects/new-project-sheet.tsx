@@ -23,9 +23,7 @@ export const NewProjectSheet = () => {
 
   const onSubmit = (values: FormValues) => {
     createAccount(values, {
-      onSuccess: () => {
-        onClose();
-      },
+      onSuccess: onClose,
     });
   };
 

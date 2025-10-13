@@ -78,8 +78,7 @@ export default function ProjectForm({
     control: form.control,
   });
   const handleSubmit = (values: ProjectFormValues) => {
-    // onSubmit(values);
-    console.log(values);
+    onSubmit(values);
   };
   const handleDelete = () => {
     onDelete?.();
@@ -89,7 +88,7 @@ export default function ProjectForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-2 pt-4"
+        className="space-y-4 pt-4"
       >
         <FormField
           name="name"
@@ -104,9 +103,7 @@ export default function ProjectForm({
                   placeholder="e.g. My Awesome Project"
                 />
               </FormControl>
-              <div className="min-h-5">
-                <FormMessage />
-              </div>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -119,16 +116,13 @@ export default function ProjectForm({
               <FormLabel>Year</FormLabel>
               <FormControl>
                 <Input
-                  type="number"
                   {...field}
                   disabled={disabled}
                   placeholder="2025"
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  onChange={(e) => field.onChange(e.target.value.toString())}
                 />
               </FormControl>
-              <div className="min-h-5">
-                <FormMessage />
-              </div>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -146,9 +140,7 @@ export default function ProjectForm({
                   placeholder="preview url"
                 />
               </FormControl>
-              <div className="min-h-5">
-                <FormMessage />
-              </div>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -162,9 +154,7 @@ export default function ProjectForm({
               <FormControl>
                 <Input {...field} disabled={disabled} placeholder="code url" />
               </FormControl>
-              <div className="min-h-5">
-                <FormMessage />
-              </div>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -182,9 +172,7 @@ export default function ProjectForm({
                   placeholder="what is this all about"
                 />
               </FormControl>
-              <div className="min-h-5">
-                <FormMessage />
-              </div>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -207,9 +195,7 @@ export default function ProjectForm({
                   disabled={disabled}
                 />
               </FormControl>
-              <div className="min-h-5">
-                <FormMessage />
-              </div>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -271,7 +257,7 @@ export default function ProjectForm({
               variant="outline"
               size="sm"
               className="mb-2"
-              onClick={() => addImage({ item: undefined })}
+              onClick={() => addImage({ item: new File([], "") })}
             >
               Add Image
             </Button>
@@ -300,7 +286,7 @@ export default function ProjectForm({
                       <InputGroup>
                         <InputGroupInput
                           {...controllerField}
-                          id={`form-rhf-array-email-${index}`}
+                          id={`form-rhf-array-feature-${index}`}
                           aria-invalid={fieldState.invalid}
                           placeholder="feature"
                           type="text"
@@ -362,7 +348,7 @@ export default function ProjectForm({
                       <InputGroup>
                         <InputGroupInput
                           {...controllerField}
-                          id={`form-rhf-array-email-${index}`}
+                          id={`form-rhf-array-technology-${index}`}
                           aria-invalid={fieldState.invalid}
                           placeholder="technology"
                           type="text"

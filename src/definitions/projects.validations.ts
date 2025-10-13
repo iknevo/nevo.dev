@@ -3,10 +3,11 @@ import { z } from "zod";
 export const CreateProjectSchema = z.object({
   name: z.string().min(3),
   year: z
-    .number({ error: "year must be a number" })
-    .int()
-    .min(2000)
-    .max(new Date().getFullYear()),
+    .string()
+    .refine(
+      (val) => Number(val) >= 2000 && Number(val) <= new Date().getFullYear(),
+      { error: `year must be between 2000 and ${new Date().getFullYear()}` }
+    ),
   liveUrl: z.string(),
   sourceCode: z.string(),
   description: z.string(),
@@ -27,13 +28,6 @@ export const CreateProjectSchema = z.object({
   thumbnail: z
     .instanceof(File)
     .refine((file) => file.size > 0, { error: "Please add a thumbnail" }),
-  // images: z
-  //   .array(
-  //     z.object({
-  //       item: z.instanceof(File).optional(),
-  //     })
-  //   )
-  //   .min(1, "add at least one image"),
   images: z
     .array(
       z.object({
@@ -51,7 +45,7 @@ export const CreateProjectSchema = z.object({
 export type ProjectFormValues = z.infer<typeof CreateProjectSchema>;
 export const ProjectFormDefaults: ProjectFormValues = {
   name: "",
-  year: new Date().getFullYear(),
+  year: new Date().getFullYear().toString(),
   liveUrl: "",
   sourceCode: "",
   description: "",

@@ -1,20 +1,6 @@
 import { InferSchemaType, Model, Schema, model, models } from "mongoose";
 import slugify from "slugify";
 
-const imageSchema = new Schema(
-  {
-    url: {
-      type: String,
-      required: true,
-    },
-    publicId: {
-      type: String,
-      required: true,
-    },
-  },
-  { _id: false }
-);
-
 const projectSchema = new Schema(
   {
     name: {
@@ -51,16 +37,10 @@ const projectSchema = new Schema(
       required: true,
       default: [],
     },
-    thumbnail: String,
+    thumbnail: { type: String, required: true },
     images: {
-      type: [imageSchema],
+      type: [String],
       required: true,
-      validate: {
-        validator: function (this: any[]) {
-          return this.length > 0;
-        },
-        message: "At least One image is required",
-      },
     },
     slug: {
       type: String,

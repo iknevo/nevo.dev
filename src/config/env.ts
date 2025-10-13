@@ -20,6 +20,11 @@ export const env = {
     refreshExpiresIn: +getEnv("JWT_REFRESH_EXPIRES_IN"),
     accessExpiresIn: +getEnv("JWT_ACCESS_EXPIRES_IN"),
   },
+  cloudinary: {
+    cloud_name: getEnv("CLOUDINARY_CLOUD_NAME"),
+    api_key: getEnv("CLOUDINARY_API_KEY"),
+    api_secret: getEnv("CLOUDINARY_API_SECRET"),
+  },
   refreshCookiesMaxAge: 7 * 24 * 60 * 60, // 7 days
   resendKey: getEnv("RESEND_API_KEY"),
 };
