@@ -66,16 +66,16 @@ export default function Banner() {
   return (
     <section id="banner" className="relative">
       <div
-        className="container h-svh max-md:pb-10 flex lg:items-end justify-center gap-10 lg:gap-0 lg:justify-between max-md:flex-col"
+        className="h-svh flex lg:items-end justify-center gap-10 lg:gap-0 lg:justify-between max-md:flex-col"
         ref={containerRef}
       >
         <div className="max-md:flex flex-col justify-center self-center items-start max-w-[544px]">
-          <h1 className="banner-title slide-up-and-fade leading-[.95] text-6xl sm:text-[80px]">
+          <h1 className="banner-title slide-up-and-fade leading-[.95] text-5xl sm:text-[80px]">
             <span className="text-primary cursor">FRONTEND</span>
             <br /> <span className="lg:ml-4 cursor">DEVELOPER</span>
           </h1>
           <ShinyText
-            className="text-lg slide-up-and-fade cursor"
+            className="text-lg md:text-xl slide-up-and-fade cursor"
             text="
             Hi! I'm Ahmed also known as NEVO. A Frontend Developer with hands-on experience through
             building high-performance, scalable, and responsive web solutions.

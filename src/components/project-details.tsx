@@ -84,7 +84,7 @@ const ProjectDetails = ({ project }: Props) => {
   );
 
   return (
-    <section className="pt-5 pb-14">
+    <section className="pt-5 pb-14 px-6 md:px-0">
       <div className="container" ref={containerRef}>
         <TransitionLink
           back
@@ -98,7 +98,7 @@ const ProjectDetails = ({ project }: Props) => {
         <div className="top-0 min-h-[calc(100dvh-100px)] flex" id="info">
           <div className="relative w-full">
             <div className="flex items-start gap-6 mx-auto mb-10 max-w-7xl">
-              <h1 className="fade-in-later opacity-0 text-4xl md:text-6xl leading-none overflow-hidden">
+              <h1 className="fade-in-later opacity-0 text-3xl md:text-6xl leading-none overflow-hidden">
                 <span className="inline-block cursor">{project.title}</span>
               </h1>
 
