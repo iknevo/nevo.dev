@@ -1,3 +1,5 @@
+import { projectType } from "../models/project.model";
+
 export type Next_Page_Url = string;
 
 export type Variant =
@@ -13,14 +15,17 @@ export type Variant =
   | "no-color";
 
 export interface IProject {
-  title: string;
+  name: string;
   year: number;
   techStack: string[];
   thumbnail: string;
   images: string[];
-  slug: string;
-  liveUrl?: string;
-  sourceCode?: string;
-  description?: string;
-  role?: string;
+  slug?: string | null;
+  liveUrl?: string | null;
+  sourceCode?: string | null;
+  description: string;
 }
+
+export type ProjectResponse = Omit<projectType, "createdAt" | "updatedAt"> & {
+  _id: string;
+};

@@ -25,8 +25,8 @@ import {
 } from "@/src/components/ui/input-group";
 import { Textarea } from "@/src/components/ui/textarea";
 import {
+  CreateProjectFormValues,
   CreateProjectSchema,
-  ProjectFormValues,
 } from "@/src/definitions/projects.validations";
 // import { insertAccountSchema } from "@/src/db/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,8 +35,8 @@ import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 type Props = {
   id?: string;
-  defaultValues?: ProjectFormValues;
-  onSubmit: (values: ProjectFormValues) => void;
+  defaultValues?: CreateProjectFormValues;
+  onSubmit: (values: CreateProjectFormValues) => void;
   onDelete?: () => void;
   disabled?: boolean;
 };
@@ -48,7 +48,7 @@ export default function ProjectForm({
   onDelete,
   disabled,
 }: Props) {
-  const form = useForm<ProjectFormValues>({
+  const form = useForm<CreateProjectFormValues>({
     resolver: zodResolver(CreateProjectSchema),
     defaultValues: defaultValues,
   });
@@ -77,8 +77,10 @@ export default function ProjectForm({
     name: "images",
     control: form.control,
   });
-  const handleSubmit = (values: ProjectFormValues) => {
-    onSubmit(values);
+  const handleSubmit = (values: CreateProjectFormValues) => {
+    console.log(values);
+
+    // onSubmit(values);
   };
   const handleDelete = () => {
     onDelete?.();
@@ -219,6 +221,7 @@ export default function ProjectForm({
                       <InputGroup>
                         <InputGroupInput
                           type="file"
+                          disabled={disabled}
                           accept="image/*"
                           id={`image-input-${index}`}
                           onChange={(e) =>
@@ -234,6 +237,7 @@ export default function ProjectForm({
                           <InputGroupAddon align={"inline-end"}>
                             <InputGroupButton
                               type="button"
+                              disabled={disabled}
                               variant="ghost"
                               size="icon-xs"
                               onClick={() => removeImage(index)}
@@ -256,6 +260,7 @@ export default function ProjectForm({
               type="button"
               variant="outline"
               size="sm"
+              disabled={disabled}
               className="mb-2"
               onClick={() => addImage({ item: new File([], "") })}
             >
@@ -291,6 +296,7 @@ export default function ProjectForm({
                           placeholder="feature"
                           type="text"
                           className="flex-1 w-full"
+                          disabled={disabled}
                         />
                         {featuresFields.length > 1 && (
                           <InputGroupAddon align={"inline-end"}>
@@ -299,6 +305,7 @@ export default function ProjectForm({
                               variant="ghost"
                               size="icon-xs"
                               onClick={() => removeFeature(index)}
+                              disabled={disabled}
                               aria-label={`Remove feature ${index + 1}`}
                             >
                               <XIcon />
@@ -317,6 +324,7 @@ export default function ProjectForm({
             <Button
               type="button"
               variant="outline"
+              disabled={disabled}
               size="sm"
               className="mb-2"
               onClick={() => addFeature({ item: "" })}
@@ -352,6 +360,7 @@ export default function ProjectForm({
                           aria-invalid={fieldState.invalid}
                           placeholder="technology"
                           type="text"
+                          disabled={disabled}
                           className="flex-1 w-full"
                         />
                         {techStackFields.length > 1 && (
@@ -361,6 +370,7 @@ export default function ProjectForm({
                               variant="ghost"
                               size="icon-xs"
                               onClick={() => removeTechStack(index)}
+                              disabled={disabled}
                               aria-label={`Remove technology ${index + 1}`}
                             >
                               <XIcon />
@@ -381,6 +391,7 @@ export default function ProjectForm({
               variant="outline"
               size="sm"
               className="mb-2"
+              disabled={disabled}
               onClick={() => addTechStack({ item: "" })}
             >
               Add Technology

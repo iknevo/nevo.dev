@@ -3,8 +3,10 @@ import { cloudinary } from "@/src/lib/cloudinary";
 import dbConnect from "@/src/lib/db";
 import { authMiddleware } from "@/src/lib/jwt";
 import { Project } from "@/src/models/project.model";
+import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import status from "http-status";
+import { z } from "zod";
 
 const uploadToCloudinary = async (file: File, folder: string) => {
   const arrayBuffer = await file.arrayBuffer();
@@ -25,7 +27,7 @@ const uploadToCloudinary = async (file: File, folder: string) => {
 const app = new Hono()
   .get("/", async (c) => {
     await dbConnect();
-    const data = await Project.find();
+    const data = await Project.find().lean();
     if (!data)
       return c.json(
         { message: "Error getting projects!, Try again later" },
@@ -35,6 +37,27 @@ const app = new Hono()
       data,
     });
   })
+  .get(
+    "/:id",
+    zValidator(
+      "param",
+      z.object({
+        id: z.string().optional(),
+      })
+    ),
+    async (c) => {
+      const { id } = c.req.valid("param");
+      if (!id) {
+        return c.json({ error: "Missing project id" }, status.BAD_REQUEST);
+      }
+      await dbConnect();
+      const data = await Project.findById(id);
+      if (!data) {
+        return c.json({ error: "Not Found" }, 404);
+      }
+      return c.json({ data });
+    }
+  )
   .post("/", authMiddleware, async (c) => {
     await dbConnect();
     const body = await c.req.formData();

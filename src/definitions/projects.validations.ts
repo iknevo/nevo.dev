@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const CreateProjectSchema = z.object({
-  name: z.string().min(3),
+  name: z.string().min(3, "project's name is required"),
   year: z
     .string()
     .refine(
@@ -25,14 +25,17 @@ export const CreateProjectSchema = z.object({
       })
     )
     .min(1, "add at least one tech stack item"),
-  thumbnail: z
-    .instanceof(File)
-    .refine((file) => file.size > 0, { error: "Please add a thumbnail" }),
+  thumbnail: z.union([
+    z.string(),
+    z
+      .instanceof(File)
+      .refine((file) => file.size > 0, { error: "Please add a thumbnail" }),
+  ]),
   images: z
     .array(
       z.object({
         item: z
-          .union([z.instanceof(File), z.undefined()])
+          .union([z.string(), z.instanceof(File)])
           .refine(
             (f) => f instanceof File && f.size > 0,
             "Please upload an image"
@@ -42,8 +45,9 @@ export const CreateProjectSchema = z.object({
     .min(1, "Add at least one image"),
 });
 
-export type ProjectFormValues = z.infer<typeof CreateProjectSchema>;
-export const ProjectFormDefaults: ProjectFormValues = {
+export type CreateProjectFormValues = z.infer<typeof CreateProjectSchema>;
+
+export const ProjectFormDefaults: CreateProjectFormValues = {
   name: "",
   year: new Date().getFullYear().toString(),
   liveUrl: "",
@@ -52,5 +56,5 @@ export const ProjectFormDefaults: ProjectFormValues = {
   features: [{ item: "" }],
   techStack: [{ item: "" }],
   thumbnail: new File([], ""),
-  images: [{ item: undefined }],
+  images: [{ item: "" }],
 };

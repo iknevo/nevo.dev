@@ -1,24 +1,22 @@
 "use client";
 import SectionTitle from "@/src/components/section-title";
 import { Button } from "@/src/components/ui/button";
-import { PROJECTS } from "@/src/lib/data";
+import { Skeleton } from "@/src/components/ui/skeleton";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import { CirclePlus, Plus } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import { useGetProjects } from "./api/use-get-projects";
 import ProjectItem from "./project-item";
 import { useNewProject } from "./state/use-new-project";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function ProjectsPage() {
+  const { data: projects = [], isLoading } = useGetProjects();
   const { onOpen } = useNewProject();
   const containerRef = useRef<HTMLDivElement>(null);
   const projectListRef = useRef<HTMLDivElement>(null);
-  const [selectedProject, setSelectedProject] = useState<string | null>(
-    PROJECTS[0].slug
-  );
 
   useGSAP(
     () => {
@@ -40,14 +38,18 @@ export default function ProjectsPage() {
     { scope: containerRef }
   );
 
-  const handleMouseEnter = (slug: string) => {
-    if (window.innerWidth < 768) {
-      setSelectedProject(null);
-      return;
-    }
+  if (isLoading)
+    return (
+      <div className="space-y-2 dark py-20">
+        <Skeleton className="h-30 w-full" />
+        <Skeleton className="h-30 w-full" />
+        <Skeleton className="h-30 w-full" />
+        <Skeleton className="h-30 w-full" />
+      </div>
+    );
 
-    setSelectedProject(slug);
-  };
+  if (projects.length === 0)
+    return <div className="space-y-2 dark py-20">empty</div>;
   return (
     <div className="container">
       <div className="flex justify-between items-center">
@@ -56,20 +58,14 @@ export default function ProjectsPage() {
           className="flex items-center justify-center text-lg font-semibold"
           onClick={onOpen}
         >
-          <span>add project</span>
+          <span>Add</span>
         </Button>
       </div>
 
       <div className="group/projects relative" ref={containerRef}>
         <div className="flex flex-col max-md:gap-10" ref={projectListRef}>
-          {PROJECTS.map((project, index) => (
-            <ProjectItem
-              index={index}
-              project={project}
-              selectedProject={selectedProject}
-              onMouseEnter={handleMouseEnter}
-              key={project.slug}
-            />
+          {projects.map((project, index) => (
+            <ProjectItem index={index} project={project} key={project.slug} />
           ))}
         </div>
       </div>

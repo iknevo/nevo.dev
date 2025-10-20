@@ -45,6 +45,7 @@ const projectSchema = new Schema(
     slug: {
       type: String,
       unique: true,
+      required: true,
     },
     createdAt: {
       type: Date,
@@ -67,6 +68,6 @@ projectSchema.pre("save", async function (next) {
   next();
 });
 
-type projectType = InferSchemaType<typeof projectSchema>;
+export type projectType = InferSchemaType<typeof projectSchema>;
 export const Project: Model<projectType> =
   models.Project || model<projectType>("Project", projectSchema);
