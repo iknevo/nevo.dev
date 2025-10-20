@@ -1,4 +1,4 @@
-import { CreateProjectSchema } from "@/src/definitions/projects.validations";
+import { projectSchema } from "@/src/definitions/projects.validations";
 import { cloudinary } from "@/src/lib/cloudinary";
 import dbConnect from "@/src/lib/db";
 import { authMiddleware } from "@/src/lib/jwt";
@@ -66,8 +66,8 @@ const app = new Hono()
     const liveUrl = body.get("liveUrl");
     const sourceCode = body.get("sourceCode");
     const description = body.get("description");
-    const images = body.getAll("images");
     const thumbnail = body.get("thumbnail");
+    const image = body.get("image");
     const features = body.getAll("features");
     const techStack = body.getAll("techStack");
     const parsedData = {
@@ -79,10 +79,10 @@ const app = new Hono()
       features: features.map((f) => ({ item: f as string })),
       techStack: techStack.map((t) => ({ item: t as string })),
       thumbnail,
-      images: images.map((f) => ({ item: f as File })),
+      image
     };
 
-    const result = CreateProjectSchema.safeParse(parsedData);
+    const result = projectSchema.safeParse(parsedData);
 
     if (!result.success) {
       const errors = result.error.issues.map((err) => ({
@@ -94,17 +94,21 @@ const app = new Hono()
         status.BAD_REQUEST
       );
     }
-    const data = result.data;
-    const thumbnailUrl = await uploadToCloudinary(
-      data.thumbnail,
-      "projects/thumbnails"
-    );
-    const imageUrls = await Promise.all(
-      data.images.map((file) => {
-        if (file.item instanceof File)
-          return uploadToCloudinary(file.item, "projects/images");
-      })
-    );
+    const { data } = result;
+    let thumbnailUrl = data.thumbnail;
+    if (data.thumbnail instanceof File) {
+      thumbnailUrl = await uploadToCloudinary(
+        data.thumbnail,
+        "projects/thumbnails"
+      );
+    }
+    let imageUrl = data.image;
+    if (data.image instanceof File) {
+      imageUrl = await uploadToCloudinary(
+        data.image,
+        "projects/thumbnails"
+      );
+    }
     const newProject = {
       name: data.name,
       year: Number(data.year),
@@ -114,7 +118,7 @@ const app = new Hono()
       features: data.features.map((f) => f.item),
       techStack: data.techStack.map((t) => t.item),
       thumbnail: thumbnailUrl,
-      images: imageUrls,
+      image: imageUrl,
     };
     const project = await Project.create(newProject);
     if (!project) {

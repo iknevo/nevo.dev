@@ -5,17 +5,16 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/src/components/ui/sheet";
-// import { insertAccountSchema } from "@/src/db/schema";
 import {
-  CreateProjectSchema,
-  ProjectFormDefaults,
+  projectSchema,
+  projectFormDefaults,
 } from "@/src/definitions/projects.validations";
 import { z } from "zod";
 import useCreateProject from "./api/use-create-project";
 import ProjectForm from "./project-form";
 import { useNewProject } from "./state/use-new-project";
 
-type FormValues = z.input<typeof CreateProjectSchema>;
+type FormValues = z.input<typeof projectSchema>;
 
 export const NewProjectSheet = () => {
   const { isOpen, onClose } = useNewProject();
@@ -37,7 +36,7 @@ export const NewProjectSheet = () => {
         <ProjectForm
           onSubmit={onSubmit}
           disabled={isPending}
-          defaultValues={ProjectFormDefaults}
+          defaultValues={projectFormDefaults}
         />
       </SheetContent>
     </Sheet>

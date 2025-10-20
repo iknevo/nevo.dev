@@ -26,6 +26,7 @@ const projectSchema = new Schema(
     description: {
       type: String,
       trim: true,
+      required: [true, "A project must have a description"],
     },
     features: {
       type: [String],
@@ -38,15 +39,11 @@ const projectSchema = new Schema(
       default: [],
     },
     thumbnail: { type: String, required: true },
-    images: {
-      type: [String],
-      required: true,
-    },
-    slug: {
+    image: {
       type: String,
-      unique: true,
       required: true,
     },
+    slug: String,
     createdAt: {
       type: Date,
       default: Date.now(),

@@ -6,8 +6,7 @@ import {
   SheetTitle,
 } from "@/src/components/ui/sheet";
 import {
-  ProjectFormDefaults,
-  CreateProjectFormValues,
+  projectFormValues,
 } from "@/src/definitions/projects.validations";
 import { Loader2 } from "lucide-react";
 import { useGetProject } from "./api/use-get-project";
@@ -17,30 +16,23 @@ import { useOpenProject } from "./state/use-open-project";
 export const EditProjectSheet = () => {
   const { isOpen, onClose, id } = useOpenProject();
   const { data: project, isLoading: isLoadingProject } = useGetProject(id);
-  const defaultValues = project
-    ? {
-      ...project,
-      year: project.year.toString(),
-      liveUrl: project.liveUrl ?? "",
-      sourceCode: project.sourceCode ?? "",
-      description: project.description ?? "",
-      features: project.features.map((feat) => ({
-        item: feat,
-      })),
-      techStack: project.techStack.map((tech) => ({
-        item: tech,
-      })),
-      thumbnail: project.thumbnail ?? "",
-      images: project.images.map(img => ({ item: img })),
-    }
-    : ProjectFormDefaults;
-  console.log({ project });
+  const defaultValues = {
+    name: project?.name ?? "",
+    year: project?.year?.toString() ?? new Date().getFullYear().toString(),
+    liveUrl: project?.liveUrl ?? "",
+    sourceCode: project?.sourceCode ?? "",
+    description: project?.description ?? "",
+    features: project?.features?.map((item) => ({ item })) ?? [{ item: "" }],
+    techStack: project?.techStack?.map((item) => ({ item })) ?? [{ item: "" }],
+    thumbnail: project?.thumbnail ?? "",
+    image: project?.image ?? "",
+  };
 
-  const onSubmit = (values: CreateProjectFormValues) => {
+  const onSubmit = (values: projectFormValues) => {
     // createAccount(values, {
     //   onSuccess: onClose,
     // });
-    console.log("submit");
+    console.log("submit", values);
   };
 
   return (

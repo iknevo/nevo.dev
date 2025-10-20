@@ -1,4 +1,4 @@
-import { ProjectFormValues } from "@/src/definitions/projects.validations";
+import { projectFormValues } from "@/src/definitions/projects.validations";
 import { api } from "@/src/lib/hono";
 import { useMutation } from "@tanstack/react-query";
 import { InferResponseType } from "hono";
@@ -7,7 +7,7 @@ import { toast } from "sonner";
 type ResponseType = InferResponseType<typeof api.projects.$post>;
 
 export default function useCreateProject() {
-  return useMutation<ResponseType, Error, ProjectFormValues>({
+  return useMutation<ResponseType, Error, projectFormValues>({
     mutationFn: async (values) => {
       const formData = new FormData();
 
@@ -16,14 +16,8 @@ export default function useCreateProject() {
       formData.append("liveUrl", values.liveUrl);
       formData.append("sourceCode", values.sourceCode);
       formData.append("description", values.description);
-
-      // Thumbnail (single)
       formData.append("thumbnail", values.thumbnail);
-
-      // Multiple image files
-      values.images.forEach((img) => {
-        if (img.item) formData.append("images", img.item);
-      });
+      formData.append("image", values.image);
 
       values.features.forEach((feat) => {
         if (feat.item) formData.append("features", feat.item);

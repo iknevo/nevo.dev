@@ -25,18 +25,17 @@ import {
 } from "@/src/components/ui/input-group";
 import { Textarea } from "@/src/components/ui/textarea";
 import {
-  CreateProjectFormValues,
-  CreateProjectSchema,
+  projectFormValues,
+  projectSchema,
 } from "@/src/definitions/projects.validations";
-// import { insertAccountSchema } from "@/src/db/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash, XIcon } from "lucide-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 type Props = {
   id?: string;
-  defaultValues?: CreateProjectFormValues;
-  onSubmit: (values: CreateProjectFormValues) => void;
+  defaultValues?: projectFormValues;
+  onSubmit: (values: projectFormValues) => void;
   onDelete?: () => void;
   disabled?: boolean;
 };
@@ -48,8 +47,8 @@ export default function ProjectForm({
   onDelete,
   disabled,
 }: Props) {
-  const form = useForm<CreateProjectFormValues>({
-    resolver: zodResolver(CreateProjectSchema),
+  const form = useForm<projectFormValues>({
+    resolver: zodResolver(projectSchema),
     defaultValues: defaultValues,
   });
   const {
@@ -68,19 +67,10 @@ export default function ProjectForm({
     name: "features",
     control: form.control,
   });
-
-  const {
-    fields: imagesFields,
-    append: addImage,
-    remove: removeImage,
-  } = useFieldArray({
-    name: "images",
-    control: form.control,
-  });
-  const handleSubmit = (values: CreateProjectFormValues) => {
+  const handleSubmit = (values: projectFormValues) => {
     console.log(values);
 
-    // onSubmit(values);
+    onSubmit(values);
   };
   const handleDelete = () => {
     onDelete?.();
@@ -202,75 +192,29 @@ export default function ProjectForm({
           )}
         />
 
-        <FieldSet className="gap-4">
-          <FieldLegend variant="label">Images</FieldLegend>
-          <FieldDescription>add project&apos;s images</FieldDescription>
-          <FieldGroup className="gap-4">
-            {imagesFields.map((field, index) => (
-              <Controller
-                key={field.id}
-                name={`images.${index}.item`}
-                control={form.control}
-                render={({ field: controllerField, fieldState }) => (
-                  <Field
-                    orientation="horizontal"
-                    data-invalid={fieldState.invalid}
-                    className="w-full"
-                  >
-                    <FieldContent className="flex-1 w-full">
-                      <InputGroup>
-                        <InputGroupInput
-                          type="file"
-                          disabled={disabled}
-                          accept="image/*"
-                          id={`image-input-${index}`}
-                          onChange={(e) =>
-                            controllerField.onChange(
-                              e.target.files?.[0] ?? undefined
-                            )
-                          }
-                          name={controllerField.name}
-                          ref={controllerField.ref}
-                          className="flex-1 w-full"
-                        />
-                        {imagesFields.length > 1 && (
-                          <InputGroupAddon align={"inline-end"}>
-                            <InputGroupButton
-                              type="button"
-                              disabled={disabled}
-                              variant="ghost"
-                              size="icon-xs"
-                              onClick={() => removeImage(index)}
-                              aria-label={`Remove image ${index + 1}`}
-                            >
-                              <XIcon />
-                            </InputGroupButton>
-                          </InputGroupAddon>
-                        )}
-                      </InputGroup>
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </FieldContent>
-                  </Field>
-                )}
-              />
-            ))}
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              disabled={disabled}
-              className="mb-2"
-              onClick={() => addImage({ item: new File([], "") })}
-            >
-              Add Image
-            </Button>
-          </FieldGroup>
-          {form.formState.errors.images?.root && (
-            <FieldError errors={[form.formState.errors.images.root]} />
+
+        <FormField
+          name="image"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Image</FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    field.onChange(file ?? new File([], ""));
+                  }}
+                  name={field.name}
+                  ref={field.ref}
+                  disabled={disabled}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
-        </FieldSet>
+        />
 
         <FieldSet className="gap-4">
           <FieldLegend variant="label">Features</FieldLegend>
