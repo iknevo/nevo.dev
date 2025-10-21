@@ -13,22 +13,29 @@ import { z } from "zod";
 import useCreateProject from "./api/use-create-project";
 import ProjectForm from "./project-form";
 import { useNewProject } from "./state/use-new-project";
+import { useQueryClient } from "@tanstack/react-query";
 
 type FormValues = z.input<typeof projectSchema>;
 
 export const NewProjectSheet = () => {
   const { isOpen, onClose } = useNewProject();
   const { mutate: createAccount, isPending } = useCreateProject();
+  const queryClient = useQueryClient()
 
   const onSubmit = (values: FormValues) => {
     createAccount(values, {
-      onSuccess: onClose,
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["projects"]
+        });
+        onClose();
+      },
     });
   };
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="space-y-4 dark sm:max-w-xl">
+      <SheetContent className="space-y-4 dark sm:max-w-md">
         <SheetHeader>
           <SheetTitle>New Project</SheetTitle>
           <SheetDescription>Create a new project</SheetDescription>

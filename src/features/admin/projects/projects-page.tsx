@@ -1,7 +1,6 @@
 "use client";
 import SectionTitle from "@/src/components/section-title";
 import { Button } from "@/src/components/ui/button";
-import { Skeleton } from "@/src/components/ui/skeleton";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
@@ -9,6 +8,7 @@ import { useRef } from "react";
 import { useGetProjects } from "./api/use-get-projects";
 import ProjectItem from "./project-item";
 import { useNewProject } from "./state/use-new-project";
+import { Loader2 } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -40,27 +40,27 @@ export default function ProjectsPage() {
 
   if (isLoading)
     return (
-      <div className="space-y-2 dark py-20">
-        <Skeleton className="h-30 w-full" />
-        <Skeleton className="h-30 w-full" />
-        <Skeleton className="h-30 w-full" />
-        <Skeleton className="h-30 w-full" />
+      <div className="flex justify-center py-20">
+        <Loader2 className="animate-spin size-20 text-gray-500" />
       </div>
     );
 
-  if (projects.length === 0)
-    return <div className="space-y-2 dark py-20">empty</div>;
   return (
     <div className="container">
-      <div className="flex justify-between items-center">
-        <SectionTitle title="PROJECTS" />
+      <div className="flex justify-between items-center mb-10">
+        <SectionTitle title="PROJECTS" className="mb-0" />
         <Button
-          className="flex items-center justify-center text-lg font-semibold"
+          className="flex items-center justify-center text-lg font-semibold dark"
+          variant={"outline"}
           onClick={onOpen}
         >
           <span>Add</span>
         </Button>
       </div>
+
+      {projects.length === 0 && <p className="py-10 text-center dark text-muted-foreground text-3xl">
+        There&apos;s no projects added yet
+      </p>}
 
       <div className="group/projects relative" ref={containerRef}>
         <div className="flex flex-col max-md:gap-10" ref={projectListRef}>

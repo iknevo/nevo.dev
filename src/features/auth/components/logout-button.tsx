@@ -1,5 +1,5 @@
 "use client";
-import Button from "@/src/components/button";
+import { Button } from "@/src/components/ui/button";
 import useLogout from "@/src/features/auth/api/use-logout";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -17,9 +17,9 @@ export default function LogoutButton() {
   };
   return (
     <Button
-      as="button"
+      size="lg"
       disabled={isPending}
-      className="rounded-md cursor h-10 px-4 text-sm font-bold"
+      className="cursor text-sm font-bold"
       onClick={handleLogout}
     >
       {isPending ? <Loader2 className="animate-spin" /> : "Logout"}
