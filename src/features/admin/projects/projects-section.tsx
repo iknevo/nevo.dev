@@ -4,15 +4,15 @@ import { Button } from "@/src/components/ui/button";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
+import { Loader2 } from "lucide-react";
 import { useRef } from "react";
 import { useGetProjects } from "./api/use-get-projects";
 import ProjectItem from "./project-item";
 import { useNewProject } from "./state/use-new-project";
-import { Loader2 } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-export default function ProjectsPage() {
+export default function ProjectsSection() {
   const { data: projects = [], isLoading } = useGetProjects();
   const { onOpen } = useNewProject();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -54,13 +54,15 @@ export default function ProjectsPage() {
           variant={"outline"}
           onClick={onOpen}
         >
-          <span>Add</span>
+          <span>ADD ITEM</span>
         </Button>
       </div>
 
-      {projects.length === 0 && <p className="py-10 text-center dark text-muted-foreground text-3xl">
-        There&apos;s no projects added yet
-      </p>}
+      {projects.length === 0 && (
+        <p className="py-10 text-center dark text-muted-foreground text-3xl">
+          There&apos;s no projects added yet
+        </p>
+      )}
 
       <div className="group/projects relative" ref={containerRef}>
         <div className="flex flex-col max-md:gap-10" ref={projectListRef}>

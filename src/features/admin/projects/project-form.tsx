@@ -27,7 +27,7 @@ import { Textarea } from "@/src/components/ui/textarea";
 import {
   projectFormValues,
   projectSchema,
-} from "@/src/definitions/projects.validations";
+} from "@/src/definitions/projects-validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash, XIcon } from "lucide-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
@@ -191,7 +191,6 @@ export default function ProjectForm({
             </FormItem>
           )}
         />
-
 
         <FormField
           name="image"

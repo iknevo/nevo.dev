@@ -5,7 +5,7 @@ import { ZodType } from "zod";
 
 export const zValidator = <
   T extends ZodType,
-  Target extends keyof ValidationTargets
+  Target extends keyof ValidationTargets,
 >(
   target: Target,
   schema: T
@@ -18,7 +18,7 @@ export const zValidator = <
         return `${field}: ${error.message}`;
       });
       return c.json(
-        { sucees: false, errors: errorMessages },
+        { success: false, errors: errorMessages },
         status.BAD_REQUEST
       );
     }

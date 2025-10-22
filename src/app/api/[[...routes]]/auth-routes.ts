@@ -3,13 +3,13 @@ import {
   LoginFormSchema,
   PasswordResetSchema,
   PasswordUpdateSchema,
-} from "@/src/definitions/auth.validations";
+} from "@/src/definitions/auth-validations";
 import dbConnect from "@/src/lib/db";
 import { sendEmail } from "@/src/lib/email";
 import type { AccessPayload } from "@/src/lib/jwt";
 import { authMiddleware, sendTokens } from "@/src/lib/jwt";
 import { zValidator } from "@/src/lib/zod-wrapper";
-import { User } from "@/src/models/user.model";
+import { User } from "@/src/models/user-model";
 import { createHash } from "crypto";
 import { Hono } from "hono";
 import { deleteCookie } from "hono/cookie";
@@ -146,7 +146,6 @@ const app = new Hono<Env>()
       user.passwordResetToken = undefined;
       user.passwordResetExpires = undefined;
       await user.save();
-
       await sendTokens(c, user._id.toString());
       return c.json(
         {
@@ -179,7 +178,6 @@ const app = new Hono<Env>()
       user.password = password;
       user.passwordConfirm = passwordConfirm;
       await user.save();
-
       await sendTokens(c, user._id.toString());
       return c.json(
         {

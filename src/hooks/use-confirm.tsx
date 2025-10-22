@@ -13,7 +13,7 @@ type Options = {
   title: string;
   message: string;
 };
-export default function useConfirm(): [
+export function useConfirm(): [
   () => JSX.Element,
   ({ title, message }: Options) => Promise<boolean>,
 ] {

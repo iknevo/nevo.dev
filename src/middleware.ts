@@ -5,7 +5,6 @@ import { verifyRefreshToken } from "./lib/jwt";
 export async function middleware(req: NextRequest) {
   const { pathname, searchParams } = req.nextUrl;
   const refreshToken = req.cookies.get("refreshToken")?.value;
-
   if (pathname.startsWith("/auth") && refreshToken) {
     const decoded = (await verifyRefreshToken(refreshToken)) as {
       id: string;
@@ -15,25 +14,19 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL(redirectTo, req.url));
     }
   }
-
   if (!pathname.startsWith("/admin")) {
     return NextResponse.next();
   }
-
   if (!refreshToken) {
     return redirectToLogin(req);
   }
-
   try {
     const decoded = (await verifyRefreshToken(refreshToken)) as { id?: string };
-
     if (!decoded?.id) {
       return redirectToLogin(req);
     }
-
     const requestHeaders = new Headers(req.headers);
     requestHeaders.set("x-user-id", decoded.id);
-
     return NextResponse.next({
       request: { headers: requestHeaders },
     });

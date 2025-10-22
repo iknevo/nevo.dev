@@ -10,7 +10,7 @@ type RequestType = InferRequestType<
   (typeof api.auth)["reset-password"][":token"]["$patch"]
 >["json"];
 
-export default function useResetPassword(token: string) {
+export function useResetPassword(token: string) {
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (json) => {
       const res = await api.auth["reset-password"][":token"].$patch({

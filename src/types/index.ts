@@ -1,4 +1,4 @@
-import { projectType } from "../models/project.model";
+import { projectType } from "../models/project-model";
 
 export type Next_Page_Url = string;
 
@@ -15,6 +15,7 @@ export type Variant =
   | "no-color";
 
 export interface IProject {
+  _id: string;
   name: string;
   year: number;
   techStack: string[];

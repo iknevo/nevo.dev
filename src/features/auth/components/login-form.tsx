@@ -10,9 +10,9 @@ import {
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
 import { InputPassword } from "@/src/components/ui/input-password";
-import { LoginFormSchema } from "@/src/definitions/auth.validations";
-import useForgetPassword from "@/src/features/auth/api/use-forget-password";
-import useLogin from "@/src/features/auth/api/use-login";
+import { LoginFormSchema } from "@/src/definitions/auth-validations";
+import { useForgetPassword } from "@/src/features/auth/api/use-forget-password";
+import { useLogin } from "@/src/features/auth/api/use-login";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";

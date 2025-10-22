@@ -1,13 +1,12 @@
-
-import { projectFormValues } from "@/src/definitions/projects.validations";
+import { projectFormValues } from "@/src/definitions/projects-validations";
 import { api } from "@/src/lib/hono";
 import { useMutation } from "@tanstack/react-query";
 import { InferResponseType } from "hono";
 import { toast } from "sonner";
 
-type ResponseType = InferResponseType<typeof api.projects[":id"]["$patch"]>;
+type ResponseType = InferResponseType<(typeof api.projects)[":id"]["$patch"]>;
 
-export default function useUpdateProject(id?: string) {
+export function useUpdateProject(id?: string) {
   return useMutation({
     mutationFn: async (values: projectFormValues): Promise<ResponseType> => {
       const formData = new FormData();
@@ -32,12 +31,8 @@ export default function useUpdateProject(id?: string) {
       });
 
       if (!res.ok) {
-        try {
-          const errData = await res.json();
-          throw new Error(errData.message || `Request failed (${res.status})`);
-        } catch {
-          throw new Error(`Request failed (${res.status})`);
-        }
+        const errData = await res.json();
+        throw new Error(errData.message || `Request failed (${res.status})`);
       }
 
       const data = await res.json();

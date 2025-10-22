@@ -10,7 +10,7 @@ type RequestType = InferRequestType<
   (typeof api.auth)["update-password"]["$patch"]
 >["json"];
 
-export default function useUpdatePassword() {
+export function useUpdatePassword() {
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (json) => {
       const res = await api.auth["update-password"].$patch({

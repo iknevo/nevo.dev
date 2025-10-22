@@ -9,14 +9,14 @@ import {
   FormMessage,
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
-import { PasswordUpdateSchema } from "@/src/definitions/auth.validations";
+import { PasswordUpdateSchema } from "@/src/definitions/auth-validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import useUpdatePassword from "../api/use-update-password";
+import { useUpdatePassword } from "../api/use-update-password";
 
 type FormValues = z.input<typeof PasswordUpdateSchema>;
 export default function UpdatePasswordForm() {

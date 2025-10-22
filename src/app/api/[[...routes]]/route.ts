@@ -3,12 +3,17 @@ import { Hono } from "hono";
 import { logger } from "hono/logger";
 import { handle } from "hono/vercel";
 import status from "http-status";
-import auth from "./auth.route";
-import projects from "./projects.route";
-
+import auth from "./auth-routes";
+import projects from "./project-routes";
+import stack from "./stack-routes";
 
 const app = new Hono().basePath("/api");
-const routes = app.route("/auth", auth).route("/projects", projects);
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const routes = app
+  .route("/auth", auth)
+  .route("/projects", projects)
+  .route("/stack", stack);
 
 app.use(logger());
 app.onError(errorHandler);

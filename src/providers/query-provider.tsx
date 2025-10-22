@@ -31,7 +31,6 @@ type Props = {
 };
 export function QueryProvider({ children }: Props) {
   const queryClient = getQueryClient();
-
   return (
     <QueryClientProvider client={queryClient}>
       {children}

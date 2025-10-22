@@ -9,14 +9,14 @@ import {
   FormMessage,
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
-import { PasswordResetSchema } from "@/src/definitions/auth.validations";
+import { PasswordResetSchema } from "@/src/definitions/auth-validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import useResetPassword from "../api/use-reset-password";
+import { useResetPassword } from "../api/use-reset-password";
 
 type FormValues = z.input<typeof PasswordResetSchema>;
 type Props = {

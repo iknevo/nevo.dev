@@ -10,7 +10,7 @@ type RequestType = InferRequestType<
   (typeof api.auth)["forgot-password"]["$post"]
 >["json"];
 
-export default function useForgetPassword() {
+export function useForgetPassword() {
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (json) => {
       const res = await api.auth["forgot-password"].$post({ json });

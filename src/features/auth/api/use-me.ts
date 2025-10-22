@@ -1,8 +1,7 @@
-// import { useAuthState } from "@/src/features/auth/state/auth-state";
 import { api } from "@/src/lib/hono";
 import { useQuery } from "@tanstack/react-query";
 
-export default function useMe() {
+export function useMe() {
   const query = useQuery({
     queryKey: ["me"],
     queryFn: async () => {

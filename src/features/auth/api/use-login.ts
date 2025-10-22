@@ -6,7 +6,7 @@ import { toast } from "sonner";
 type ResponseType = InferResponseType<typeof api.auth.login.$post>;
 type RequestType = InferRequestType<typeof api.auth.login.$post>["json"];
 
-export default function useLogin() {
+export function useLogin() {
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (json) => {
       const res = await api.auth.login.$post({ json });

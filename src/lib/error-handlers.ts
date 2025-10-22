@@ -28,7 +28,7 @@ export function handleDuplicateErr(err: any) {
 }
 export function handleValidationErr(err: any) {
   const errors = Object.values(err.errors).map((el: any) => el.message);
-  const message = `Invalid input data. ${errors.join(". ")}`;
+  const message = `Invalid input. ${errors.join(". ")}`;
   return new AppError(message, status.BAD_REQUEST);
 }
 function sendError(err: any, c: Context) {

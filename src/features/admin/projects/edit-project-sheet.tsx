@@ -5,23 +5,23 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/src/components/ui/sheet";
-import {
-  projectFormValues,
-} from "@/src/definitions/projects.validations";
+import { projectFormValues } from "@/src/definitions/projects-validations";
+import { useConfirm } from "@/src/hooks/use-confirm";
+import { useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
+import { useDeleteProject } from "./api/use-delete-project";
 import { useGetProject } from "./api/use-get-project";
+import { useUpdateProject } from "./api/use-update-project";
 import ProjectForm from "./project-form";
 import { useOpenProject } from "./state/use-open-project";
-import useUpdateProject from "./api/use-update-project";
-import { useQueryClient } from "@tanstack/react-query";
-import { useDeleteProject } from "./api/use-delete-project";
-import useConfirm from "@/src/hooks/use-confirm";
 
 export const EditProjectSheet = () => {
   const { isOpen, onClose, id } = useOpenProject();
   const { data: project, isLoading: isLoadingProject } = useGetProject(id);
-  const { mutate: updateProject, isPending: isUpdatingProject } = useUpdateProject(id)
-  const { mutate: deleteProject, isPending: isDeletingProject } = useDeleteProject(id)
+  const { mutate: updateProject, isPending: isUpdatingProject } =
+    useUpdateProject(id);
+  const { mutate: deleteProject, isPending: isDeletingProject } =
+    useDeleteProject(id);
   const [ConfirmDialog, confirm] = useConfirm();
   const isDisabled = isLoadingProject || isUpdatingProject || isDeletingProject;
   const queryClient = useQueryClient();
@@ -41,29 +41,29 @@ export const EditProjectSheet = () => {
     updateProject(values, {
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ["projects"]
-        })
+          queryKey: ["projects"],
+        });
         queryClient.invalidateQueries({
-          queryKey: ["project", id]
-        })
+          queryKey: ["project", id],
+        });
         onClose();
-      }
+      },
     });
   };
 
   const onDelete = async () => {
     const ok = await confirm({
       title: "Are You Sure?",
-      message: "You are about to delete this project."
+      message: "You are about to delete this project.",
     });
     if (ok) {
       deleteProject(undefined, {
         onSuccess: () => {
           onClose();
-        }
-      })
+        },
+      });
     }
-  }
+  };
 
   return (
     <>
@@ -87,19 +87,9 @@ export const EditProjectSheet = () => {
               disabled={isDisabled}
               defaultValues={defaultValues}
             />
-          )
-          }
-
+          )}
         </SheetContent>
       </Sheet>
     </>
-  )
-}
-
-
-
-
-
-
-
-
+  );
+};

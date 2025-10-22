@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 type ResponseType = InferResponseType<typeof api.auth.logout.$post>;
 
-export default function useLogout() {
+export function useLogout() {
   const mutation = useMutation<ResponseType, Error>({
     mutationFn: async () => {
       const res = await api.auth.logout.$post();
