@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/src/components/ui/select";
+import { STACK } from "@/src/config/constants";
 import {
   stackFormValues,
   stackSchema,
@@ -112,10 +113,10 @@ export default function StackForm({
                     <SelectValue placeholder="Front-End" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="frontend">Front-End</SelectItem>
-                    <SelectItem value="backend">Back-End</SelectItem>
-                    <SelectItem value="tools">Tools</SelectItem>
-                    <SelectItem value="studying">Studying</SelectItem>
+                    <SelectItem value={STACK.frontend}>Front-End</SelectItem>
+                    <SelectItem value={STACK.backend}>Back-End</SelectItem>
+                    <SelectItem value={STACK.tools}>Tools</SelectItem>
+                    <SelectItem value={STACK.studying}>Studying</SelectItem>
                   </SelectContent>
                 </Select>
               </FormControl>

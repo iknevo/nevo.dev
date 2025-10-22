@@ -50,7 +50,7 @@ export default function StackSection() {
           {stack.map(({ type, items }) => (
             <div className="grid md:grid-cols-12" key={type}>
               <div className="md:col-span-5">
-                <p className="slide-up text-5xl leading-none text-white/80 uppercase">
+                <p className="text-5xl leading-none text-white/80 uppercase">
                   {type}
                 </p>
               </div>
@@ -58,7 +58,7 @@ export default function StackSection() {
               <div className="md:col-span-7 flex gap-x-11 gap-y-9 flex-wrap">
                 {items.map((item) => (
                   <div
-                    className="slide-up flex gap-3.5 items-center leading-none"
+                    className="cursor flex gap-3.5 items-center leading-none"
                     key={item._id}
                     onClick={() => onOpenEdit(item._id)}
                   >

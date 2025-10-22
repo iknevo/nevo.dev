@@ -1,5 +1,6 @@
 "use client";
 import { Skeleton } from "@/src/components/ui/skeleton";
+import Link from "next/link";
 import { useMe } from "../auth/api/use-me";
 import LogoutButton from "../auth/components/logout-button";
 
@@ -16,7 +17,9 @@ export const AdminHeader = () => {
   const { user } = meQuery.data;
   return (
     <div className="flex justify-between items-center">
-      <p className="text-2xl">{user.name.toUpperCase()}</p>
+      <Link href="/" className="text-2xl">
+        {user.name.toUpperCase()}
+      </Link>
       <LogoutButton />
     </div>
   );
