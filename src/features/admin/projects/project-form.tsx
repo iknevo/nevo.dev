@@ -68,8 +68,6 @@ export default function ProjectForm({
     control: form.control,
   });
   const handleSubmit = (values: projectFormValues) => {
-    console.log(values);
-
     onSubmit(values);
   };
   const handleDelete = () => {

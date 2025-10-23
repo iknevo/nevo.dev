@@ -14,8 +14,6 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function StackSection() {
   const { data: stack = [], isLoading } = useGetStack();
-  console.log(stack);
-
   const { onOpen } = useNewStack();
   const { onOpen: onOpenEdit } = useOpenStack();
 

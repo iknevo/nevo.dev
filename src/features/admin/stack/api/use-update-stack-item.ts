@@ -10,7 +10,6 @@ export function useUpdateStackItem(id?: string) {
   return useMutation({
     mutationFn: async (values: stackFormValues): Promise<ResponseType> => {
       const formData = new FormData();
-
       formData.append("name", values.name);
       formData.append("icon", values.icon);
       formData.append("type", values.type);
@@ -26,7 +25,7 @@ export function useUpdateStackItem(id?: string) {
       }
 
       const data = await res.json();
-      toast.success("Project Updated");
+      toast.success("Stack item Updated");
       return data;
     },
     onError: (err) => {

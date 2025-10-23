@@ -1,9 +1,9 @@
 import { api } from "@/src/lib/hono";
-import { IProject } from "@/src/types";
+import { ProjectResponse } from "@/src/types";
 import { useQuery } from "@tanstack/react-query";
 
 export function useGetProjects() {
-  const query = useQuery<IProject[]>({
+  const query = useQuery<ProjectResponse[]>({
     queryKey: ["projects"],
     queryFn: async () => {
       const res = await api.projects.$get();

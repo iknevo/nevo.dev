@@ -1,9 +1,9 @@
-import { IProject } from "@/src/types";
+import { ProjectResponse } from "@/src/types";
 import { useOpenProject } from "./state/use-open-project";
 
 interface Props {
   index: number;
-  project: IProject;
+  project: ProjectResponse;
 }
 
 export default function ProjectItem({ index, project }: Props) {

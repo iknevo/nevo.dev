@@ -27,6 +27,10 @@ export interface IProject {
   description: string;
 }
 
-export type ProjectResponse = Omit<projectType, "createdAt" | "updatedAt"> & {
+export type ProjectResponse = Omit<
+  projectType,
+  "createdAt" | "updatedAt" | "slug"
+> & {
   _id: string;
+  slug: string;
 };
