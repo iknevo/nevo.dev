@@ -1,3 +1,4 @@
+import Cursor from "@/src/components/cursor";
 import LoginForm from "@/src/features/auth/components/login-form";
 import { Metadata } from "next";
 
@@ -9,6 +10,7 @@ export default function Page() {
   return (
     <div className="h-screen grid place-items-center">
       <LoginForm />
+      <Cursor />
     </div>
   );
 }

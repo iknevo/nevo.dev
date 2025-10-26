@@ -1,3 +1,4 @@
+import Cursor from "@/src/components/cursor";
 import ResetPasswordForm from "@/src/features/auth/components/reset-password-form";
 import { Metadata } from "next";
 
@@ -14,6 +15,7 @@ export default async function Page({
   return (
     <div className="h-screen grid place-items-center">
       <ResetPasswordForm token={token} />
+      <Cursor />
     </div>
   );
 }

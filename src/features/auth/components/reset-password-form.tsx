@@ -8,7 +8,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/src/components/ui/form";
-import { Input } from "@/src/components/ui/input";
 import { PasswordResetSchema } from "@/src/definitions/auth-validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
@@ -17,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useResetPassword } from "../api/use-reset-password";
+import { InputPassword } from "@/src/components/ui/input-password";
 
 type FormValues = z.input<typeof PasswordResetSchema>;
 type Props = {
@@ -59,7 +59,7 @@ export default function ResetPasswordForm({ token }: Props) {
                 <FormMessage />
               </div>
               <FormControl>
-                <Input
+                <InputPassword
                   {...field}
                   disabled={isPending}
                   type="password"
@@ -80,7 +80,7 @@ export default function ResetPasswordForm({ token }: Props) {
                 <FormMessage />
               </div>
               <FormControl>
-                <Input
+                <InputPassword
                   {...field}
                   disabled={isPending}
                   type="password"
