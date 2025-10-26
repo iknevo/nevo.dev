@@ -62,7 +62,6 @@ export default function ResetPasswordForm({ token }: Props) {
                 <InputPassword
                   {...field}
                   disabled={isPending}
-                  type="password"
                   placeholder="password"
                   className="md:py-6"
                 />
@@ -83,7 +82,6 @@ export default function ResetPasswordForm({ token }: Props) {
                 <InputPassword
                   {...field}
                   disabled={isPending}
-                  type="password"
                   placeholder="confirm your password"
                   className="md:py-6"
                 />
