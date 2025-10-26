@@ -1,14 +1,14 @@
 "use client";
 import Project from "@/src/components/project";
 import SectionTitle from "@/src/components/section-title";
+import { useGetProjects } from "@/src/features/admin/projects/api/use-get-projects";
 import { cn } from "@/src/lib/utils";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
+import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { MouseEvent, useEffect, useRef, useState } from "react";
-import { useGetProjects } from "@/src/features/admin/projects/api/use-get-projects";
-import { Loader2 } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -71,7 +71,7 @@ export default function ProjectList() {
         window.removeEventListener("mousemove", handleMouseMove);
       };
     },
-    { scope: containerRef, dependencies: [containerRef.current, projects] },
+    { scope: containerRef, dependencies: [containerRef.current, projects] }
   );
 
   useGSAP(
@@ -91,7 +91,7 @@ export default function ProjectList() {
         opacity: 0,
       });
     },
-    { scope: containerRef, dependencies: [projects] },
+    { scope: containerRef, dependencies: [projects] }
   );
 
   const handleMouseEnter = (slug: string) => {
@@ -133,7 +133,7 @@ export default function ProjectList() {
                       "absolute inset-0 transition-all duration-500 w-full h-full object-contain object-top",
                       {
                         "opacity-0": project.slug !== selectedProject,
-                      },
+                      }
                     )}
                     ref={imageRef}
                     key={project.slug}

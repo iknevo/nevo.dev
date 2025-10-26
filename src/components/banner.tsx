@@ -66,10 +66,10 @@ export default function Banner() {
   return (
     <section id="banner" className="relative">
       <div
-        className="container h-svh max-md:pb-10 flex lg:items-end justify-center gap-10 lg:gap-0 lg:justify-between max-md:flex-col"
+        className="container h-svh max-md:pb-10 flex lg:items-end justify-center gap-10 lg:gap-0 lg:justify-between max-lg:flex-col"
         ref={containerRef}
       >
-        <div className="max-md:flex flex-col justify-center self-center items-start max-w-[544px]">
+        <div className="max-lg:flex flex-col justify-center self-center items-start max-w-[544px]">
           <h1 className="banner-title slide-up-and-fade leading-[.95] text-6xl sm:text-[80px]">
             <span className="text-primary cursor">FRONTEND</span>
             <br /> <span className="lg:ml-4 cursor">DEVELOPER</span>
@@ -98,7 +98,7 @@ export default function Banner() {
         <div className={`cursor lg:mb-20`}>
           <code
             ref={codeRef}
-            className="text-white slide-up-and-fade hidden md:flex flex-col text-xs md:text-sm tracking-widest"
+            className="text-white slide-up-and-fade hidden lg:flex flex-col text-xs md:text-sm tracking-widest"
           >
             <span className="block text-lg font-bold text-primary">
               {"<span>"}
@@ -125,11 +125,11 @@ export default function Banner() {
             </span>
           </code>
 
-          <code className="text-white slide-up-and-fade flex md:hidden flex-col text-xs md:text-sm tracking-widest">
+          <code className="text-white slide-up-and-fade flex lg:hidden flex-col text-xs lg:text-sm tracking-widest">
             <span className="block text-lg font-bold text-primary">
               {"<span>"}
             </span>
-            <div className="inline-block md:translate-x-5 leading-7">
+            <div className="inline-block lg:translate-x-5 leading-7">
               <span className="ms-4 inline-block">
                 Proficient in the latest web technologies and frameworks,
                 continuously expanding my skill set to stay at the forefront of

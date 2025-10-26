@@ -4,12 +4,18 @@ import { MY_EXPERIENCE } from "@/src/lib/data";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export default function Experiences() {
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
+  }, []);
 
   useGSAP(
     () => {

@@ -4,26 +4,23 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { ArrowLeft, Code, ExternalLink, Loader2 } from "lucide-react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useGetProject } from "../features/admin/projects/api/use-get-project";
 
 interface Props {
   id: string;
 }
-
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const ProjectDetails = ({ id }: Props) => {
+export default function ProjectDetails({ id }: Props) {
   const { data: project, isLoading } = useGetProject(id);
-
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(
-    () => {
+  useEffect(() => {
+    setTimeout(() => {
       ScrollTrigger.refresh();
-    },
-    { dependencies: [project, isLoading] },
-  );
+    }, 100);
+  }, [project, isLoading]);
 
   useGSAP(
     () => {
@@ -36,22 +33,19 @@ const ProjectDetails = ({ id }: Props) => {
       const tl = gsap.timeline({
         delay: 0.5,
       });
-
       tl.to(".fade-in-later", {
         autoAlpha: 1,
         y: 0,
         stagger: 0.1,
       });
-
       return () => {
         tl.kill();
         ScrollTrigger.getAll().forEach((st) => st.kill());
       };
     },
-    { scope: containerRef, dependencies: [project, isLoading] },
+    { scope: containerRef, dependencies: [project, isLoading] }
   );
 
-  // blur info div and make it smaller on scroll
   useGSAP(
     () => {
       if (!containerRef.current || !project) return;
@@ -71,49 +65,12 @@ const ProjectDetails = ({ id }: Props) => {
           scrub: 0.5,
         },
       });
-
       return () => {
         tween.kill();
         ScrollTrigger.getAll().forEach((st) => st.kill());
       };
     },
-    { scope: containerRef, dependencies: [project, isLoading] },
-  );
-
-  useGSAP(
-    () => {
-      const image = document.querySelector("#images > div");
-
-      if (!containerRef.current || !project) return;
-      if (!image) return;
-
-      // reset initial state
-      gsap.set(image, {
-        scale: 1.05,
-        backgroundPosition: "center 60%",
-      });
-
-      // create a parallax + zoom-out effect
-      const tween = gsap.to(image, {
-        scale: 1,
-        backgroundPosition: "center 40%",
-        ease: "none",
-        scrollTrigger: {
-          trigger: image,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.2,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      // ✅ cleanup
-      return () => {
-        tween.kill();
-        tween.scrollTrigger?.kill();
-      };
-    },
-    { scope: containerRef, dependencies: [project, isLoading] },
+    { scope: containerRef, dependencies: [project, isLoading] }
   );
 
   return (
@@ -202,28 +159,12 @@ const ProjectDetails = ({ id }: Props) => {
                         </ul>
                       </div>
                     )}
-
-                    {/* <div className="text-lg markdown-text cursor"> */}
-                    {/*   {project.features && parse(project.features)} */}
-                    {/*     <ul> */}
-                    {/**/}
-                    {/*     </ul> */}
-                    {/* </div> */}
                   </div>
-                  {/* {project.role && ( */}
-                  {/*   <div className="fade-in-later"> */}
-                  {/*     <p className="text-white/80 mb-3">My Role</p> */}
-                  {/*     <div className="text-lg cursor">{parse(project.role)}</div> */}
-                  {/*   </div> */}
-                  {/* )} */}
                 </div>
               </div>
             </div>
 
-            <div
-              className="fade-in-later relative flex flex-col gap-2 max-w-7xl mx-auto"
-              id="images"
-            >
+            <div className="fade-in-later relative max-w-7xl mx-auto">
               <div
                 key={project.image}
                 className="group relative w-full aspect-[750/400] bg-black"
@@ -248,6 +189,4 @@ const ProjectDetails = ({ id }: Props) => {
       </div>
     </section>
   );
-};
-
-export default ProjectDetails;
+}
