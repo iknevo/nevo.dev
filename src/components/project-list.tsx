@@ -1,24 +1,30 @@
 "use client";
 import Project from "@/src/components/project";
 import SectionTitle from "@/src/components/section-title";
-import { PROJECTS } from "@/src/lib/data";
+import { useGetProjects } from "@/src/features/admin/projects/api/use-get-projects";
 import { cn } from "@/src/lib/utils";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
+import { Loader2 } from "lucide-react";
 import Image from "next/image";
-import { MouseEvent, useRef, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function ProjectList() {
+  const { data: projects = [], isLoading } = useGetProjects();
   const containerRef = useRef<HTMLDivElement>(null);
   const projectListRef = useRef<HTMLDivElement>(null);
   const imageContainer = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
-  const [selectedProject, setSelectedProject] = useState<string | null>(
-    PROJECTS[0].slug
-  );
+  const [selectedProject, setSelectedProject] = useState<string | null>("");
+
+  useEffect(() => {
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
+  }, [isLoading, projects]);
 
   useGSAP(
     (_, contextSafe) => {
@@ -65,7 +71,7 @@ export default function ProjectList() {
         window.removeEventListener("mousemove", handleMouseMove);
       };
     },
-    { scope: containerRef, dependencies: [containerRef.current] }
+    { scope: containerRef, dependencies: [containerRef.current, projects] }
   );
 
   useGSAP(
@@ -85,7 +91,7 @@ export default function ProjectList() {
         opacity: 0,
       });
     },
-    { scope: containerRef }
+    { scope: containerRef, dependencies: [projects] }
   );
 
   const handleMouseEnter = (slug: string) => {
@@ -102,43 +108,53 @@ export default function ProjectList() {
       <div className="container">
         <SectionTitle title="SELECTED PROJECTS" />
 
-        <div className="group/projects relative" ref={containerRef}>
-          {selectedProject !== null && (
-            <div
-              className="max-md:hidden absolute right-0 top-0 z-1 pointer-events-none w-[200px] xl:w-[350px] aspect-3/4 overflow-hidden opacity-0"
-              ref={imageContainer}
-            >
-              {PROJECTS.map((project) => (
-                <Image
-                  src={project.thumbnail}
-                  alt="Project"
-                  width="400"
-                  height="500"
-                  className={cn(
-                    "absolute inset-0 transition-all duration-500 w-full h-full object-contain object-top",
-                    {
-                      "opacity-0": project.slug !== selectedProject,
-                    }
-                  )}
-                  ref={imageRef}
-                  key={project.slug}
+        {isLoading ? (
+          <div className="flex justify-center py-10">
+            <Loader2 className="animate-spin slide-up size-20 text-gray-500" />
+          </div>
+        ) : projects.length === 0 ? (
+          <p className="py-10 text-center dark slide-up text-muted-foreground text-3xl">
+            There&apos;s no projects added yet
+          </p>
+        ) : (
+          <div className="group/projects relative" ref={containerRef}>
+            {selectedProject !== null && (
+              <div
+                className="max-md:hidden absolute right-0 top-0 z-1 pointer-events-none w-[200px] xl:w-[350px] aspect-3/4 overflow-hidden opacity-0"
+                ref={imageContainer}
+              >
+                {projects.map((project) => (
+                  <Image
+                    src={project.thumbnail}
+                    alt="Project"
+                    width="400"
+                    height="500"
+                    className={cn(
+                      "absolute inset-0 transition-all duration-500 w-full h-full object-contain object-top",
+                      {
+                        "opacity-0": project.slug !== selectedProject,
+                      }
+                    )}
+                    ref={imageRef}
+                    key={project.slug}
+                  />
+                ))}
+              </div>
+            )}
+
+            <div className="flex flex-col max-md:gap-10" ref={projectListRef}>
+              {projects.map((project, index) => (
+                <Project
+                  index={index}
+                  project={project}
+                  selectedProject={selectedProject}
+                  onMouseEnter={handleMouseEnter}
+                  key={project._id}
                 />
               ))}
             </div>
-          )}
-
-          <div className="flex flex-col max-md:gap-10" ref={projectListRef}>
-            {PROJECTS.map((project, index) => (
-              <Project
-                index={index}
-                project={project}
-                selectedProject={selectedProject}
-                onMouseEnter={handleMouseEnter}
-                key={project.slug}
-              />
-            ))}
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

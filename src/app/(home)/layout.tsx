@@ -10,11 +10,12 @@ import "lenis/dist/lenis.css";
 type Props = {
   children: React.ReactNode;
 };
+
 export default function Layout({ children }: Props) {
   return (
     <>
       <Navbar />
-      <main className="container relative">{children}</main>
+      <main className="relative">{children}</main>
       <Footer />
       <ScrollProgressIndicator />
       <Preloader />

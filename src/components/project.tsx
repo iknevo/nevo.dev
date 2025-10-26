@@ -1,6 +1,6 @@
 import TransitionLink from "@/src/components/transition-link";
 import { cn } from "@/src/lib/utils";
-import { IProject } from "@/src/types";
+import { ProjectResponse } from "@/src/types";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Image from "next/image";
@@ -8,7 +8,7 @@ import { useRef } from "react";
 
 interface Props {
   index: number;
-  project: IProject;
+  project: ProjectResponse;
   selectedProject: string | null;
   onMouseEnter: (_slug: string) => void;
 }
@@ -23,13 +23,13 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
   const handleMouseEnter = contextSafe?.(() => {
     onMouseEnter(project.slug);
     const arrowLine = externalLinkSVGRef.current?.querySelector(
-      "#arrow-line"
+      "#arrow-line",
     ) as SVGPathElement;
     const arrowCurb = externalLinkSVGRef.current?.querySelector(
-      "#arrow-curb"
+      "#arrow-curb",
     ) as SVGPathElement;
     const box = externalLinkSVGRef.current?.querySelector(
-      "#box"
+      "#box",
     ) as SVGPathElement;
 
     gsap.set(box, {
@@ -62,7 +62,7 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
           opacity: 1,
           strokeDashoffset: 0,
         },
-        "<0.2"
+        "<0.2",
       )
       .to(arrowCurb, {
         opacity: 1,
@@ -73,7 +73,7 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
         {
           autoAlpha: 0,
         },
-        "+=1"
+        "+=1",
       );
   });
 
@@ -83,7 +83,7 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
 
   return (
     <TransitionLink
-      href={`/projects/${project.slug}`}
+      href={`/projects/${project._id}`}
       className="project-item group leading-none py-5 md:border-b first:pt-0! last:pb-0 last:border-none md:group-hover/projects:opacity-30 md:hover:opacity-100! transition-all"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -105,7 +105,7 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
         </div>
         <div className="">
           <h4 className="text-3xl xs:text-6xl flex gap-4 font-bold transition-all duration-700 bg-linear-to-r from-primary to-white from-50% to-50% bg-size-[200%] bg-right bg-clip-text text-transparent group-hover:bg-left">
-            {project.title}
+            {project.name}
             <span className="text-white opacity-0 group-hover:opacity-100 transition-all">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

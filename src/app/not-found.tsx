@@ -1,11 +1,9 @@
 "use client";
-
 import Button from "@/src/components/button";
 import { Flag } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const animations = ["float", "floatReverse", "float2", "floatReverse2"];
-
 type Particle = {
   char: "0" | "4";
   style: React.CSSProperties;
