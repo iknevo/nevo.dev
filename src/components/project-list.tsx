@@ -71,11 +71,12 @@ export default function ProjectList() {
         window.removeEventListener("mousemove", handleMouseMove);
       };
     },
-    { scope: containerRef, dependencies: [containerRef.current, projects] }
+    { scope: containerRef, dependencies: [projects] },
   );
 
   useGSAP(
     () => {
+      if (!containerRef.current) return;
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
@@ -91,7 +92,7 @@ export default function ProjectList() {
         opacity: 0,
       });
     },
-    { scope: containerRef, dependencies: [projects] }
+    { scope: containerRef, dependencies: [projects] },
   );
 
   const handleMouseEnter = (slug: string) => {
@@ -133,7 +134,7 @@ export default function ProjectList() {
                       "absolute inset-0 transition-all duration-500 w-full h-full object-contain object-top",
                       {
                         "opacity-0": project.slug !== selectedProject,
-                      }
+                      },
                     )}
                     ref={imageRef}
                     key={project.slug}

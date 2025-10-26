@@ -9,15 +9,16 @@ export default function ParticleBackground() {
   const particlesRef = useRef<HTMLDivElement[]>([]);
 
   useGSAP(() => {
+    if (!particlesRef.current.length) return;
+
     particlesRef.current.forEach((particle) => {
       gsap.set(particle, {
         width: Math.random() * 3 + 1,
         height: Math.random() * 3 + 1,
         opacity: Math.random(),
         left: Math.random() * window.innerWidth,
-        top: Math.random() * (window.innerHeight + 1),
+        top: Math.random() * window.innerHeight,
       });
-
       gsap.to(particle, {
         y: window.innerHeight,
         duration: Math.random() * 10 + 10,
@@ -30,11 +31,11 @@ export default function ParticleBackground() {
 
   return (
     <div className="fixed inset-0 z-0 pointer-events-none">
-      {[...Array(120)].map((_, i) => (
+      {Array.from({ length: 120 }).map((_, i) => (
         <div
           key={i}
           ref={(el) => {
-            particlesRef.current.push(el!);
+            if (el) particlesRef.current[i] = el;
           }}
           className="absolute rounded-full bg-white"
         />
