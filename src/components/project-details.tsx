@@ -43,7 +43,7 @@ export default function ProjectDetails({ id }: Props) {
         ScrollTrigger.getAll().forEach((st) => st.kill());
       };
     },
-    { scope: containerRef, dependencies: [project, isLoading] }
+    { scope: containerRef, dependencies: [project, isLoading] },
   );
 
   useGSAP(
@@ -70,7 +70,7 @@ export default function ProjectDetails({ id }: Props) {
         ScrollTrigger.getAll().forEach((st) => st.kill());
       };
     },
-    { scope: containerRef, dependencies: [project, isLoading] }
+    { scope: containerRef, dependencies: [project, isLoading] },
   );
 
   return (

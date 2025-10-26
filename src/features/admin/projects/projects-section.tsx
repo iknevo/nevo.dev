@@ -1,42 +1,14 @@
 "use client";
 import SectionTitle from "@/src/components/section-title";
 import { Button } from "@/src/components/ui/button";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/all";
 import { Loader2 } from "lucide-react";
-import { useRef } from "react";
 import { useGetProjects } from "./api/use-get-projects";
 import ProjectItem from "./project-item";
 import { useNewProject } from "./state/use-new-project";
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
-
 export default function ProjectsSection() {
   const { data: projects = [], isLoading } = useGetProjects();
   const { onOpen } = useNewProject();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const projectListRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top bottom",
-          end: "top 80%",
-          toggleActions: "restart none none reverse",
-          scrub: 1,
-        },
-      });
-
-      tl.from(containerRef.current, {
-        y: 150,
-        opacity: 0,
-      });
-    },
-    { scope: containerRef }
-  );
 
   if (isLoading)
     return (
@@ -46,7 +18,7 @@ export default function ProjectsSection() {
     );
 
   return (
-    <div className="container">
+    <div className="container pb-10">
       <div className="flex justify-between items-center mb-10">
         <SectionTitle title="PROJECTS" className="mb-0" />
         <Button
@@ -64,10 +36,10 @@ export default function ProjectsSection() {
         </p>
       )}
 
-      <div className="group/projects relative" ref={containerRef}>
-        <div className="flex flex-col max-md:gap-10" ref={projectListRef}>
-          {projects.map((project, index) => (
-            <ProjectItem index={index} project={project} key={project.slug} />
+      <div className="group/projects relative">
+        <div className="grid grid-cols-1 md:grid-cols-2 items-start lg:grid-cols-4 max-md:gap-10">
+          {projects.map((project) => (
+            <ProjectItem project={project} key={project._id} />
           ))}
         </div>
       </div>

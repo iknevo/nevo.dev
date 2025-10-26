@@ -1,7 +1,6 @@
 "use client";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useLenis } from "lenis/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ComponentProps } from "react";
@@ -20,7 +19,6 @@ export default function TransitionLink({
   ...rest
 }: Props) {
   const router = useRouter();
-  const lenis = useLenis();
 
   const { contextSafe } = useGSAP(() => {});
 
@@ -40,19 +38,14 @@ export default function TransitionLink({
 
       tl.then(() => {
         if (back) {
-          router.push("/");
-          if (lenis) {
-            setTimeout(() => {
-              lenis.scrollTo("#selected-projects");
-            }, 500);
-          }
+          router.back();
         } else if (href) {
           router.push(href.toString());
         } else if (onClick) {
           onClick(e);
         }
       });
-    }
+    },
   );
 
   return (

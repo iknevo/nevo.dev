@@ -46,30 +46,32 @@ export default function StackSection() {
 
         <div className="space-y-20">
           {stack.map(({ type, items }) => (
-            <div className="grid md:grid-cols-12" key={type}>
-              <div className="md:col-span-5">
-                <p className="text-5xl leading-none text-white/80 uppercase">
-                  {type}
-                </p>
-              </div>
+            <div className="flex flex-col gap-10" key={type}>
+              <h1 className="text-5xl text-center leading-none text-white/80 uppercase">
+                {type}
+              </h1>
 
-              <div className="md:col-span-7 flex gap-x-11 gap-y-9 flex-wrap">
+              <div className="grid grid-cols-1 md:grid-cols-2 items-center lg:grid-cols-5 gap-10">
                 {items.map((item) => (
                   <div
-                    className="cursor flex gap-3.5 items-center leading-none"
+                    className="project-item group cursor leading-none pt-5 md:group-hover/projects:opacity-30 md:hover:opacity-100! transition-all"
                     key={item._id}
                     onClick={() => onOpenEdit(item._id)}
                   >
-                    <div>
-                      <Image
-                        src={item.icon}
-                        alt={item.name}
-                        width="40"
-                        height="40"
-                        className="max-h-10"
-                      />
+                    <Image
+                      src={item.icon}
+                      alt={item.name}
+                      width={100}
+                      height={100}
+                      quality={100}
+                      className="mx-auto transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                    <div className="text-center text-lg mt-5">
+                      <p className="transition-all duration-700 bg-linear-to-r from-primary to-white from-50% to-50% bg-size-[200%] bg-right bg-clip-text text-transparent group-hover:bg-left">
+                        {item.name}
+                      </p>
                     </div>
-                    <span className="text-2xl capitalize">{item.name}</span>
                   </div>
                 ))}
               </div>
