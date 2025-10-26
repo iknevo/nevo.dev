@@ -1,5 +1,3 @@
-import Cursor from "@/src/components/cursor";
-import StickyEmail from "@/src/components/sticky-email";
 import Providers from "@/src/providers/providers";
 import "@/src/styles/globals.css";
 import { Analytics } from "@vercel/analytics/next";
@@ -46,8 +44,6 @@ export default function RootLayout({
             <Providers>{children}</Providers>
           </main>
         </ReactLenis>
-        <Cursor />
-        <StickyEmail />
         <Analytics />
       </body>
     </html>
