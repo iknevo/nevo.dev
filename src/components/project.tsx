@@ -23,13 +23,13 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
   const handleMouseEnter = contextSafe?.(() => {
     onMouseEnter(project.slug);
     const arrowLine = externalLinkSVGRef.current?.querySelector(
-      "#arrow-line",
+      "#arrow-line"
     ) as SVGPathElement;
     const arrowCurb = externalLinkSVGRef.current?.querySelector(
-      "#arrow-curb",
+      "#arrow-curb"
     ) as SVGPathElement;
     const box = externalLinkSVGRef.current?.querySelector(
-      "#box",
+      "#box"
     ) as SVGPathElement;
 
     gsap.set(box, {
@@ -62,7 +62,7 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
           opacity: 1,
           strokeDashoffset: 0,
         },
-        "<0.2",
+        "<0.2"
       )
       .to(arrowCurb, {
         opacity: 1,
@@ -73,7 +73,7 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
         {
           autoAlpha: 0,
         },
-        "+=1",
+        "+=1"
       );
   });
 
@@ -94,7 +94,7 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
           alt="Project"
           width="300"
           height="200"
-          className={cn("w-full object-contain mb-6 aspect-3/2 object-top")}
+          className={cn("w-full object-contain mb-6 object-top")}
           key={project.slug}
           loading="lazy"
         />
