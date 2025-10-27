@@ -1,6 +1,5 @@
 "use client";
 import SectionTitle from "@/src/components/section-title";
-import { MY_EXPERIENCE } from "@/src/lib/data";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
