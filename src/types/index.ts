@@ -1,3 +1,4 @@
+import { expType } from "../models/experience-model";
 import { projectType } from "../models/project-model";
 
 export type Next_Page_Url = string;
@@ -33,4 +34,8 @@ export type ProjectResponse = Omit<
 > & {
   _id: string;
   slug: string;
+};
+
+export type ExperienceResponse = Omit<expType, "createdAt"> & {
+  _id: string;
 };

@@ -50,7 +50,7 @@ export const EditStackSheet = () => {
   const onDelete = async () => {
     const ok = await confirm({
       title: "Are You Sure?",
-      message: "You are about to delete this project.",
+      message: "You are about to delete this skill.",
     });
     if (ok) {
       deleteStackItem(undefined, {

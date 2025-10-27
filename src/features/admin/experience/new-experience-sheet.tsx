@@ -1,0 +1,51 @@
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/src/components/ui/sheet";
+import { useQueryClient } from "@tanstack/react-query";
+import { z } from "zod";
+import { useCreateExperience } from "./api/use-create-experience";
+import { useNewExperience } from "./state/use-new-experience";
+import ExperienceForm from "./experience-form";
+import {
+  experienceSchema,
+  expFormDefaults,
+} from "@/src/definitions/experience-validation";
+
+type FormValues = z.input<typeof experienceSchema>;
+
+export const NewExperienceSheet = () => {
+  const { isOpen, onClose } = useNewExperience();
+  const { mutate: createExp, isPending } = useCreateExperience();
+  const queryClient = useQueryClient();
+
+  const onSubmit = (values: FormValues) => {
+    createExp(values, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["experience"],
+        });
+        onClose();
+      },
+    });
+  };
+
+  return (
+    <Sheet open={isOpen} onOpenChange={onClose}>
+      <SheetContent className="space-y-4 dark sm:max-w-md">
+        <SheetHeader>
+          <SheetTitle>New Experience</SheetTitle>
+          <SheetDescription>Create a new experience</SheetDescription>
+        </SheetHeader>
+        <ExperienceForm
+          onSubmit={onSubmit}
+          disabled={isPending}
+          defaultValues={expFormDefaults}
+        />
+      </SheetContent>
+    </Sheet>
+  );
+};

@@ -6,10 +6,9 @@ import { useRouter } from "next/navigation";
 
 export default function LogoutButton() {
   const router = useRouter();
-  const logoutMutation = useLogout();
-  const { isPending } = logoutMutation;
+  const { mutate, isPending } = useLogout();
   const handleLogout = () => {
-    logoutMutation.mutate(undefined, {
+    mutate(undefined, {
       onSuccess: () => {
         router.push("/auth/login");
       },
