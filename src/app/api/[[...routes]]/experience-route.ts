@@ -28,6 +28,7 @@ const app = new Hono()
         id: z.string().optional(),
       }),
     ),
+    authMiddleware,
     async (c) => {
       const { id } = c.req.valid("param");
       if (!id) {

@@ -58,7 +58,7 @@ const app = new Hono()
     if (!data)
       return c.json(
         { message: "Error getting stack!, Try again later" },
-        status.NOT_FOUND
+        status.NOT_FOUND,
       );
     return c.json<{
       data: {
@@ -75,8 +75,9 @@ const app = new Hono()
       "param",
       z.object({
         id: z.string().optional(),
-      })
+      }),
     ),
+    authMiddleware,
     async (c) => {
       const { id } = c.req.valid("param");
       if (!id) {
@@ -88,7 +89,7 @@ const app = new Hono()
         return c.json({ error: "Not Found" }, 404);
       }
       return c.json({ data });
-    }
+    },
   )
   .post("/", authMiddleware, async (c) => {
     await dbConnect();
@@ -111,7 +112,7 @@ const app = new Hono()
       }));
       return c.json(
         { success: false, message: "Validation failed", errors },
-        status.BAD_REQUEST
+        status.BAD_REQUEST,
       );
     }
     const { data } = result;
@@ -128,7 +129,7 @@ const app = new Hono()
     if (!stack) {
       return c.json(
         { message: "Error creating stack!, Try again later" },
-        status.BAD_REQUEST
+        status.BAD_REQUEST,
       );
     }
     return c.json({
@@ -143,7 +144,7 @@ const app = new Hono()
       "param",
       z.object({
         id: z.string().optional(),
-      })
+      }),
     ),
     async (c) => {
       const { id } = c.req.valid("param");
@@ -170,7 +171,7 @@ const app = new Hono()
         }));
         return c.json(
           { success: false, message: "Validation failed", errors },
-          status.BAD_REQUEST
+          status.BAD_REQUEST,
         );
       }
       const { data } = result;
@@ -193,7 +194,7 @@ const app = new Hono()
         success: true,
         stack,
       });
-    }
+    },
   )
   .delete(
     "/:id",
@@ -202,7 +203,7 @@ const app = new Hono()
       "param",
       z.object({
         id: z.string().optional(),
-      })
+      }),
     ),
     async (c) => {
       const { id } = c.req.valid("param");
@@ -214,11 +215,11 @@ const app = new Hono()
       if (!stack) {
         return c.json(
           { message: "Error deleting stack item!, Try again later" },
-          status.NOT_FOUND
+          status.NOT_FOUND,
         );
       }
       return c.status(status.NO_CONTENT);
-    }
+    },
   );
 
 export default app;
