@@ -13,12 +13,13 @@ type Options = {
   title: string;
   message: string;
 };
+
 export function useConfirm(): [
   () => JSX.Element,
   ({ title, message }: Options) => Promise<boolean>,
 ] {
   const [promise, setPromise] = useState<((value: boolean) => void) | null>(
-    null
+    null,
   );
   const [options, setOptions] = useState<Options | null>(null);
 

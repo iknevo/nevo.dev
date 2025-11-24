@@ -12,13 +12,13 @@ type Props = {
   variant?: Variant;
 } & (ComponentProps<typeof Link> | ButtonProps);
 
-const Button = ({
+export default function Button({
   variant,
   className,
   children,
   as = "link",
   ...rest
-}: Props) => {
+}: Props) {
   const variantClasses = {
     primary: `bg-primary text-black font-semibold  hover:bg-primary`,
     secondary: `bg-secondary text-secondary-foreground hover:bg-secondary-hover`,
@@ -35,7 +35,7 @@ const Button = ({
   const buttonClasses = cn(
     `group h-12 px-8 inline-flex justify-center items-center gap-2 text-lg uppercase tracking-widest outline-none transition-colors relative overflow-hidden`,
     variantClasses,
-    className
+    className,
   );
 
   if (as === "link") {
@@ -76,6 +76,4 @@ const Button = ({
       </button>
     );
   }
-};
-
-export default Button;
+}

@@ -13,13 +13,18 @@ interface Props {
   title: string;
 }
 
-const SectionTitle = ({ icon, title, className, classNames }: Props) => {
+export default function SectionTitle({
+  icon,
+  title,
+  className,
+  classNames,
+}: Props) {
   return (
     <div
       className={cn(
         "flex items-center gap-4 mb-10",
         className,
-        classNames?.container
+        classNames?.container,
       )}
     >
       {icon ? (
@@ -35,6 +40,4 @@ const SectionTitle = ({ icon, title, className, classNames }: Props) => {
       </h2>
     </div>
   );
-};
-
-export default SectionTitle;
+}

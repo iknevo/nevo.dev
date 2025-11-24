@@ -12,7 +12,7 @@ export default function ProjectsSection() {
 
   if (isLoading)
     return (
-      <div className="flex justify-center py-20">
+      <div className="flex justify-center py-20 h-screen">
         <Loader2 className="animate-spin size-20 text-gray-500" />
       </div>
     );

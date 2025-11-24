@@ -2,6 +2,7 @@
 import Button from "@/src/components/button";
 import { Flag } from "lucide-react";
 import { useEffect, useState } from "react";
+import Cursor from "../components/cursor";
 
 const animations = ["float", "floatReverse", "float2", "floatReverse2"];
 type Particle = {
@@ -38,6 +39,7 @@ export default function NotFound() {
 
   return (
     <div className="relative h-screen mx-auto grid place-items-center text-center px-8 overflow-hidden">
+      <Cursor />
       {particles.map((item, i) => (
         <span
           key={i}

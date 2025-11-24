@@ -10,6 +10,7 @@ import { useRef } from "react";
 type Props = {
   scrollToTop?: boolean;
 };
+
 export default function ScrollButton({ scrollToTop = false }: Props) {
   const lenis = useLenis();
   const circleRef = useRef<SVGCircleElement | null>(null);
@@ -45,7 +46,7 @@ export default function ScrollButton({ scrollToTop = false }: Props) {
       onClick={handleClick}
       className={cn(
         "group size-30 opacity-20 cursor-pointer relative cursor",
-        scrollToTop && "rotate-180"
+        scrollToTop && "rotate-180",
       )}
     >
       <svg
