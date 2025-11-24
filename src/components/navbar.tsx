@@ -40,7 +40,9 @@ export default function Navbar() {
       if (target === "#") {
         lenis.scrollTo(0);
       } else {
-        lenis.scrollTo(target);
+        lenis.scrollTo(target, {
+          offset: -30,
+        });
       }
     }
   };
@@ -50,7 +52,7 @@ export default function Navbar() {
       <div className="sticky top-0 z-4">
         <button
           className={cn(
-            "group size-12 absolute top-5 right-5 md:right-10 z-2 cursor-pointer"
+            "group size-12 absolute top-5 right-5 md:right-10 z-2 cursor-pointer",
           )}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
@@ -60,7 +62,7 @@ export default function Navbar() {
               {
                 "rotate-45 -translate-y-1/2": isMenuOpen,
                 "md:group-hover:rotate-12": !isMenuOpen,
-              }
+              },
             )}
           ></span>
           <span
@@ -69,7 +71,7 @@ export default function Navbar() {
               {
                 "-rotate-45 -translate-y-1/2": isMenuOpen,
                 "md:group-hover:-rotate-12": !isMenuOpen,
-              }
+              },
             )}
           ></span>
         </button>
@@ -80,7 +82,7 @@ export default function Navbar() {
           "overlay fixed inset-0 z-2 bg-black/70 transition-all duration-150",
           {
             "opacity-0 invisible pointer-events-none": !isMenuOpen,
-          }
+          },
         )}
         onClick={() => setIsMenuOpen(false)}
       ></div>
@@ -89,7 +91,7 @@ export default function Navbar() {
         className={cn(
           "fixed top-0  right-0 h-svh w-[500px] max-w-[calc(100vw-3rem)] transform translate-x-full transition-transform duration-700 z-3 overflow-hidden gap-y-14",
           "flex flex-col lg:justify-center py-10",
-          { "translate-x-0": isMenuOpen }
+          { "translate-x-0": isMenuOpen },
         )}
       >
         <div
@@ -97,7 +99,7 @@ export default function Navbar() {
             "fixed inset-0 scale-150 translate-x-1/2 rounded-[50%] bg-primary duration-700 delay-150 z-[-1]",
             {
               "translate-x-0": isMenuOpen,
-            }
+            },
           )}
         ></div>
 
@@ -135,7 +137,7 @@ export default function Navbar() {
                       <span
                         className={cn(
                           "size-3.5 bg-white/20 rounded-full flex items-center justify-center group-hover:scale-[200%] transition-all",
-                          COLORS[idx]
+                          COLORS[idx],
                         )}
                       >
                         <MoveUpRight

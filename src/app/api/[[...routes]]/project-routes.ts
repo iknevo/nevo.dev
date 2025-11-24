@@ -6,6 +6,7 @@ import { Project, projectType } from "@/src/models/project-model";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import status from "http-status";
+import mongoose from "mongoose";
 import { z } from "zod";
 
 const app = new Hono()
@@ -15,7 +16,7 @@ const app = new Hono()
     if (!data)
       return c.json(
         { message: "Error getting projects!, Try again later" },
-        status.NOT_FOUND
+        status.NOT_FOUND,
       );
     return c.json({
       data,
@@ -27,7 +28,7 @@ const app = new Hono()
       "param",
       z.object({
         id: z.string().optional(),
-      })
+      }),
     ),
     async (c) => {
       const { id } = c.req.valid("param");
@@ -35,12 +36,17 @@ const app = new Hono()
         return c.json({ error: "Missing project id" }, status.BAD_REQUEST);
       }
       await dbConnect();
-      const data = await Project.findById(id);
+      let data;
+      if (mongoose.Types.ObjectId.isValid(id)) {
+        data = await Project.findById(id);
+      } else {
+        data = await Project.findOne({ slug: id });
+      }
       if (!data) {
-        return c.json({ error: "Not Found" }, 404);
+        return c.json({ error: "Not Found", id }, 404);
       }
       return c.json({ data });
-    }
+    },
   )
   .post("/", authMiddleware, async (c) => {
     await dbConnect();
@@ -73,7 +79,7 @@ const app = new Hono()
       }));
       return c.json(
         { success: false, message: "Validation failed", errors },
-        status.BAD_REQUEST
+        status.BAD_REQUEST,
       );
     }
     const { data } = result;
@@ -81,7 +87,7 @@ const app = new Hono()
     if (data.thumbnail instanceof File) {
       thumbnailUrl = await uploadToCloudinary(
         data.thumbnail,
-        "projects/thumbnails"
+        "projects/thumbnails",
       );
     }
     let imageUrl = data.image;
@@ -103,7 +109,7 @@ const app = new Hono()
     if (!project) {
       return c.json(
         { message: "Error creating project!, Try again later" },
-        status.BAD_REQUEST
+        status.BAD_REQUEST,
       );
     }
     return c.json({
@@ -118,7 +124,7 @@ const app = new Hono()
       "param",
       z.object({
         id: z.string().optional(),
-      })
+      }),
     ),
     async (c) => {
       const { id } = c.req.valid("param");
@@ -155,7 +161,7 @@ const app = new Hono()
         }));
         return c.json(
           { success: false, message: "Validation failed", errors },
-          status.BAD_REQUEST
+          status.BAD_REQUEST,
         );
       }
       const { data } = result;
@@ -163,7 +169,7 @@ const app = new Hono()
       if (data.thumbnail instanceof File) {
         thumbnailUrl = await uploadToCloudinary(
           data.thumbnail,
-          "projects/thumbnails"
+          "projects/thumbnails",
         );
       }
       let imageUrl = data.image;
@@ -191,7 +197,7 @@ const app = new Hono()
         success: true,
         project,
       });
-    }
+    },
   )
   .delete(
     "/:id",
@@ -200,7 +206,7 @@ const app = new Hono()
       "param",
       z.object({
         id: z.string().optional(),
-      })
+      }),
     ),
     async (c) => {
       const { id } = c.req.valid("param");
@@ -212,11 +218,11 @@ const app = new Hono()
       if (!project) {
         return c.json(
           { message: "Error deleting project!, Try again later" },
-          status.NOT_FOUND
+          status.NOT_FOUND,
         );
       }
       return c.status(status.NO_CONTENT);
-    }
+    },
   );
 
 export default app;

@@ -14,7 +14,12 @@ interface Props {
 }
 gsap.registerPlugin(useGSAP);
 
-const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
+export default function Project({
+  index,
+  project,
+  selectedProject,
+  onMouseEnter,
+}: Props) {
   const externalLinkSVGRef = useRef<SVGSVGElement>(null);
   const { context, contextSafe } = useGSAP(() => {}, {
     scope: externalLinkSVGRef,
@@ -23,13 +28,13 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
   const handleMouseEnter = contextSafe?.(() => {
     onMouseEnter(project.slug);
     const arrowLine = externalLinkSVGRef.current?.querySelector(
-      "#arrow-line"
+      "#arrow-line",
     ) as SVGPathElement;
     const arrowCurb = externalLinkSVGRef.current?.querySelector(
-      "#arrow-curb"
+      "#arrow-curb",
     ) as SVGPathElement;
     const box = externalLinkSVGRef.current?.querySelector(
-      "#box"
+      "#box",
     ) as SVGPathElement;
 
     gsap.set(box, {
@@ -62,7 +67,7 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
           opacity: 1,
           strokeDashoffset: 0,
         },
-        "<0.2"
+        "<0.2",
       )
       .to(arrowCurb, {
         opacity: 1,
@@ -73,7 +78,7 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
         {
           autoAlpha: 0,
         },
-        "+=1"
+        "+=1",
       );
   });
 
@@ -83,7 +88,7 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
 
   return (
     <TransitionLink
-      href={`/projects/${project._id}`}
+      href={`/projects/${project.slug}`}
       className="project-item group leading-none py-5 md:border-b first:pt-0! last:pb-0 last:border-none md:group-hover/projects:opacity-30 md:hover:opacity-100! transition-all"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -142,6 +147,4 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
       </div>
     </TransitionLink>
   );
-};
-
-export default Project;
+}

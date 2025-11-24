@@ -85,13 +85,15 @@ export default function ProjectDetails({ id }: Props) {
           Back
         </TransitionLink>
         {isLoading ? (
-          <div className="flex justify-center py-10">
+          <div className="flex justify-center items-center py-10 min-h-[50vh]">
             <Loader2 className="animate-spin slide-up size-20 text-gray-500" />
           </div>
         ) : !project ? (
-          <p className="py-10 text-center dark slide-up text-muted-foreground text-3xl">
-            There&apos;s no stack added yet
-          </p>
+          <div className="flex justify-center items-center py-10 min-h-[50vh]">
+            <p className="py-10 text-center dark slide-up text-muted-foreground text-3xl md:text-4xl">
+              Project not found <span className="text-primary">!</span>
+            </p>
+          </div>
         ) : (
           <>
             <div className="top-0 min-h-[calc(100dvh-100px)] flex" id="info">

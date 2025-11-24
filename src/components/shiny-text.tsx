@@ -4,6 +4,7 @@ interface Props {
   speed?: number;
   className?: string;
 }
+
 export default function ShinyText({
   text,
   disabled = false,
