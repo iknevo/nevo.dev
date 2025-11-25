@@ -13,7 +13,7 @@ export default function ProjectItem({ project }: Props) {
 
   return (
     <div className="project-item group leading-none pt-5 md:group-hover/projects:opacity-30 md:hover:opacity-100! transition-all">
-      <Link href={`/projects/${project._id}`}>
+      <Link href={`/projects/${project.slug}`}>
         <div className="relative w-full aspect-[16/9] overflow-hidden">
           <Image
             src={project.thumbnail}
