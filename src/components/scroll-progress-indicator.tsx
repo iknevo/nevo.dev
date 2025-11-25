@@ -17,11 +17,17 @@ export default function ScrollProgressIndicator() {
         }%)`;
       }
     };
-
     handleScroll();
+    const resizeObserver = new ResizeObserver(() => {
+      handleScroll();
+    });
+    resizeObserver.observe(document.documentElement);
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      resizeObserver.disconnect();
+    };
   }, []);
 
   return (
