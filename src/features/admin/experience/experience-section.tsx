@@ -62,7 +62,7 @@ export default function ExperienceSection() {
                 onClick={() => onOpenEdit(item._id)}
                 className="no-cursor cursor-none"
               >
-                <PenLine className="size-5" />
+                <PenLine className="size-8 cursor" />
               </button>
             </div>
           ))}
