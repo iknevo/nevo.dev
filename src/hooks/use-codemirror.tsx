@@ -1,0 +1,136 @@
+"use client";
+
+import { EditorState } from "@codemirror/state";
+import { closeBrackets, closeBracketsKeymap } from "@codemirror/autocomplete";
+import { vim } from "@replit/codemirror-vim";
+import {
+  EditorView,
+  lineNumbers,
+  keymap,
+  highlightActiveLine,
+  highlightActiveLineGutter,
+} from "@codemirror/view";
+import {
+  defaultKeymap,
+  historyKeymap,
+  history,
+  indentLess,
+  indentMore,
+} from "@codemirror/commands";
+import { indentOnInput } from "@codemirror/language";
+import { tags } from "@lezer/highlight";
+import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
+import { languages } from "@codemirror/language-data";
+import { oneDark } from "@codemirror/theme-one-dark";
+import {
+  defaultHighlightStyle,
+  syntaxHighlighting,
+  HighlightStyle,
+} from "@codemirror/language";
+import { javascript } from "@codemirror/lang-javascript";
+import { RefObject, useRef, useState, useEffect } from "react";
+
+interface Props {
+  initialDoc: string;
+  onChange?: (state: EditorState) => void;
+}
+
+const transparentTheme = EditorView.theme({
+  "&": {
+    backgroundColor: "transparent !important",
+    height: "100%",
+  },
+});
+
+const highlighting = HighlightStyle.define([
+  { tag: tags.heading1, fontSize: "1.6em", fontWeight: "bold" },
+  { tag: tags.heading2, fontSize: "1.4em", fontWeight: "bold" },
+  { tag: tags.heading3, fontSize: "1.2em", fontWeight: "bold" },
+]);
+
+const gutterTheme = EditorView.theme({
+  ".cm-gutters": {
+    backgroundColor: "transparent !important",
+  },
+  ".cm-activeLineGutter": {
+    backgroundColor: "#6699ff0b !important",
+  },
+});
+
+const biggerFont = EditorView.theme({
+  ".cm-content": {
+    fontSize: "18px",
+    lineHeight: "1.7",
+  },
+  ".cm-lineNumbers": {
+    fontSize: "18px",
+    lineHeight: "1.7",
+  },
+});
+
+export function useCodemirror<T extends Element>({
+  initialDoc,
+  onChange,
+}: Props): [RefObject<T | null>, EditorView?] {
+  const containerRef = useRef<T>(null);
+  const initialDocRef = useRef(initialDoc);
+  const [editorView, setEditorView] = useState<EditorView>();
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const state = EditorState.create({
+      doc: initialDocRef.current,
+      extensions: [
+        vim(),
+        keymap.of([
+          ...defaultKeymap,
+          ...historyKeymap,
+          ...closeBracketsKeymap,
+          {
+            key: "Tab",
+            preventDefault: true,
+            run: indentMore,
+          },
+          {
+            key: "Shift-Tab",
+            preventDefault: true,
+            run: indentLess,
+          },
+        ]),
+        lineNumbers(),
+        highlightActiveLineGutter(),
+        history(),
+        indentOnInput(),
+        syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
+        syntaxHighlighting(highlighting),
+        highlightActiveLine(),
+        closeBrackets(),
+        javascript({ jsx: true, typescript: true }),
+        markdown({
+          base: markdownLanguage,
+          codeLanguages: languages,
+          addKeymap: true,
+        }),
+        oneDark,
+        transparentTheme,
+        gutterTheme,
+        biggerFont,
+        EditorView.lineWrapping,
+        EditorView.updateListener.of((update) => {
+          if (update.changes && onChange) onChange(update.state);
+        }),
+      ],
+    });
+    const view = new EditorView({
+      state,
+      parent: containerRef.current,
+    });
+    setEditorView(view);
+
+    return () => {
+      view.destroy();
+    };
+  }, [containerRef, onChange]);
+
+  return [containerRef, editorView];
+}

@@ -41,6 +41,17 @@ export default function AdminNav() {
             EXPERIENCE
           </Link>
         </li>
+        <li>
+          <Link
+            href="/admin/blog"
+            className={cn(
+              "font-semibold text-xs md:text-base rounded-sm px-4 py-2 transition-all",
+              pathname.startsWith("/admin/blog") && "bg-primary",
+            )}
+          >
+            BLOG
+          </Link>
+        </li>
       </ul>
     </div>
   );
