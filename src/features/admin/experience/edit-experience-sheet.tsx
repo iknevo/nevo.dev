@@ -13,7 +13,7 @@ import ExperienceForm from "./experience-form";
 import { useGetExperienceItem } from "./api/use-get-experience-item";
 import { useUpdateExperienceItem } from "./api/use-update-experience-item";
 import { useDeleteExperience } from "./api/use-delete-experience";
-import { expFormValues } from "@/src/definitions/experience-validation";
+import { expFormValues } from "@/src/definitions/experience-validations";
 
 export const EditExperienceSheet = () => {
   const { isOpen, onClose, id } = useOpenExperience();

@@ -1,4 +1,4 @@
-import { experienceSchema } from "@/src/definitions/experience-validation";
+import { experienceSchema } from "@/src/definitions/experience-validations";
 import dbConnect from "@/src/lib/db";
 import { authMiddleware } from "@/src/lib/jwt";
 import { Experience } from "@/src/models/experience-model";

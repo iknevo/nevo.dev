@@ -13,7 +13,7 @@ export default function BlogSection() {
     <section>
       <div className="container">
         <div className="flex justify-between items-center mb-10">
-          <SectionTitle title="My Blogs" className="mb-0" />
+          <SectionTitle title="My Blog" className="mb-0" />
           <Button
             className="flex items-center justify-center text-lg font-semibold dark"
             variant={"outline"}

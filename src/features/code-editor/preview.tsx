@@ -28,7 +28,7 @@ export default function Preview({ className, doc }: Props) {
   return (
     <div
       className={cn(
-        "markdown-body h-full !bg-transparent p-3 border-1 border-white/10",
+        "markdown-body h-full !bg-transparent p-3 border-1 border-white/10 rounded-sm overflow-hidden",
         className,
       )}
     >

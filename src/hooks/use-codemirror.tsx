@@ -33,6 +33,7 @@ import { RefObject, useRef, useState, useEffect } from "react";
 interface Props {
   initialDoc: string;
   onChange?: (state: EditorState) => void;
+  disabled?: boolean;
 }
 
 const transparentTheme = EditorView.theme({
@@ -67,10 +68,28 @@ const biggerFont = EditorView.theme({
     lineHeight: "1.7",
   },
 });
+export const editorTheme = EditorView.theme({
+  "&": {
+    borderRadius: "0.375rem",
+    borderWidth: "1px",
+    borderColor: "rgba(255,255,255,0.1)",
+    padding: "0.75rem",
+    transitionProperty:
+      "color, background-color, border-color, text-decoration-color, fill, stroke",
+    transitionDuration: "300ms",
+  },
+  "&.cm-focused": {
+    borderColor: "rgba(216, 78, 44, 0.5)",
+  },
+  "&.cm-focused .cm-selectionBackground, ::selection": {
+    color: "#ffffff",
+  },
+});
 
 export function useCodemirror<T extends Element>({
   initialDoc,
   onChange,
+  disabled,
 }: Props): [RefObject<T | null>, EditorView?] {
   const containerRef = useRef<T>(null);
   const initialDocRef = useRef(initialDoc);
@@ -115,6 +134,8 @@ export function useCodemirror<T extends Element>({
         transparentTheme,
         gutterTheme,
         biggerFont,
+        editorTheme,
+        EditorView.editable.of(!disabled),
         EditorView.lineWrapping,
         EditorView.updateListener.of((update) => {
           if (update.changes && onChange) onChange(update.state);
@@ -130,7 +151,7 @@ export function useCodemirror<T extends Element>({
     return () => {
       view.destroy();
     };
-  }, [containerRef, onChange]);
+  }, [containerRef, onChange, disabled]);
 
   return [containerRef, editorView];
 }

@@ -11,7 +11,7 @@ import { Input } from "@/src/components/ui/input";
 import {
   expFormValues,
   experienceSchema,
-} from "@/src/definitions/experience-validation";
+} from "@/src/definitions/experience-validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";

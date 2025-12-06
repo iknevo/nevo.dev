@@ -66,9 +66,6 @@ body {
   display: none;
 }
 
-.grid {
-  gap: 25px;
-}
 .markdown-text ul {
   padding-left: 1.25rem;
   margin-top: 0.5rem;

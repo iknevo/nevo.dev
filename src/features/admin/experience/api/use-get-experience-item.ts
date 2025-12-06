@@ -1,4 +1,4 @@
-import { expItemType } from "@/src/definitions/experience-validation";
+import { expItemType } from "@/src/definitions/experience-validations";
 import { api } from "@/src/lib/hono";
 import { useQuery } from "@tanstack/react-query";
 

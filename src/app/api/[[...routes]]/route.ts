@@ -6,7 +6,8 @@ import status from "http-status";
 import auth from "./auth-routes";
 import projects from "./project-routes";
 import stack from "./stack-routes";
-import experience from "./experience-route";
+import experience from "./experience-routes";
+import blog from "./blog-routes";
 
 const app = new Hono().basePath("/api");
 
@@ -15,7 +16,8 @@ const routes = app
   .route("/auth", auth)
   .route("/projects", projects)
   .route("/stack", stack)
-  .route("/experience", experience);
+  .route("/experience", experience)
+  .route("/blog", blog);
 
 app.use(logger());
 app.onError(errorHandler);

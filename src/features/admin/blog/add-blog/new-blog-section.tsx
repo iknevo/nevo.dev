@@ -1,45 +1,53 @@
 "use client";
 
 import SectionTitle from "@/src/components/section-title";
-import { Button } from "@/src/components/ui/button";
-import Editor from "@/src/features/code-editor/editor";
-import Preview from "@/src/features/code-editor/preview";
 import { useGSAP } from "@gsap/react";
+import { z } from "zod";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import Link from "next/link";
-import { useCallback, useState } from "react";
+import BlogForm from "../blog-form";
+import {
+  blogFormDefaults,
+  blogSchema,
+} from "@/src/definitions/blog-validation";
+import { useQueryClient } from "@tanstack/react-query";
+import { useCreatePost } from "../api/use-create-post";
+import { useRouter } from "next/navigation";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
+type FormValues = z.input<typeof blogSchema>;
+
 export default function NewBlogSection() {
-  const [doc, setDoc] = useState<string>("# Hello, World!\n");
-  const handleChangeDoc = useCallback((newDoc: string) => setDoc(newDoc), []);
+  const { mutate: createPost, isPending } = useCreatePost();
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const onSubmit = (values: FormValues) => {
+    createPost(values, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["blog_posts"],
+        });
+        //  TODO: navigate to blogs page
+        // router.push("/");
+      },
+    });
+  };
+  const onDelete = () => {
+    console.log("delete");
+  };
 
   return (
     <section>
       <div className="container">
-        <div className="flex justify-between items-center mb-10">
-          <SectionTitle title="Add new blog" className="mb-0" />
-          <Button
-            className="flex items-center justify-center text-lg font-semibold dark"
-            variant={"outline"}
-            asChild
-          >
-            <Link href="/admin/blog/add">ADD new BLOG</Link>
-          </Button>
-        </div>
-
-        <div className="grid gap-14">
-          <div className="flex items-center gap-4 min-h-100">
-            <Editor
-              initialDoc={doc}
-              onChange={handleChangeDoc}
-              className="flex-[0_0_50%]"
-            />
-            <Preview doc={doc} className="flex-[0_0_50%]" />
-          </div>
-        </div>
+        <SectionTitle title="Add new blog" className="mb-10" />
+        <BlogForm
+          onSubmit={onSubmit}
+          onDelete={onDelete}
+          disabled={isPending}
+          defaultValues={blogFormDefaults}
+        />
       </div>
     </section>
   );

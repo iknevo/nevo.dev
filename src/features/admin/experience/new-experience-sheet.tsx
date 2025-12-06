@@ -13,7 +13,7 @@ import ExperienceForm from "./experience-form";
 import {
   experienceSchema,
   expFormDefaults,
-} from "@/src/definitions/experience-validation";
+} from "@/src/definitions/experience-validations";
 
 type FormValues = z.input<typeof experienceSchema>;
 
