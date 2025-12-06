@@ -37,7 +37,7 @@ export default function ProjectsSection() {
       )}
 
       <div className="group/projects relative">
-        <div className="grid grid-cols-1 md:grid-cols-2 items-start lg:grid-cols-4 max-md:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-6.25 items-start lg:grid-cols-4">
           {projects.map((project) => (
             <ProjectItem project={project} key={project._id} />
           ))}

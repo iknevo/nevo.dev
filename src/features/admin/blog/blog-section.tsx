@@ -2,13 +2,25 @@
 import SectionTitle from "@/src/components/section-title";
 import { Button } from "@/src/components/ui/button";
 import { useGSAP } from "@gsap/react";
+import { format } from "date-fns";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
+import { Loader2, PenLine } from "lucide-react";
 import Link from "next/link";
+import { useGetPosts } from "./api/use-get-posts";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export default function BlogSection() {
+  const { data: posts = [], isLoading } = useGetPosts();
+
+  if (isLoading)
+    return (
+      <div className="flex justify-center py-20">
+        <Loader2 className="animate-spin size-20 text-gray-500" />
+      </div>
+    );
+
   return (
     <section>
       <div className="container">
@@ -22,7 +34,37 @@ export default function BlogSection() {
             <Link href="/admin/blog/add">ADD BLOG</Link>
           </Button>
         </div>
-        <div className="grid gap-14"></div>
+      </div>
+
+      {posts.length === 0 && (
+        <p className="py-10 text-center dark text-muted-foreground text-3xl">
+          There&apos;s no blog posts added yet
+        </p>
+      )}
+
+      <div className="grid gap-2">
+        {posts.map((post) => (
+          <div
+            key={post._id}
+            className="experience-item flex items-center justify-between"
+          >
+            <div>
+              <p className="text-3xl md:text-4xl cursor leading-none mt-3.5 mb-2.5">
+                {post.title}
+              </p>
+              <p className="text-lg text-white/80 cursor">
+                {format(post.createdAt, "dd MMMM, yyyy")}
+              </p>
+            </div>
+            {/* TODO: add navigation to edit page */}
+            <button
+              className="no-cursor cursor-none"
+              onClick={() => console.log(post._id)}
+            >
+              <PenLine className="size-8 cursor" />
+            </button>
+          </div>
+        ))}
       </div>
     </section>
   );

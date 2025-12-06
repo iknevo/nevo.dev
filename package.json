@@ -39,6 +39,7 @@
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.7.0",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "github-markdown-css": "^5.8.1",
     "gsap": "^3.13.0",
     "highlight.js": "^11.11.1",
