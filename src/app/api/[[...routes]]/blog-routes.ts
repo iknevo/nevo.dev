@@ -3,7 +3,6 @@ import { uploadToCloudinary } from "@/src/lib/cloudinary";
 import dbConnect from "@/src/lib/db";
 import { authMiddleware } from "@/src/lib/jwt";
 import { Blog, blogType } from "@/src/models/blog-model";
-import { Project } from "@/src/models/project-model";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import status from "http-status";
@@ -39,9 +38,9 @@ const app = new Hono()
       await dbConnect();
       let data;
       if (mongoose.Types.ObjectId.isValid(id)) {
-        data = await Project.findById(id);
+        data = await Blog.findById(id);
       } else {
-        data = await Project.findOne({ slug: id });
+        data = await Blog.findOne({ slug: id });
       }
       if (!data) {
         return c.json({ error: "Not Found", id }, 404);

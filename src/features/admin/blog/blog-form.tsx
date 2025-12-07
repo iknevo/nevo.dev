@@ -20,7 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 type Props = {
   id?: string;
-  defaultValues?: blogFormValues;
+  defaultValues: blogFormValues;
   onSubmit: (values: blogFormValues) => void;
   onDelete?: () => void;
   disabled?: boolean;
@@ -37,8 +37,7 @@ export default function BlogForm({
     resolver: zodResolver(blogSchema),
     defaultValues: defaultValues,
   });
-  const [doc, setDoc] = useState<string>("# Blog Title!\n");
-
+  const [doc, setDoc] = useState<string>(defaultValues.doc);
   const handleChangeDoc = useCallback((newDoc: string) => setDoc(newDoc), []);
   const handleSubmit = (values: blogFormValues) => {
     onSubmit(values);
@@ -48,7 +47,10 @@ export default function BlogForm({
     console.log("delete");
   };
   useEffect(() => {
-    form.setValue("doc", doc);
+    setDoc(defaultValues.doc);
+  }, [defaultValues.doc]);
+  useEffect(() => {
+    form.setValue("doc", doc, { shouldDirty: true });
   }, [doc, form]);
 
   return (

@@ -8,11 +8,13 @@ import { ScrollTrigger } from "gsap/all";
 import { Loader2, PenLine } from "lucide-react";
 import Link from "next/link";
 import { useGetPosts } from "./api/use-get-posts";
+import { useRouter } from "next/navigation";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export default function BlogSection() {
   const { data: posts = [], isLoading } = useGetPosts();
+  const router = useRouter();
 
   if (isLoading)
     return (
@@ -53,13 +55,13 @@ export default function BlogSection() {
                 {post.title}
               </p>
               <p className="text-lg text-white/80 cursor">
-                {format(post.createdAt, "dd MMMM, yyyy")}
+                {format(post.createdAt, "dd MMMM, yyyy")}{" "}
+                {post?.readingTime && "/ " + post.readingTime}
               </p>
             </div>
-            {/* TODO: add navigation to edit page */}
             <button
               className="no-cursor cursor-none"
-              onClick={() => console.log(post._id)}
+              onClick={() => router.push(`/admin/blog/edit/${post._id}`)}
             >
               <PenLine className="size-8 cursor" />
             </button>

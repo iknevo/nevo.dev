@@ -96,6 +96,10 @@ export function useCodemirror<T extends Element>({
   const [editorView, setEditorView] = useState<EditorView>();
 
   useEffect(() => {
+    initialDocRef.current = initialDoc;
+  }, [initialDoc]);
+
+  useEffect(() => {
     if (!containerRef.current) return;
     const state = EditorState.create({
       doc: initialDocRef.current,

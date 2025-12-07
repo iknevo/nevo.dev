@@ -13,6 +13,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { useCreatePost } from "../api/use-create-post";
 import { useRouter } from "next/navigation";
+import { Button } from "@/src/components/ui/button";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -29,22 +30,27 @@ export default function NewBlogSection() {
         queryClient.invalidateQueries({
           queryKey: ["blog_posts"],
         });
-        //  TODO: navigate to blogs page
-        // router.push("/");
+        router.push("/admin/blog");
       },
     });
-  };
-  const onDelete = () => {
-    console.log("delete");
   };
 
   return (
     <section>
       <div className="container">
-        <SectionTitle title="Add new blog" className="mb-10" />
+        <div className="flex justify-between items-center mb-10">
+          <SectionTitle title="Add new blog" className="mb-0" />
+          <Button
+            className="flex items-center justify-center text-lg font-semibold dark"
+            variant={"outline"}
+            onClick={() => router.back()}
+          >
+            Cancel
+          </Button>
+        </div>
+
         <BlogForm
           onSubmit={onSubmit}
-          onDelete={onDelete}
           disabled={isPending}
           defaultValues={blogFormDefaults}
         />

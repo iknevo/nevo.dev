@@ -1,9 +1,9 @@
-import { blogItemType } from "@/src/definitions/blog-validation";
 import { api } from "@/src/lib/hono";
+import { PostResponse } from "@/src/types";
 import { useQuery } from "@tanstack/react-query";
 
 export function useGetPost(id?: string) {
-  const query = useQuery<blogItemType>({
+  const query = useQuery<PostResponse>({
     enabled: !!id,
     queryKey: ["blog_post", id],
     queryFn: async () => {
