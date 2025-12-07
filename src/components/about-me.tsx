@@ -30,7 +30,7 @@ export default function AboutMe() {
         stagger: 0.05,
       });
     },
-    { scope: container }
+    { scope: container },
   );
 
   useGSAP(
@@ -51,7 +51,7 @@ export default function AboutMe() {
         stagger: 0.02,
       });
     },
-    { scope: container }
+    { scope: container },
   );
 
   return (
@@ -71,25 +71,25 @@ export default function AboutMe() {
           This is me.
         </p>
 
-        <div className="grid md:grid-cols-12 mt-9">
-          <div className="md:col-span-5 cursor">
-            <p className="text-5xl slide-up-and-fade">
-              I&apos;m Nevo
-              <span className="text-2xl text-white/75 mt-10 inline-block">
-                Web developer with a relentless drive for excellence, skilled in
-                creating and maintaining functional and responsive web
-                applications and websites.
-              </span>
+        <div className="mt-9 grid gap-8 md:grid-cols-12 items-start">
+          <div className="md:col-span-5 cursor space-y-4">
+            <h1 className="text-4xl sm:text-5xl font-semibold leading-tight slide-up-and-fade">
+              I&apos;m Ahmed
+            </h1>
+            <p className="text-lg text-white/75 max-w-md slide-up-and-fade">
+              AKA NEVO, a front-end developer focused on building modern,
+              responsive web applications with clean UI and great performance.
             </p>
           </div>
-          <div className="md:col-span-7">
-            <div className="text-lg text-white/80 max-w-[450px] cursor">
+
+          <div className="md:col-span-7 cursor">
+            <div className="space-y-3 text-base sm:text-lg text-white/80 max-w-[500px]">
               <p className="slide-up-and-fade">
                 A {age} year old frontend web developer based in Cairo, Egypt.
                 Dedicated to turning ideas into creative solutions. I specialize
                 in creating seamless and intuitive user experiences.
               </p>
-              <p className="mt-3 slide-up-and-fade">
+              <p className="slide-up-and-fade">
                 My approach focuses on creating scalable, high-performing
                 solutions tailored to both user needs and business objectives.
                 By prioritizing performance, accessibility, and responsiveness,
@@ -98,8 +98,9 @@ export default function AboutMe() {
               </p>
             </div>
           </div>
-          <div className="slide-up-and-fade col-span-full text-center cursor">
-            <p className="text-2xl lg:text-4xl text-primary uppercase mt-5 md:mt-10">
+
+          <div className="col-span-full mt-8 md:mt-10 text-center cursor slide-up-and-fade">
+            <p className="text-xl lg:text-3xl text-primary uppercase">
               i can&apos;t stop configuring my code editor
             </p>
           </div>

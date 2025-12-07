@@ -16,7 +16,8 @@ export const metadata: Metadata = {
     template: "NEVO | %s",
     default: "NEVO | Front-End Developer",
   },
-  description: "Personal portfolio of Ahmed (NEVO) Abdelhafiez",
+  description:
+    "Front-End developer building modern, responsive web applications and portfolios for the web. This is the personal portfolio of Ahmed (NEVO) Abdelhafiez.",
   metadataBase: new URL("https://nevo.is-a.dev"),
   alternates: {
     canonical: "/",
