@@ -26,7 +26,7 @@ export default function Layout({ children }: Props) {
       <ParticleBackground />
       <div className="container relative">
         <div className="hidden absolute bottom-5 -right-30 xl:block">
-          <ScrollButton scrollToTop />
+          <ScrollButton animate={false} scrollToTop />
         </div>
       </div>
     </>

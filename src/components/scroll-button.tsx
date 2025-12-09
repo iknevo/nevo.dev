@@ -9,9 +9,13 @@ import { useRef } from "react";
 
 type Props = {
   scrollToTop?: boolean;
+  animate?: boolean;
 };
 
-export default function ScrollButton({ scrollToTop = false }: Props) {
+export default function ScrollButton({
+  scrollToTop = false,
+  animate = true,
+}: Props) {
   const lenis = useLenis();
   const circleRef = useRef<SVGCircleElement | null>(null);
 
@@ -20,12 +24,12 @@ export default function ScrollButton({ scrollToTop = false }: Props) {
       if (scrollToTop) {
         lenis.scrollTo(0);
       } else {
-        lenis.scrollTo("#selected-projects");
+        lenis.scrollTo("#selected-projects", { offset: -30 });
       }
     }
   };
   useGSAP(() => {
-    if (scrollToTop) return;
+    if (!animate) return;
     if (circleRef.current) {
       const length = circleRef.current.getTotalLength();
       gsap.set(circleRef.current, {

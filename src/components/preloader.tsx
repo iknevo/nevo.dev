@@ -38,7 +38,7 @@ export default function Preloader() {
           stagger: 0.09,
           willChange: "transform, opacity",
         },
-        ">"
+        ">",
       );
 
       tl.to(
@@ -50,7 +50,7 @@ export default function Preloader() {
           duration: 0.4,
           willChange: "transform, opacity",
         },
-        "<0.2"
+        "<0.2",
       );
 
       tl.to(
@@ -59,14 +59,14 @@ export default function Preloader() {
           autoAlpha: 0,
           duration: 0.5,
         },
-        ">"
+        ">",
       );
     },
-    { scope: preloaderRef }
+    { scope: preloaderRef },
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex bg-black" ref={preloaderRef}>
+    <div className="fixed inset-0 z-9999 flex bg-black" ref={preloaderRef}>
       {[...Array(numColumns)].map((_, index) => (
         <div
           key={index}
