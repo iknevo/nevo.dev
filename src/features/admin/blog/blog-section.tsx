@@ -47,8 +47,11 @@ export default function BlogSection() {
 
       <div className="grid gap-2">
         {posts.map((post) => (
-          <TransitionLink href={`/blog/post/${post.slug}`} key={post._id}>
-            <div className="experience-item flex items-center justify-between">
+          <div
+            className="experience-item flex items-center justify-between"
+            key={post._id}
+          >
+            <TransitionLink href={`/blog/post/${post.slug}`}>
               <div>
                 <p className="text-3xl md:text-4xl cursor leading-none mt-3.5 mb-2.5">
                   {post.title}
@@ -58,14 +61,14 @@ export default function BlogSection() {
                   {post?.readingTime && "/ " + post.readingTime}
                 </p>
               </div>
-              <button
-                className="no-cursor cursor-none"
-                onClick={() => router.push(`/admin/blog/edit/${post._id}`)}
-              >
-                <PenLine className="size-8 cursor" />
-              </button>
-            </div>
-          </TransitionLink>
+            </TransitionLink>
+            <button
+              className="no-cursor cursor-none"
+              onClick={() => router.push(`/admin/blog/edit/${post._id}`)}
+            >
+              <PenLine className="size-8 cursor" />
+            </button>
+          </div>
         ))}
       </div>
     </section>
