@@ -9,6 +9,7 @@ import { Loader2, PenLine } from "lucide-react";
 import Link from "next/link";
 import { useGetPosts } from "./api/use-get-posts";
 import { useRouter } from "next/navigation";
+import TransitionLink from "@/src/components/transition-link";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -46,26 +47,25 @@ export default function BlogSection() {
 
       <div className="grid gap-2">
         {posts.map((post) => (
-          <div
-            key={post._id}
-            className="experience-item flex items-center justify-between"
-          >
-            <div>
-              <p className="text-3xl md:text-4xl cursor leading-none mt-3.5 mb-2.5">
-                {post.title}
-              </p>
-              <p className="text-lg text-white/80 cursor">
-                {format(post.createdAt, "dd MMMM, yyyy")}{" "}
-                {post?.readingTime && "/ " + post.readingTime}
-              </p>
+          <TransitionLink href={`/blog/post/${post.slug}`} key={post._id}>
+            <div className="experience-item flex items-center justify-between">
+              <div>
+                <p className="text-3xl md:text-4xl cursor leading-none mt-3.5 mb-2.5">
+                  {post.title}
+                </p>
+                <p className="text-lg text-white/80 cursor">
+                  {format(post.createdAt, "dd MMMM, yyyy")}{" "}
+                  {post?.readingTime && "/ " + post.readingTime}
+                </p>
+              </div>
+              <button
+                className="no-cursor cursor-none"
+                onClick={() => router.push(`/admin/blog/edit/${post._id}`)}
+              >
+                <PenLine className="size-8 cursor" />
+              </button>
             </div>
-            <button
-              className="no-cursor cursor-none"
-              onClick={() => router.push(`/admin/blog/edit/${post._id}`)}
-            >
-              <PenLine className="size-8 cursor" />
-            </button>
-          </div>
+          </TransitionLink>
         ))}
       </div>
     </section>

@@ -28,13 +28,13 @@ export default function Project({
   const handleMouseEnter = contextSafe?.(() => {
     onMouseEnter(project.slug);
     const arrowLine = externalLinkSVGRef.current?.querySelector(
-      "#arrow-line",
+      "#arrow-line"
     ) as SVGPathElement;
     const arrowCurb = externalLinkSVGRef.current?.querySelector(
-      "#arrow-curb",
+      "#arrow-curb"
     ) as SVGPathElement;
     const box = externalLinkSVGRef.current?.querySelector(
-      "#box",
+      "#box"
     ) as SVGPathElement;
 
     gsap.set(box, {
@@ -67,7 +67,7 @@ export default function Project({
           opacity: 1,
           strokeDashoffset: 0,
         },
-        "<0.2",
+        "<0.2"
       )
       .to(arrowCurb, {
         opacity: 1,
@@ -78,7 +78,7 @@ export default function Project({
         {
           autoAlpha: 0,
         },
-        "+=1",
+        "+=1"
       );
   });
 
@@ -108,7 +108,7 @@ export default function Project({
         <div className="text-white/80">
           _{(index + 1).toString().padStart(2, "0")}.
         </div>
-        <div className="">
+        <div>
           <h4 className="text-3xl xs:text-6xl flex gap-4 font-bold transition-all duration-700 bg-linear-to-r from-primary to-white from-50% to-50% bg-size-[200%] bg-right bg-clip-text text-transparent group-hover:bg-left">
             {project.name}
             <span className="text-white opacity-0 group-hover:opacity-100 transition-all">

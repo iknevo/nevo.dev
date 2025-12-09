@@ -1,4 +1,4 @@
-import ProjectDetails from "@/src/components/project-details";
+import PostPreview from "@/src/features/blog/post-preview";
 import { notFound } from "next/navigation";
 
 export default async function Page({
@@ -10,5 +10,5 @@ export default async function Page({
   if (!id) {
     return notFound();
   }
-  return <ProjectDetails id={id} />;
+  return <PostPreview id={id} />;
 }
