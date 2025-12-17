@@ -87,7 +87,7 @@ export default function Banner() {
               <Button
                 as="button"
                 variant="primary"
-                className="banner-Button slide-up-and-fade cursor mt-9 rounded-md"
+                className="banner-Button slide-up-and-fade cursor mt-9 rounded-md font-semibold text-white transition-colors duration-500 hover:text-black"
               >
                 My Blog
               </Button>

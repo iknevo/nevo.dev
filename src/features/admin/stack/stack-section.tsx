@@ -52,7 +52,7 @@ export default function StackSection() {
                 {type}
               </h1>
 
-              <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 lg:grid-cols-5">
+              <div className="grid grid-cols-2 items-center gap-10 md:grid-cols-3 lg:grid-cols-5">
                 {items.map((item) => (
                   <div
                     className="project-item group cursor pt-5 leading-none transition-all md:group-hover/projects:opacity-30 md:hover:opacity-100!"

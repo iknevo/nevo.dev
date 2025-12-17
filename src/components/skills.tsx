@@ -95,7 +95,7 @@ export default function Skills() {
           <div className="space-y-20">
             {stack.map(({ type, items }) => (
               <div className="grid md:grid-cols-12" key={type}>
-                <div className="md:col-span-5">
+                <div className="mb-10 md:col-span-5 md:mb-0">
                   <p className="slide-up text-5xl leading-none text-white/80 uppercase">
                     {type}
                   </p>
