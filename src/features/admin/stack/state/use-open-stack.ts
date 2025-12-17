@@ -11,5 +11,5 @@ export const useOpenStack = create<OpenStackState>((set) => ({
   id: undefined,
   isOpen: false,
   onOpen: (id: string) => set({ isOpen: true, id }),
-  onClose: () => set({ isOpen: false, id: undefined }),
+  onClose: () => set({ isOpen: false, id: undefined })
 }));

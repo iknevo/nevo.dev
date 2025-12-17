@@ -15,8 +15,8 @@ export default function Preloader() {
     () => {
       const tl = gsap.timeline({
         defaults: {
-          ease: "power2.inOut",
-        },
+          ease: "power2.inOut"
+        }
       });
 
       tl.to(".name-text span", {
@@ -24,7 +24,7 @@ export default function Preloader() {
         opacity: 1,
         stagger: 0.12,
         duration: 0.5,
-        willChange: "transform, opacity",
+        willChange: "transform, opacity"
       });
 
       tl.to(
@@ -36,9 +36,9 @@ export default function Preloader() {
           opacity: 0,
           duration: 0.7,
           stagger: 0.09,
-          willChange: "transform, opacity",
+          willChange: "transform, opacity"
         },
-        ">",
+        ">"
       );
 
       tl.to(
@@ -48,21 +48,21 @@ export default function Preloader() {
           opacity: 0,
           stagger: 0.09,
           duration: 0.4,
-          willChange: "transform, opacity",
+          willChange: "transform, opacity"
         },
-        "<0.2",
+        "<0.2"
       );
 
       tl.to(
         preloaderRef.current,
         {
           autoAlpha: 0,
-          duration: 0.5,
+          duration: 0.5
         },
-        ">",
+        ">"
       );
     },
-    { scope: preloaderRef },
+    { scope: preloaderRef }
   );
 
   return (
@@ -70,10 +70,10 @@ export default function Preloader() {
       {[...Array(numColumns)].map((_, index) => (
         <div
           key={index}
-          className="preloader-item h-full w-[10%] bg-primary-dark"
+          className="preloader-item bg-primary-dark h-full w-[10%]"
         />
       ))}
-      <p className="name-text flex text-[20vw] lg:text-[200px] text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 leading-none overflow-hidden">
+      <p className="name-text absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 overflow-hidden text-center text-[20vw] leading-none lg:text-[200px]">
         {letters.map((letter, index) => (
           <span key={index} className="inline-block translate-y-full opacity-0">
             {letter}

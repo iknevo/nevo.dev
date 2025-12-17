@@ -1,22 +1,20 @@
 "use client";
 
 import SectionTitle from "@/src/components/section-title";
+import { Button } from "@/src/components/ui/button";
+import { blogSchema } from "@/src/definitions/blog-validation";
+import { useDeletePost } from "@/src/features/admin/blog/api/use-delete-post";
+import { useGetPost } from "@/src/features/admin/blog/api/use-get-post";
+import { useUpdatePost } from "@/src/features/admin/blog/api/use-update-post";
+import BlogForm from "@/src/features/admin/blog/blog-form";
+import { useConfirm } from "@/src/hooks/use-confirm";
 import { useGSAP } from "@gsap/react";
-import { z } from "zod";
+import { useQueryClient } from "@tanstack/react-query";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import BlogForm from "../blog-form";
-import { blogSchema } from "@/src/definitions/blog-validation";
-import { useQueryClient } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useUpdatePost } from "../api/use-update-post";
-import { useGetPost } from "../api/use-get-post";
-import { ArrowLeft, Loader2 } from "lucide-react";
-import { useConfirm } from "@/src/hooks/use-confirm";
-import { useDeletePost } from "../api/use-delete-post";
-import { Button } from "@/src/components/ui/button";
-import Link from "next/link";
-import TransitionLink from "@/src/components/transition-link";
+import { z } from "zod";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -39,39 +37,39 @@ export default function EditBlogSection({ id }: Props) {
     summary: post?.summary ?? "",
     tags: post?.tags ?? [],
     image: post?.image ?? "",
-    doc: post?.doc ?? "",
+    doc: post?.doc ?? ""
   };
 
   const onSubmit = (values: FormValues) => {
     updatePost(values, {
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ["blog_posts"],
+          queryKey: ["blog_posts"]
         });
         queryClient.invalidateQueries({
-          queryKey: ["blog_post", id],
+          queryKey: ["blog_post", id]
         });
         router.push("/admin/blog");
-      },
+      }
     });
   };
 
   const onDelete = async () => {
     const ok = await confirm({
       title: "Are You Sure?",
-      message: "You are about to delete this blog post.",
+      message: "You are about to delete this blog post."
     });
     if (ok) {
       deletePost(undefined, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            queryKey: ["blog_posts"],
+            queryKey: ["blog_posts"]
           });
           queryClient.removeQueries({
-            queryKey: ["blog_post", id],
+            queryKey: ["blog_post", id]
           });
           router.push("/admin/blog");
-        },
+        }
       });
     }
   };
@@ -81,10 +79,10 @@ export default function EditBlogSection({ id }: Props) {
       <ConfirmDialog />
       <section>
         <div className="container">
-          <div className="flex justify-between items-center mb-10">
+          <div className="mb-10 flex items-center justify-between">
             <SectionTitle title="Edit blog" className="mb-0" />
             <Button
-              className="flex items-center justify-center text-lg font-semibold dark"
+              className="dark flex items-center justify-center text-lg font-semibold"
               variant={"outline"}
               onClick={() => router.back()}
             >
@@ -94,7 +92,7 @@ export default function EditBlogSection({ id }: Props) {
 
           {isLoading ? (
             <div className="flex items-center justify-center">
-              <Loader2 className="text-primary size-12 animate-spin mt-20" />
+              <Loader2 className="text-primary mt-20 size-12 animate-spin" />
             </div>
           ) : (
             <BlogForm

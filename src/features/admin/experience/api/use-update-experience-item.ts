@@ -1,6 +1,6 @@
 import { api } from "@/src/lib/hono";
 import { useMutation } from "@tanstack/react-query";
-import { InferResponseType, InferRequestType } from "hono";
+import { InferRequestType, InferResponseType } from "hono";
 import { toast } from "sonner";
 
 type ResponseType = InferResponseType<(typeof api.experience)[":id"]["$patch"]>;
@@ -18,6 +18,6 @@ export function useUpdateExperienceItem(id?: string) {
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    },
+    }
   });
 }

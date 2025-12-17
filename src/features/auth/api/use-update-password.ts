@@ -14,7 +14,7 @@ export function useUpdatePassword() {
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (json) => {
       const res = await api.auth["update-password"].$patch({
-        json,
+        json
       });
       const data: ResponseType = await res.json();
       if ("success" in data && data.success === false) {
@@ -25,7 +25,7 @@ export function useUpdatePassword() {
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    },
+    }
   });
   return mutation;
 }

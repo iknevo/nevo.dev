@@ -7,7 +7,7 @@ export function useDeleteProject(id?: string) {
   const mutation = useMutation({
     mutationFn: async () => {
       const res = await api.projects[":id"].$delete({
-        param: { id },
+        param: { id }
       });
       const data = await res.json();
       return data;
@@ -20,7 +20,7 @@ export function useDeleteProject(id?: string) {
     onError: (err) => {
       console.error(err);
       toast.error("Failed to delete project");
-    },
+    }
   });
 
   return mutation;

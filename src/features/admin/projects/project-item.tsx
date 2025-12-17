@@ -1,8 +1,8 @@
 import { ProjectResponse } from "@/src/types";
-import { useOpenProject } from "./state/use-open-project";
-import Link from "next/link";
-import Image from "next/image";
 import { PenLine } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useOpenProject } from "./state/use-open-project";
 
 interface Props {
   project: ProjectResponse;
@@ -12,9 +12,9 @@ export default function ProjectItem({ project }: Props) {
   const { onOpen } = useOpenProject();
 
   return (
-    <div className="project-item group leading-none pt-5 md:group-hover/projects:opacity-30 md:hover:opacity-100! transition-all">
+    <div className="project-item group pt-5 leading-none transition-all md:group-hover/projects:opacity-30 md:hover:opacity-100!">
       <Link href={`/projects/${project.slug}`}>
-        <div className="relative w-full aspect-[16/9] overflow-hidden">
+        <div className="relative aspect-[16/9] w-full overflow-hidden">
           <Image
             src={project.thumbnail}
             alt={project.name}
@@ -24,8 +24,8 @@ export default function ProjectItem({ project }: Props) {
           />
         </div>
       </Link>
-      <div className="flex items-center justify-between gap-2 md:gap-5 mt-5">
-        <p className="transition-all duration-700 bg-linear-to-r from-primary to-white from-50% to-50% bg-size-[200%] bg-right bg-clip-text text-transparent group-hover:bg-left">
+      <div className="mt-5 flex items-center justify-between gap-2 md:gap-5">
+        <p className="from-primary bg-linear-to-r from-50% to-white to-50% bg-size-[200%] bg-clip-text bg-right text-transparent transition-all duration-700 group-hover:bg-left">
           {project.name}
         </p>
         <button

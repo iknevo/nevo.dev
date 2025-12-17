@@ -10,7 +10,7 @@ export function useGetProjects() {
       if (!res.ok) throw new Error("Failed to fetch projects");
       const { data } = await res.json();
       return data;
-    },
+    }
   });
   return query;
 }

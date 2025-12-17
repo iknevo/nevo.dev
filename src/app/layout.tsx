@@ -8,37 +8,37 @@ import { Josefin_Sans } from "next/font/google";
 
 const josefin = Josefin_Sans({
   subsets: ["latin"],
-  display: "swap",
+  display: "swap"
 });
 
 export const metadata: Metadata = {
   title: {
     template: "NEVO | %s",
-    default: "NEVO | Front-End Developer",
+    default: "NEVO | Front-End Developer"
   },
   description:
     "Front-End developer building modern, responsive web applications and portfolios for the web. This is the personal portfolio of Ahmed (NEVO) Abdelhafiez.",
   metadataBase: new URL("https://nevo.is-a.dev"),
   alternates: {
-    canonical: "/",
-  },
+    canonical: "/"
+  }
 };
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
       <body
-        className={`${josefin.className} select-none relative antialiased bg-black text-white`}
+        className={`${josefin.className} relative bg-black text-white antialiased select-none`}
       >
         <ReactLenis
           root
           options={{
             lerp: 0.1,
-            duration: 1.4,
+            duration: 1.4
           }}
         >
           <main>

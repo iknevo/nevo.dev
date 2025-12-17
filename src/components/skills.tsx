@@ -1,12 +1,13 @@
 "use client";
+
 import SectionTitle from "@/src/components/section-title";
+import { useGetStack } from "@/src/features/admin/stack/api/use-get-stack";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import Image from "next/image";
-import { useRef, useEffect } from "react";
-import { useGetStack } from "../features/admin/stack/api/use-get-stack";
 import { Loader2 } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useRef } from "react";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -32,15 +33,15 @@ export default function Skills() {
           trigger: containerRef.current,
           start: "top 80%",
           end: "bottom 80%",
-          scrub: 0.5,
-        },
+          scrub: 0.5
+        }
       });
 
       tl.from(slideUpEl, {
         opacity: 0,
         y: 40,
         ease: "none",
-        stagger: 0.4,
+        stagger: 0.4
       });
 
       return () => {
@@ -48,7 +49,7 @@ export default function Skills() {
         tl.kill();
       };
     },
-    { scope: containerRef, dependencies: [stack] },
+    { scope: containerRef, dependencies: [stack] }
   );
 
   useGSAP(
@@ -60,13 +61,13 @@ export default function Skills() {
           trigger: containerRef.current,
           start: "bottom 50%",
           end: "bottom 10%",
-          scrub: 1,
-        },
+          scrub: 1
+        }
       });
 
       tl.to(containerRef.current, {
         y: -150,
-        opacity: 0,
+        opacity: 0
       });
 
       return () => {
@@ -74,7 +75,7 @@ export default function Skills() {
         tl.kill();
       };
     },
-    { scope: containerRef, dependencies: [stack] },
+    { scope: containerRef, dependencies: [stack] }
   );
 
   return (
@@ -84,10 +85,10 @@ export default function Skills() {
 
         {isLoading ? (
           <div className="flex justify-center py-10">
-            <Loader2 className="animate-spin slide-up size-20 text-gray-500" />
+            <Loader2 className="slide-up size-20 animate-spin text-gray-500" />
           </div>
         ) : stack.length === 0 ? (
-          <p className="py-10 text-center dark slide-up text-muted-foreground text-3xl">
+          <p className="dark slide-up text-muted-foreground py-10 text-center text-3xl">
             There&apos;s no stack added yet
           </p>
         ) : (
@@ -99,10 +100,10 @@ export default function Skills() {
                     {type}
                   </p>
                 </div>
-                <div className="md:col-span-7 flex gap-x-11 gap-y-9 flex-wrap">
+                <div className="flex flex-wrap gap-x-11 gap-y-9 md:col-span-7">
                   {items.map((item) => (
                     <div
-                      className="slide-up flex gap-3.5 items-center leading-none"
+                      className="slide-up flex items-center gap-3.5 leading-none"
                       key={item.name}
                     >
                       <div>

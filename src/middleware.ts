@@ -28,7 +28,7 @@ export async function middleware(req: NextRequest) {
     const requestHeaders = new Headers(req.headers);
     requestHeaders.set("x-user-id", decoded.id);
     return NextResponse.next({
-      request: { headers: requestHeaders },
+      request: { headers: requestHeaders }
     });
   } catch (err) {
     console.error("Invalid or expired refresh token:", err);
@@ -43,5 +43,5 @@ function redirectToLogin(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/auth/reset-password/:path*", "/auth/login"],
+  matcher: ["/admin/:path*", "/auth/reset-password/:path*", "/auth/login"]
 };

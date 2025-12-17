@@ -17,14 +17,14 @@ export default function SectionTitle({
   icon,
   title,
   className,
-  classNames,
+  classNames
 }: Props) {
   return (
     <div
       className={cn(
-        "flex items-center gap-4 mb-10",
+        "mb-10 flex items-center gap-4",
         className,
-        classNames?.container,
+        classNames?.container
       )}
     >
       {icon ? (
@@ -35,7 +35,7 @@ export default function SectionTitle({
           className={cn("animate-spin duration-7000", classNames?.icon)}
         />
       )}
-      <h2 className={cn("text-xl uppercase leading-none", classNames?.title)}>
+      <h2 className={cn("text-xl leading-none uppercase", classNames?.title)}>
         {title}
       </h2>
     </div>

@@ -9,7 +9,7 @@ export function useGetStack() {
       if (!res.ok) throw new Error("Failed to fetch stack");
       const { data } = await res.json();
       return data;
-    },
+    }
   });
   return query;
 }

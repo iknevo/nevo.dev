@@ -1,45 +1,49 @@
 "use client";
 
 import TransitionLink from "@/src/components/transition-link";
+import { useGetPosts } from "@/src/features/admin/blog/api/use-get-posts";
 import { ArrowLeft, Loader2 } from "lucide-react";
-import { useGetPosts } from "../admin/blog/api/use-get-posts";
 import BlogPost from "./blog-post";
 
 export default function BlogsPage() {
   const { data: posts = [], isLoading } = useGetPosts();
 
-  if (isLoading)
+  if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <Loader2 className="animate-spin -mt-40 size-20 text-gray-500" />
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <Loader2 className="size-14 animate-spin text-gray-500 sm:size-20" />
       </div>
     );
+  }
 
   return (
-    <section className="pt-5 pb-14 md:px-20 h-screen">
+    <section className="mx-auto max-w-[1600px] px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-16 lg:px-16">
       <TransitionLink
         back
         href="/"
-        className="mb-16 inline-flex gap-2 items-center group h-12"
+        className="group mb-10 inline-flex h-12 items-center gap-2 sm:mb-14"
       >
-        <ArrowLeft className="group-hover:-translate-x-1 group-hover:text-primary transition-all duration-300" />
+        <ArrowLeft className="group-hover:text-primary transition-all duration-300 group-hover:-translate-x-1" />
         Back
       </TransitionLink>
 
-      <div className="px-25">
-        <div className="flex items-center justify-between border-b pb-5 border-accent/20">
-          <h1 className="text-4xl font-semibold">My Blog</h1>
-          <p className="text-xl font-semibold text-white/60">
+      <div className="mx-auto max-w-[1000px]">
+        <div className="border-accent/20 flex flex-col gap-3 border-b pb-4 sm:flex-row sm:items-end sm:justify-between">
+          <h1 className="text-2xl font-semibold sm:text-3xl lg:text-4xl">
+            My Blog
+          </h1>
+          <p className="max-w-md text-base text-white/60">
             Here I write whatever I want whenever I want.
           </p>
         </div>
 
         {posts.length === 0 && (
-          <p className="py-10 text-center dark text-muted-foreground text-3xl">
+          <p className="text-muted-foreground py-10 text-center text-xl sm:text-2xl">
             There&apos;s no blog posts added yet
           </p>
         )}
-        <div className="flex flex-col">
+
+        <div className="flex flex-col md:mt-8">
           {posts.map((post) => (
             <BlogPost post={post} key={post._id} />
           ))}

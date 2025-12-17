@@ -8,7 +8,7 @@ type Props = {
 
 export default function Layout({ children }: Props) {
   return (
-    <main className="min-h-screen container px-8 py-4 space-y-5">
+    <main className="container min-h-screen space-y-5 px-8 py-4">
       <AdminHeader />
       <AdminNav />
       {children}

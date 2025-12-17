@@ -1,22 +1,22 @@
 import { Button } from "@/src/components/ui/button";
-import Editor from "@/src/features/code-editor/editor";
-import Preview from "@/src/features/code-editor/preview";
-import { useCallback, useEffect, useState } from "react";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
-import { Trash } from "lucide-react";
-import { Textarea } from "@/src/components/ui/textarea";
 import { InputTags } from "@/src/components/ui/tags-input";
-import { useForm } from "react-hook-form";
+import { Textarea } from "@/src/components/ui/textarea";
 import { blogFormValues, blogSchema } from "@/src/definitions/blog-validation";
+import Editor from "@/src/features/code-editor/editor";
+import Preview from "@/src/features/code-editor/preview";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Trash } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 type Props = {
   id?: string;
@@ -31,11 +31,11 @@ export default function BlogForm({
   defaultValues,
   onSubmit,
   onDelete,
-  disabled,
+  disabled
 }: Props) {
   const form = useForm<blogFormValues>({
     resolver: zodResolver(blogSchema),
-    defaultValues: defaultValues,
+    defaultValues: defaultValues
   });
   const [doc, setDoc] = useState<string>(defaultValues.doc);
   const handleChangeDoc = useCallback((newDoc: string) => setDoc(newDoc), []);
@@ -57,7 +57,7 @@ export default function BlogForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-4 dark"
+        className="dark space-y-4"
       >
         <FormField
           name="title"
@@ -132,7 +132,7 @@ export default function BlogForm({
           )}
         />
 
-        <div className="grid gap-2 grid-cols-1 md:grid-cols-2 min-h-100">
+        <div className="grid min-h-100 grid-cols-1 gap-2 md:grid-cols-2">
           <Editor
             initialDoc={doc}
             onChange={handleChangeDoc}

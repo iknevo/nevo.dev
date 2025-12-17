@@ -1,48 +1,48 @@
 import { InferSchemaType, Model, Schema, model, models } from "mongoose";
-import slugify from "slugify";
 import readingTime from "reading-time";
+import slugify from "slugify";
 
 const blogSchema = new Schema(
   {
     title: {
       type: String,
       required: [true, "Blog's name is required"],
-      trim: true,
+      trim: true
     },
     summary: {
       type: String,
       required: [true, "Blog's summary is required"],
-      trim: true,
+      trim: true
     },
     tags: {
-      type: [String],
+      type: [String]
     },
     image: {
-      type: String,
+      type: String
     },
     doc: {
       type: String,
-      required: [true, "Blog's body is required"],
+      required: [true, "Blog's body is required"]
     },
     readingTime: String,
     slug: String,
     createdAt: {
       type: Date,
-      default: Date.now(),
-    },
+      default: Date.now()
+    }
   },
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
-    timestamps: true,
-  },
+    timestamps: true
+  }
 );
 
 blogSchema.pre("save", async function (next) {
   this.slug = slugify(this.title, {
     replacement: "-",
     lower: true,
-    trim: true,
+    trim: true
   });
   next();
 });

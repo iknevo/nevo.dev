@@ -112,6 +112,14 @@ body {
   }
 }
 
+/* Fix code block wrapping on mobile */
+.markdown-body pre,
+.markdown-body pre * {
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -232,7 +240,7 @@ body {
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
   input:-webkit-autofill:active {
-    @apply bg-black text-white rounded-md border border-gray-500;
+    @apply rounded-md border border-gray-500 bg-black text-white;
     -webkit-box-shadow: 0 0 0 1000px theme("colors.black") inset;
     -webkit-text-fill-color: theme("colors.white");
     caret-color: theme("colors.white"); /* ✅ makes the cursor visible */

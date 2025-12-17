@@ -1,12 +1,11 @@
+import { env } from "@/src/config/env";
 import { v2 as cloudinary } from "cloudinary";
-import { env } from "../config/env";
 
 cloudinary.config({
   cloud_name: env.cloudinary.cloud_name,
   api_key: env.cloudinary.api_key,
-  api_secret: env.cloudinary.api_secret,
+  api_secret: env.cloudinary.api_secret
 });
-
 
 export const uploadToCloudinary = async (file: File, folder: string) => {
   const arrayBuffer = await file.arrayBuffer();
@@ -23,4 +22,3 @@ export const uploadToCloudinary = async (file: File, folder: string) => {
     uploadStream.end(buffer);
   });
 };
-

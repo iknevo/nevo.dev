@@ -6,7 +6,7 @@ export const stackSchema = z.object({
     z.string(),
     z
       .instanceof(File)
-      .refine((file) => file.size > 0, { error: "Please add an Icon" }),
+      .refine((file) => file.size > 0, { error: "Please add an Icon" })
   ]),
   type: z.string()
 });

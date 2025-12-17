@@ -2,7 +2,7 @@ import PostPreview from "@/src/features/blog/post-preview";
 import { notFound } from "next/navigation";
 
 export default async function Page({
-  params,
+  params
 }: {
   params: Promise<{ id: string }>;
 }) {

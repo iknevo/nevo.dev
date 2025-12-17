@@ -3,11 +3,11 @@ import {
   SheetContent,
   SheetDescription,
   SheetHeader,
-  SheetTitle,
+  SheetTitle
 } from "@/src/components/ui/sheet";
 import {
   stackFormDefaults,
-  stackSchema,
+  stackSchema
 } from "@/src/definitions/stack-validations";
 import { useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
@@ -26,16 +26,16 @@ export const NewStackSheet = () => {
     createStackItem(values, {
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ["stack"],
+          queryKey: ["stack"]
         });
         onClose();
-      },
+      }
     });
   };
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="space-y-4 dark sm:max-w-md">
+      <SheetContent className="dark space-y-4 sm:max-w-md">
         <SheetHeader>
           <SheetTitle>New Stack Item</SheetTitle>
           <SheetDescription>Create a new skill or tool</SheetDescription>

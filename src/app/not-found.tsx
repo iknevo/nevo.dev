@@ -1,8 +1,9 @@
 "use client";
+
 import Button from "@/src/components/button";
+import Cursor from "@/src/components/cursor";
 import { Flag } from "lucide-react";
 import { useEffect, useState } from "react";
-import Cursor from "../components/cursor";
 
 const animations = ["float", "floatReverse", "float2", "floatReverse2"];
 type Particle = {
@@ -30,20 +31,20 @@ export default function NotFound() {
           fontSize: `${size}px`,
           filter: `blur(${blur}px)`,
           animation: `${speed}s ${anim} infinite`,
-          animationDelay: `${delay}s`,
-        },
+          animationDelay: `${delay}s`
+        }
       };
     });
     setParticles(arr);
   }, []);
 
   return (
-    <div className="relative h-screen mx-auto grid place-items-center text-center px-8 overflow-hidden">
+    <div className="relative mx-auto grid h-screen place-items-center overflow-hidden px-8 text-center">
       <Cursor />
       {particles.map((item, i) => (
         <span
           key={i}
-          className="absolute block pointer-events-none opacity-15"
+          className="pointer-events-none absolute block opacity-15"
           style={item.style}
         >
           {item.char}
@@ -51,7 +52,7 @@ export default function NotFound() {
       ))}
 
       <div>
-        <Flag className="w-20 h-20 mx-auto" />
+        <Flag className="mx-auto h-20 w-20" />
         <h1 className="mt-10 text-3xl leading-snug text-white md:text-4xl">
           Error 404 <br /> It looks like something went wrong.
         </h1>
@@ -60,7 +61,7 @@ export default function NotFound() {
           rel="noopener noreferrer"
           href="/"
           variant="primary"
-          className="mt-9 banner-button slide-up-and-fade rounded-md"
+          className="banner-button slide-up-and-fade mt-9 rounded-md"
         >
           Back Home
         </Button>

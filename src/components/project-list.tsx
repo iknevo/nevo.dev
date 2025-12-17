@@ -1,4 +1,5 @@
 "use client";
+
 import Project from "@/src/components/project";
 import SectionTitle from "@/src/components/section-title";
 import { useGetProjects } from "@/src/features/admin/projects/api/use-get-projects";
@@ -54,14 +55,14 @@ export default function ProjectList() {
         ) {
           return gsap.to(imageContainer.current, {
             duration: 0.3,
-            opacity: 0,
+            opacity: 0
           });
         }
 
         gsap.to(imageContainer.current, {
           y: offsetTop - imageRect.height / 2,
           duration: 1,
-          opacity: 1,
+          opacity: 1
         });
       }) as any;
 
@@ -71,7 +72,7 @@ export default function ProjectList() {
         window.removeEventListener("mousemove", handleMouseMove);
       };
     },
-    { scope: containerRef, dependencies: [projects] },
+    { scope: containerRef, dependencies: [projects] }
   );
 
   useGSAP(
@@ -83,16 +84,16 @@ export default function ProjectList() {
           start: "top bottom",
           end: "top 80%",
           toggleActions: "restart none none reverse",
-          scrub: 1,
-        },
+          scrub: 1
+        }
       });
 
       tl.from(containerRef.current, {
         y: 150,
-        opacity: 0,
+        opacity: 0
       });
     },
-    { scope: containerRef, dependencies: [projects] },
+    { scope: containerRef, dependencies: [projects] }
   );
 
   const handleMouseEnter = (slug: string) => {
@@ -111,17 +112,17 @@ export default function ProjectList() {
 
         {isLoading ? (
           <div className="flex justify-center py-10">
-            <Loader2 className="animate-spin slide-up size-20 text-gray-500" />
+            <Loader2 className="slide-up size-20 animate-spin text-gray-500" />
           </div>
         ) : projects.length === 0 ? (
-          <p className="py-10 text-center dark slide-up text-muted-foreground text-3xl">
+          <p className="dark slide-up text-muted-foreground py-10 text-center text-3xl">
             There&apos;s no projects added yet
           </p>
         ) : (
           <div className="group/projects relative" ref={containerRef}>
             {selectedProject !== null && (
               <div
-                className="max-md:hidden absolute right-0 top-0 z-1 pointer-events-none w-[200px] xl:w-[350px] aspect-3/4 overflow-hidden opacity-0"
+                className="pointer-events-none absolute top-0 right-0 z-1 aspect-3/4 w-[200px] overflow-hidden opacity-0 max-md:hidden xl:w-[350px]"
                 ref={imageContainer}
               >
                 {projects.map((project) => (
@@ -131,10 +132,10 @@ export default function ProjectList() {
                     width="400"
                     height="500"
                     className={cn(
-                      "absolute inset-0 transition-all duration-500 w-full h-full object-contain object-top",
+                      "absolute inset-0 h-full w-full object-contain object-top transition-all duration-500",
                       {
-                        "opacity-0": project.slug !== selectedProject,
-                      },
+                        "opacity-0": project.slug !== selectedProject
+                      }
                     )}
                     ref={imageRef}
                     key={project.slug}

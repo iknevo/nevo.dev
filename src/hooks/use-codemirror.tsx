@@ -1,34 +1,34 @@
 "use client";
 
-import { EditorState } from "@codemirror/state";
 import { closeBrackets, closeBracketsKeymap } from "@codemirror/autocomplete";
-import { vim } from "@replit/codemirror-vim";
-import {
-  EditorView,
-  lineNumbers,
-  keymap,
-  highlightActiveLine,
-  highlightActiveLineGutter,
-} from "@codemirror/view";
 import {
   defaultKeymap,
-  historyKeymap,
   history,
+  historyKeymap,
   indentLess,
-  indentMore,
+  indentMore
 } from "@codemirror/commands";
-import { indentOnInput } from "@codemirror/language";
-import { tags } from "@lezer/highlight";
+import { javascript } from "@codemirror/lang-javascript";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
-import { languages } from "@codemirror/language-data";
-import { oneDark } from "@codemirror/theme-one-dark";
 import {
   defaultHighlightStyle,
-  syntaxHighlighting,
   HighlightStyle,
+  indentOnInput,
+  syntaxHighlighting
 } from "@codemirror/language";
-import { javascript } from "@codemirror/lang-javascript";
-import { RefObject, useRef, useState, useEffect } from "react";
+import { languages } from "@codemirror/language-data";
+import { EditorState } from "@codemirror/state";
+import { oneDark } from "@codemirror/theme-one-dark";
+import {
+  EditorView,
+  highlightActiveLine,
+  highlightActiveLineGutter,
+  keymap,
+  lineNumbers
+} from "@codemirror/view";
+import { tags } from "@lezer/highlight";
+import { vim } from "@replit/codemirror-vim";
+import { RefObject, useEffect, useRef, useState } from "react";
 
 interface Props {
   initialDoc: string;
@@ -39,34 +39,34 @@ interface Props {
 const transparentTheme = EditorView.theme({
   "&": {
     backgroundColor: "transparent !important",
-    height: "100%",
-  },
+    height: "100%"
+  }
 });
 
 const highlighting = HighlightStyle.define([
   { tag: tags.heading1, fontSize: "1.6em", fontWeight: "bold" },
   { tag: tags.heading2, fontSize: "1.4em", fontWeight: "bold" },
-  { tag: tags.heading3, fontSize: "1.2em", fontWeight: "bold" },
+  { tag: tags.heading3, fontSize: "1.2em", fontWeight: "bold" }
 ]);
 
 const gutterTheme = EditorView.theme({
   ".cm-gutters": {
-    backgroundColor: "transparent !important",
+    backgroundColor: "transparent !important"
   },
   ".cm-activeLineGutter": {
-    backgroundColor: "#6699ff0b !important",
-  },
+    backgroundColor: "#6699ff0b !important"
+  }
 });
 
 const biggerFont = EditorView.theme({
   ".cm-content": {
     fontSize: "18px",
-    lineHeight: "1.7",
+    lineHeight: "1.7"
   },
   ".cm-lineNumbers": {
     fontSize: "18px",
-    lineHeight: "1.7",
-  },
+    lineHeight: "1.7"
+  }
 });
 export const editorTheme = EditorView.theme({
   "&": {
@@ -76,20 +76,20 @@ export const editorTheme = EditorView.theme({
     padding: "0.75rem",
     transitionProperty:
       "color, background-color, border-color, text-decoration-color, fill, stroke",
-    transitionDuration: "300ms",
+    transitionDuration: "300ms"
   },
   "&.cm-focused": {
-    borderColor: "rgba(216, 78, 44, 0.5)",
+    borderColor: "rgba(216, 78, 44, 0.5)"
   },
   "&.cm-focused .cm-selectionBackground, ::selection": {
-    color: "#ffffff",
-  },
+    color: "#ffffff"
+  }
 });
 
 export function useCodemirror<T extends Element>({
   initialDoc,
   onChange,
-  disabled,
+  disabled
 }: Props): [RefObject<T | null>, EditorView?] {
   const containerRef = useRef<T>(null);
   const initialDocRef = useRef(initialDoc);
@@ -112,13 +112,13 @@ export function useCodemirror<T extends Element>({
           {
             key: "Tab",
             preventDefault: true,
-            run: indentMore,
+            run: indentMore
           },
           {
             key: "Shift-Tab",
             preventDefault: true,
-            run: indentLess,
-          },
+            run: indentLess
+          }
         ]),
         lineNumbers(),
         highlightActiveLineGutter(),
@@ -132,7 +132,7 @@ export function useCodemirror<T extends Element>({
         markdown({
           base: markdownLanguage,
           codeLanguages: languages,
-          addKeymap: true,
+          addKeymap: true
         }),
         oneDark,
         transparentTheme,
@@ -143,12 +143,12 @@ export function useCodemirror<T extends Element>({
         EditorView.lineWrapping,
         EditorView.updateListener.of((update) => {
           if (update.changes && onChange) onChange(update.state);
-        }),
-      ],
+        })
+      ]
     });
     const view = new EditorView({
       state,
-      parent: containerRef.current,
+      parent: containerRef.current
     });
     setEditorView(view);
 

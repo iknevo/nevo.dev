@@ -3,7 +3,7 @@ import {
   SheetContent,
   SheetDescription,
   SheetHeader,
-  SheetTitle,
+  SheetTitle
 } from "@/src/components/ui/sheet";
 import { stackFormValues } from "@/src/definitions/stack-validations";
 import { useConfirm } from "@/src/hooks/use-confirm";
@@ -30,33 +30,33 @@ export const EditStackSheet = () => {
   const defaultValues = {
     name: stackItem?.name ?? "",
     type: stackItem?.type ?? "",
-    icon: stackItem?.icon ?? "",
+    icon: stackItem?.icon ?? ""
   };
 
   const onSubmit = (values: stackFormValues) => {
     updateStackItem(values, {
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ["stack"],
+          queryKey: ["stack"]
         });
         queryClient.invalidateQueries({
-          queryKey: ["stack_item", id],
+          queryKey: ["stack_item", id]
         });
         onClose();
-      },
+      }
     });
   };
 
   const onDelete = async () => {
     const ok = await confirm({
       title: "Are You Sure?",
-      message: "You are about to delete this skill.",
+      message: "You are about to delete this skill."
     });
     if (ok) {
       deleteStackItem(undefined, {
         onSuccess: () => {
           onClose();
-        },
+        }
       });
     }
   };
@@ -65,7 +65,7 @@ export const EditStackSheet = () => {
     <>
       <ConfirmDialog />
       <Sheet open={isOpen} onOpenChange={onClose}>
-        <SheetContent className="space-y-4 dark sm:max-w-md">
+        <SheetContent className="dark space-y-4 sm:max-w-md">
           <SheetHeader>
             <SheetTitle>Edit Stack Item</SheetTitle>
             <SheetDescription>Edit Or Delete stack item</SheetDescription>

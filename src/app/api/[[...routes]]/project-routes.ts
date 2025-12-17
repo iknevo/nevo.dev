@@ -16,10 +16,10 @@ const app = new Hono()
     if (!data)
       return c.json(
         { message: "Error getting projects!, Try again later" },
-        status.NOT_FOUND,
+        status.NOT_FOUND
       );
     return c.json({
-      data,
+      data
     });
   })
   .get(
@@ -27,8 +27,8 @@ const app = new Hono()
     zValidator(
       "param",
       z.object({
-        id: z.string().optional(),
-      }),
+        id: z.string().optional()
+      })
     ),
     async (c) => {
       const { id } = c.req.valid("param");
@@ -46,7 +46,7 @@ const app = new Hono()
         return c.json({ error: "Not Found", id }, 404);
       }
       return c.json({ data });
-    },
+    }
   )
   .post("/", authMiddleware, async (c) => {
     await dbConnect();
@@ -69,17 +69,17 @@ const app = new Hono()
       features: features.map((f) => ({ item: f as string })),
       techStack: techStack.map((t) => ({ item: t as string })),
       thumbnail,
-      image,
+      image
     };
     const result = projectSchema.safeParse(parsedData);
     if (!result.success) {
       const errors = result.error.issues.map((err) => ({
         path: err.path.join("."),
-        message: err.message,
+        message: err.message
       }));
       return c.json(
         { success: false, message: "Validation failed", errors },
-        status.BAD_REQUEST,
+        status.BAD_REQUEST
       );
     }
     const { data } = result;
@@ -87,7 +87,7 @@ const app = new Hono()
     if (data.thumbnail instanceof File) {
       thumbnailUrl = await uploadToCloudinary(
         data.thumbnail,
-        "projects/thumbnails",
+        "projects/thumbnails"
       );
     }
     let imageUrl = data.image;
@@ -103,18 +103,18 @@ const app = new Hono()
       features: data.features.map((f) => f.item),
       techStack: data.techStack.map((t) => t.item),
       thumbnail: thumbnailUrl,
-      image: imageUrl,
+      image: imageUrl
     };
     const project = await Project.create(newProject);
     if (!project) {
       return c.json(
         { message: "Error creating project!, Try again later" },
-        status.BAD_REQUEST,
+        status.BAD_REQUEST
       );
     }
     return c.json({
       success: true,
-      project,
+      project
     });
   })
   .patch(
@@ -123,8 +123,8 @@ const app = new Hono()
     zValidator(
       "param",
       z.object({
-        id: z.string().optional(),
-      }),
+        id: z.string().optional()
+      })
     ),
     async (c) => {
       const { id } = c.req.valid("param");
@@ -151,17 +151,17 @@ const app = new Hono()
         features: features.map((f) => ({ item: f as string })),
         techStack: techStack.map((t) => ({ item: t as string })),
         thumbnail,
-        image,
+        image
       };
       const result = projectSchema.safeParse(parsedData);
       if (!result.success) {
         const errors = result.error.issues.map((err) => ({
           path: err.path.join("."),
-          message: err.message,
+          message: err.message
         }));
         return c.json(
           { success: false, message: "Validation failed", errors },
-          status.BAD_REQUEST,
+          status.BAD_REQUEST
         );
       }
       const { data } = result;
@@ -169,7 +169,7 @@ const app = new Hono()
       if (data.thumbnail instanceof File) {
         thumbnailUrl = await uploadToCloudinary(
           data.thumbnail,
-          "projects/thumbnails",
+          "projects/thumbnails"
         );
       }
       let imageUrl = data.image;
@@ -185,7 +185,7 @@ const app = new Hono()
         features: data.features.map((f) => f.item),
         techStack: data.techStack.map((t) => t.item),
         thumbnail: thumbnailUrl,
-        image: imageUrl,
+        image: imageUrl
       };
       let project = await Project.findById(id);
       if (!project) {
@@ -195,9 +195,9 @@ const app = new Hono()
       project = await project.save();
       return c.json<{ success: true; project: projectType }>({
         success: true,
-        project,
+        project
       });
-    },
+    }
   )
   .delete(
     "/:id",
@@ -205,8 +205,8 @@ const app = new Hono()
     zValidator(
       "param",
       z.object({
-        id: z.string().optional(),
-      }),
+        id: z.string().optional()
+      })
     ),
     async (c) => {
       const { id } = c.req.valid("param");
@@ -218,11 +218,11 @@ const app = new Hono()
       if (!project) {
         return c.json(
           { message: "Error deleting project!, Try again later" },
-          status.NOT_FOUND,
+          status.NOT_FOUND
         );
       }
       return c.status(status.NO_CONTENT);
-    },
+    }
   );
 
 export default app;

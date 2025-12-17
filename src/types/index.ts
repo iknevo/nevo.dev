@@ -1,6 +1,6 @@
-import { blogType } from "../models/blog-model";
-import { expType } from "../models/experience-model";
-import { projectType } from "../models/project-model";
+import { blogType } from "@/src/models/blog-model";
+import { expType } from "@/src/models/experience-model";
+import { projectType } from "@/src/models/project-model";
 
 export type Next_Page_Url = string;
 

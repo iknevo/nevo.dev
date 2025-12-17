@@ -1,49 +1,86 @@
 "use client";
 
 import TransitionLink from "@/src/components/transition-link";
+import { Badge } from "@/src/components/ui/badge";
+import { useGetPost } from "@/src/features/admin/blog/api/use-get-post";
+import Preview from "@/src/features/code-editor/preview";
 import { ArrowLeft, Loader2 } from "lucide-react";
-import { useGetPost } from "../admin/blog/api/use-get-post";
-import Preview from "../code-editor/preview";
+import Image from "next/image";
 
 interface Props {
   id: string;
 }
+
 export default function PostPreview({ id }: Props) {
   const { data: post, isLoading } = useGetPost(id);
 
   return (
-    <section className="pt-5 pb-14 md:px-20">
+    <section className="mx-auto max-w-400 px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-16 lg:px-16">
       <TransitionLink
         back
         href="/"
-        className="mb-16 inline-flex gap-2 items-center group h-12"
+        className="group mb-10 inline-flex h-12 items-center gap-2 sm:mb-14"
       >
-        <ArrowLeft className="group-hover:-translate-x-1 group-hover:text-primary transition-all duration-300" />
+        <ArrowLeft className="group-hover:text-primary transition-all duration-300 group-hover:-translate-x-1" />
         Back
       </TransitionLink>
 
-      <div className="px-25">
+      <div className="mx-auto md:max-w-[80%]">
         {isLoading ? (
-          <div className="flex justify-center items-center py-10 min-h-[50vh]">
-            <Loader2 className="animate-spin slide-up size-20 text-gray-500" />
+          <div className="flex min-h-[40vh] items-center justify-center">
+            <Loader2 className="size-16 animate-spin text-gray-500 sm:size-20" />
           </div>
         ) : !post ? (
-          <div className="flex justify-center items-center py-10 min-h-[50vh]">
-            <p className="py-10 text-center dark slide-up text-muted-foreground text-3xl md:text-4xl">
+          <div className="flex min-h-[40vh] items-center justify-center">
+            <p className="text-muted-foreground text-center text-2xl sm:text-3xl">
               Blog post not found <span className="text-primary">!</span>
             </p>
           </div>
         ) : (
-          <div className="space-y-8">
-            <div className="flex items-center justify-between border-b pb-5 border-accent/20">
-              <h1 className="text-4xl font-semibold">{post.title}</h1>
-              <p className="text-xl font-semibold text-white/60">
-                {post.readingTime}
-              </p>
+          <>
+            <div className="space-y-6 sm:space-y-8">
+              <div className="border-accent/20 flex flex-col gap-3 border-b pb-4 sm:flex-row sm:items-end sm:justify-between">
+                <h1 className="text-2xl leading-tight font-semibold sm:text-3xl lg:text-4xl">
+                  {post.title}
+                </h1>
+                <p className="text-sm text-white/60 sm:text-base">
+                  {post.readingTime}
+                </p>
+              </div>
+
+              <p className="text-lg text-white/90 sm:text-xl">{post.summary}</p>
+
+              {post.image && (
+                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
+                  <Image
+                    src={post.image}
+                    alt={post.title}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 100vw, 900px"
+                    priority
+                  />
+                </div>
+              )}
             </div>
-            <p className="text-2xl">{post.summary}</p>
-            <Preview doc={post.doc} className="border-0" />
-          </div>
+
+            <div className="dark mt-6 flex flex-wrap gap-2">
+              {post.tags.map((tag) => (
+                <Badge
+                  key={tag}
+                  variant="outline"
+                  className="rounded-sm text-xs font-semibold sm:text-sm"
+                >
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+
+            <Preview
+              doc={post.doc}
+              className="mt-8 max-w-full overflow-x-auto border-0 sm:mt-12"
+            />
+          </>
         )}
       </div>
     </section>

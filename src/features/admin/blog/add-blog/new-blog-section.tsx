@@ -1,19 +1,19 @@
 "use client";
 
 import SectionTitle from "@/src/components/section-title";
-import { useGSAP } from "@gsap/react";
-import { z } from "zod";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/all";
-import BlogForm from "../blog-form";
+import { Button } from "@/src/components/ui/button";
 import {
   blogFormDefaults,
-  blogSchema,
+  blogSchema
 } from "@/src/definitions/blog-validation";
+import { useCreatePost } from "@/src/features/admin/blog/api/use-create-post";
+import BlogForm from "@/src/features/admin/blog/blog-form";
+import { useGSAP } from "@gsap/react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useCreatePost } from "../api/use-create-post";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
 import { useRouter } from "next/navigation";
-import { Button } from "@/src/components/ui/button";
+import { z } from "zod";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -28,20 +28,20 @@ export default function NewBlogSection() {
     createPost(values, {
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ["blog_posts"],
+          queryKey: ["blog_posts"]
         });
         router.push("/admin/blog");
-      },
+      }
     });
   };
 
   return (
     <section>
       <div className="container">
-        <div className="flex justify-between items-center mb-10">
+        <div className="mb-10 flex items-center justify-between">
           <SectionTitle title="Add new blog" className="mb-0" />
           <Button
-            className="flex items-center justify-center text-lg font-semibold dark"
+            className="dark flex items-center justify-center text-lg font-semibold"
             variant={"outline"}
             onClick={() => router.back()}
           >

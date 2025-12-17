@@ -2,7 +2,7 @@ import BlogsPage from "@/src/features/blog/blogs-page";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "BLOG",
+  title: "BLOG"
 };
 
 export default function Page() {

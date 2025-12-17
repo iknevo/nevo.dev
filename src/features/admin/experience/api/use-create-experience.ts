@@ -21,6 +21,6 @@ export function useCreateExperience() {
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    },
+    }
   });
 }

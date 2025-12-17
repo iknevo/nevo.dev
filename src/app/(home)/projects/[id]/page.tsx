@@ -2,7 +2,7 @@ import ProjectDetails from "@/src/components/project-details";
 import { notFound } from "next/navigation";
 
 export default async function Page({
-  params,
+  params
 }: {
   params: Promise<{ id: string }>;
 }) {

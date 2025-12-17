@@ -9,5 +9,5 @@ type NewExpState = {
 export const useNewExperience = create<NewExpState>((set) => ({
   isOpen: false,
   onOpen: () => set({ isOpen: true }),
-  onClose: () => set({ isOpen: false }),
+  onClose: () => set({ isOpen: false })
 }));

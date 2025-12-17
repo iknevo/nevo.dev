@@ -5,7 +5,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
 import {
@@ -13,12 +13,12 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from "@/src/components/ui/select";
 import { STACK } from "@/src/config/constants";
 import {
   stackFormValues,
-  stackSchema,
+  stackSchema
 } from "@/src/definitions/stack-validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash } from "lucide-react";
@@ -37,11 +37,11 @@ export default function StackForm({
   id,
   onSubmit,
   onDelete,
-  disabled,
+  disabled
 }: Props) {
   const form = useForm<stackFormValues>({
     resolver: zodResolver(stackSchema),
-    defaultValues: defaultValues,
+    defaultValues: defaultValues
   });
   const handleSubmit = (values: stackFormValues) => {
     onSubmit(values);
@@ -125,13 +125,13 @@ export default function StackForm({
           )}
         />
 
-        <Button className="w-full text-foreground" disabled={disabled}>
+        <Button className="text-foreground w-full" disabled={disabled}>
           {id ? "Save Changes" : "Create Stack Item"}
         </Button>
 
         {!!id && (
           <Button
-            className="w-full text-foreground"
+            className="text-foreground w-full"
             type="button"
             variant="outline"
             disabled={disabled}

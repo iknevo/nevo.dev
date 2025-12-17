@@ -1,4 +1,5 @@
 "use client";
+
 import SectionTitle from "@/src/components/section-title";
 import { Button } from "@/src/components/ui/button";
 import { Loader2 } from "lucide-react";
@@ -12,17 +13,17 @@ export default function ProjectsSection() {
 
   if (isLoading)
     return (
-      <div className="flex justify-center py-20 h-screen">
-        <Loader2 className="animate-spin size-20 text-gray-500" />
+      <div className="flex h-screen justify-center py-20">
+        <Loader2 className="size-20 animate-spin text-gray-500" />
       </div>
     );
 
   return (
     <div className="container pb-10">
-      <div className="flex justify-between items-center mb-10">
+      <div className="mb-10 flex items-center justify-between">
         <SectionTitle title="PROJECTS" className="mb-0" />
         <Button
-          className="flex items-center justify-center text-lg font-semibold dark"
+          className="dark flex items-center justify-center text-lg font-semibold"
           variant={"outline"}
           onClick={onOpen}
         >
@@ -31,13 +32,13 @@ export default function ProjectsSection() {
       </div>
 
       {projects.length === 0 && (
-        <p className="py-10 text-center dark text-muted-foreground text-3xl">
+        <p className="dark text-muted-foreground py-10 text-center text-3xl">
           There&apos;s no projects added yet
         </p>
       )}
 
       <div className="group/projects relative">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-6.25 items-start lg:grid-cols-4">
+        <div className="grid grid-cols-1 items-start gap-10 md:grid-cols-2 md:gap-6.25 lg:grid-cols-4">
           {projects.map((project) => (
             <ProjectItem project={project} key={project._id} />
           ))}

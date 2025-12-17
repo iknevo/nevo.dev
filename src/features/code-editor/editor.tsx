@@ -14,24 +14,24 @@ export default function Editor({
   initialDoc,
   className,
   onChange,
-  disabled,
+  disabled
 }: Props) {
   const handleChange = useCallback(
     (state: EditorState) => onChange(state.doc.toString()),
-    [onChange],
+    [onChange]
   );
 
   const [containerRef] = useCodemirror<HTMLDivElement>({
     initialDoc,
     onChange: handleChange,
-    disabled,
+    disabled
   });
 
   return (
     <div
       className={cn(
-        "h-full border-1 border-white/10 rounded-sm overflow-hidden",
-        className,
+        "h-full overflow-hidden rounded-sm border-1 border-white/10",
+        className
       )}
       ref={containerRef}
     />

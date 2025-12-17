@@ -16,7 +16,7 @@ function sendAccessCookie(c: Context, token: string) {
     path: "/",
     httpOnly: true,
     secure: env.production,
-    sameSite: "Strict",
+    sameSite: "Strict"
   });
 }
 
@@ -26,14 +26,14 @@ function sendRefreshCookie(c: Context, token: string) {
     httpOnly: true,
     secure: env.production,
     sameSite: "Strict",
-    maxAge: env.refreshCookiesMaxAge,
+    maxAge: env.refreshCookiesMaxAge
   });
 }
 
 export async function generateAccessToken(id: string): Promise<string> {
   const payload: AccessPayload = {
     id,
-    exp: Math.floor(Date.now() / 1000) + 60 * env.jwt.accessExpiresIn,
+    exp: Math.floor(Date.now() / 1000) + 60 * env.jwt.accessExpiresIn
   };
   return await sign(payload, env.jwt.secret, "HS256");
 }
@@ -41,8 +41,7 @@ export async function generateAccessToken(id: string): Promise<string> {
 export async function generateRefreshToken(id: string): Promise<string> {
   const payload: AccessPayload = {
     id,
-    exp:
-      Math.floor(Date.now() / 1000) + 60 * 60 * 24 * env.jwt.refreshExpiresIn,
+    exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * env.jwt.refreshExpiresIn
   };
   return await sign(payload, env.jwt.refreshSecret, "HS256");
 }
@@ -95,7 +94,7 @@ export const authMiddleware = createMiddleware(async (c, next) => {
 
   c.set("user", {
     id: payload.id,
-    exp: Math.floor(Date.now() / 1000) + 60 * env.jwt.accessExpiresIn,
+    exp: Math.floor(Date.now() / 1000) + 60 * env.jwt.accessExpiresIn
   });
   c.header("Authorization", `Bearer ${accessToken}`);
 

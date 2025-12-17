@@ -25,8 +25,8 @@ export default function Banner() {
           trigger: containerRef.current,
           start: "bottom 70%",
           end: "bottom 10%",
-          scrub: 1,
-        },
+          scrub: 1
+        }
       });
 
       tl.fromTo(
@@ -57,8 +57,8 @@ export default function Banner() {
             scrollTrigger: {
               trigger: codeRef.current,
               start: "top+=100 bottom",
-              toggleActions: "play none none reverse",
-            },
+              toggleActions: "play none none reverse"
+            }
           });
       }
     },
@@ -67,16 +67,16 @@ export default function Banner() {
   return (
     <section id="banner" className="relative">
       <div
-        className="container h-svh max-md:pb-10 flex lg:items-end justify-center gap-10 lg:gap-0 lg:justify-between max-lg:flex-col"
+        className="container flex h-svh justify-center gap-10 max-lg:flex-col max-md:pb-10 lg:items-end lg:justify-between lg:gap-0"
         ref={containerRef}
       >
-        <div className="max-lg:flex flex-col justify-center self-center items-start max-w-[544px]">
-          <h1 className="banner-title slide-up-and-fade leading-[.95] text-6xl sm:text-[80px]">
+        <div className="max-w-[544px] flex-col items-start justify-center self-center pt-20 max-lg:flex md:pt-0">
+          <h1 className="banner-title slide-up-and-fade text-6xl leading-[.95] sm:text-[80px]">
             <span className="text-primary cursor">FRONTEND</span>
-            <br /> <span className="lg:ml-4 cursor">DEVELOPER</span>
+            <br /> <span className="cursor lg:ml-4">DEVELOPER</span>
           </h1>
           <ShinyText
-            className="text-lg md:text-xl slide-up-and-fade cursor"
+            className="slide-up-and-fade cursor text-lg md:text-xl"
             text="
             Hi! I'm Ahmed also known as NEVO. A Frontend Developer with hands-on experience through
             building high-performance, scalable, and responsive web solutions.
@@ -87,7 +87,7 @@ export default function Banner() {
               <Button
                 as="button"
                 variant="primary"
-                className="mt-9 banner-button slide-up-and-fade rounded-md cursor"
+                className="banner-Button slide-up-and-fade cursor mt-9 rounded-md"
               >
                 My Blog
               </Button>
@@ -98,12 +98,12 @@ export default function Banner() {
         <div className={`cursor lg:mb-20`}>
           <code
             ref={codeRef}
-            className="text-white slide-up-and-fade hidden lg:flex flex-col text-xs md:text-sm tracking-widest"
+            className="slide-up-and-fade hidden flex-col text-xs tracking-widest text-white md:text-sm lg:flex"
           >
-            <span className="block text-lg font-bold text-primary">
+            <span className="text-primary block text-lg font-bold">
               {"<span>"}
             </span>
-            <div className="inline-block md:translate-x-5 leading-7">
+            <div className="inline-block leading-7 md:translate-x-5">
               <div className="wrapper">
                 <span className="animateUp inline-block">
                   Proficient in the latest web technologies and
@@ -120,30 +120,30 @@ export default function Banner() {
                 </span>
               </div>
             </div>
-            <span className="block text-primary font-bold text-lg">
+            <span className="text-primary block text-lg font-bold">
               {"</span>"}
             </span>
           </code>
 
-          <code className="text-white slide-up-and-fade flex lg:hidden flex-col text-xs lg:text-sm tracking-widest">
-            <span className="block text-lg font-bold text-primary">
+          <code className="slide-up-and-fade flex flex-col text-xs tracking-widest text-white lg:hidden lg:text-sm">
+            <span className="text-primary block text-lg font-bold">
               {"<span>"}
             </span>
-            <div className="inline-block lg:translate-x-5 leading-7">
+            <div className="inline-block leading-7 lg:translate-x-5">
               <span className="ms-4 inline-block">
                 Proficient in the latest web technologies and frameworks,
                 continuously expanding my skill set to stay at the forefront of
                 the industry.
               </span>
             </div>
-            <span className="block text-primary font-bold text-lg">
+            <span className="text-primary block text-lg font-bold">
               {"</span>"}
             </span>
           </code>
         </div>
       </div>
       {isDesktop && (
-        <div className="-right-40 bottom-10 hidden md:block absolute">
+        <div className="absolute -right-40 bottom-10 hidden md:block">
           <ScrollButton />
         </div>
       )}

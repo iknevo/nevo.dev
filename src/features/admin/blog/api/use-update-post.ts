@@ -20,7 +20,7 @@ export function useUpdatePost(id?: string) {
 
       const res = await fetch(`/api/blog/${id}`, {
         method: "PATCH",
-        body: formData,
+        body: formData
       });
 
       if (!res.ok) {
@@ -35,6 +35,6 @@ export function useUpdatePost(id?: string) {
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    },
+    }
   });
 }

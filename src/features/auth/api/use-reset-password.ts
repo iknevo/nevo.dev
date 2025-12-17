@@ -15,7 +15,7 @@ export function useResetPassword(token: string) {
     mutationFn: async (json) => {
       const res = await api.auth["reset-password"][":token"].$patch({
         param: { token },
-        json,
+        json
       });
       const data: ResponseType = await res.json();
       if ("success" in data && data.success === false) {
@@ -26,7 +26,7 @@ export function useResetPassword(token: string) {
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    },
+    }
   });
   return mutation;
 }

@@ -20,7 +20,7 @@ export function useCreatePost() {
 
       const res = await fetch("/api/blog", {
         method: "POST",
-        body: formData,
+        body: formData
       });
 
       if (!res.ok) {
@@ -35,6 +35,6 @@ export function useCreatePost() {
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    },
+    }
   });
 }

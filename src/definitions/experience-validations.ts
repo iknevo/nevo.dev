@@ -4,7 +4,7 @@ export const experienceSchema = z.object({
   title: z.string().min(3, "Experience's title is required"),
   company: z.string().min(3, "Experience's company is required"),
   startDate: z.string().min(3, "Experience's start date is required"),
-  endDate: z.string().min(3, "Experience's end date is required"),
+  endDate: z.string().min(3, "Experience's end date is required")
 });
 
 export type expFormValues = z.infer<typeof experienceSchema>;
@@ -15,5 +15,5 @@ export const expFormDefaults: expFormValues = {
   title: "",
   company: "",
   startDate: "",
-  endDate: "Present",
+  endDate: "Present"
 };

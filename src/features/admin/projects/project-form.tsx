@@ -6,7 +6,7 @@ import {
   FieldError,
   FieldGroup,
   FieldLegend,
-  FieldSet,
+  FieldSet
 } from "@/src/components/ui/field";
 import {
   Form,
@@ -14,19 +14,19 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
-  InputGroupInput,
+  InputGroupInput
 } from "@/src/components/ui/input-group";
 import { Textarea } from "@/src/components/ui/textarea";
 import {
   projectFormValues,
-  projectSchema,
+  projectSchema
 } from "@/src/definitions/projects-validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash, XIcon } from "lucide-react";
@@ -45,27 +45,27 @@ export default function ProjectForm({
   id,
   onSubmit,
   onDelete,
-  disabled,
+  disabled
 }: Props) {
   const form = useForm<projectFormValues>({
     resolver: zodResolver(projectSchema),
-    defaultValues: defaultValues,
+    defaultValues: defaultValues
   });
   const {
     fields: techStackFields,
     append: addTechStack,
-    remove: removeTechStack,
+    remove: removeTechStack
   } = useFieldArray({
     name: "techStack",
-    control: form.control,
+    control: form.control
   });
   const {
     fields: featuresFields,
     append: addFeature,
-    remove: removeFeature,
+    remove: removeFeature
   } = useFieldArray({
     name: "features",
-    control: form.control,
+    control: form.control
   });
   const handleSubmit = (values: projectFormValues) => {
     onSubmit(values);
@@ -228,7 +228,7 @@ export default function ProjectForm({
                     data-invalid={fieldState.invalid}
                     className="w-full"
                   >
-                    <FieldContent className="flex-1 w-full">
+                    <FieldContent className="w-full flex-1">
                       <InputGroup>
                         <InputGroupInput
                           {...controllerField}
@@ -236,7 +236,7 @@ export default function ProjectForm({
                           aria-invalid={fieldState.invalid}
                           placeholder="feature"
                           type="text"
-                          className="flex-1 w-full"
+                          className="w-full flex-1"
                           disabled={disabled}
                         />
                         {featuresFields.length > 1 && (
@@ -293,7 +293,7 @@ export default function ProjectForm({
                     data-invalid={fieldState.invalid}
                     className="w-full"
                   >
-                    <FieldContent className="flex-1 w-full">
+                    <FieldContent className="w-full flex-1">
                       <InputGroup>
                         <InputGroupInput
                           {...controllerField}
@@ -302,7 +302,7 @@ export default function ProjectForm({
                           placeholder="technology"
                           type="text"
                           disabled={disabled}
-                          className="flex-1 w-full"
+                          className="w-full flex-1"
                         />
                         {techStackFields.length > 1 && (
                           <InputGroupAddon align={"inline-end"}>
@@ -343,13 +343,13 @@ export default function ProjectForm({
           )}
         </FieldSet>
 
-        <Button className="w-full text-foreground" disabled={disabled}>
+        <Button className="text-foreground w-full" disabled={disabled}>
           {id ? "Save Changes" : "Create Project"}
         </Button>
 
         {!!id && (
           <Button
-            className="w-full text-foreground"
+            className="text-foreground w-full"
             type="button"
             variant="outline"
             disabled={disabled}

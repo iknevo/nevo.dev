@@ -8,12 +8,12 @@ export function useGetExperienceItem(id?: string) {
     queryKey: ["exp_item", id],
     queryFn: async () => {
       const res = await api.experience[":id"].$get({
-        param: { id },
+        param: { id }
       });
       if (!res.ok) throw new Error("Failed to fetch experience item");
       const { data } = await res.json();
       return data;
-    },
+    }
   });
   return query;
 }
