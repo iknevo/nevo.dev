@@ -1,12 +1,14 @@
 "use client";
 
-import SectionTitle from "@/src/components/section-title";
-import { Button } from "@/src/components/ui/button";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
+
+import SectionTitle from "@/src/components/section-title";
+import { Button } from "@/src/components/ui/button";
+
 import { useGetStack } from "./api/use-get-stack";
 import { useNewStack } from "./state/use-new-stack";
 import { useOpenStack } from "./state/use-open-stack";

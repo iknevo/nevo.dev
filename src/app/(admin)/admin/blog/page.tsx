@@ -1,5 +1,6 @@
-import BlogSection from "@/src/features/admin/blog/blog-section";
 import { Metadata } from "next";
+
+import BlogSection from "@/src/features/admin/blog/blog-section";
 
 export const metadata: Metadata = {
   title: "MANAGE BLOG"

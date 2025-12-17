@@ -1,15 +1,16 @@
 "use client";
 
-import Project from "@/src/components/project";
-import SectionTitle from "@/src/components/section-title";
-import { useGetProjects } from "@/src/features/admin/projects/api/use-get-projects";
-import { cn } from "@/src/lib/utils";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { MouseEvent, useEffect, useRef, useState } from "react";
+
+import Project from "@/src/components/project";
+import SectionTitle from "@/src/components/section-title";
+import { useGetProjects } from "@/src/features/admin/projects/api/use-get-projects";
+import { cn } from "@/src/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 

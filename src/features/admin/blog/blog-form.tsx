@@ -1,3 +1,8 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Trash } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+
 import { Button } from "@/src/components/ui/button";
 import {
   Form,
@@ -13,10 +18,6 @@ import { Textarea } from "@/src/components/ui/textarea";
 import { blogFormValues, blogSchema } from "@/src/definitions/blog-validation";
 import Editor from "@/src/features/code-editor/editor";
 import Preview from "@/src/features/code-editor/preview";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Trash } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 
 type Props = {
   id?: string;
@@ -47,6 +48,7 @@ export default function BlogForm({
     console.log("delete");
   };
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDoc(defaultValues.doc);
   }, [defaultValues.doc]);
   useEffect(() => {

@@ -11,8 +11,8 @@ import {
 import { javascript } from "@codemirror/lang-javascript";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import {
-  defaultHighlightStyle,
   HighlightStyle,
+  defaultHighlightStyle,
   indentOnInput,
   syntaxHighlighting
 } from "@codemirror/language";

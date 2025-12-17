@@ -1,12 +1,13 @@
 "use client";
 
-import TransitionLink from "@/src/components/transition-link";
-import { useGetProject } from "@/src/features/admin/projects/api/use-get-project";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { ArrowLeft, Code, ExternalLink, Loader2 } from "lucide-react";
 import { useEffect, useRef } from "react";
+
+import TransitionLink from "@/src/components/transition-link";
+import { useGetProject } from "@/src/features/admin/projects/api/use-get-project";
 
 interface Props {
   id: string;

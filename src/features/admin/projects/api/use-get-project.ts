@@ -1,6 +1,7 @@
+import { useQuery } from "@tanstack/react-query";
+
 import { api } from "@/src/lib/hono";
 import { ProjectResponse } from "@/src/types";
-import { useQuery } from "@tanstack/react-query";
 
 export function useGetProject(id?: string) {
   const query = useQuery<ProjectResponse>({

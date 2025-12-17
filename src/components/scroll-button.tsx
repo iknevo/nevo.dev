@@ -1,12 +1,13 @@
 "use client";
 
-import { cn } from "@/src/lib/utils";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useLenis } from "lenis/react";
 import { ChevronDown } from "lucide-react";
 import { motion } from "motion/react";
 import { useRef } from "react";
+
+import { cn } from "@/src/lib/utils";
 
 type Props = {
   scrollToTop?: boolean;

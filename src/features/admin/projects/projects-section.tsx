@@ -1,8 +1,10 @@
 "use client";
 
+import { Loader2 } from "lucide-react";
+
 import SectionTitle from "@/src/components/section-title";
 import { Button } from "@/src/components/ui/button";
-import { Loader2 } from "lucide-react";
+
 import { useGetProjects } from "./api/use-get-projects";
 import ProjectItem from "./project-item";
 import { useNewProject } from "./state/use-new-project";

@@ -1,5 +1,6 @@
-import PostPreview from "@/src/features/blog/post-preview";
 import { notFound } from "next/navigation";
+
+import PostPreview from "@/src/features/blog/post-preview";
 
 export default async function Page({
   params

@@ -1,11 +1,12 @@
-import { experienceSchema } from "@/src/definitions/experience-validations";
-import dbConnect from "@/src/lib/db";
-import { authMiddleware } from "@/src/lib/jwt";
-import { Experience } from "@/src/models/experience-model";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import status from "http-status";
 import { z } from "zod";
+
+import { experienceSchema } from "@/src/definitions/experience-validations";
+import dbConnect from "@/src/lib/db";
+import { authMiddleware } from "@/src/lib/jwt";
+import { Experience } from "@/src/models/experience-model";
 
 const app = new Hono()
   .get("/", async (c) => {

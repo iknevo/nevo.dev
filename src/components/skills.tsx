@@ -1,13 +1,14 @@
 "use client";
 
-import SectionTitle from "@/src/components/section-title";
-import { useGetStack } from "@/src/features/admin/stack/api/use-get-stack";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+
+import SectionTitle from "@/src/components/section-title";
+import { useGetStack } from "@/src/features/admin/stack/api/use-get-stack";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 

@@ -1,10 +1,11 @@
-import Providers from "@/src/providers/providers";
-import "@/src/styles/globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import "lenis/dist/lenis.css";
 import { ReactLenis } from "lenis/react";
 import type { Metadata } from "next";
 import { Josefin_Sans } from "next/font/google";
+
+import Providers from "@/src/providers/providers";
+import "@/src/styles/globals.css";
 
 const josefin = Josefin_Sans({
   subsets: ["latin"],

@@ -1,12 +1,13 @@
 "use client";
 
-import SectionTitle from "@/src/components/section-title";
-import { useGetExperience } from "@/src/features/admin/experience/api/use-get-experience";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { Loader2 } from "lucide-react";
 import { useEffect, useRef } from "react";
+
+import SectionTitle from "@/src/components/section-title";
+import { useGetExperience } from "@/src/features/admin/experience/api/use-get-experience";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 

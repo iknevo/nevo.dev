@@ -1,8 +1,9 @@
 "use client";
 
-import { cn } from "@/src/lib/utils";
 import { Eye, EyeClosed } from "lucide-react";
 import * as React from "react";
+
+import { cn } from "@/src/lib/utils";
 
 function InputPassword({ className, ...props }: React.ComponentProps<"input">) {
   const [showPass, setShowPass] = React.useState(false);

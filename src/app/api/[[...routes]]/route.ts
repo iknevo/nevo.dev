@@ -1,8 +1,10 @@
-import { errorHandler } from "@/src/lib/error-handlers";
 import { Hono } from "hono";
 import { logger } from "hono/logger";
 import { handle } from "hono/vercel";
 import status from "http-status";
+
+import { errorHandler } from "@/src/lib/error-handlers";
+
 import auth from "./auth-routes";
 import blog from "./blog-routes";
 import experience from "./experience-routes";

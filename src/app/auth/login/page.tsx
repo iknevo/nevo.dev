@@ -1,6 +1,7 @@
+import { Metadata } from "next";
+
 import Cursor from "@/src/components/cursor";
 import LoginForm from "@/src/features/auth/components/login-form";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "LOGIN"

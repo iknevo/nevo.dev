@@ -1,6 +1,7 @@
+import { format } from "date-fns";
+
 import TransitionLink from "@/src/components/transition-link";
 import { PostResponse } from "@/src/types";
-import { format } from "date-fns";
 
 interface Props {
   post: PostResponse;

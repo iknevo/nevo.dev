@@ -1,7 +1,9 @@
-import { ProjectResponse } from "@/src/types";
 import { PenLine } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+
+import { ProjectResponse } from "@/src/types";
+
 import { useOpenProject } from "./state/use-open-project";
 
 interface Props {

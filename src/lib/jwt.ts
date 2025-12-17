@@ -1,9 +1,10 @@
-import { env } from "@/src/config/env";
 import { Context } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
 import { createMiddleware } from "hono/factory";
 import { sign, verify } from "hono/jwt";
 import { JWTPayload } from "hono/utils/jwt/types";
+
+import { env } from "@/src/config/env";
 
 export interface AccessPayload extends JWTPayload {
   id: string;

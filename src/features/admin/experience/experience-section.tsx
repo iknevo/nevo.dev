@@ -1,11 +1,13 @@
 "use client";
 
-import SectionTitle from "@/src/components/section-title";
-import { Button } from "@/src/components/ui/button";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { Loader2, PenLine } from "lucide-react";
+
+import SectionTitle from "@/src/components/section-title";
+import { Button } from "@/src/components/ui/button";
+
 import { useGetExperience } from "./api/use-get-experience";
 import { useNewExperience } from "./state/use-new-experience";
 import { useOpenExperience } from "./state/use-open-experience";

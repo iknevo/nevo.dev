@@ -1,6 +1,8 @@
+import { Suspense } from "react";
+
 import { Signature } from "@/src/components/me/signature";
 import { Toaster } from "@/src/components/ui/sonner";
-import { Suspense } from "react";
+
 import { QueryProvider } from "./query-provider";
 import SheetsProvider from "./sheets-provider";
 

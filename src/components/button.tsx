@@ -1,7 +1,8 @@
-import { cn } from "@/src/lib/utils";
-import { Variant } from "@/src/types";
 import Link from "next/link";
 import { ButtonHTMLAttributes, ComponentProps, ReactNode } from "react";
+
+import { cn } from "@/src/lib/utils";
+import { Variant } from "@/src/types";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 

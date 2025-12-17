@@ -1,5 +1,12 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
 import Button from "@/src/components/button";
 import {
   Form,
@@ -12,12 +19,6 @@ import {
 import { InputPassword } from "@/src/components/ui/input-password";
 import { PasswordResetSchema } from "@/src/definitions/auth-validations";
 import { useResetPassword } from "@/src/features/auth/api/use-reset-password";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
 
 type FormValues = z.input<typeof PasswordResetSchema>;
 type Props = {

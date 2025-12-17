@@ -1,9 +1,10 @@
 "use client";
 
+import Link from "next/link";
+
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { useMe } from "@/src/features/auth/api/use-me";
 import LogoutButton from "@/src/features/auth/components/logout-button";
-import Link from "next/link";
 
 export const AdminHeader = () => {
   const meQuery = useMe();

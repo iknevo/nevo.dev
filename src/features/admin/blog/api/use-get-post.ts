@@ -1,6 +1,7 @@
+import { useQuery } from "@tanstack/react-query";
+
 import { api } from "@/src/lib/hono";
 import { PostResponse } from "@/src/types";
-import { useQuery } from "@tanstack/react-query";
 
 export function useGetPost(id?: string) {
   const query = useQuery<PostResponse>({

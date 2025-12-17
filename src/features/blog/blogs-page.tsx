@@ -1,8 +1,10 @@
 "use client";
 
+import { ArrowLeft, Loader2 } from "lucide-react";
+
 import TransitionLink from "@/src/components/transition-link";
 import { useGetPosts } from "@/src/features/admin/blog/api/use-get-posts";
-import { ArrowLeft, Loader2 } from "lucide-react";
+
 import BlogPost from "./blog-post";
 
 export default function BlogsPage() {

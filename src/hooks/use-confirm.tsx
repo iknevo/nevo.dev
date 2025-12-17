@@ -1,3 +1,5 @@
+import { JSX, useState } from "react";
+
 import {
   AlertDialog,
   AlertDialogContent,
@@ -7,7 +9,6 @@ import {
   AlertDialogTitle
 } from "@/src/components/ui/alert-dialog";
 import { Button } from "@/src/components/ui/button";
-import { JSX, useState } from "react";
 
 type Options = {
   title: string;

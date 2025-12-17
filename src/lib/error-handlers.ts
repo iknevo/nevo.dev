@@ -1,7 +1,8 @@
-import { env } from "@/src/config/env";
 import { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
 import status from "http-status";
+
+import { env } from "@/src/config/env";
 
 export class AppError extends Error {
   statusCode: number;

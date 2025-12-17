@@ -1,8 +1,5 @@
 "use client";
 
-import SectionTitle from "@/src/components/section-title";
-import TransitionLink from "@/src/components/transition-link";
-import { Button } from "@/src/components/ui/button";
 import { useGSAP } from "@gsap/react";
 import { format } from "date-fns";
 import gsap from "gsap";
@@ -10,6 +7,11 @@ import { ScrollTrigger } from "gsap/all";
 import { Loader2, PenLine } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+
+import SectionTitle from "@/src/components/section-title";
+import TransitionLink from "@/src/components/transition-link";
+import { Button } from "@/src/components/ui/button";
+
 import { useGetPosts } from "./api/use-get-posts";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);

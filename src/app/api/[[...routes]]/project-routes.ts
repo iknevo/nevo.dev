@@ -1,13 +1,14 @@
-import { projectSchema } from "@/src/definitions/projects-validations";
-import { uploadToCloudinary } from "@/src/lib/cloudinary";
-import dbConnect from "@/src/lib/db";
-import { authMiddleware } from "@/src/lib/jwt";
-import { Project, projectType } from "@/src/models/project-model";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import status from "http-status";
 import mongoose from "mongoose";
 import { z } from "zod";
+
+import { projectSchema } from "@/src/definitions/projects-validations";
+import { uploadToCloudinary } from "@/src/lib/cloudinary";
+import dbConnect from "@/src/lib/db";
+import { authMiddleware } from "@/src/lib/jwt";
+import { Project, projectType } from "@/src/models/project-model";
 
 const app = new Hono()
   .get("/", async (c) => {

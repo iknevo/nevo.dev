@@ -1,4 +1,3 @@
-import { cn } from "@/src/lib/utils";
 import "github-markdown-css/github-markdown.css";
 import "highlight.js/styles/pojoaque.css";
 import { Check, Copy } from "lucide-react";
@@ -9,6 +8,8 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import gfm from "remark-gfm";
+
+import { cn } from "@/src/lib/utils";
 
 interface Props {
   className?: string;

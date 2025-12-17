@@ -1,10 +1,11 @@
-import TransitionLink from "@/src/components/transition-link";
-import { cn } from "@/src/lib/utils";
-import { ProjectResponse } from "@/src/types";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Image from "next/image";
 import { useRef } from "react";
+
+import TransitionLink from "@/src/components/transition-link";
+import { cn } from "@/src/lib/utils";
+import { ProjectResponse } from "@/src/types";
 
 interface Props {
   index: number;

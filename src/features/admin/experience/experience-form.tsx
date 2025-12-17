@@ -1,3 +1,7 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Trash } from "lucide-react";
+import { useForm } from "react-hook-form";
+
 import { Button } from "@/src/components/ui/button";
 import {
   Form,
@@ -12,9 +16,6 @@ import {
   expFormValues,
   experienceSchema
 } from "@/src/definitions/experience-validations";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Trash } from "lucide-react";
-import { useForm } from "react-hook-form";
 
 type Props = {
   id?: string;

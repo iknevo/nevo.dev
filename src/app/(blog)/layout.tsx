@@ -1,10 +1,11 @@
+import "lenis/dist/lenis.css";
+
 import Cursor from "@/src/components/cursor";
 import Footer from "@/src/components/footer";
 import Navbar from "@/src/components/navbar";
 import ScrollProgressIndicator from "@/src/components/scroll-progress-indicator";
 import StickyEmail from "@/src/components/sticky-email";
 import "@/src/styles/globals.css";
-import "lenis/dist/lenis.css";
 
 type Props = {
   children: React.ReactNode;

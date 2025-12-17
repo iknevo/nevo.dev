@@ -1,9 +1,10 @@
 "use client";
 
-import { cn } from "@/src/lib/utils";
 import Lenis from "lenis";
 import { useLenis } from "lenis/react";
 import { useEffect, useRef, useState } from "react";
+
+import { cn } from "@/src/lib/utils";
 
 export default function ScrollProgressIndicator() {
   const [hidden, setHidden] = useState(true);

@@ -1,7 +1,8 @@
 "use server";
 
-import { env } from "@/src/config/env";
 import { Resend } from "resend";
+
+import { env } from "@/src/config/env";
 
 type Options = {
   email: string;

@@ -1,3 +1,6 @@
+import { useQueryClient } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
+
 import {
   Sheet,
   SheetContent,
@@ -7,8 +10,7 @@ import {
 } from "@/src/components/ui/sheet";
 import { projectFormValues } from "@/src/definitions/projects-validations";
 import { useConfirm } from "@/src/hooks/use-confirm";
-import { useQueryClient } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
+
 import { useDeleteProject } from "./api/use-delete-project";
 import { useGetProject } from "./api/use-get-project";
 import { useUpdateProject } from "./api/use-update-project";

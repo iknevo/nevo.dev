@@ -1,10 +1,12 @@
 "use client";
 
-import { getAge } from "@/src/lib/utils";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useRef } from "react";
+
+import { getAge } from "@/src/lib/utils";
+
 import ShinyText from "./shiny-text";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);

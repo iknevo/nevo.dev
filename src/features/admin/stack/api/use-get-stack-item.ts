@@ -1,6 +1,7 @@
+import { useQuery } from "@tanstack/react-query";
+
 import { stackItemType } from "@/src/definitions/stack-validations";
 import { api } from "@/src/lib/hono";
-import { useQuery } from "@tanstack/react-query";
 
 export function useGetStackItem(id?: string) {
   const query = useQuery<stackItemType>({

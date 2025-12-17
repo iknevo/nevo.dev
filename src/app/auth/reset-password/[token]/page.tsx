@@ -1,6 +1,7 @@
+import { Metadata } from "next";
+
 import Cursor from "@/src/components/cursor";
 import ResetPasswordForm from "@/src/features/auth/components/reset-password-form";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "RESET PASSWORD"

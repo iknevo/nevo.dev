@@ -1,22 +1,29 @@
 "use client";
 
-import Button from "@/src/components/button";
-import Cursor from "@/src/components/cursor";
 import { Flag } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const animations = ["float", "floatReverse", "float2", "floatReverse2"];
+import Button from "@/src/components/button";
+import Cursor from "@/src/components/cursor";
+
+const animations = [
+  "float",
+  "floatReverse",
+  "float2",
+  "floatReverse2"
+] as const;
+
 type Particle = {
   char: "0" | "4";
   style: React.CSSProperties;
 };
 
 export default function NotFound() {
-  const [particles, setParticles] = useState<Particle[]>([]);
+  const [particles, setParticles] = useState<Particle[] | null>(null);
 
   useEffect(() => {
     const arr: Particle[] = Array.from({ length: 80 }, (_, i) => {
-      const char = i < 40 ? "0" : "4";
+      const char: "0" | "4" = i < 40 ? "0" : "4";
       const size = Math.floor(Math.random() * 20) + 10;
       const blur = i * 0.02;
       const speed = Math.floor(Math.random() * 20) + 20;
@@ -35,12 +42,19 @@ export default function NotFound() {
         }
       };
     });
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setParticles(arr);
   }, []);
+
+  if (!particles) {
+    return null;
+  }
 
   return (
     <div className="relative mx-auto grid h-screen place-items-center overflow-hidden px-8 text-center">
       <Cursor />
+
       {particles.map((item, i) => (
         <span
           key={i}
@@ -61,7 +75,7 @@ export default function NotFound() {
           rel="noopener noreferrer"
           href="/"
           variant="primary"
-          className="banner-button slide-up-and-fade mt-9 rounded-md"
+          className="banner-button slide-up-and-fade mt-9 rounded-md font-semibold text-white transition-colors duration-500 hover:text-black"
         >
           Back Home
         </Button>

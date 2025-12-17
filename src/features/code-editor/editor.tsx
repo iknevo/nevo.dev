@@ -1,7 +1,8 @@
-import { useCodemirror } from "@/src/hooks/use-codemirror";
-import { cn } from "@/src/lib/utils";
 import { EditorState } from "@codemirror/state";
 import { useCallback } from "react";
+
+import { useCodemirror } from "@/src/hooks/use-codemirror";
+import { cn } from "@/src/lib/utils";
 
 interface Props {
   initialDoc: string;

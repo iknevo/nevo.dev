@@ -1,11 +1,12 @@
 "use client";
 
+import { ArrowLeft, Loader2 } from "lucide-react";
+import Image from "next/image";
+
 import TransitionLink from "@/src/components/transition-link";
 import { Badge } from "@/src/components/ui/badge";
 import { useGetPost } from "@/src/features/admin/blog/api/use-get-post";
 import Preview from "@/src/features/code-editor/preview";
-import { ArrowLeft, Loader2 } from "lucide-react";
-import Image from "next/image";
 
 interface Props {
   id: string;
