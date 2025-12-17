@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { verifyRefreshToken } from "./lib/jwt";
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname, searchParams } = req.nextUrl;
   const refreshToken = req.cookies.get("refreshToken")?.value;
   if (pathname.startsWith("/auth") && refreshToken) {
