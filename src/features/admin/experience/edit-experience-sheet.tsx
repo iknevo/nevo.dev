@@ -3,17 +3,17 @@ import {
   SheetContent,
   SheetDescription,
   SheetHeader,
-  SheetTitle,
+  SheetTitle
 } from "@/src/components/ui/sheet";
+import { expFormValues } from "@/src/definitions/experience-validations";
 import { useConfirm } from "@/src/hooks/use-confirm";
 import { useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
-import { useOpenExperience } from "./state/use-open-experience";
-import ExperienceForm from "./experience-form";
+import { useDeleteExperience } from "./api/use-delete-experience";
 import { useGetExperienceItem } from "./api/use-get-experience-item";
 import { useUpdateExperienceItem } from "./api/use-update-experience-item";
-import { useDeleteExperience } from "./api/use-delete-experience";
-import { expFormValues } from "@/src/definitions/experience-validation";
+import ExperienceForm from "./experience-form";
+import { useOpenExperience } from "./state/use-open-experience";
 
 export const EditExperienceSheet = () => {
   const { isOpen, onClose, id } = useOpenExperience();
@@ -30,33 +30,33 @@ export const EditExperienceSheet = () => {
     title: expItem?.title ?? "",
     company: expItem?.company ?? "",
     startDate: expItem?.startDate ?? "",
-    endDate: expItem?.endDate ?? "",
+    endDate: expItem?.endDate ?? ""
   };
 
   const onSubmit = (values: expFormValues) => {
     updateExpItem(values, {
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ["experience"],
+          queryKey: ["experience"]
         });
         queryClient.invalidateQueries({
-          queryKey: ["exp_item", id],
+          queryKey: ["exp_item", id]
         });
         onClose();
-      },
+      }
     });
   };
 
   const onDelete = async () => {
     const ok = await confirm({
       title: "Are You Sure?",
-      message: "You are about to delete this experience.",
+      message: "You are about to delete this experience."
     });
     if (ok) {
       deleteExpItem(undefined, {
         onSuccess: () => {
           onClose();
-        },
+        }
       });
     }
   };
@@ -65,7 +65,7 @@ export const EditExperienceSheet = () => {
     <>
       <ConfirmDialog />
       <Sheet open={isOpen} onOpenChange={onClose}>
-        <SheetContent className="space-y-4 dark sm:max-w-md">
+        <SheetContent className="dark space-y-4 sm:max-w-md">
           <SheetHeader>
             <SheetTitle>Edit Experience</SheetTitle>
             <SheetDescription>Edit Or Delete experience</SheetDescription>

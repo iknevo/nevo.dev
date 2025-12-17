@@ -5,13 +5,13 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
 import {
   expFormValues,
-  experienceSchema,
-} from "@/src/definitions/experience-validation";
+  experienceSchema
+} from "@/src/definitions/experience-validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -29,11 +29,11 @@ export default function ExperienceForm({
   id,
   onSubmit,
   onDelete,
-  disabled,
+  disabled
 }: Props) {
   const form = useForm<expFormValues>({
     resolver: zodResolver(experienceSchema),
-    defaultValues: defaultValues,
+    defaultValues: defaultValues
   });
   const handleSubmit = (values: expFormValues) => {
     onSubmit(values);
@@ -118,13 +118,13 @@ export default function ExperienceForm({
           )}
         />
 
-        <Button className="w-full text-foreground" disabled={disabled}>
+        <Button className="text-foreground w-full" disabled={disabled}>
           {id ? "Save Changes" : "Create Experience"}
         </Button>
 
         {!!id && (
           <Button
-            className="w-full text-foreground"
+            className="text-foreground w-full"
             type="button"
             variant="outline"
             disabled={disabled}

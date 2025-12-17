@@ -28,7 +28,7 @@ export function useCreateProject() {
 
       const res = await fetch("/api/projects", {
         method: "POST",
-        body: formData,
+        body: formData
       });
 
       if (!res.ok) {
@@ -43,6 +43,6 @@ export function useCreateProject() {
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    },
+    }
   });
 }

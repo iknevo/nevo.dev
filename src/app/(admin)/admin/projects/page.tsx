@@ -2,7 +2,7 @@ import ProjectsSection from "@/src/features/admin/projects/projects-section";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "PROJECTS",
+  title: "PROJECTS"
 };
 
 export default function Page() {

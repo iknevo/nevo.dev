@@ -1,4 +1,5 @@
 "use client";
+
 import Button from "@/src/components/button";
 import {
   Form,
@@ -6,7 +7,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
 import { InputPassword } from "@/src/components/ui/input-password";
@@ -33,15 +34,15 @@ export default function LoginForm() {
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
       email: "",
-      password: "",
-    },
+      password: ""
+    }
   });
   const handleSubmit = (values: FormValues) => {
     loginMutation.mutate(values, {
       onSuccess: () => {
         const redirectTo = searchParams.get("from") || "/admin";
         router.push(redirectTo);
-      },
+      }
     });
   };
   const handleForget = async () => {
@@ -59,7 +60,7 @@ export default function LoginForm() {
       {
         onSuccess: ({ message }) => {
           toast.success(message);
-        },
+        }
       }
     );
   };
@@ -68,14 +69,14 @@ export default function LoginForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="w-full md:w-150 px-4 md:px-0 flex flex-col gap-2 space-y-4"
+        className="flex w-full flex-col gap-2 space-y-4 px-4 md:w-150 md:px-0"
       >
         <FormField
           name="email"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <div className="flex items-center justify-between min-h-5">
+              <div className="flex min-h-5 items-center justify-between">
                 <FormLabel>Email</FormLabel>
                 <FormMessage />
               </div>
@@ -96,7 +97,7 @@ export default function LoginForm() {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <div className="flex items-center justify-between min-h-5">
+              <div className="flex min-h-5 items-center justify-between">
                 <FormLabel>Password</FormLabel>
                 <FormMessage />
               </div>
@@ -115,11 +116,11 @@ export default function LoginForm() {
         <button
           onClick={handleForget}
           type="button"
-          className="self-end font-semibold text-primary"
+          className="text-primary self-end font-semibold"
         >
           Forgot Password?
         </button>
-        <Button as="button" disabled={isPending} className="rounded-md cursor">
+        <Button as="button" disabled={isPending} className="cursor rounded-md">
           {isPending ? <Loader2 className="animate-spin" /> : "Login"}
         </Button>
       </form>

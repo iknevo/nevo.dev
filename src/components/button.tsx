@@ -1,7 +1,7 @@
 import { cn } from "@/src/lib/utils";
 import { Variant } from "@/src/types";
 import Link from "next/link";
-import React, { ButtonHTMLAttributes, ComponentProps, ReactNode } from "react";
+import { ButtonHTMLAttributes, ComponentProps, ReactNode } from "react";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -29,13 +29,13 @@ export default function Button({
     light: `bg-background-active text-foreground hover:bg-background-active`,
     dark: `bg-foreground text-background hover:bg-foreground/80`,
     link: `text-foreground hover:text-primary`,
-    "no-color": "",
+    "no-color": ""
   }[variant || "primary"];
 
   const buttonClasses = cn(
     `group h-12 px-8 inline-flex justify-center items-center gap-2 text-lg uppercase tracking-widest outline-none transition-colors relative overflow-hidden`,
     variantClasses,
-    className,
+    className
   );
 
   if (as === "link") {
@@ -49,7 +49,7 @@ export default function Button({
           href={props.href.toString() || "#"}
         >
           {variant !== "link" && (
-            <span className="absolute top-[200%] left-0 right-0 h-full bg-white rounded-[50%] group-hover:top-0 transition-all duration-500 scale-150"></span>
+            <span className="absolute top-[200%] right-0 left-0 h-full scale-150 rounded-[50%] bg-white transition-all duration-500 group-hover:top-0"></span>
           )}
           <span className="z-1">{children}</span>
         </Link>
@@ -59,7 +59,7 @@ export default function Button({
     return (
       <Link className={buttonClasses} {...props} href={props.href || "#"}>
         {variant !== "link" && (
-          <span className="absolute top-[200%] left-0 right-0 h-full bg-white rounded-[50%] group-hover:top-0 transition-all duration-500 scale-150"></span>
+          <span className="absolute top-[200%] right-0 left-0 h-full scale-150 rounded-[50%] bg-white transition-all duration-500 group-hover:top-0"></span>
         )}
         <span className="z-1">{children}</span>
       </Link>
@@ -70,7 +70,7 @@ export default function Button({
     return (
       <button className={buttonClasses} {...props}>
         {variant !== "link" && (
-          <span className="absolute top-[200%] left-0 right-0 h-full bg-white rounded-[50%] group-hover:top-0 transition-all duration-500 scale-150"></span>
+          <span className="absolute top-[200%] right-0 left-0 h-full scale-150 rounded-[50%] bg-white transition-all duration-500 group-hover:top-0"></span>
         )}
         <span className="z-1">{children}</span>
       </button>

@@ -7,19 +7,19 @@ const userSchema = new Schema({
     type: String,
     required: true,
     unique: true,
-    trim: true,
+    trim: true
   },
   email: {
     type: String,
     required: true,
     unique: true,
-    trim: true,
+    trim: true
   },
   password: {
     type: String,
     required: [true, "Password is required"],
     minlength: [8, "password must be at least 8 characters"],
-    select: false,
+    select: false
   },
   passwordConfirm: {
     type: String,
@@ -28,12 +28,12 @@ const userSchema = new Schema({
       validator: function (this: UserType, value: string) {
         return this.password === value;
       },
-      message: "Passwords must match",
-    },
+      message: "Passwords must match"
+    }
   },
   passwordChangedAt: Date,
   passwordResetToken: String,
-  passwordResetExpires: Date,
+  passwordResetExpires: Date
 });
 
 userSchema.pre("save", async function (next) {

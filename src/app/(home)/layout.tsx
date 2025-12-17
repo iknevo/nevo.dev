@@ -17,15 +17,17 @@ export default function Layout({ children }: Props) {
   return (
     <>
       <Navbar />
-      <main className="relative">{children}</main>
-      <Footer />
+      <div className="flex min-h-screen flex-col">
+        <main className="relative flex-1">{children}</main>
+        <Footer />
+      </div>
       <ScrollProgressIndicator />
       <Preloader />
       <Cursor />
       <StickyEmail />
       <ParticleBackground />
-      <div className="container relative">
-        <div className="hidden absolute bottom-5 -right-30 xl:block">
+      <div className="relative mx-auto max-w-[1600px]">
+        <div className="right-6 bottom-6 hidden xl:absolute xl:block">
           <ScrollButton scrollToTop />
         </div>
       </div>

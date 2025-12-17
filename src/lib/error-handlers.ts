@@ -1,7 +1,7 @@
+import { env } from "@/src/config/env";
 import { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
 import status from "http-status";
-import { env } from "../config/env";
 
 export class AppError extends Error {
   statusCode: number;
@@ -39,7 +39,7 @@ function sendError(err: any, c: Context) {
       message: err.isOperational
         ? err.message
         : "Something Went Wrong!, Please try again.",
-      ...(env.development && { stack: err.stack }),
+      ...(env.development && { stack: err.stack })
     },
     err.isOperational ? err.statusCode : status.INTERNAL_SERVER_ERROR
   );

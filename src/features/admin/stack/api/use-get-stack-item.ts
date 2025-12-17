@@ -8,12 +8,12 @@ export function useGetStackItem(id?: string) {
     queryKey: ["stack_item", id],
     queryFn: async () => {
       const res = await api.stack[":id"].$get({
-        param: { id },
+        param: { id }
       });
       if (!res.ok) throw new Error("Failed to fetch stack item");
       const { data } = await res.json();
       return data;
-    },
+    }
   });
   return query;
 }

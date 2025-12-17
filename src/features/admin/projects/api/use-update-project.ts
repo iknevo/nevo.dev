@@ -27,7 +27,7 @@ export function useUpdateProject(id?: string) {
       });
       const res = await fetch(`/api/projects/${id}`, {
         method: "PATCH",
-        body: formData,
+        body: formData
       });
 
       if (!res.ok) {
@@ -42,6 +42,6 @@ export function useUpdateProject(id?: string) {
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    },
+    }
   });
 }

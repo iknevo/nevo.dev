@@ -1,40 +1,54 @@
 "use client";
-import { useEffect, useRef } from "react";
+
+import { cn } from "@/src/lib/utils";
+import Lenis from "lenis";
+import { useLenis } from "lenis/react";
+import { useEffect, useRef, useState } from "react";
 
 export default function ScrollProgressIndicator() {
-  const scrollBarRef = useRef<HTMLDivElement>(null);
+  const [hidden, setHidden] = useState(true);
+  const [scroll, setScroll] = useState(0);
+  const lenis = useLenis();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (scrollBarRef.current) {
-        const { scrollHeight, clientHeight } = document.documentElement;
-        const scrollableHeight = scrollHeight - clientHeight;
-        const scrollY = window.scrollY;
-        const scrollProgress = (scrollY / scrollableHeight) * 100;
+    if (!lenis) return;
 
-        scrollBarRef.current.style.transform = `translateY(-${
-          100 - scrollProgress
-        }%)`;
+    const handleScroll = ({ progress }: Lenis) => {
+      const nextScroll = +progress;
+
+      setScroll((prev) => (prev === nextScroll ? prev : nextScroll));
+
+      if (nextScroll > 0.01 && nextScroll < 0.99) {
+        setHidden(false);
+      } else {
+        setHidden(true);
       }
-    };
-    handleScroll();
-    const resizeObserver = new ResizeObserver(() => {
-      handleScroll();
-    });
-    resizeObserver.observe(document.documentElement);
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      resizeObserver.disconnect();
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        setHidden(true);
+      }, 300);
     };
-  }, []);
+
+    lenis.on("scroll", handleScroll);
+
+    return () => {
+      lenis.off("scroll", handleScroll);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [lenis]);
 
   return (
-    <div className="fixed top-1/2 right-[2%] -translate-y-1/2 w-1.5 h-[100px] rounded-full bg-white/10 overflow-hidden">
+    <div
+      className={cn(
+        "fixed top-1/2 right-[2%] h-37.5 w-1.5 -translate-y-1/2 overflow-hidden rounded-full bg-white/10 transition-opacity duration-500",
+        hidden ? "opacity-0" : "opacity-100"
+      )}
+    >
       <div
-        className="w-full bg-primary rounded-full h-full"
-        ref={scrollBarRef}
+        className="bg-primary w-full rounded-full"
+        style={{ height: `${scroll * 100}%` }}
       />
     </div>
   );

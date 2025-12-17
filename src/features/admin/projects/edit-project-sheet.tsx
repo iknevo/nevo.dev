@@ -3,7 +3,7 @@ import {
   SheetContent,
   SheetDescription,
   SheetHeader,
-  SheetTitle,
+  SheetTitle
 } from "@/src/components/ui/sheet";
 import { projectFormValues } from "@/src/definitions/projects-validations";
 import { useConfirm } from "@/src/hooks/use-confirm";
@@ -34,33 +34,33 @@ export const EditProjectSheet = () => {
     features: project?.features?.map((item) => ({ item })) ?? [{ item: "" }],
     techStack: project?.techStack?.map((item) => ({ item })) ?? [{ item: "" }],
     thumbnail: project?.thumbnail ?? "",
-    image: project?.image ?? "",
+    image: project?.image ?? ""
   };
 
   const onSubmit = (values: projectFormValues) => {
     updateProject(values, {
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ["projects"],
+          queryKey: ["projects"]
         });
         queryClient.invalidateQueries({
-          queryKey: ["project", id],
+          queryKey: ["project", id]
         });
         onClose();
-      },
+      }
     });
   };
 
   const onDelete = async () => {
     const ok = await confirm({
       title: "Are You Sure?",
-      message: "You are about to delete this project.",
+      message: "You are about to delete this project."
     });
     if (ok) {
       deleteProject(undefined, {
         onSuccess: () => {
           onClose();
-        },
+        }
       });
     }
   };
@@ -69,7 +69,7 @@ export const EditProjectSheet = () => {
     <>
       <ConfirmDialog />
       <Sheet open={isOpen} onOpenChange={onClose}>
-        <SheetContent className="space-y-4 dark sm:max-w-md">
+        <SheetContent className="dark space-y-4 sm:max-w-md">
           <SheetHeader>
             <SheetTitle>Edit Project</SheetTitle>
             <SheetDescription>Edit project</SheetDescription>

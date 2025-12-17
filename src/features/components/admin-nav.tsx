@@ -1,4 +1,5 @@
 "use client";
+
 import { cn } from "@/src/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -7,13 +8,13 @@ export default function AdminNav() {
   const pathname = usePathname();
   return (
     <div className="py-5">
-      <ul className="flex items-center justify-between max-w-xl mx-auto">
+      <ul className="mx-auto flex max-w-xl items-center justify-between">
         <li>
           <Link
             href="/admin/projects"
             className={cn(
-              "font-semibold text-xs md:text-base rounded-sm px-4 py-2 transition-all",
-              pathname === "/admin/projects" && "bg-primary",
+              "rounded-sm px-2 py-2 text-xs font-semibold transition-all md:px-4 md:text-base",
+              pathname === "/admin/projects" && "bg-primary"
             )}
           >
             PROJECTS
@@ -23,8 +24,8 @@ export default function AdminNav() {
           <Link
             href="/admin/skills"
             className={cn(
-              "font-semibold text-xs md:text-base rounded-sm px-4 py-2 transition-all",
-              pathname === "/admin/skills" && "bg-primary",
+              "rounded-sm px-2 py-2 text-xs font-semibold transition-all md:px-4 md:text-base",
+              pathname === "/admin/skills" && "bg-primary"
             )}
           >
             SKILLS
@@ -34,11 +35,22 @@ export default function AdminNav() {
           <Link
             href="/admin/experience"
             className={cn(
-              "font-semibold text-xs md:text-base rounded-sm px-4 py-2 transition-all",
-              pathname === "/admin/experience" && "bg-primary",
+              "rounded-sm px-2 py-2 text-xs font-semibold transition-all md:px-4 md:text-base",
+              pathname === "/admin/experience" && "bg-primary"
             )}
           >
             EXPERIENCE
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/admin/blog"
+            className={cn(
+              "rounded-sm px-2 py-2 text-xs font-semibold transition-all md:px-4 md:text-base",
+              pathname.startsWith("/admin/blog") && "bg-primary"
+            )}
+          >
+            BLOG
           </Link>
         </li>
       </ul>

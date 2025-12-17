@@ -2,7 +2,7 @@ import { env } from "@/src/config/env";
 import {
   LoginFormSchema,
   PasswordResetSchema,
-  PasswordUpdateSchema,
+  PasswordUpdateSchema
 } from "@/src/definitions/auth-validations";
 import dbConnect from "@/src/lib/db";
 import { sendEmail } from "@/src/lib/email";
@@ -53,13 +53,13 @@ const app = new Hono<Env>()
       path: "/",
       httpOnly: true,
       secure: env.production,
-      sameSite: "Strict",
+      sameSite: "Strict"
     });
     deleteCookie(c, "refreshToken", {
       path: "/",
       httpOnly: true,
       secure: env.production,
-      sameSite: "Strict",
+      sameSite: "Strict"
     });
     return c.json({ message: "Successfully logged out" }, status.OK);
   })
@@ -68,7 +68,7 @@ const app = new Hono<Env>()
     zValidator(
       "json",
       z.object({
-        email: z.email(),
+        email: z.email()
       })
     ),
     async (c) => {
@@ -91,13 +91,13 @@ const app = new Hono<Env>()
         await sendEmail({
           email: user.email,
           subject: "Your password reset token (valid for 10 minutes)",
-          message,
+          message
         });
         return c.json(
           {
             success: true,
             message: `email sent, please check your email.`,
-            token: resetPasswordToken,
+            token: resetPasswordToken
           },
           status.OK
         );
@@ -109,8 +109,7 @@ const app = new Hono<Env>()
         return c.json(
           {
             success: false,
-            message:
-              "There was an error sending email, Please try again later.",
+            message: "There was an error sending email, Please try again later."
           },
           status.INTERNAL_SERVER_ERROR
         );
@@ -122,7 +121,7 @@ const app = new Hono<Env>()
     zValidator(
       "param",
       z.object({
-        token: z.string(),
+        token: z.string()
       })
     ),
     zValidator("json", PasswordResetSchema),
@@ -133,7 +132,7 @@ const app = new Hono<Env>()
       await dbConnect();
       const user = await User.findOne({
         passwordResetToken: hashedToken,
-        passwordResetExpires: { $gt: Date.now() },
+        passwordResetExpires: { $gt: Date.now() }
       }).select("+password");
       if (!user) {
         return c.json(
@@ -150,7 +149,7 @@ const app = new Hono<Env>()
       return c.json(
         {
           success: true,
-          message: "Password Reset Successfully",
+          message: "Password Reset Successfully"
         },
         status.OK
       );
@@ -182,7 +181,7 @@ const app = new Hono<Env>()
       return c.json(
         {
           success: true,
-          message: "Password Updated Successfully",
+          message: "Password Updated Successfully"
         },
         status.OK
       );

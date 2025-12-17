@@ -1,11 +1,12 @@
 "use client";
+
 import TransitionLink from "@/src/components/transition-link";
+import { useGetProject } from "@/src/features/admin/projects/api/use-get-project";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { ArrowLeft, Code, ExternalLink, Loader2 } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { useGetProject } from "../features/admin/projects/api/use-get-project";
 
 interface Props {
   id: string;
@@ -28,22 +29,22 @@ export default function ProjectDetails({ id }: Props) {
 
       gsap.set(".fade-in-later", {
         autoAlpha: 0,
-        y: 30,
+        y: 30
       });
       const tl = gsap.timeline({
-        delay: 0.5,
+        delay: 0.5
       });
       tl.to(".fade-in-later", {
         autoAlpha: 1,
         y: 0,
-        stagger: 0.1,
+        stagger: 0.1
       });
       return () => {
         tl.kill();
         ScrollTrigger.getAll().forEach((st) => st.kill());
       };
     },
-    { scope: containerRef, dependencies: [project, isLoading] },
+    { scope: containerRef, dependencies: [project, isLoading] }
   );
 
   useGSAP(
@@ -62,48 +63,48 @@ export default function ProjectDetails({ id }: Props) {
           end: "bottom top",
           pin: true,
           pinSpacing: false,
-          scrub: 0.5,
-        },
+          scrub: 0.5
+        }
       });
       return () => {
         tween.kill();
         ScrollTrigger.getAll().forEach((st) => st.kill());
       };
     },
-    { scope: containerRef, dependencies: [project, isLoading] },
+    { scope: containerRef, dependencies: [project, isLoading] }
   );
 
   return (
-    <section className="pt-5 pb-14 px-6 md:px-0">
+    <section className="px-6 pt-5 pb-14 md:px-0">
       <div className="container" ref={containerRef}>
         <TransitionLink
           back
           href="/"
-          className="mb-16 inline-flex gap-2 items-center group h-12"
+          className="group mb-16 inline-flex h-12 items-center gap-2"
         >
-          <ArrowLeft className="group-hover:-translate-x-1 group-hover:text-primary transition-all duration-300" />
+          <ArrowLeft className="group-hover:text-primary transition-all duration-300 group-hover:-translate-x-1" />
           Back
         </TransitionLink>
         {isLoading ? (
-          <div className="flex justify-center items-center py-10 min-h-[50vh]">
-            <Loader2 className="animate-spin slide-up size-20 text-gray-500" />
+          <div className="flex min-h-[50vh] items-center justify-center py-10">
+            <Loader2 className="slide-up size-20 animate-spin text-gray-500" />
           </div>
         ) : !project ? (
-          <div className="flex justify-center items-center py-10 min-h-[50vh]">
-            <p className="py-10 text-center dark slide-up text-muted-foreground text-3xl md:text-4xl">
+          <div className="flex min-h-[50vh] items-center justify-center py-10">
+            <p className="dark slide-up text-muted-foreground py-10 text-center text-3xl md:text-4xl">
               Project not found <span className="text-primary">!</span>
             </p>
           </div>
         ) : (
           <>
-            <div className="top-0 min-h-[calc(100dvh-100px)] flex" id="info">
+            <div className="top-0 flex min-h-[calc(100dvh-100px)]" id="info">
               <div className="relative w-full">
-                <div className="flex items-start gap-6 mx-auto mb-10 max-w-7xl">
-                  <h1 className="fade-in-later opacity-0 text-4xl md:text-6xl leading-none overflow-hidden">
-                    <span className="inline-block cursor">{project.name}</span>
+                <div className="mx-auto mb-10 flex max-w-7xl items-start gap-6">
+                  <h1 className="fade-in-later overflow-hidden text-4xl leading-none opacity-0 md:text-6xl">
+                    <span className="cursor inline-block">{project.name}</span>
                   </h1>
 
-                  <div className="fade-in-later opacity-0 flex gap-4 items-center">
+                  <div className="fade-in-later flex items-center gap-4 opacity-0">
                     {project.sourceCode && (
                       <a
                         href={project.sourceCode}
@@ -127,13 +128,13 @@ export default function ProjectDetails({ id }: Props) {
                   </div>
                 </div>
 
-                <div className="max-w-7xl space-y-7 pb-20 mx-auto">
+                <div className="mx-auto max-w-7xl space-y-7 pb-20">
                   <div className="fade-in-later">
-                    <p className="text-white/80 mb-3">Year</p>
-                    <span className="text-lg cursor">{project.year}</span>
+                    <p className="mb-3 text-white/80">Year</p>
+                    <span className="cursor text-lg">{project.year}</span>
                   </div>
                   <div className="fade-in-later">
-                    <p className="text-white/80 mb-3">Tech &and; Technique</p>
+                    <p className="mb-3 text-white/80">Tech &and; Technique</p>
 
                     <div className="text-lg">
                       <span className="cursor">
@@ -142,18 +143,18 @@ export default function ProjectDetails({ id }: Props) {
                     </div>
                   </div>
                   <div className="fade-in-later space-y-7">
-                    <p className="text-white/80 mb-3">Description</p>
+                    <p className="mb-3 text-white/80">Description</p>
 
                     {project.description && (
-                      <div className="text-lg markdown-text cursor">
+                      <div className="markdown-text cursor text-lg">
                         <p>{project.description}</p>
                       </div>
                     )}
 
-                    <p className="text-white/80 mb-3">Key Features</p>
+                    <p className="mb-3 text-white/80">Key Features</p>
 
                     {project.features && (
-                      <div className="text-lg markdown-text cursor">
+                      <div className="markdown-text cursor text-lg">
                         <ul>
                           {project.features.map((feat) => (
                             <li key={feat}>{feat}</li>
@@ -166,21 +167,21 @@ export default function ProjectDetails({ id }: Props) {
               </div>
             </div>
 
-            <div className="fade-in-later relative max-w-7xl mx-auto">
+            <div className="fade-in-later relative mx-auto max-w-7xl">
               <div
                 key={project.image}
-                className="group relative w-full aspect-[750/400] bg-black"
+                className="group relative aspect-[750/400] w-full bg-black"
                 style={{
                   backgroundImage: `url(${project.image})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center 50%",
-                  backgroundRepeat: "no-repeat",
+                  backgroundRepeat: "no-repeat"
                 }}
               >
                 <a
                   href={project.image}
                   target="_blank"
-                  className="absolute top-4 right-4 bg-gray-950/70 text-white size-12 inline-flex justify-center items-center transition-all opacity-0 hover:bg-primary hover:text-white group-hover:opacity-100"
+                  className="hover:bg-primary absolute top-4 right-4 inline-flex size-12 items-center justify-center bg-gray-950/70 text-white opacity-0 transition-all group-hover:opacity-100 hover:text-white"
                 >
                   <ExternalLink />
                 </a>

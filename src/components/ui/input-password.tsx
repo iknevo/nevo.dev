@@ -1,15 +1,15 @@
 "use client";
-import * as React from "react";
 
 import { cn } from "@/src/lib/utils";
 import { Eye, EyeClosed } from "lucide-react";
+import * as React from "react";
 
 function InputPassword({ className, ...props }: React.ComponentProps<"input">) {
   const [showPass, setShowPass] = React.useState(false);
   const handleShowPassword = () => setShowPass((show) => !show);
   const inputType = showPass ? "text" : "password";
   return (
-    <div className={"items-center relative"}>
+    <div className={"relative items-center"}>
       <input
         type={inputType}
         data-slot="input"
@@ -24,12 +24,12 @@ function InputPassword({ className, ...props }: React.ComponentProps<"input">) {
 
       {showPass ? (
         <EyeClosed
-          className="absolute top-1/2 -translate-y-1/2 right-4"
+          className="absolute top-1/2 right-4 -translate-y-1/2"
           onClick={handleShowPassword}
         />
       ) : (
         <Eye
-          className="absolute top-1/2 -translate-y-1/2 right-4"
+          className="absolute top-1/2 right-4 -translate-y-1/2"
           onClick={handleShowPassword}
         />
       )}

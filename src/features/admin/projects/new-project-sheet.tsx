@@ -3,11 +3,11 @@ import {
   SheetContent,
   SheetDescription,
   SheetHeader,
-  SheetTitle,
+  SheetTitle
 } from "@/src/components/ui/sheet";
 import {
   projectFormDefaults,
-  projectSchema,
+  projectSchema
 } from "@/src/definitions/projects-validations";
 import { useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
@@ -26,16 +26,16 @@ export const NewProjectSheet = () => {
     createAccount(values, {
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ["projects"],
+          queryKey: ["projects"]
         });
         onClose();
-      },
+      }
     });
   };
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="space-y-4 dark sm:max-w-md">
+      <SheetContent className="dark space-y-4 sm:max-w-md">
         <SheetHeader>
           <SheetTitle>New Project</SheetTitle>
           <SheetDescription>Create a new project</SheetDescription>

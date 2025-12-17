@@ -1,4 +1,5 @@
 "use client";
+
 import { cn } from "@/src/lib/utils";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -9,9 +10,13 @@ import { useRef } from "react";
 
 type Props = {
   scrollToTop?: boolean;
+  animate?: boolean;
 };
 
-export default function ScrollButton({ scrollToTop = false }: Props) {
+export default function ScrollButton({
+  scrollToTop = false,
+  animate = true
+}: Props) {
   const lenis = useLenis();
   const circleRef = useRef<SVGCircleElement | null>(null);
 
@@ -20,23 +25,23 @@ export default function ScrollButton({ scrollToTop = false }: Props) {
       if (scrollToTop) {
         lenis.scrollTo(0);
       } else {
-        lenis.scrollTo("#selected-projects");
+        lenis.scrollTo("#selected-projects", { offset: -30 });
       }
     }
   };
   useGSAP(() => {
-    if (scrollToTop) return;
+    if (!animate) return;
     if (circleRef.current) {
       const length = circleRef.current.getTotalLength();
       gsap.set(circleRef.current, {
         strokeDasharray: length,
-        strokeDashoffset: length,
+        strokeDashoffset: length
       });
       gsap.to(circleRef.current, {
         strokeDashoffset: 0 - length,
         duration: 5,
         ease: "none",
-        repeat: -1,
+        repeat: -1
       });
     }
   }, []);
@@ -45,12 +50,12 @@ export default function ScrollButton({ scrollToTop = false }: Props) {
     <button
       onClick={handleClick}
       className={cn(
-        "group size-30 opacity-20 cursor-pointer relative cursor",
-        scrollToTop && "rotate-180",
+        "group cursor relative size-30 cursor-pointer opacity-20",
+        scrollToTop && "rotate-180"
       )}
     >
       <svg
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 h-full w-full"
         viewBox="0 0 100 100"
         fill="none"
       >
@@ -67,9 +72,9 @@ export default function ScrollButton({ scrollToTop = false }: Props) {
       <motion.div
         transition={{
           duration: 0.2,
-          ease: "circOut",
+          ease: "circOut"
         }}
-        className="rounded-full aspect-square w-full flex items-center justify-center"
+        className="flex aspect-square w-full items-center justify-center rounded-full"
       >
         <div>
           <ChevronDown className="size-20 transition duration-300" />

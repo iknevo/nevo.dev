@@ -1,4 +1,4 @@
-import { expFormValues } from "@/src/definitions/experience-validation";
+import { expFormValues } from "@/src/definitions/experience-validations";
 import { api } from "@/src/lib/hono";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferResponseType } from "hono";
@@ -21,6 +21,6 @@ export function useCreateExperience() {
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    },
+    }
   });
 }

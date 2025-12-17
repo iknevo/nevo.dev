@@ -10,7 +10,7 @@ export function useGetExperience() {
       if (!res.ok) throw new Error("Failed to fetch experience");
       const { data } = await res.json();
       return data;
-    },
+    }
   });
   return query;
 }

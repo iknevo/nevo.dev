@@ -1,4 +1,5 @@
 "use client";
+
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Link from "next/link";
@@ -33,7 +34,7 @@ export default function TransitionLink({
 
       tl.to(".page-transition", {
         yPercent: 0,
-        duration: 0.3,
+        duration: 0.3
       });
 
       tl.then(() => {
@@ -45,7 +46,7 @@ export default function TransitionLink({
           onClick(e);
         }
       });
-    },
+    }
   );
 
   return (

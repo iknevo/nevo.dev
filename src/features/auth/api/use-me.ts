@@ -9,7 +9,7 @@ export function useMe() {
       if (!res.ok) throw new Error("Failed to fetch accounts");
       const data = await res.json();
       return data;
-    },
+    }
   });
   return query;
 }

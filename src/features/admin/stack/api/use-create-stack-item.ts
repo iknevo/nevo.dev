@@ -16,7 +16,7 @@ export function useCreateStackItem() {
 
       const res = await fetch("/api/stack", {
         method: "POST",
-        body: formData,
+        body: formData
       });
 
       if (!res.ok) {
@@ -31,6 +31,6 @@ export function useCreateStackItem() {
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    },
+    }
   });
 }

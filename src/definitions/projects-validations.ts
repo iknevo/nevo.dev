@@ -14,14 +14,14 @@ export const projectSchema = z.object({
   features: z
     .array(
       z.object({
-        item: z.string().min(1, "Feature item cannot be empty"),
+        item: z.string().min(1, "Feature item cannot be empty")
       })
     )
     .min(1, "Add at least one feature"),
   techStack: z
     .array(
       z.object({
-        item: z.string(),
+        item: z.string()
       })
     )
     .min(1, "Add at least one tech stack item"),
@@ -29,14 +29,14 @@ export const projectSchema = z.object({
     z.string(),
     z
       .instanceof(File)
-      .refine((file) => file.size > 0, { error: "Please add a Thumbnail" }),
+      .refine((file) => file.size > 0, { error: "Please add a Thumbnail" })
   ]),
   image: z.union([
     z.string(),
     z
       .instanceof(File)
-      .refine((file) => file.size > 0, { error: "Please add an Image" }),
-  ]),
+      .refine((file) => file.size > 0, { error: "Please add an Image" })
+  ])
 });
 
 export type projectFormValues = z.infer<typeof projectSchema>;
@@ -50,5 +50,5 @@ export const projectFormDefaults: projectFormValues = {
   features: [{ item: "" }],
   techStack: [{ item: "" }],
   thumbnail: "",
-  image: "",
+  image: ""
 };

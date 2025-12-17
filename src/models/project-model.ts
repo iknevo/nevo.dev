@@ -7,52 +7,52 @@ const projectSchema = new Schema(
       type: String,
       required: [true, "Project's name is required"],
       trim: true,
-      unique: true,
+      unique: true
     },
     year: {
       type: Number,
       required: [true, "A project must have a year"],
       min: 2000,
-      max: new Date().getFullYear(),
+      max: new Date().getFullYear()
     },
     liveUrl: {
       type: String,
-      trim: true,
+      trim: true
     },
     sourceCode: {
       type: String,
-      trim: true,
+      trim: true
     },
     description: {
       type: String,
       trim: true,
-      required: [true, "A project must have a description"],
+      required: [true, "A project must have a description"]
     },
     features: {
       type: [String],
       required: true,
-      default: [],
+      default: []
     },
     techStack: {
       type: [String],
       required: true,
-      default: [],
+      default: []
     },
     thumbnail: { type: String, required: true },
     image: {
       type: String,
-      required: true,
+      required: true
     },
     slug: String,
     createdAt: {
       type: Date,
-      default: Date.now(),
-    },
+      default: Date.now()
+    }
   },
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
-    timestamps: true,
+    timestamps: true
   }
 );
 
@@ -60,7 +60,7 @@ projectSchema.pre("save", async function (next) {
   this.slug = slugify(this.name, {
     replacement: "-",
     lower: true,
-    trim: true,
+    trim: true
   });
   next();
 });

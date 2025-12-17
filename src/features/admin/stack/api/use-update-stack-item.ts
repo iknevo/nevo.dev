@@ -16,7 +16,7 @@ export function useUpdateStackItem(id?: string) {
 
       const res = await fetch(`/api/stack/${id}`, {
         method: "PATCH",
-        body: formData,
+        body: formData
       });
 
       if (!res.ok) {
@@ -31,6 +31,6 @@ export function useUpdateStackItem(id?: string) {
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    },
+    }
   });
 }

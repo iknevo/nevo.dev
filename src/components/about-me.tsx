@@ -1,4 +1,5 @@
 "use client";
+
 import { getAge } from "@/src/lib/utils";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -20,14 +21,14 @@ export default function AboutMe() {
           trigger: container.current,
           start: "top 70%",
           end: "bottom bottom",
-          scrub: 0.5,
-        },
+          scrub: 0.5
+        }
       });
 
       tl.from(".slide-up-and-fade", {
         y: 150,
         opacity: 0,
-        stagger: 0.05,
+        stagger: 0.05
       });
     },
     { scope: container }
@@ -41,14 +42,14 @@ export default function AboutMe() {
           trigger: container.current,
           start: "bottom 50%",
           end: "bottom 10%",
-          scrub: 0.5,
-        },
+          scrub: 0.5
+        }
       });
 
       tl.to(".slide-up-and-fade", {
         y: -150,
         opacity: 0,
-        stagger: 0.02,
+        stagger: 0.02
       });
     },
     { scope: container }
@@ -57,7 +58,7 @@ export default function AboutMe() {
   return (
     <section className="pb-section" id="about-me">
       <div className="container" ref={container}>
-        <h2 className="text-4xl md:text-6xl mb-20 slide-up-and-fade">
+        <h2 className="slide-up-and-fade mb-20 text-4xl md:text-6xl">
           <ShinyText
             className="cursor"
             text="
@@ -67,29 +68,30 @@ export default function AboutMe() {
           />
         </h2>
 
-        <p className="pb-3 border-b text-gray-400 slide-up-and-fade">
+        <p className="slide-up-and-fade border-b pb-3 text-gray-400">
           This is me.
         </p>
 
-        <div className="grid md:grid-cols-12 mt-9">
-          <div className="md:col-span-5 cursor">
-            <p className="text-5xl slide-up-and-fade">
-              I&apos;m Nevo
-              <span className="text-2xl text-white/75 mt-10 inline-block">
-                Web developer with a relentless drive for excellence, skilled in
-                creating and maintaining functional and responsive web
-                applications and websites.
-              </span>
+        <div className="mt-9 grid items-start gap-8 md:grid-cols-12">
+          <div className="cursor space-y-4 md:col-span-5">
+            <h1 className="slide-up-and-fade text-4xl leading-tight font-semibold sm:text-5xl">
+              I&apos;m Ahmed.
+            </h1>
+            <p className="slide-up-and-fade max-w-md text-lg text-white/75">
+              Also known as NEVO, a front-end developer focused on building
+              modern, responsive web applications with clean UI and great
+              performance.
             </p>
           </div>
-          <div className="md:col-span-7">
-            <div className="text-lg text-white/80 max-w-[450px] cursor">
+
+          <div className="cursor md:col-span-7">
+            <div className="max-w-[500px] space-y-3 text-base text-white/80 sm:text-lg">
               <p className="slide-up-and-fade">
                 A {age} year old frontend web developer based in Cairo, Egypt.
                 Dedicated to turning ideas into creative solutions. I specialize
                 in creating seamless and intuitive user experiences.
               </p>
-              <p className="mt-3 slide-up-and-fade">
+              <p className="slide-up-and-fade">
                 My approach focuses on creating scalable, high-performing
                 solutions tailored to both user needs and business objectives.
                 By prioritizing performance, accessibility, and responsiveness,
@@ -98,8 +100,9 @@ export default function AboutMe() {
               </p>
             </div>
           </div>
-          <div className="slide-up-and-fade col-span-full text-center cursor">
-            <p className="text-2xl lg:text-4xl text-primary uppercase mt-5 md:mt-10">
+
+          <div className="cursor slide-up-and-fade col-span-full mt-8 text-center md:mt-10">
+            <p className="text-primary text-xl uppercase lg:text-4xl">
               i can&apos;t stop configuring my code editor
             </p>
           </div>

@@ -1,5 +1,7 @@
 "use client";
 
+import { Label } from "@/src/components/ui/label";
+import { cn } from "@/src/lib/utils";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
 import * as React from "react";
@@ -10,11 +12,8 @@ import {
   useFormState,
   type ControllerProps,
   type FieldPath,
-  type FieldValues,
+  type FieldValues
 } from "react-hook-form";
-
-import { Label } from "@/src/components/ui/label";
-import { cn } from "@/src/lib/utils";
 
 const Form = FormProvider;
 
@@ -61,7 +60,7 @@ const useFormField = () => {
     formItemId: `${id}-form-item`,
     formDescriptionId: `${id}-form-item-description`,
     formMessageId: `${id}-form-item-message`,
-    ...fieldState,
+    ...fieldState
   };
 };
 
@@ -164,5 +163,5 @@ export {
   FormItem,
   FormLabel,
   FormMessage,
-  useFormField,
+  useFormField
 };
