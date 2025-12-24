@@ -2,9 +2,11 @@
 
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 
 import TransitionLink from "@/src/components/transition-link";
 import { Badge } from "@/src/components/ui/badge";
+import { Skeleton } from "@/src/components/ui/skeleton";
 import { useGetPost } from "@/src/features/admin/blog/api/use-get-post";
 import Preview from "@/src/features/code-editor/preview";
 
@@ -14,6 +16,7 @@ interface Props {
 
 export default function PostPreview({ id }: Props) {
   const { data: post, isLoading } = useGetPost(id);
+  const [loaded, setLoaded] = useState(false);
 
   return (
     <section className="mx-auto max-w-400 px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-16 lg:px-16">
@@ -52,15 +55,18 @@ export default function PostPreview({ id }: Props) {
               <p className="text-lg text-white/90 sm:text-xl">{post.summary}</p>
 
               {post.image && (
-                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
+                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg dark">
+                  {!loaded && <Skeleton className="absolute inset-0" />}
                   <Image
                     src={post.image}
                     alt={post.title}
                     fill
-                    className="object-contain"
-                    sizes="(max-width: 768px) 100vw, 900px"
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 80vw"
+                    onLoadingComplete={() => setLoaded(true)}
                     priority
                   />
+                  )
                 </div>
               )}
             </div>
