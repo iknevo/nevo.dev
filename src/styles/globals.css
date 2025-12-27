@@ -120,6 +120,16 @@ body {
   overflow-wrap: anywhere !important;
 }
 
+.markdown-body ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+}
+
+.markdown-body ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
