@@ -19,7 +19,7 @@ export default function PostPreview({ id }: Props) {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <section className="mx-auto max-w-400 px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-16 lg:px-16">
+    <section className="mx-auto max-w-400 px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-16 lg:px-16 selection:!bg-primary select-text">
       <TransitionLink
         back
         href="/"

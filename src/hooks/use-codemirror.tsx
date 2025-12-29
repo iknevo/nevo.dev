@@ -78,11 +78,8 @@ export const editorTheme = EditorView.theme({
       "color, background-color, border-color, text-decoration-color, fill, stroke",
     transitionDuration: "300ms"
   },
-  "&.cm-focused": {
-    borderColor: "rgba(216, 78, 44, 0.5)"
-  },
-  "&.cm-focused .cm-selectionBackground, ::selection": {
-    color: "#ffffff"
+  ".cm-content ::selection": {
+    color: "#fff"
   }
 });
 

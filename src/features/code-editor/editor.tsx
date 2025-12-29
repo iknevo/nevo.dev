@@ -31,7 +31,7 @@ export default function Editor({
   return (
     <div
       className={cn(
-        "h-full overflow-hidden rounded-sm border-1 border-white/10",
+        "h-full overflow-hidden rounded-sm border-1 border-white/10 selection:!bg-primary select-text",
         className
       )}
       ref={containerRef}
