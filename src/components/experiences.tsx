@@ -73,7 +73,7 @@ export default function Experiences() {
             <Loader2 className="slide-up size-20 animate-spin text-gray-500" />
           </div>
         ) : experience.length === 0 ? (
-          <p className="dark slide-up text-muted-foreground py-10 text-center text-3xl">
+          <p className="dark slide-up text-muted-foreground py-10 text-3xl">
             There&apos;s no experiece added yet
           </p>
         ) : (
