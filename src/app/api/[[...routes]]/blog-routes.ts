@@ -13,7 +13,7 @@ import { Blog, blogType } from "@/src/models/blog-model";
 const app = new Hono()
   .get("/", async (c) => {
     await dbConnect();
-    const data = await Blog.find();
+    const data = await Blog.find().sort({ createdAt: -1 });
     if (!data)
       return c.json(
         { message: "Error getting blog posts!, Try again later" },

@@ -40,7 +40,7 @@ export const InputTags = forwardRef<HTMLInputElement, InputTagsProps>(
             value={tag}
             onChange={(e) => setTag(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === "," || e.key === " ") {
+              if (e.key === "Enter" || e.key === ",") {
                 e.preventDefault();
                 addTag();
               }
