@@ -21,7 +21,7 @@ export default function BlogPost({ post }: Props) {
             </h2>
 
             <time className="text-sm whitespace-nowrap text-white/60 transition-colors duration-300 group-hover:text-white sm:text-base">
-              {format(post.createdAt, "dd MMM yyyy")}
+              {format(post.createdAt, "dd MMM yyyy")} - {post.readingTime}
             </time>
           </div>
         </div>
