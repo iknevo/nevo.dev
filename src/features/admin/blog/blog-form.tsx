@@ -3,6 +3,7 @@ import { Trash } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
+import ScrollButton from "@/src/components/scroll-button";
 import { Button } from "@/src/components/ui/button";
 import {
   Form,
@@ -39,6 +40,7 @@ export default function BlogForm({
     defaultValues: defaultValues
   });
   const [doc, setDoc] = useState<string>(defaultValues.doc);
+  const [showPreview, setShowPreview] = useState<boolean>(false);
   const handleChangeDoc = useCallback((newDoc: string) => setDoc(newDoc), []);
   const handleSubmit = (values: blogFormValues) => {
     onSubmit(values);
@@ -134,13 +136,20 @@ export default function BlogForm({
           )}
         />
 
-        <div className="grid min-h-100 grid-cols-1 gap-2 md:grid-cols-2">
+        <div className="grid min-h-100 gap-2">
           <Editor
             initialDoc={doc}
             onChange={handleChangeDoc}
             disabled={disabled}
           />
-          <Preview doc={doc} />
+          <Button
+            type="button"
+            onClick={() => setShowPreview((s) => !s)}
+            className="text-white md:font-semibold md:text-xl"
+          >
+            {showPreview ? "Hide Preview" : "Show Preview"}
+          </Button>
+          {showPreview && <Preview doc={doc} />}
         </div>
 
         <div className="flex justify-end gap-4">
@@ -160,6 +169,10 @@ export default function BlogForm({
           </Button>
         </div>
       </form>
+
+      <div className="right-6 bottom-6 hidden xl:absolute xl:block">
+        <ScrollButton scrollToTop />
+      </div>
     </Form>
   );
 }

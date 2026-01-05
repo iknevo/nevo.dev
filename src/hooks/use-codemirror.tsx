@@ -17,6 +17,8 @@ import {
   syntaxHighlighting
 } from "@codemirror/language";
 import { languages } from "@codemirror/language-data";
+import { openSearchPanel } from "@codemirror/search";
+import { search } from "@codemirror/search";
 import { EditorState } from "@codemirror/state";
 import { oneDark } from "@codemirror/theme-one-dark";
 import {
@@ -101,6 +103,7 @@ export function useCodemirror<T extends Element>({
     const state = EditorState.create({
       doc: initialDocRef.current,
       extensions: [
+        search({ top: true }),
         vim(),
         keymap.of([
           ...defaultKeymap,
@@ -115,6 +118,11 @@ export function useCodemirror<T extends Element>({
             key: "Shift-Tab",
             preventDefault: true,
             run: indentLess
+          },
+          {
+            key: "Ctrl-;",
+            preventDefault: true,
+            run: openSearchPanel
           }
         ]),
         lineNumbers(),

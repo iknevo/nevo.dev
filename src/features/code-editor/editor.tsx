@@ -31,9 +31,10 @@ export default function Editor({
   return (
     <div
       className={cn(
-        "h-full overflow-hidden rounded-sm border-1 border-white/10 selection:!bg-primary select-text",
+        "h-full overflow-hidden editor-container rounded-sm border-1 border-white/10 selection:!bg-primary select-text",
         className
       )}
+      data-lenis-prevent
       ref={containerRef}
     />
   );
