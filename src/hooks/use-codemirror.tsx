@@ -85,6 +85,52 @@ export const editorTheme = EditorView.theme({
   }
 });
 
+const darkPanelTheme = EditorView.theme({
+  ".cm-panels": {
+    backgroundColor: "#000000",
+    color: "#c9d1d9"
+  },
+  ".cm-panel.cm-search": {
+    backgroundColor: "#000000",
+    borderBottom: "1px solid rgba(255,255,255,0.08)",
+    padding: "6px 8px",
+    gap: "6px"
+  },
+  ".cm-search input": {
+    backgroundColor: "#161b22",
+    color: "#e6edf3",
+    border: "1px solid rgba(255,255,255,0.1)",
+    borderRadius: "6px",
+    padding: "4px 6px",
+    outline: "none"
+  },
+  ".cm-search input::placeholder": {
+    color: "#8b949e"
+  },
+  ".cm-search input:focus": {
+    borderColor: "#58a6ff",
+    boxShadow: "0 0 0 1px #58a6ff"
+  },
+  ".cm-search button": {
+    backgroundColor: "#161b22",
+    color: "#c9d1d9",
+    border: "1px solid rgba(255,255,255,0.1)",
+    borderRadius: "6px",
+    padding: "4px 8px",
+    cursor: "pointer"
+  },
+  ".cm-search button:hover": {
+    backgroundColor: "#21262d"
+  },
+  ".cm-search .cm-search-info": {
+    color: "#8b949e",
+    fontSize: "12px"
+  },
+  ".cm-panel.cm-search button:last-of-type": {
+    fontSize: "32px"
+  }
+});
+
 export function useCodemirror<T extends Element>({
   initialDoc,
   onChange,
@@ -144,6 +190,7 @@ export function useCodemirror<T extends Element>({
         gutterTheme,
         biggerFont,
         editorTheme,
+        darkPanelTheme,
         EditorView.editable.of(!disabled),
         EditorView.lineWrapping,
         EditorView.updateListener.of((update) => {
