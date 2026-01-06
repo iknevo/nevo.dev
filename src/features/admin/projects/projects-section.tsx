@@ -29,7 +29,7 @@ export default function ProjectsSection() {
           variant={"outline"}
           onClick={onOpen}
         >
-          <span>ADD ITEM</span>
+          New Project
         </Button>
       </div>
 

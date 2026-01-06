@@ -35,7 +35,7 @@ export default function ExperienceSection() {
             variant={"outline"}
             onClick={onOpen}
           >
-            <span>ADD ITEM</span>
+            New Experience
           </Button>
         </div>
 

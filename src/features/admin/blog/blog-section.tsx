@@ -37,7 +37,7 @@ export default function BlogSection() {
             variant={"outline"}
             asChild
           >
-            <Link href="/admin/blog/add">ADD BLOG</Link>
+            <Link href="/admin/blog/add">New Post</Link>
           </Button>
         </div>
       </div>

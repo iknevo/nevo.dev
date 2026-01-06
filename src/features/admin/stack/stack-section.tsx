@@ -37,7 +37,7 @@ export default function StackSection() {
             variant={"outline"}
             onClick={onOpen}
           >
-            <span>ADD ITEM</span>
+            New Skill
           </Button>
         </div>
 
