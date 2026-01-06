@@ -11,7 +11,7 @@ import { Experience } from "@/src/models/experience-model";
 const app = new Hono()
   .get("/", async (c) => {
     await dbConnect();
-    const data = await Experience.find();
+    const data = await Experience.find().sort({ createdAt: -1 });
     if (!data)
       return c.json(
         { message: "Error getting experiences!, Try again later" },

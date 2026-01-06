@@ -74,14 +74,14 @@ export default function Experiences() {
           </div>
         ) : experience.length === 0 ? (
           <p className="dark slide-up text-muted-foreground py-10 text-3xl">
-            There&apos;s no experiece added yet
+            There&apos;s no experience added yet
           </p>
         ) : (
           <div className="grid gap-14">
             {experience.map((item) => (
               <div key={item._id} className="experience-item">
                 <p className="cursor text-xl text-white/80">{item.company}</p>
-                <p className="cursor mt-3.5 mb-2.5 text-3xl leading-none md:text-5xl">
+                <p className="cursor mt-3.5 mb-2.5 text-3xl leading-none md:text-4xl">
                   {item.title}
                 </p>
                 <p className="cursor text-lg text-white/80">
