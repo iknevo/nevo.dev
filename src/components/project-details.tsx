@@ -182,6 +182,7 @@ export default function ProjectDetails({ id }: Props) {
                 <a
                   href={project.image}
                   target="_blank"
+                  rel="noreferrer noopenner"
                   className="hover:bg-primary absolute top-4 right-4 inline-flex size-12 items-center justify-center bg-gray-950/70 text-white opacity-0 transition-all group-hover:opacity-100 hover:text-white"
                 >
                   <ExternalLink />

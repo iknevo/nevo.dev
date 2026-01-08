@@ -131,7 +131,7 @@ export default function Navbar() {
                     <a
                       href={link.url}
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noreferrer noopener"
                       className="text-lg capitalize hover:underline"
                     >
                       {link.name}

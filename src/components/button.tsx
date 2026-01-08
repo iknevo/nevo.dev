@@ -48,6 +48,7 @@ export default function Button({
           className={buttonClasses}
           {...props}
           href={props.href.toString() || "#"}
+          rel="noreferrer noopener"
         >
           {variant !== "link" && (
             <span className="absolute top-[200%] right-0 left-0 h-full scale-150 rounded-[50%] bg-white transition-all duration-500 group-hover:top-0"></span>
