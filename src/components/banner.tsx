@@ -4,11 +4,9 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useRef } from "react";
-import { useMedia } from "react-use";
 
 import Button from "@/src/components/button";
 import Magnet from "@/src/components/magnet";
-import ScrollButton from "@/src/components/scroll-button";
 import ShinyText from "@/src/components/shiny-text";
 
 import TransitionLink from "./transition-link";
@@ -18,7 +16,6 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 export default function Banner() {
   const containerRef = useRef<HTMLDivElement>(null);
   const codeRef = useRef<HTMLDivElement>(null);
-  const isDesktop = useMedia("(min-width: 767px)", false);
 
   useGSAP(
     () => {
@@ -144,11 +141,6 @@ export default function Banner() {
           </code>
         </div>
       </div>
-      {isDesktop && (
-        <div className="absolute -right-40 bottom-10 hidden md:block">
-          <ScrollButton />
-        </div>
-      )}
     </section>
   );
 }
