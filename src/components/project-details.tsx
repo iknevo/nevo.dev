@@ -79,7 +79,6 @@ export default function ProjectDetails({ id }: Props) {
     <section className="px-6 pt-5 pb-14 md:px-0">
       <div className="container" ref={containerRef}>
         <TransitionLink
-          back
           href="/"
           className="group mb-16 inline-flex h-12 items-center gap-2"
         >

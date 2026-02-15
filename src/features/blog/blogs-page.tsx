@@ -21,7 +21,6 @@ export default function BlogsPage() {
   return (
     <section className="mx-auto max-w-[1600px] px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-16 lg:px-16">
       <TransitionLink
-        back
         href="/"
         className="group mb-10 inline-flex h-12 items-center gap-2 sm:mb-14"
       >
