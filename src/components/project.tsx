@@ -21,71 +21,105 @@ export default function Project({
   selectedProject,
   onMouseEnter
 }: Props) {
-  const externalLinkSVGRef = useRef<SVGSVGElement>(null);
-  const { context, contextSafe } = useGSAP(() => {}, {
-    scope: externalLinkSVGRef,
-    revertOnUpdate: true
-  });
-  const handleMouseEnter = contextSafe?.(() => {
+  const svgRef = useRef<SVGSVGElement>(null);
+  const boxRef = useRef<SVGPathElement>(null);
+  const arrowLineRef = useRef<SVGPathElement>(null);
+  const arrowCurbRef = useRef<SVGPathElement>(null);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
+
+  // Setup GSAP context safely
+  useGSAP(
+    () => {
+      return () => {
+        timelineRef.current?.kill();
+      };
+    },
+    { scope: svgRef }
+  );
+
+  const handleMouseEnter = () => {
+    if (
+      !svgRef.current ||
+      !boxRef.current ||
+      !arrowLineRef.current ||
+      !arrowCurbRef.current
+    )
+      return;
+
     onMouseEnter(project.slug);
-    const arrowLine = externalLinkSVGRef.current?.querySelector(
-      "#arrow-line"
-    ) as SVGPathElement;
-    const arrowCurb = externalLinkSVGRef.current?.querySelector(
-      "#arrow-curb"
-    ) as SVGPathElement;
-    const box = externalLinkSVGRef.current?.querySelector(
-      "#box"
-    ) as SVGPathElement;
 
-    gsap.set(box, {
+    const boxLength = boxRef.current.getTotalLength();
+    const arrowLineLength = arrowLineRef.current.getTotalLength();
+    const arrowCurbLength = arrowCurbRef.current.getTotalLength();
+
+    gsap.set(svgRef.current, { autoAlpha: 0 });
+
+    gsap.set(boxRef.current, {
       opacity: 0,
-      strokeDasharray: box?.getTotalLength(),
-      strokeDashoffset: box?.getTotalLength()
-    });
-    gsap.set(arrowLine, {
-      opacity: 0,
-      strokeDasharray: arrowLine?.getTotalLength(),
-      strokeDashoffset: arrowLine?.getTotalLength()
-    });
-    gsap.set(arrowCurb, {
-      opacity: 0,
-      strokeDasharray: arrowCurb?.getTotalLength(),
-      strokeDashoffset: arrowCurb?.getTotalLength()
+      strokeDasharray: boxLength,
+      strokeDashoffset: boxLength
     });
 
-    const tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
-    tl.to(externalLinkSVGRef.current, {
-      autoAlpha: 1
+    gsap.set(arrowLineRef.current, {
+      opacity: 0,
+      strokeDasharray: arrowLineLength,
+      strokeDashoffset: arrowLineLength
+    });
+
+    gsap.set(arrowCurbRef.current, {
+      opacity: 0,
+      strokeDasharray: arrowCurbLength,
+      strokeDashoffset: arrowCurbLength
+    });
+
+    const tl = gsap.timeline({
+      repeat: -1,
+      repeatDelay: 1
+    });
+
+    tl.to(svgRef.current, {
+      autoAlpha: 1,
+      duration: 0.2
     })
-      .to(box, {
+      .to(boxRef.current, {
         opacity: 1,
-        strokeDashoffset: 0
+        strokeDashoffset: 0,
+        duration: 0.4
       })
       .to(
-        arrowLine,
+        arrowLineRef.current,
         {
           opacity: 1,
-          strokeDashoffset: 0
+          strokeDashoffset: 0,
+          duration: 0.4
         },
         "<0.2"
       )
-      .to(arrowCurb, {
+      .to(arrowCurbRef.current, {
         opacity: 1,
-        strokeDashoffset: 0
+        strokeDashoffset: 0,
+        duration: 0.4
       })
       .to(
-        externalLinkSVGRef.current,
+        svgRef.current,
         {
-          autoAlpha: 0
+          autoAlpha: 0,
+          duration: 0.3
         },
         "+=1"
       );
-  });
 
-  const handleMouseLeave = contextSafe?.(() => {
-    context.kill();
-  });
+    timelineRef.current = tl;
+  };
+
+  const handleMouseLeave = () => {
+    timelineRef.current?.kill();
+    timelineRef.current = null;
+
+    if (svgRef.current) {
+      gsap.set(svgRef.current, { autoAlpha: 0 });
+    }
+  };
 
   return (
     <TransitionLink
@@ -123,7 +157,7 @@ export default function Project({
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                ref={externalLinkSVGRef}
+                ref={svgRef}
               >
                 <path
                   id="box"
