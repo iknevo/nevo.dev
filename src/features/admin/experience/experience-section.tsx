@@ -45,7 +45,7 @@ export default function ExperienceSection() {
           </p>
         )}
 
-        <div className="grid gap-2">
+        <div className="grid gap-6">
           {experience.map((item) => (
             <div
               className="experience-item flex items-center justify-between"
