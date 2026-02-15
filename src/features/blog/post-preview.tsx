@@ -21,8 +21,7 @@ export default function PostPreview({ id }: Props) {
   return (
     <section className="mx-auto max-w-400 px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-16 lg:px-16 selection:!bg-primary select-text">
       <TransitionLink
-        back
-        href="/"
+        href="/blog"
         className="group mb-10 inline-flex h-12 items-center gap-2 sm:mb-14"
       >
         <ArrowLeft className="group-hover:text-primary transition-all duration-300 group-hover:-translate-x-1" />
