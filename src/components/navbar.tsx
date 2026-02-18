@@ -67,7 +67,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="sticky top-0 z-4">
+      <nav className="sticky top-0 z-4">
         <button
           className={cn(
             "group absolute top-5 right-5 z-2 size-12 cursor-pointer md:right-10"
@@ -93,7 +93,7 @@ export default function Navbar() {
             )}
           ></span>
         </button>
-      </div>
+      </nav>
 
       <div
         className={cn(

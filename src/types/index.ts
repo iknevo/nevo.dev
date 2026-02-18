@@ -2,8 +2,6 @@ import { blogType } from "@/src/models/blog-model";
 import { expType } from "@/src/models/experience-model";
 import { projectType } from "@/src/models/project-model";
 
-export type Next_Page_Url = string;
-
 export type Variant =
   | "primary"
   | "secondary"

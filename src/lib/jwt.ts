@@ -31,7 +31,7 @@ function sendRefreshCookie(c: Context, token: string) {
   });
 }
 
-export async function generateAccessToken(id: string): Promise<string> {
+async function generateAccessToken(id: string): Promise<string> {
   const payload: AccessPayload = {
     id,
     exp: Math.floor(Date.now() / 1000) + 60 * env.jwt.accessExpiresIn
