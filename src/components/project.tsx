@@ -38,6 +38,7 @@ export default function Project({
   );
 
   const handleMouseEnter = () => {
+    onMouseEnter(project.slug);
     if (
       !svgRef.current ||
       !boxRef.current ||
@@ -45,8 +46,6 @@ export default function Project({
       !arrowCurbRef.current
     )
       return;
-
-    onMouseEnter(project.slug);
 
     const boxLength = boxRef.current.getTotalLength();
     const arrowLineLength = arrowLineRef.current.getTotalLength();
