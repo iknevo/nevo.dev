@@ -61,15 +61,17 @@ export default function StackSection() {
                     key={item._id}
                     onClick={() => onOpenEdit(item._id)}
                   >
-                    <Image
-                      src={item.icon}
-                      alt={item.name}
-                      width={100}
-                      height={100}
-                      quality={100}
-                      className="mx-auto transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
+                    <div className="mx-auto w-25 h-25 flex items-center justify-center">
+                      <Image
+                        src={item.icon}
+                        alt={item.name}
+                        width={100}
+                        height={100}
+                        quality={100}
+                        className="object-contain w-full h-full transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+
                     <div className="mt-5 text-center text-lg">
                       <p className="from-primary bg-linear-to-r from-50% to-white to-50% bg-size-[200%] bg-clip-text bg-right text-transparent transition-all duration-700 group-hover:bg-left">
                         {item.name}
