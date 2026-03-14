@@ -107,7 +107,7 @@ export default function Skills() {
                       className="slide-up flex items-center gap-3.5 leading-none"
                       key={item.name}
                     >
-                      <div className="flex items-center justify-center w-10 h-10">
+                      <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12">
                         <Image
                           src={item.icon}
                           alt={item.name}
