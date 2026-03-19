@@ -6,7 +6,7 @@ import {
   history,
   historyKeymap,
   indentLess,
-  indentMore
+  indentMore,
 } from "@codemirror/commands";
 import { javascript } from "@codemirror/lang-javascript";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
@@ -14,7 +14,7 @@ import {
   HighlightStyle,
   defaultHighlightStyle,
   indentOnInput,
-  syntaxHighlighting
+  syntaxHighlighting,
 } from "@codemirror/language";
 import { languages } from "@codemirror/language-data";
 import { openSearchPanel } from "@codemirror/search";
@@ -26,7 +26,7 @@ import {
   highlightActiveLine,
   highlightActiveLineGutter,
   keymap,
-  lineNumbers
+  lineNumbers,
 } from "@codemirror/view";
 import { tags } from "@lezer/highlight";
 import { vim } from "@replit/codemirror-vim";
@@ -41,34 +41,34 @@ interface Props {
 const transparentTheme = EditorView.theme({
   "&": {
     backgroundColor: "transparent !important",
-    height: "100%"
-  }
+    height: "100%",
+  },
 });
 
 const highlighting = HighlightStyle.define([
   { tag: tags.heading1, fontSize: "1.6em", fontWeight: "bold" },
   { tag: tags.heading2, fontSize: "1.4em", fontWeight: "bold" },
-  { tag: tags.heading3, fontSize: "1.2em", fontWeight: "bold" }
+  { tag: tags.heading3, fontSize: "1.2em", fontWeight: "bold" },
 ]);
 
 const gutterTheme = EditorView.theme({
   ".cm-gutters": {
-    backgroundColor: "transparent !important"
+    backgroundColor: "transparent !important",
   },
   ".cm-activeLineGutter": {
-    backgroundColor: "#6699ff0b !important"
-  }
+    backgroundColor: "#6699ff0b !important",
+  },
 });
 
 const biggerFont = EditorView.theme({
   ".cm-content": {
     fontSize: "18px",
-    lineHeight: "1.7"
+    lineHeight: "1.7",
   },
   ".cm-lineNumbers": {
     fontSize: "18px",
-    lineHeight: "1.7"
-  }
+    lineHeight: "1.7",
+  },
 });
 export const editorTheme = EditorView.theme({
   "&": {
@@ -78,23 +78,23 @@ export const editorTheme = EditorView.theme({
     padding: "0.75rem",
     transitionProperty:
       "color, background-color, border-color, text-decoration-color, fill, stroke",
-    transitionDuration: "300ms"
+    transitionDuration: "300ms",
   },
   ".cm-content ::selection": {
-    color: "#fff"
-  }
+    color: "#fff",
+  },
 });
 
 const darkPanelTheme = EditorView.theme({
   ".cm-panels": {
     backgroundColor: "#000000",
-    color: "#c9d1d9"
+    color: "#c9d1d9",
   },
   ".cm-panel.cm-search": {
     backgroundColor: "#000000",
     borderBottom: "1px solid rgba(255,255,255,0.08)",
     padding: "6px 8px",
-    gap: "6px"
+    gap: "6px",
   },
   ".cm-search input": {
     backgroundColor: "#161b22",
@@ -102,14 +102,14 @@ const darkPanelTheme = EditorView.theme({
     border: "1px solid rgba(255,255,255,0.1)",
     borderRadius: "6px",
     padding: "4px 6px",
-    outline: "none"
+    outline: "none",
   },
   ".cm-search input::placeholder": {
-    color: "#8b949e"
+    color: "#8b949e",
   },
   ".cm-search input:focus": {
     borderColor: "#58a6ff",
-    boxShadow: "0 0 0 1px #58a6ff"
+    boxShadow: "0 0 0 1px #58a6ff",
   },
   ".cm-search button": {
     backgroundColor: "#161b22",
@@ -117,24 +117,24 @@ const darkPanelTheme = EditorView.theme({
     border: "1px solid rgba(255,255,255,0.1)",
     borderRadius: "6px",
     padding: "4px 8px",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   ".cm-search button:hover": {
-    backgroundColor: "#21262d"
+    backgroundColor: "#21262d",
   },
   ".cm-search .cm-search-info": {
     color: "#8b949e",
-    fontSize: "12px"
+    fontSize: "12px",
   },
   ".cm-panel.cm-search button:last-of-type": {
-    fontSize: "32px"
-  }
+    fontSize: "32px",
+  },
 });
 
 export function useCodemirror<T extends Element>({
   initialDoc,
   onChange,
-  disabled
+  disabled,
 }: Props): [RefObject<T | null>, EditorView?] {
   const containerRef = useRef<T>(null);
   const initialDocRef = useRef(initialDoc);
@@ -158,18 +158,18 @@ export function useCodemirror<T extends Element>({
           {
             key: "Tab",
             preventDefault: true,
-            run: indentMore
+            run: indentMore,
           },
           {
             key: "Shift-Tab",
             preventDefault: true,
-            run: indentLess
+            run: indentLess,
           },
           {
             key: "Ctrl-;",
             preventDefault: true,
-            run: openSearchPanel
-          }
+            run: openSearchPanel,
+          },
         ]),
         lineNumbers(),
         highlightActiveLineGutter(),
@@ -183,7 +183,7 @@ export function useCodemirror<T extends Element>({
         markdown({
           base: markdownLanguage,
           codeLanguages: languages,
-          addKeymap: true
+          addKeymap: true,
         }),
         oneDark,
         transparentTheme,
@@ -195,12 +195,12 @@ export function useCodemirror<T extends Element>({
         EditorView.lineWrapping,
         EditorView.updateListener.of((update) => {
           if (update.changes && onChange) onChange(update.state);
-        })
-      ]
+        }),
+      ],
     });
     const view = new EditorView({
       state,
-      parent: containerRef.current
+      parent: containerRef.current,
     });
     setEditorView(view);
 

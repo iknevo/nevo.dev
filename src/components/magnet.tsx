@@ -38,8 +38,7 @@ export default function Magnet({
     const handleMouseMove = (e: MouseEvent) => {
       if (!magnetRef.current) return;
 
-      const { left, top, width, height } =
-        magnetRef.current.getBoundingClientRect();
+      const { left, top, width, height } = magnetRef.current.getBoundingClientRect();
       const centerX = left + width / 2;
       const centerY = top + height / 2;
 
@@ -78,7 +77,7 @@ export default function Magnet({
         style={{
           transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
           transition: transitionStyle,
-          willChange: "transform"
+          willChange: "transform",
         }}
       >
         {children}

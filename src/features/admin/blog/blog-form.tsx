@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import ScrollButton from "@/src/components/scroll-button";
@@ -11,7 +11,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
 import { InputTags } from "@/src/components/ui/tags-input";
@@ -28,41 +28,27 @@ type Props = {
   disabled?: boolean;
 };
 
-export default function BlogForm({
-  id,
-  defaultValues,
-  onSubmit,
-  onDelete,
-  disabled
-}: Props) {
+export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabled }: Props) {
+  const [doc, setDoc] = useState<string>(defaultValues.doc);
   const form = useForm<blogFormValues>({
     resolver: zodResolver(blogSchema),
-    defaultValues: defaultValues
+    defaultValues: defaultValues,
   });
-  const [doc, setDoc] = useState<string>(defaultValues.doc);
+  form.setValue("doc", doc, { shouldDirty: true });
   const [showPreview, setShowPreview] = useState<boolean>(false);
   const handleChangeDoc = useCallback((newDoc: string) => setDoc(newDoc), []);
+
   const handleSubmit = (values: blogFormValues) => {
     onSubmit(values);
   };
+
   const handleDelete = () => {
     onDelete?.();
-    console.log("delete");
   };
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setDoc(defaultValues.doc);
-  }, [defaultValues.doc]);
-  useEffect(() => {
-    form.setValue("doc", doc, { shouldDirty: true });
-  }, [doc, form]);
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className="dark space-y-4"
-      >
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="dark space-y-4">
         <FormField
           name="title"
           control={form.control}
@@ -70,11 +56,7 @@ export default function BlogForm({
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  disabled={disabled}
-                  placeholder="e.g. first blog post"
-                />
+                <Input {...field} disabled={disabled} placeholder="e.g. first blog post" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -88,11 +70,7 @@ export default function BlogForm({
             <FormItem>
               <FormLabel>Summary</FormLabel>
               <FormControl>
-                <Textarea
-                  {...field}
-                  disabled={disabled}
-                  placeholder="what is this all about"
-                />
+                <Textarea {...field} disabled={disabled} placeholder="what is this all about" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -137,11 +115,7 @@ export default function BlogForm({
         />
 
         <div className="grid min-h-100 gap-2">
-          <Editor
-            initialDoc={doc}
-            onChange={handleChangeDoc}
-            disabled={disabled}
-          />
+          <Editor initialDoc={doc} onChange={handleChangeDoc} disabled={disabled} />
           <Button
             type="button"
             onClick={() => setShowPreview((s) => !s)}
