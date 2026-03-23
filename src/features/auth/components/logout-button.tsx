@@ -13,7 +13,7 @@ export default function LogoutButton() {
     mutate(undefined, {
       onSuccess: () => {
         router.push("/auth/login");
-      }
+      },
     });
   };
   return (
