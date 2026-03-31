@@ -30,15 +30,15 @@ export default function ProjectDetails({ id }: Props) {
 
       gsap.set(".fade-in-later", {
         autoAlpha: 0,
-        y: 30
+        y: 30,
       });
       const tl = gsap.timeline({
-        delay: 0.5
+        delay: 0.5,
       });
       tl.to(".fade-in-later", {
         autoAlpha: 1,
         y: 0,
-        stagger: 0.1
+        stagger: 0.1,
       });
       return () => {
         tl.kill();
@@ -64,8 +64,8 @@ export default function ProjectDetails({ id }: Props) {
           end: "bottom top",
           pin: true,
           pinSpacing: false,
-          scrub: 0.5
-        }
+          scrub: 0.5,
+        },
       });
       return () => {
         tween.kill();
@@ -78,10 +78,7 @@ export default function ProjectDetails({ id }: Props) {
   return (
     <section className="px-6 pt-5 pb-14 md:px-0">
       <div className="container" ref={containerRef}>
-        <TransitionLink
-          href="/"
-          className="group mb-16 inline-flex h-12 items-center gap-2"
-        >
+        <TransitionLink href="/" className="group mb-16 inline-flex h-12 items-center gap-2">
           <ArrowLeft className="group-hover:text-primary transition-all duration-300 group-hover:-translate-x-1" />
           Back
         </TransitionLink>
@@ -134,12 +131,10 @@ export default function ProjectDetails({ id }: Props) {
                     <span className="cursor text-lg">{project.year}</span>
                   </div>
                   <div className="fade-in-later">
-                    <p className="mb-3 text-white/80">Tech &and; Technique</p>
+                    <p className="mb-3 text-white/80">Tech & Technique</p>
 
                     <div className="text-lg">
-                      <span className="cursor">
-                        {project.techStack.join(", ")}
-                      </span>
+                      <span className="cursor">{project.techStack.join(", ")}</span>
                     </div>
                   </div>
                   <div className="fade-in-later space-y-7">
@@ -175,7 +170,7 @@ export default function ProjectDetails({ id }: Props) {
                   backgroundImage: `url(${project.image})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center 50%",
-                  backgroundRepeat: "no-repeat"
+                  backgroundRepeat: "no-repeat",
                 }}
               >
                 <a
