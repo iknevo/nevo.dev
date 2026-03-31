@@ -10,7 +10,7 @@ import {
   FieldError,
   FieldGroup,
   FieldLegend,
-  FieldSet
+  FieldSet,
 } from "@/src/components/ui/field";
 import {
   Form,
@@ -18,20 +18,17 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
-  InputGroupInput
+  InputGroupInput,
 } from "@/src/components/ui/input-group";
 import { Textarea } from "@/src/components/ui/textarea";
-import {
-  projectFormValues,
-  projectSchema
-} from "@/src/definitions/projects-validations";
+import { projectFormValues, projectSchema } from "@/src/definitions/projects-validations";
 
 type Props = {
   id?: string;
@@ -41,34 +38,30 @@ type Props = {
   disabled?: boolean;
 };
 
-export default function ProjectForm({
-  defaultValues,
-  id,
-  onSubmit,
-  onDelete,
-  disabled
-}: Props) {
+export default function ProjectForm({ defaultValues, id, onSubmit, onDelete, disabled }: Props) {
   const form = useForm<projectFormValues>({
     resolver: zodResolver(projectSchema),
-    defaultValues: defaultValues
+    defaultValues: defaultValues,
   });
   const {
     fields: techStackFields,
     append: addTechStack,
-    remove: removeTechStack
+    remove: removeTechStack,
   } = useFieldArray({
     name: "techStack",
-    control: form.control
+    control: form.control,
   });
   const {
     fields: featuresFields,
     append: addFeature,
-    remove: removeFeature
+    remove: removeFeature,
   } = useFieldArray({
     name: "features",
-    control: form.control
+    control: form.control,
   });
   const handleSubmit = (values: projectFormValues) => {
+    console.log(values);
+
     onSubmit(values);
   };
   const handleDelete = () => {
@@ -77,10 +70,7 @@ export default function ProjectForm({
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-4 pt-4"
-      >
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 pt-4">
         <FormField
           name="name"
           control={form.control}
@@ -88,11 +78,7 @@ export default function ProjectForm({
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  disabled={disabled}
-                  placeholder="e.g. My Awesome Project"
-                />
+                <Input {...field} disabled={disabled} placeholder="e.g. My Awesome Project" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -125,11 +111,7 @@ export default function ProjectForm({
             <FormItem>
               <FormLabel>Live URL</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  disabled={disabled}
-                  placeholder="preview url"
-                />
+                <Input {...field} disabled={disabled} placeholder="preview url" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -157,11 +139,7 @@ export default function ProjectForm({
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea
-                  {...field}
-                  disabled={disabled}
-                  placeholder="what is this all about"
-                />
+                <Textarea {...field} disabled={disabled} placeholder="what is this all about" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -255,9 +233,7 @@ export default function ProjectForm({
                           </InputGroupAddon>
                         )}
                       </InputGroup>
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                     </FieldContent>
                   </Field>
                 )}
@@ -320,9 +296,7 @@ export default function ProjectForm({
                           </InputGroupAddon>
                         )}
                       </InputGroup>
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                     </FieldContent>
                   </Field>
                 )}
@@ -343,6 +317,25 @@ export default function ProjectForm({
             <FieldError errors={[form.formState.errors.techStack.root]} />
           )}
         </FieldSet>
+
+        <FormField
+          name="sortIndex"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Sort Index</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  disabled={disabled}
+                  placeholder="enter the index"
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <Button className="text-foreground w-full" disabled={disabled}>
           {id ? "Save Changes" : "Create Project"}

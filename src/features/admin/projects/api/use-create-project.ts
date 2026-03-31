@@ -18,6 +18,7 @@ export function useCreateProject() {
       formData.append("sourceCode", values.sourceCode);
       formData.append("description", values.description);
       formData.append("thumbnail", values.thumbnail);
+      formData.append("sortIndex", String(values.sortIndex));
       formData.append("image", values.image);
 
       values.features.forEach((feat) => {
@@ -29,7 +30,7 @@ export function useCreateProject() {
 
       const res = await fetch("/api/projects", {
         method: "POST",
-        body: formData
+        body: formData,
       });
 
       if (!res.ok) {
@@ -44,6 +45,6 @@ export function useCreateProject() {
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    }
+    },
   });
 }

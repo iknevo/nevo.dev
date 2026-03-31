@@ -18,6 +18,7 @@ export function useUpdateProject(id?: string) {
       formData.append("sourceCode", values.sourceCode);
       formData.append("description", values.description);
       formData.append("thumbnail", values.thumbnail);
+      formData.append("sortIndex", String(values.sortIndex));
       formData.append("image", values.image);
 
       values.features.forEach((feat) => {
@@ -28,7 +29,7 @@ export function useUpdateProject(id?: string) {
       });
       const res = await fetch(`/api/projects/${id}`, {
         method: "PATCH",
-        body: formData
+        body: formData,
       });
 
       if (!res.ok) {
@@ -43,6 +44,6 @@ export function useUpdateProject(id?: string) {
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    }
+    },
   });
 }

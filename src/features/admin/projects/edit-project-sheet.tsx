@@ -6,7 +6,7 @@ import {
   SheetContent,
   SheetDescription,
   SheetHeader,
-  SheetTitle
+  SheetTitle,
 } from "@/src/components/ui/sheet";
 import { projectFormValues } from "@/src/definitions/projects-validations";
 import { useConfirm } from "@/src/hooks/use-confirm";
@@ -20,10 +20,8 @@ import { useOpenProject } from "./state/use-open-project";
 export const EditProjectSheet = () => {
   const { isOpen, onClose, id } = useOpenProject();
   const { data: project, isLoading: isLoadingProject } = useGetProject(id);
-  const { mutate: updateProject, isPending: isUpdatingProject } =
-    useUpdateProject(id);
-  const { mutate: deleteProject, isPending: isDeletingProject } =
-    useDeleteProject(id);
+  const { mutate: updateProject, isPending: isUpdatingProject } = useUpdateProject(id);
+  const { mutate: deleteProject, isPending: isDeletingProject } = useDeleteProject(id);
   const [ConfirmDialog, confirm] = useConfirm();
   const isDisabled = isLoadingProject || isUpdatingProject || isDeletingProject;
   const queryClient = useQueryClient();
@@ -36,33 +34,34 @@ export const EditProjectSheet = () => {
     features: project?.features?.map((item) => ({ item })) ?? [{ item: "" }],
     techStack: project?.techStack?.map((item) => ({ item })) ?? [{ item: "" }],
     thumbnail: project?.thumbnail ?? "",
-    image: project?.image ?? ""
+    image: project?.image ?? "",
+    sortIndex: project?.sortIndex ?? 999,
   };
 
   const onSubmit = (values: projectFormValues) => {
     updateProject(values, {
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ["projects"]
+          queryKey: ["projects"],
         });
         queryClient.invalidateQueries({
-          queryKey: ["project", id]
+          queryKey: ["project", id],
         });
         onClose();
-      }
+      },
     });
   };
 
   const onDelete = async () => {
     const ok = await confirm({
       title: "Are You Sure?",
-      message: "You are about to delete this project."
+      message: "You are about to delete this project.",
     });
     if (ok) {
       deleteProject(undefined, {
         onSuccess: () => {
           onClose();
-        }
+        },
       });
     }
   };

@@ -13,14 +13,11 @@ import { Project, projectType } from "@/src/models/project-model";
 const app = new Hono()
   .get("/", async (c) => {
     await dbConnect();
-    const data = await Project.find();
+    const data = await Project.find().sort({ sortIndex: 1 });
     if (!data)
-      return c.json(
-        { message: "Error getting projects!, Try again later" },
-        status.NOT_FOUND
-      );
+      return c.json({ message: "Error getting projects!, Try again later" }, status.NOT_FOUND);
     return c.json({
-      data
+      data,
     });
   })
   .get(
@@ -28,7 +25,7 @@ const app = new Hono()
     zValidator(
       "param",
       z.object({
-        id: z.string().optional()
+        id: z.string().optional(),
       })
     ),
     async (c) => {
@@ -59,6 +56,7 @@ const app = new Hono()
     const description = body.get("description");
     const thumbnail = body.get("thumbnail");
     const image = body.get("image");
+    const sortIndex = body.get("sortIndex");
     const features = body.getAll("features");
     const techStack = body.getAll("techStack");
     const parsedData = {
@@ -70,26 +68,21 @@ const app = new Hono()
       features: features.map((f) => ({ item: f as string })),
       techStack: techStack.map((t) => ({ item: t as string })),
       thumbnail,
-      image
+      image,
+      sortIndex: Number(sortIndex),
     };
     const result = projectSchema.safeParse(parsedData);
     if (!result.success) {
       const errors = result.error.issues.map((err) => ({
         path: err.path.join("."),
-        message: err.message
+        message: err.message,
       }));
-      return c.json(
-        { success: false, message: "Validation failed", errors },
-        status.BAD_REQUEST
-      );
+      return c.json({ success: false, message: "Validation failed", errors }, status.BAD_REQUEST);
     }
     const { data } = result;
     let thumbnailUrl = data.thumbnail;
     if (data.thumbnail instanceof File) {
-      thumbnailUrl = await uploadToCloudinary(
-        data.thumbnail,
-        "projects/thumbnails"
-      );
+      thumbnailUrl = await uploadToCloudinary(data.thumbnail, "projects/thumbnails");
     }
     let imageUrl = data.image;
     if (data.image instanceof File) {
@@ -104,18 +97,16 @@ const app = new Hono()
       features: data.features.map((f) => f.item),
       techStack: data.techStack.map((t) => t.item),
       thumbnail: thumbnailUrl,
-      image: imageUrl
+      image: imageUrl,
+      sortIndex: data.sortIndex,
     };
     const project = await Project.create(newProject);
     if (!project) {
-      return c.json(
-        { message: "Error creating project!, Try again later" },
-        status.BAD_REQUEST
-      );
+      return c.json({ message: "Error creating project!, Try again later" }, status.BAD_REQUEST);
     }
     return c.json({
       success: true,
-      project
+      project,
     });
   })
   .patch(
@@ -124,7 +115,7 @@ const app = new Hono()
     zValidator(
       "param",
       z.object({
-        id: z.string().optional()
+        id: z.string().optional(),
       })
     ),
     async (c) => {
@@ -141,6 +132,7 @@ const app = new Hono()
       const description = body.get("description");
       const thumbnail = body.get("thumbnail");
       const image = body.get("image");
+      const sortIndex = body.get("sortIndex");
       const features = body.getAll("features");
       const techStack = body.getAll("techStack");
       const parsedData = {
@@ -152,26 +144,21 @@ const app = new Hono()
         features: features.map((f) => ({ item: f as string })),
         techStack: techStack.map((t) => ({ item: t as string })),
         thumbnail,
-        image
+        image,
+        sortIndex: Number(sortIndex),
       };
       const result = projectSchema.safeParse(parsedData);
       if (!result.success) {
         const errors = result.error.issues.map((err) => ({
           path: err.path.join("."),
-          message: err.message
+          message: err.message,
         }));
-        return c.json(
-          { success: false, message: "Validation failed", errors },
-          status.BAD_REQUEST
-        );
+        return c.json({ success: false, message: "Validation failed", errors }, status.BAD_REQUEST);
       }
       const { data } = result;
       let thumbnailUrl = data.thumbnail;
       if (data.thumbnail instanceof File) {
-        thumbnailUrl = await uploadToCloudinary(
-          data.thumbnail,
-          "projects/thumbnails"
-        );
+        thumbnailUrl = await uploadToCloudinary(data.thumbnail, "projects/thumbnails");
       }
       let imageUrl = data.image;
       if (data.image instanceof File) {
@@ -186,7 +173,8 @@ const app = new Hono()
         features: data.features.map((f) => f.item),
         techStack: data.techStack.map((t) => t.item),
         thumbnail: thumbnailUrl,
-        image: imageUrl
+        image: imageUrl,
+        sortIndex: data.sortIndex,
       };
       let project = await Project.findById(id);
       if (!project) {
@@ -196,7 +184,7 @@ const app = new Hono()
       project = await project.save();
       return c.json<{ success: true; project: projectType }>({
         success: true,
-        project
+        project,
       });
     }
   )
@@ -206,7 +194,7 @@ const app = new Hono()
     zValidator(
       "param",
       z.object({
-        id: z.string().optional()
+        id: z.string().optional(),
       })
     ),
     async (c) => {
@@ -217,10 +205,7 @@ const app = new Hono()
       await dbConnect();
       const project = await Project.findByIdAndDelete(id);
       if (!project) {
-        return c.json(
-          { message: "Error deleting project!, Try again later" },
-          status.NOT_FOUND
-        );
+        return c.json({ message: "Error deleting project!, Try again later" }, status.NOT_FOUND);
       }
       return c.status(status.NO_CONTENT);
     }
