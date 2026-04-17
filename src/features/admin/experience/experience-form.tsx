@@ -9,13 +9,10 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
-import {
-  expFormValues,
-  experienceSchema
-} from "@/src/definitions/experience-validations";
+import { expFormValues, experienceSchema } from "@/src/definitions/experience-validations";
 
 type Props = {
   id?: string;
@@ -25,16 +22,10 @@ type Props = {
   disabled?: boolean;
 };
 
-export default function ExperienceForm({
-  defaultValues,
-  id,
-  onSubmit,
-  onDelete,
-  disabled
-}: Props) {
+export default function ExperienceForm({ defaultValues, id, onSubmit, onDelete, disabled }: Props) {
   const form = useForm<expFormValues>({
     resolver: zodResolver(experienceSchema),
-    defaultValues: defaultValues
+    defaultValues: defaultValues,
   });
   const handleSubmit = (values: expFormValues) => {
     onSubmit(values);
@@ -45,10 +36,7 @@ export default function ExperienceForm({
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-4 pt-4"
-      >
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 pt-4">
         <FormField
           name="title"
           control={form.control}
@@ -74,11 +62,7 @@ export default function ExperienceForm({
             <FormItem>
               <FormLabel>Company</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  disabled={disabled}
-                  placeholder="e.g. Google"
-                />
+                <Input {...field} disabled={disabled} placeholder="e.g. Google" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -91,11 +75,7 @@ export default function ExperienceForm({
             <FormItem>
               <FormLabel>Start Date</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  disabled={disabled}
-                  placeholder="e.g. 07/2025"
-                />
+                <Input {...field} disabled={disabled} placeholder="e.g. 07/2025" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -108,10 +88,25 @@ export default function ExperienceForm({
             <FormItem>
               <FormLabel>End Date</FormLabel>
               <FormControl>
+                <Input {...field} disabled={disabled} placeholder="e.g. 10/2026" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="sortIndex"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Sort Index</FormLabel>
+              <FormControl>
                 <Input
                   {...field}
                   disabled={disabled}
-                  placeholder="e.g. 10/2026"
+                  placeholder="enter the index"
+                  onChange={(e) => field.onChange(Number(e.target.value))}
                 />
               </FormControl>
               <FormMessage />

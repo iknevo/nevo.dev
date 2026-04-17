@@ -6,30 +6,29 @@ const stackSchema = new Schema(
       type: String,
       required: [true, "Stack's name is required"],
       trim: true,
-      unique: true
+      unique: true,
     },
     icon: {
       type: String,
-      required: [true, "Stack's icon is required"]
+      required: [true, "Stack's icon is required"],
     },
     type: {
       type: String,
-      enum: ["frontend", "backend", "tools", "studying"],
+      enum: ["frontend", "backend", "mobile", "testing", "tools", "studying"],
       required: true,
-      default: "front"
+      default: "front",
     },
     createdAt: {
       type: Date,
-      default: Date.now()
-    }
+      default: Date.now(),
+    },
   },
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
-    timestamps: true
+    timestamps: true,
   }
 );
 
 export type stackType = InferSchemaType<typeof stackSchema>;
-export const Stack: Model<stackType> =
-  models.Stack || model<stackType>("Stack", stackSchema);
+export const Stack: Model<stackType> = models.Stack || model<stackType>("Stack", stackSchema);

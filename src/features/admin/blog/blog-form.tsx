@@ -70,7 +70,12 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
             <FormItem>
               <FormLabel>Summary</FormLabel>
               <FormControl>
-                <Textarea {...field} disabled={disabled} placeholder="what is this all about" />
+                <Textarea
+                  {...field}
+                  disabled={disabled}
+                  placeholder="what is this all about"
+                  className="min-h-30"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

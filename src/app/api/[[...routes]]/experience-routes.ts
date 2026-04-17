@@ -11,14 +11,11 @@ import { Experience } from "@/src/models/experience-model";
 const app = new Hono()
   .get("/", async (c) => {
     await dbConnect();
-    const data = await Experience.find().sort({ createdAt: -1 });
+    const data = await Experience.find().sort({ sortIndex: 1 });
     if (!data)
-      return c.json(
-        { message: "Error getting experiences!, Try again later" },
-        status.NOT_FOUND
-      );
+      return c.json({ message: "Error getting experiences!, Try again later" }, status.NOT_FOUND);
     return c.json({
-      data
+      data,
     });
   })
   .get(
@@ -26,7 +23,7 @@ const app = new Hono()
     zValidator(
       "param",
       z.object({
-        id: z.string().optional()
+        id: z.string().optional(),
       })
     ),
     authMiddleware,
@@ -43,33 +40,25 @@ const app = new Hono()
       return c.json({ data });
     }
   )
-  .post(
-    "/",
-    authMiddleware,
-    zValidator("json", experienceSchema),
-    async (c) => {
-      await dbConnect();
-      const data = c.req.valid("json");
-      const exp = await Experience.create(data);
-      if (!exp) {
-        return c.json(
-          { message: "Error creating experience!, Try again later" },
-          status.BAD_REQUEST
-        );
-      }
-      return c.json({
-        success: true,
-        experience: exp
-      });
+  .post("/", authMiddleware, zValidator("json", experienceSchema), async (c) => {
+    await dbConnect();
+    const data = c.req.valid("json");
+    const exp = await Experience.create(data);
+    if (!exp) {
+      return c.json({ message: "Error creating experience!, Try again later" }, status.BAD_REQUEST);
     }
-  )
+    return c.json({
+      success: true,
+      experience: exp,
+    });
+  })
   .patch(
     "/:id",
     authMiddleware,
     zValidator(
       "param",
       z.object({
-        id: z.string().optional()
+        id: z.string().optional(),
       })
     ),
 
@@ -87,7 +76,7 @@ const app = new Hono()
       }
       return c.json({
         success: true,
-        experience: exp
+        experience: exp,
       });
     }
   )
@@ -97,7 +86,7 @@ const app = new Hono()
     zValidator(
       "param",
       z.object({
-        id: z.string().optional()
+        id: z.string().optional(),
       })
     ),
     async (c) => {
@@ -108,10 +97,7 @@ const app = new Hono()
       await dbConnect();
       const stack = await Experience.findByIdAndDelete(id);
       if (!stack) {
-        return c.json(
-          { message: "Error deleting experience!, Try again later" },
-          status.NOT_FOUND
-        );
+        return c.json({ message: "Error deleting experience!, Try again later" }, status.NOT_FOUND);
       }
       return c.status(status.NO_CONTENT);
     }

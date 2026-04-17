@@ -7,7 +7,7 @@ import ProjectList from "@/src/components/project-list";
 import Skills from "@/src/components/skills";
 
 export const metadata: Metadata = {
-  title: "Front-End Developer"
+  title: "Front-End Developer",
 };
 
 export default function Home() {

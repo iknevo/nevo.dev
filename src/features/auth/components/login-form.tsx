@@ -14,7 +14,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
 import { InputPassword } from "@/src/components/ui/input-password";
@@ -35,15 +35,15 @@ export default function LoginForm() {
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
       email: "",
-      password: ""
-    }
+      password: "",
+    },
   });
-  const handleSubmit = (values: FormValues) => {
+  const handleSubmit = async (values: FormValues) => {
     loginMutation.mutate(values, {
       onSuccess: () => {
         const redirectTo = searchParams.get("from") || "/admin";
         router.push(redirectTo);
-      }
+      },
     });
   };
   const handleForget = async () => {
@@ -61,7 +61,7 @@ export default function LoginForm() {
       {
         onSuccess: ({ message }) => {
           toast.success(message);
-        }
+        },
       }
     );
   };

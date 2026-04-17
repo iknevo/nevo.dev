@@ -9,7 +9,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
 import {
@@ -17,13 +17,10 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/src/components/ui/select";
 import { STACK } from "@/src/config/constants";
-import {
-  stackFormValues,
-  stackSchema
-} from "@/src/definitions/stack-validations";
+import { stackFormValues, stackSchema } from "@/src/definitions/stack-validations";
 
 type Props = {
   id?: string;
@@ -33,16 +30,10 @@ type Props = {
   disabled?: boolean;
 };
 
-export default function StackForm({
-  defaultValues,
-  id,
-  onSubmit,
-  onDelete,
-  disabled
-}: Props) {
+export default function StackForm({ defaultValues, id, onSubmit, onDelete, disabled }: Props) {
   const form = useForm<stackFormValues>({
     resolver: zodResolver(stackSchema),
-    defaultValues: defaultValues
+    defaultValues: defaultValues,
   });
   const handleSubmit = (values: stackFormValues) => {
     onSubmit(values);
@@ -53,10 +44,7 @@ export default function StackForm({
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-4 pt-4"
-      >
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 pt-4">
         <FormField
           name="name"
           control={form.control}
@@ -101,11 +89,7 @@ export default function StackForm({
             <FormItem>
               <FormLabel>Type</FormLabel>
               <FormControl>
-                <Select
-                  name={field.name}
-                  value={field.value}
-                  onValueChange={field.onChange}
-                >
+                <Select name={field.name} value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger
                     className="w-full"
                     id="form-select-type"
@@ -116,6 +100,8 @@ export default function StackForm({
                   <SelectContent>
                     <SelectItem value={STACK.frontend}>Front-End</SelectItem>
                     <SelectItem value={STACK.backend}>Back-End</SelectItem>
+                    <SelectItem value={STACK.mobile}>Mobile</SelectItem>
+                    <SelectItem value={STACK.testing}>Testing</SelectItem>
                     <SelectItem value={STACK.tools}>Tools</SelectItem>
                     <SelectItem value={STACK.studying}>Studying</SelectItem>
                   </SelectContent>

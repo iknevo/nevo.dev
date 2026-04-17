@@ -17,8 +17,8 @@ const app = new Hono()
       {
         $group: {
           _id: "$type",
-          items: { $push: "$$ROOT" }
-        }
+          items: { $push: "$$ROOT" },
+        },
       },
       {
         $addFields: {
@@ -27,47 +27,52 @@ const app = new Hono()
               branches: [
                 {
                   case: { $eq: ["$_id", STACK.frontend] },
-                  then: STACK_SORT.frontend
+                  then: STACK_SORT.frontend,
                 },
                 {
                   case: { $eq: ["$_id", STACK.backend] },
-                  then: STACK_SORT.backend
+                  then: STACK_SORT.backend,
+                },
+                {
+                  case: { $eq: ["$_id", STACK.mobile] },
+                  then: STACK_SORT.mobile,
+                },
+                {
+                  case: { $eq: ["$_id", STACK.testing] },
+                  then: STACK_SORT.testing,
                 },
                 {
                   case: { $eq: ["$_id", STACK.tools] },
-                  then: STACK_SORT.tools
+                  then: STACK_SORT.tools,
                 },
                 {
                   case: { $eq: ["$_id", STACK.studying] },
-                  then: STACK_SORT.studying
-                }
+                  then: STACK_SORT.studying,
+                },
               ],
-              default: STACK_SORT.default
-            }
-          }
-        }
+              default: STACK_SORT.default,
+            },
+          },
+        },
       },
       { $sort: { order: 1 } },
       {
         $project: {
           _id: 0,
           type: "$_id",
-          items: 1
-        }
-      }
+          items: 1,
+        },
+      },
     ]);
     if (!data)
-      return c.json(
-        { message: "Error getting stack!, Try again later" },
-        status.NOT_FOUND
-      );
+      return c.json({ message: "Error getting stack!, Try again later" }, status.NOT_FOUND);
     return c.json<{
       data: {
         type: string;
         items: { name: string; _id: string; icon: string }[];
       }[];
     }>({
-      data
+      data,
     });
   })
   .get(
@@ -75,7 +80,7 @@ const app = new Hono()
     zValidator(
       "param",
       z.object({
-        id: z.string().optional()
+        id: z.string().optional(),
       })
     ),
     authMiddleware,
@@ -101,7 +106,7 @@ const app = new Hono()
     const parsedData = {
       name,
       icon,
-      type
+      type,
     };
 
     const result = stackSchema.safeParse(parsedData);
@@ -109,12 +114,9 @@ const app = new Hono()
     if (!result.success) {
       const errors = result.error.issues.map((err) => ({
         path: err.path.join("."),
-        message: err.message
+        message: err.message,
       }));
-      return c.json(
-        { success: false, message: "Validation failed", errors },
-        status.BAD_REQUEST
-      );
+      return c.json({ success: false, message: "Validation failed", errors }, status.BAD_REQUEST);
     }
     const { data } = result;
     let iconUrl = data.icon;
@@ -124,18 +126,15 @@ const app = new Hono()
     const newStack = {
       name: data.name,
       icon: iconUrl,
-      type: data.type
+      type: data.type,
     };
     const stack = await Stack.create(newStack);
     if (!stack) {
-      return c.json(
-        { message: "Error creating stack!, Try again later" },
-        status.BAD_REQUEST
-      );
+      return c.json({ message: "Error creating stack!, Try again later" }, status.BAD_REQUEST);
     }
     return c.json({
       success: true,
-      stack
+      stack,
     });
   })
   .patch(
@@ -144,7 +143,7 @@ const app = new Hono()
     zValidator(
       "param",
       z.object({
-        id: z.string().optional()
+        id: z.string().optional(),
       })
     ),
     async (c) => {
@@ -160,7 +159,7 @@ const app = new Hono()
       const parsedData = {
         name,
         icon,
-        type
+        type,
       };
 
       const result = stackSchema.safeParse(parsedData);
@@ -168,12 +167,9 @@ const app = new Hono()
       if (!result.success) {
         const errors = result.error.issues.map((err) => ({
           path: err.path.join("."),
-          message: err.message
+          message: err.message,
         }));
-        return c.json(
-          { success: false, message: "Validation failed", errors },
-          status.BAD_REQUEST
-        );
+        return c.json({ success: false, message: "Validation failed", errors }, status.BAD_REQUEST);
       }
       const { data } = result;
       let iconUrl = data.icon;
@@ -183,7 +179,7 @@ const app = new Hono()
       const newStack = {
         name: data.name,
         icon: iconUrl,
-        type: data.type
+        type: data.type,
       };
       let stack = await Stack.findById(id);
       if (!stack) {
@@ -193,7 +189,7 @@ const app = new Hono()
       stack = await stack.save();
       return c.json<{ success: true; stack: stackType }>({
         success: true,
-        stack
+        stack,
       });
     }
   )
@@ -203,7 +199,7 @@ const app = new Hono()
     zValidator(
       "param",
       z.object({
-        id: z.string().optional()
+        id: z.string().optional(),
       })
     ),
     async (c) => {
@@ -214,10 +210,7 @@ const app = new Hono()
       await dbConnect();
       const stack = await Stack.findByIdAndDelete(id);
       if (!stack) {
-        return c.json(
-          { message: "Error deleting stack item!, Try again later" },
-          status.NOT_FOUND
-        );
+        return c.json({ message: "Error deleting stack item!, Try again later" }, status.NOT_FOUND);
       }
       return c.status(status.NO_CONTENT);
     }
