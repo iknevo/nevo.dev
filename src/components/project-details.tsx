@@ -164,17 +164,17 @@ export default function ProjectDetails({ id }: Props) {
 
             <div className="fade-in-later relative mx-auto max-w-7xl">
               <div
-                key={project.image}
+                key={project.thumbnail}
                 className="group relative aspect-[750/400] w-full bg-black"
                 style={{
-                  backgroundImage: `url(${project.image})`,
+                  backgroundImage: `url(${project.thumbnail})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center 50%",
                   backgroundRepeat: "no-repeat",
                 }}
               >
                 <a
-                  href={project.image}
+                  href={project.thumbnail}
                   target="_blank"
                   rel="noreferrer noopenner"
                   className="hover:bg-primary absolute top-4 right-4 inline-flex size-12 items-center justify-center bg-gray-950/70 text-white opacity-0 transition-all group-hover:opacity-100 hover:text-white"

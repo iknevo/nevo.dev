@@ -19,7 +19,6 @@ export function useCreateProject() {
       formData.append("description", values.description);
       formData.append("thumbnail", values.thumbnail);
       formData.append("sortIndex", String(values.sortIndex));
-      formData.append("image", values.image);
 
       values.features.forEach((feat) => {
         if (feat.item) formData.append("features", feat.item);

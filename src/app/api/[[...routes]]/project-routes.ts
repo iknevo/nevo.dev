@@ -55,7 +55,6 @@ const app = new Hono()
     const sourceCode = body.get("sourceCode");
     const description = body.get("description");
     const thumbnail = body.get("thumbnail");
-    const image = body.get("image");
     const sortIndex = body.get("sortIndex");
     const features = body.getAll("features");
     const techStack = body.getAll("techStack");
@@ -68,7 +67,6 @@ const app = new Hono()
       features: features.map((f) => ({ item: f as string })),
       techStack: techStack.map((t) => ({ item: t as string })),
       thumbnail,
-      image,
       sortIndex: Number(sortIndex),
     };
     const result = projectSchema.safeParse(parsedData);
@@ -84,10 +82,6 @@ const app = new Hono()
     if (data.thumbnail instanceof File) {
       thumbnailUrl = await uploadToCloudinary(data.thumbnail, "projects/thumbnails");
     }
-    let imageUrl = data.image;
-    if (data.image instanceof File) {
-      imageUrl = await uploadToCloudinary(data.image, "projects/thumbnails");
-    }
     const newProject = {
       name: data.name,
       year: Number(data.year),
@@ -97,7 +91,6 @@ const app = new Hono()
       features: data.features.map((f) => f.item),
       techStack: data.techStack.map((t) => t.item),
       thumbnail: thumbnailUrl,
-      image: imageUrl,
       sortIndex: data.sortIndex,
     };
     const project = await Project.create(newProject);
@@ -131,7 +124,6 @@ const app = new Hono()
       const sourceCode = body.get("sourceCode");
       const description = body.get("description");
       const thumbnail = body.get("thumbnail");
-      const image = body.get("image");
       const sortIndex = body.get("sortIndex");
       const features = body.getAll("features");
       const techStack = body.getAll("techStack");
@@ -144,7 +136,6 @@ const app = new Hono()
         features: features.map((f) => ({ item: f as string })),
         techStack: techStack.map((t) => ({ item: t as string })),
         thumbnail,
-        image,
         sortIndex: Number(sortIndex),
       };
       const result = projectSchema.safeParse(parsedData);
@@ -160,10 +151,6 @@ const app = new Hono()
       if (data.thumbnail instanceof File) {
         thumbnailUrl = await uploadToCloudinary(data.thumbnail, "projects/thumbnails");
       }
-      let imageUrl = data.image;
-      if (data.image instanceof File) {
-        imageUrl = await uploadToCloudinary(data.image, "projects/thumbnails");
-      }
       const newProject = {
         name: data.name,
         year: Number(data.year),
@@ -173,7 +160,6 @@ const app = new Hono()
         features: data.features.map((f) => f.item),
         techStack: data.techStack.map((t) => t.item),
         thumbnail: thumbnailUrl,
-        image: imageUrl,
         sortIndex: data.sortIndex,
       };
       let project = await Project.findById(id);
