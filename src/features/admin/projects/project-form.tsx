@@ -169,29 +169,6 @@ export default function ProjectForm({ defaultValues, id, onSubmit, onDelete, dis
           )}
         />
 
-        <FormField
-          name="image"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Image</FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    field.onChange(file ?? new File([], ""));
-                  }}
-                  name={field.name}
-                  ref={field.ref}
-                  disabled={disabled}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         <FieldSet className="gap-4">
           <FieldLegend variant="label">Features</FieldLegend>
           <FieldDescription>add project&apos;s features</FieldDescription>
