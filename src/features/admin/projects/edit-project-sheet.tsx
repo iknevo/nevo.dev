@@ -34,7 +34,6 @@ export const EditProjectSheet = () => {
     features: project?.features?.map((item) => ({ item })) ?? [{ item: "" }],
     techStack: project?.techStack?.map((item) => ({ item })) ?? [{ item: "" }],
     thumbnail: project?.thumbnail ?? "",
-    image: project?.image ?? "",
     sortIndex: project?.sortIndex ?? 999,
   };
 

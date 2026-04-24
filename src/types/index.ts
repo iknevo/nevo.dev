@@ -19,18 +19,15 @@ export interface IProject {
   name: string;
   year: number;
   techStack: string[];
+  features: string[];
   thumbnail: string;
-  images: string[];
   slug?: string | null;
   liveUrl?: string | null;
   sourceCode?: string | null;
   description: string;
 }
 
-export type ProjectResponse = Omit<
-  projectType,
-  "createdAt" | "updatedAt" | "slug"
-> & {
+export type ProjectResponse = Omit<projectType, "createdAt" | "updatedAt" | "slug"> & {
   _id: string;
   slug: string;
 };
