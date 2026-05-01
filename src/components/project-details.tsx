@@ -20,7 +20,11 @@ export default function ProjectDetails({ id }: Props) {
 
   useLayoutEffect(() => {
     if (!isLoading && project) {
-      ScrollTrigger.refresh();
+      const id = requestAnimationFrame(() => {
+        window.scrollTo(0, 0);
+        ScrollTrigger.refresh();
+      });
+      return () => cancelAnimationFrame(id);
     }
   }, [isLoading, project]);
 
