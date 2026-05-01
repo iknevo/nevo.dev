@@ -56,7 +56,7 @@ export default function NotFound() {
       ))}
 
       <div>
-        <span className="mt-10 text-4xl  text-white md:text-6xl">404</span>
+        <span className="text-7xl  text-white md:text-9xl">404</span>
         <h1 className="text-2xl leading-snug text-white md:text-3xl">
           My site only has three pages.
           <br />
