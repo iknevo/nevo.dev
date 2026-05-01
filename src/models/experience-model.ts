@@ -25,7 +25,7 @@ const experienceSchema = new Schema(
     sortIndex: { type: Number, required: true },
     createdAt: {
       type: Date,
-      default: Date.now(),
+      default: Date.now,
     },
   },
   {

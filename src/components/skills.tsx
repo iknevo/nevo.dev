@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 
 import SectionTitle from "@/src/components/section-title";
 import { useGetStack } from "@/src/features/admin/stack/api/use-get-stack";
@@ -16,10 +16,10 @@ export default function Skills() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { data: stack = [], isLoading } = useGetStack();
 
-  useEffect(() => {
-    setTimeout(() => {
+  useLayoutEffect(() => {
+    if (!isLoading && stack.length > 0) {
       ScrollTrigger.refresh();
-    }, 100);
+    }
   }, [isLoading, stack]);
 
   useGSAP(
@@ -34,15 +34,15 @@ export default function Skills() {
           trigger: containerRef.current,
           start: "top 80%",
           end: "bottom 80%",
-          scrub: 0.5
-        }
+          scrub: 0.5,
+        },
       });
 
       tl.from(slideUpEl, {
         opacity: 0,
         y: 40,
         ease: "none",
-        stagger: 0.4
+        stagger: 0.4,
       });
 
       return () => {
@@ -62,13 +62,13 @@ export default function Skills() {
           trigger: containerRef.current,
           start: "bottom 50%",
           end: "bottom 10%",
-          scrub: 1
-        }
+          scrub: 1,
+        },
       });
 
       tl.to(containerRef.current, {
         y: -150,
-        opacity: 0
+        opacity: 0,
       });
 
       return () => {
@@ -97,9 +97,7 @@ export default function Skills() {
             {stack.map(({ type, items }) => (
               <div className="grid md:grid-cols-12" key={type}>
                 <div className="mb-10 md:col-span-5 md:mb-0">
-                  <p className="slide-up text-5xl leading-none text-white/80 uppercase">
-                    {type}
-                  </p>
+                  <p className="slide-up text-5xl leading-none text-white/80 uppercase">{type}</p>
                 </div>
                 <div className="flex flex-wrap gap-x-11 gap-y-9 md:col-span-7">
                   {items.map((item) => (

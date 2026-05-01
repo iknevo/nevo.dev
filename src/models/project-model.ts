@@ -43,7 +43,7 @@ const projectSchema = new Schema(
     slug: String,
     createdAt: {
       type: Date,
-      default: Date.now(),
+      default: Date.now,
     },
   },
   {

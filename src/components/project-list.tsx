@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
-import { MouseEvent, useEffect, useRef, useState } from "react";
+import { MouseEvent, useLayoutEffect, useRef, useState } from "react";
 
 import Project from "@/src/components/project";
 import SectionTitle from "@/src/components/section-title";
@@ -22,10 +22,10 @@ export default function ProjectList() {
   const imageRef = useRef<HTMLImageElement>(null);
   const [selectedProject, setSelectedProject] = useState<string | null>("");
 
-  useEffect(() => {
-    setTimeout(() => {
+  useLayoutEffect(() => {
+    if (!isLoading && projects.length > 0) {
       ScrollTrigger.refresh();
-    }, 100);
+    }
   }, [isLoading, projects]);
 
   useGSAP(
@@ -56,14 +56,14 @@ export default function ProjectList() {
         ) {
           return gsap.to(imageContainer.current, {
             duration: 0.3,
-            opacity: 0
+            opacity: 0,
           });
         }
 
         gsap.to(imageContainer.current, {
           y: offsetTop - imageRect.height / 2,
           duration: 1,
-          opacity: 1
+          opacity: 1,
         });
       }) as any;
 
@@ -85,13 +85,13 @@ export default function ProjectList() {
           start: "top bottom",
           end: "top 80%",
           toggleActions: "restart none none reverse",
-          scrub: 1
-        }
+          scrub: 1,
+        },
       });
 
       tl.from(containerRef.current, {
         y: 150,
-        opacity: 0
+        opacity: 0,
       });
     },
     { scope: containerRef, dependencies: [projects] }
@@ -135,7 +135,7 @@ export default function ProjectList() {
                     className={cn(
                       "absolute inset-0 h-full w-full object-contain object-top transition-all duration-500",
                       {
-                        "opacity-0": project.slug !== selectedProject
+                        "opacity-0": project.slug !== selectedProject,
                       }
                     )}
                     ref={imageRef}

@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { ArrowLeft, Code, ExternalLink, Loader2 } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 
 import TransitionLink from "@/src/components/transition-link";
 import { useGetProject } from "@/src/features/admin/projects/api/use-get-project";
@@ -18,11 +18,11 @@ export default function ProjectDetails({ id }: Props) {
   const { data: project, isLoading } = useGetProject(id);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    setTimeout(() => {
+  useLayoutEffect(() => {
+    if (!isLoading && project) {
       ScrollTrigger.refresh();
-    }, 100);
-  }, [project, isLoading]);
+    }
+  }, [isLoading, project]);
 
   useGSAP(
     () => {

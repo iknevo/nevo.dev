@@ -1,17 +1,11 @@
 "use client";
 
-import { Flag } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import Button from "@/src/components/button";
 import Cursor from "@/src/components/cursor";
 
-const animations = [
-  "float",
-  "floatReverse",
-  "float2",
-  "floatReverse2"
-] as const;
+const animations = ["float", "floatReverse", "float2", "floatReverse2"] as const;
 
 type Particle = {
   char: "0" | "4";
@@ -38,8 +32,8 @@ export default function NotFound() {
           fontSize: `${size}px`,
           filter: `blur(${blur}px)`,
           animation: `${speed}s ${anim} infinite`,
-          animationDelay: `${delay}s`
-        }
+          animationDelay: `${delay}s`,
+        },
       };
     });
 
@@ -56,19 +50,17 @@ export default function NotFound() {
       <Cursor />
 
       {particles.map((item, i) => (
-        <span
-          key={i}
-          className="pointer-events-none absolute block opacity-15"
-          style={item.style}
-        >
+        <span key={i} className="pointer-events-none absolute block opacity-15" style={item.style}>
           {item.char}
         </span>
       ))}
 
       <div>
-        <Flag className="mx-auto h-20 w-20" />
-        <h1 className="mt-10 text-3xl leading-snug text-white md:text-4xl">
-          Error 404 <br /> It looks like something went wrong.
+        <span className="mt-10 text-4xl  text-white md:text-6xl">404</span>
+        <h1 className="text-2xl leading-snug text-white md:text-3xl">
+          My site only has three pages.
+          <br />
+          How the f*ck did you end up here?
         </h1>
         <Button
           as="link"
