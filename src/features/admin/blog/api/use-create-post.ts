@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferResponseType } from "hono";
 import { toast } from "sonner";
 
@@ -8,6 +8,7 @@ import { api } from "@/src/lib/hono";
 type ResponseType = InferResponseType<typeof api.blog.$post>;
 
 export function useCreatePost() {
+  const queryClient = useQueryClient();
   return useMutation<ResponseType, Error, blogFormValues>({
     mutationFn: async (values) => {
       const formData = new FormData();
@@ -21,7 +22,7 @@ export function useCreatePost() {
 
       const res = await fetch("/api/blog", {
         method: "POST",
-        body: formData
+        body: formData,
       });
 
       if (!res.ok) {
@@ -30,12 +31,17 @@ export function useCreatePost() {
       }
 
       const data = await res.json();
-      toast.success("Post Created");
       return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["blog_posts"],
+      });
+      toast.success("Post Created");
     },
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    }
+    },
   });
 }

@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferResponseType } from "hono";
 import { toast } from "sonner";
 
@@ -8,6 +8,7 @@ import { api } from "@/src/lib/hono";
 type ResponseType = InferResponseType<(typeof api.projects)[":id"]["$patch"]>;
 
 export function useUpdateProject(id?: string) {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (values: projectFormValues): Promise<ResponseType> => {
       const formData = new FormData();
@@ -19,6 +20,7 @@ export function useUpdateProject(id?: string) {
       formData.append("description", values.description);
       formData.append("thumbnail", values.thumbnail);
       formData.append("sortIndex", String(values.sortIndex));
+      formData.append("hide", String(values.hide));
 
       values.features.forEach((feat) => {
         if (feat.item) formData.append("features", feat.item);
@@ -39,6 +41,14 @@ export function useUpdateProject(id?: string) {
       const data = await res.json();
       toast.success("Project Updated");
       return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["projects"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["project", id],
+      });
     },
     onError: (err) => {
       console.error(err);

@@ -11,13 +11,14 @@ import { useRouter } from "next/navigation";
 import SectionTitle from "@/src/components/section-title";
 import TransitionLink from "@/src/components/transition-link";
 import { Button } from "@/src/components/ui/button";
+import { cn } from "@/src/lib/utils";
 
 import { useGetPosts } from "./api/use-get-posts";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export default function BlogSection() {
-  const { data: posts = [], isLoading } = useGetPosts();
+  const { data: posts = [], isLoading } = useGetPosts(true);
   const router = useRouter();
 
   if (isLoading)
@@ -51,7 +52,10 @@ export default function BlogSection() {
       <div className="grid gap-2">
         {posts.map((post) => (
           <div
-            className="experience-item flex items-center justify-between"
+            className={cn(
+              "experience-item flex items-center justify-between",
+              post.hide && "opacity-50 grayscale"
+            )}
             key={post._id}
           >
             <TransitionLink href={`/blog/post/${post.slug}`}>

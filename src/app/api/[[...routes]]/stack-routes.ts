@@ -8,12 +8,22 @@ import { stackSchema } from "@/src/definitions/stack-validations";
 import { uploadToCloudinary } from "@/src/lib/cloudinary";
 import dbConnect from "@/src/lib/db";
 import { authMiddleware } from "@/src/lib/jwt";
-import { Stack, stackType } from "@/src/models/stack-model";
+import { Stack, stackItem, stackType } from "@/src/models/stack-model";
 
 const app = new Hono()
   .get("/", async (c) => {
     await dbConnect();
+    const withHidden = c.req.query("withHidden") === "true";
     const data = await Stack.aggregate([
+      ...(withHidden
+        ? []
+        : [
+            {
+              $match: {
+                hide: { $ne: true },
+              },
+            },
+          ]),
       {
         $group: {
           _id: "$type",
@@ -68,8 +78,8 @@ const app = new Hono()
       return c.json({ message: "Error getting stack!, Try again later" }, status.NOT_FOUND);
     return c.json<{
       data: {
-        type: string;
-        items: { name: string; _id: string; icon: string }[];
+        type: stackItem["type"];
+        items: stackItem[];
       }[];
     }>({
       data,
@@ -103,10 +113,13 @@ const app = new Hono()
     const name = body.get("name");
     const icon = body.get("icon");
     const type = body.get("type");
+    const hideRaw = body.get("hide");
+    const hide = hideRaw === "true";
     const parsedData = {
       name,
       icon,
       type,
+      hide,
     };
 
     const result = stackSchema.safeParse(parsedData);
@@ -127,6 +140,7 @@ const app = new Hono()
       name: data.name,
       icon: iconUrl,
       type: data.type,
+      hide: data.hide,
     };
     const stack = await Stack.create(newStack);
     if (!stack) {
@@ -156,10 +170,13 @@ const app = new Hono()
       const name = body.get("name");
       const icon = body.get("icon");
       const type = body.get("type");
+      const hideRaw = body.get("hide");
+      const hide = hideRaw === "true";
       const parsedData = {
         name,
         icon,
         type,
+        hide,
       };
 
       const result = stackSchema.safeParse(parsedData);
@@ -180,6 +197,7 @@ const app = new Hono()
         name: data.name,
         icon: iconUrl,
         type: data.type,
+        hide: data.hide,
       };
       let stack = await Stack.findById(id);
       if (!stack) {

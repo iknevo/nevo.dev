@@ -10,7 +10,7 @@ import ProjectItem from "./project-item";
 import { useNewProject } from "./state/use-new-project";
 
 export default function ProjectsSection() {
-  const { data: projects = [], isLoading } = useGetProjects();
+  const { data: projects = [], isLoading } = useGetProjects(true);
   const { onOpen } = useNewProject();
 
   if (isLoading)

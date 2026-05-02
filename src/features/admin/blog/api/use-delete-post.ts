@@ -8,7 +8,7 @@ export function useDeletePost(id?: string) {
   const mutation = useMutation({
     mutationFn: async () => {
       const res = await api.blog[":id"].$delete({
-        param: { id }
+        param: { id },
       });
       const data = await res.json();
       return data;
@@ -21,7 +21,7 @@ export function useDeletePost(id?: string) {
     onError: (err) => {
       console.error(err);
       toast.error("Failed to delete post");
-    }
+    },
   });
 
   return mutation;

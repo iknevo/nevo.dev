@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferResponseType } from "hono";
 import { toast } from "sonner";
 
@@ -8,16 +8,18 @@ import { api } from "@/src/lib/hono";
 type ResponseType = InferResponseType<typeof api.stack.$post>;
 
 export function useCreateStackItem() {
+  const queryClient = useQueryClient();
   return useMutation<ResponseType, Error, stackFormValues>({
     mutationFn: async (values) => {
       const formData = new FormData();
       formData.append("name", values.name);
       formData.append("icon", values.icon);
       formData.append("type", values.type);
+      formData.append("hide", String(values.hide));
 
       const res = await fetch("/api/stack", {
         method: "POST",
-        body: formData
+        body: formData,
       });
 
       if (!res.ok) {
@@ -29,9 +31,14 @@ export function useCreateStackItem() {
       toast.success("Stack Item Created");
       return data;
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["stack"],
+      });
+    },
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    }
+    },
   });
 }

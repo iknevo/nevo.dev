@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 
 import {
@@ -6,12 +5,9 @@ import {
   SheetContent,
   SheetDescription,
   SheetHeader,
-  SheetTitle
+  SheetTitle,
 } from "@/src/components/ui/sheet";
-import {
-  stackFormDefaults,
-  stackSchema
-} from "@/src/definitions/stack-validations";
+import { stackFormDefaults, stackSchema } from "@/src/definitions/stack-validations";
 
 import { useCreateStackItem } from "./api/use-create-stack-item";
 import StackForm from "./stack-form";
@@ -22,16 +18,12 @@ type FormValues = z.input<typeof stackSchema>;
 export const NewStackSheet = () => {
   const { isOpen, onClose } = useNewStack();
   const { mutate: createStackItem, isPending } = useCreateStackItem();
-  const queryClient = useQueryClient();
 
   const onSubmit = (values: FormValues) => {
     createStackItem(values, {
       onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ["stack"]
-        });
         onClose();
-      }
+      },
     });
   };
 
@@ -42,11 +34,7 @@ export const NewStackSheet = () => {
           <SheetTitle>New Stack Item</SheetTitle>
           <SheetDescription>Create a new skill or tool</SheetDescription>
         </SheetHeader>
-        <StackForm
-          onSubmit={onSubmit}
-          disabled={isPending}
-          defaultValues={stackFormDefaults}
-        />
+        <StackForm onSubmit={onSubmit} disabled={isPending} defaultValues={stackFormDefaults} />
       </SheetContent>
     </Sheet>
   );

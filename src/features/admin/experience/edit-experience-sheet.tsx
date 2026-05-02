@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 
 import {
@@ -24,24 +23,18 @@ export const EditExperienceSheet = () => {
   const { mutate: deleteExpItem, isPending: isDeletingExpItem } = useDeleteExperience(id);
   const [ConfirmDialog, confirm] = useConfirm();
   const isDisabled = isLoadingExpItem || isUpdatingExpItem || isDeletingExpItem;
-  const queryClient = useQueryClient();
   const defaultValues = {
     title: expItem?.title ?? "",
     company: expItem?.company ?? "",
     startDate: expItem?.startDate ?? "",
     endDate: expItem?.endDate ?? "",
     sortIndex: expItem?.sortIndex ?? 999,
+    hide: expItem?.hide ?? false,
   };
 
   const onSubmit = (values: expFormValues) => {
     updateExpItem(values, {
       onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ["experience"],
-        });
-        queryClient.invalidateQueries({
-          queryKey: ["exp_item", id],
-        });
         onClose();
       },
     });

@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 
 import {
@@ -24,7 +23,6 @@ export const EditProjectSheet = () => {
   const { mutate: deleteProject, isPending: isDeletingProject } = useDeleteProject(id);
   const [ConfirmDialog, confirm] = useConfirm();
   const isDisabled = isLoadingProject || isUpdatingProject || isDeletingProject;
-  const queryClient = useQueryClient();
   const defaultValues = {
     name: project?.name ?? "",
     year: project?.year?.toString() ?? new Date().getFullYear().toString(),
@@ -35,17 +33,12 @@ export const EditProjectSheet = () => {
     techStack: project?.techStack?.map((item) => ({ item })) ?? [{ item: "" }],
     thumbnail: project?.thumbnail ?? "",
     sortIndex: project?.sortIndex ?? 999,
+    hide: project?.hide ?? false,
   };
 
   const onSubmit = (values: projectFormValues) => {
     updateProject(values, {
       onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ["projects"],
-        });
-        queryClient.invalidateQueries({
-          queryKey: ["project", id],
-        });
         onClose();
       },
     });

@@ -16,7 +16,7 @@ export function useDeleteProject(id?: string) {
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ["project", id] });
       queryClient.invalidateQueries({ queryKey: ["projects"] });
-      toast.success("Account Deleted");
+      toast.success("Project Deleted");
     },
     onError: (err) => {
       console.error(err);

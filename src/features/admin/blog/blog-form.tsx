@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Trash } from "lucide-react";
+import { Eye, EyeClosed, Trash } from "lucide-react";
 import { useCallback, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import ScrollButton from "@/src/components/scroll-button";
 import { Button } from "@/src/components/ui/button";
+import { Field } from "@/src/components/ui/field";
 import {
   Form,
   FormControl,
@@ -143,6 +144,29 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
               <Trash className="size-4" />
             </Button>
           )}
+
+          <Controller
+            name="hide"
+            control={form.control}
+            render={({ field }) => (
+              <Field orientation="horizontal" className="justify-between">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  disabled={disabled}
+                  onClick={() => field.onChange(!field.value)}
+                  className="relative"
+                >
+                  {field.value ? (
+                    <EyeClosed className="size-5 text-muted-foreground" />
+                  ) : (
+                    <Eye className="size-5 text-foreground" />
+                  )}
+                </Button>
+              </Field>
+            )}
+          />
           <Button type="submit" className="text-white" disabled={disabled}>
             {id ? "Save Changes" : "Submit blog"}
           </Button>
