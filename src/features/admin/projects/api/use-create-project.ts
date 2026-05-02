@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferResponseType } from "hono";
 import { toast } from "sonner";
 
@@ -8,6 +8,7 @@ import { api } from "@/src/lib/hono";
 type ResponseType = InferResponseType<typeof api.projects.$post>;
 
 export function useCreateProject() {
+  const queryClient = useQueryClient();
   return useMutation<ResponseType, Error, projectFormValues>({
     mutationFn: async (values) => {
       const formData = new FormData();
@@ -40,6 +41,11 @@ export function useCreateProject() {
       const data = await res.json();
       toast.success("Project Created");
       return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["projects"],
+      });
     },
     onError: (err) => {
       console.error(err);

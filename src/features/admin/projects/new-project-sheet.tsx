@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 
 import {
@@ -6,12 +5,9 @@ import {
   SheetContent,
   SheetDescription,
   SheetHeader,
-  SheetTitle
+  SheetTitle,
 } from "@/src/components/ui/sheet";
-import {
-  projectFormDefaults,
-  projectSchema
-} from "@/src/definitions/projects-validations";
+import { projectFormDefaults, projectSchema } from "@/src/definitions/projects-validations";
 
 import { useCreateProject } from "./api/use-create-project";
 import ProjectForm from "./project-form";
@@ -22,16 +18,12 @@ type FormValues = z.input<typeof projectSchema>;
 export const NewProjectSheet = () => {
   const { isOpen, onClose } = useNewProject();
   const { mutate: createAccount, isPending } = useCreateProject();
-  const queryClient = useQueryClient();
 
   const onSubmit = (values: FormValues) => {
     createAccount(values, {
       onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ["projects"]
-        });
         onClose();
-      }
+      },
     });
   };
 
@@ -42,11 +34,7 @@ export const NewProjectSheet = () => {
           <SheetTitle>New Project</SheetTitle>
           <SheetDescription>Create a new project</SheetDescription>
         </SheetHeader>
-        <ProjectForm
-          onSubmit={onSubmit}
-          disabled={isPending}
-          defaultValues={projectFormDefaults}
-        />
+        <ProjectForm onSubmit={onSubmit} disabled={isPending} defaultValues={projectFormDefaults} />
       </SheetContent>
     </Sheet>
   );
