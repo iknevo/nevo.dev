@@ -12,21 +12,20 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const res = await api.blog[":id"].$get({
-    param: { id }
+    param: { id },
   });
   if (!res.ok) throw new Error("Failed to fetch post");
   const { data }: { data: PostResponse } = await res.json();
-  console.log(data);
 
   if (!id) {
     return {
-      title: "Post Not Found"
+      title: "Post Not Found",
     };
   }
 
   return {
     title: `${data.title}`,
-    description: `${data.summary}`
+    description: `${data.summary}`,
   };
 }
 

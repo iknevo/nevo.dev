@@ -1,8 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { Button } from "@/src/components/ui/button";
+import { Field, FieldLabel } from "@/src/components/ui/field";
 import {
   Form,
   FormControl,
@@ -12,6 +13,7 @@ import {
   FormMessage,
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
+import { Switch } from "@/src/components/ui/switch";
 import { expFormValues, experienceSchema } from "@/src/definitions/experience-validations";
 
 type Props = {
@@ -111,6 +113,22 @@ export default function ExperienceForm({ defaultValues, id, onSubmit, onDelete, 
               </FormControl>
               <FormMessage />
             </FormItem>
+          )}
+        />
+
+        <Controller
+          name="hide"
+          control={form.control}
+          render={({ field }) => (
+            <Field orientation="horizontal" className="justify-between">
+              <FieldLabel htmlFor="hide-switch">Hide</FieldLabel>
+              <Switch
+                name={field.name}
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                id="hide-switch"
+              />
+            </Field>
           )}
         />
 

@@ -7,6 +7,7 @@ import { Loader2, PenLine } from "lucide-react";
 
 import SectionTitle from "@/src/components/section-title";
 import { Button } from "@/src/components/ui/button";
+import { cn } from "@/src/lib/utils";
 
 import { useGetExperience } from "./api/use-get-experience";
 import { useNewExperience } from "./state/use-new-experience";
@@ -15,7 +16,7 @@ import { useOpenExperience } from "./state/use-open-experience";
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export default function ExperienceSection() {
-  const { data: experience = [], isLoading } = useGetExperience();
+  const { data: experience = [], isLoading } = useGetExperience(true);
   const { onOpen } = useNewExperience();
   const { onOpen: onOpenEdit } = useOpenExperience();
 
@@ -48,13 +49,14 @@ export default function ExperienceSection() {
         <div className="grid gap-6">
           {experience.map((item) => (
             <div
-              className="experience-item flex items-center justify-between"
+              className={cn(
+                "experience-item flex items-center justify-between",
+                item.hide && "opacity-40 grayscale"
+              )}
               key={item._id}
             >
               <div>
-                <p className="cursor text-white/80 md:text-xl">
-                  {item.company}
-                </p>
+                <p className="cursor text-white/80 md:text-xl">{item.company}</p>
                 <p className="cursor mt-3.5 mb-2.5 text-2xl leading-none md:text-4xl">
                   {item.title}
                 </p>
@@ -63,10 +65,7 @@ export default function ExperienceSection() {
                 </p>
               </div>
 
-              <button
-                onClick={() => onOpenEdit(item._id)}
-                className="no-cursor cursor-none"
-              >
+              <button onClick={() => onOpenEdit(item._id)} className="no-cursor cursor-none">
                 <PenLine className="cursor size-7 md:size-8" />
               </button>
             </div>

@@ -11,7 +11,9 @@ import { Experience } from "@/src/models/experience-model";
 const app = new Hono()
   .get("/", async (c) => {
     await dbConnect();
-    const data = await Experience.find().sort({ sortIndex: 1 });
+    const withHidden = c.req.query("withHidden") === "true";
+    const query = withHidden ? {} : { hide: { $ne: true } };
+    const data = await Experience.find(query).sort({ sortIndex: 1 });
     if (!data)
       return c.json({ message: "Error getting experiences!, Try again later" }, status.NOT_FOUND);
     return c.json({

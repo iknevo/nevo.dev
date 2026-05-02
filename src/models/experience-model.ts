@@ -22,6 +22,10 @@ const experienceSchema = new Schema(
       trim: true,
       default: "Present",
     },
+    hide: {
+      type: Boolean,
+      default: false,
+    },
     sortIndex: { type: Number, required: true },
     createdAt: {
       type: Date,

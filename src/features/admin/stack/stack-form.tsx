@@ -39,7 +39,6 @@ export default function StackForm({ defaultValues, id, onSubmit, onDelete, disab
   });
   const handleSubmit = (values: stackFormValues) => {
     onSubmit(values);
-    console.log(values);
   };
   const handleDelete = () => {
     onDelete?.();
