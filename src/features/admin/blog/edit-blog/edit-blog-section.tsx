@@ -26,7 +26,8 @@ type FormValues = z.input<typeof blogSchema>;
 
 export default function EditBlogSection({ id }: Props) {
   const router = useRouter();
-  const { data: post, isLoading } = useGetPost(id);
+  const { data: post, isLoading, isError } = useGetPost(id);
+
   const { mutate: updatePost, isPending: isUpdating } = useUpdatePost(id);
   const { mutate: deletePost, isPending: isDeleting } = useDeletePost(id);
   const [ConfirmDialog, confirm] = useConfirm();
@@ -37,6 +38,7 @@ export default function EditBlogSection({ id }: Props) {
     tags: post?.tags ?? [],
     image: post?.image ?? "",
     doc: post?.doc ?? "",
+    hide: post?.hide ?? false,
   };
 
   const onSubmit = (values: FormValues) => {
@@ -77,10 +79,14 @@ export default function EditBlogSection({ id }: Props) {
             </Button>
           </div>
 
-          {isLoading ? (
+          {isLoading && !isError ? (
             <div className="flex items-center justify-center">
               <Loader2 className="text-primary mt-20 size-12 animate-spin" />
             </div>
+          ) : isError ? (
+            <p className="dark text-muted-foreground py-10 text-center text-3xl">
+              Something went wrong or post not found
+            </p>
           ) : (
             <BlogForm
               id={id}

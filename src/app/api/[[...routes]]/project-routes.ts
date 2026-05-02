@@ -43,7 +43,7 @@ const app = new Hono()
         data = await Project.findOne({ slug: id });
       }
       if (!data) {
-        return c.json({ error: "Not Found", id }, 404);
+        return c.json({ error: "Not Found", id }, status.NOT_FOUND);
       }
       return c.json({ data });
     }

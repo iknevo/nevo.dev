@@ -13,14 +13,13 @@ import { Blog, blogType } from "@/src/models/blog-model";
 const app = new Hono()
   .get("/", async (c) => {
     await dbConnect();
-    const data = await Blog.find().sort({ createdAt: -1 });
+    const withHidden = c.req.query("withHidden") === "true";
+    const query = withHidden ? {} : { hide: { $ne: true } };
+    const data = await Blog.find(query).sort({ createdAt: -1 });
     if (!data)
-      return c.json(
-        { message: "Error getting blog posts!, Try again later" },
-        status.NOT_FOUND
-      );
+      return c.json({ message: "Error getting blog posts!, Try again later" }, status.NOT_FOUND);
     return c.json({
-      data
+      data,
     });
   })
   .get(
@@ -28,7 +27,7 @@ const app = new Hono()
     zValidator(
       "param",
       z.object({
-        id: z.string().optional()
+        id: z.string().optional(),
       })
     ),
     async (c) => {
@@ -56,24 +55,24 @@ const app = new Hono()
     const summary = body.get("summary");
     const image = body.get("image");
     const doc = body.get("doc");
+    const hideRaw = body.get("hide");
+    const hide = hideRaw === "true";
     const tags = body.getAll("tags");
     const parsedData = {
       title,
       summary,
       doc,
       tags,
-      image
+      image,
+      hide,
     };
     const result = blogSchema.safeParse(parsedData);
     if (!result.success) {
       const errors = result.error.issues.map((err) => ({
         path: err.path.join("."),
-        message: err.message
+        message: err.message,
       }));
-      return c.json(
-        { success: false, message: "Validation failed", errors },
-        status.BAD_REQUEST
-      );
+      return c.json({ success: false, message: "Validation failed", errors }, status.BAD_REQUEST);
     }
     const { data } = result;
     let imageUrl = data.image;
@@ -85,18 +84,16 @@ const app = new Hono()
       summary: data.summary,
       tags: data.tags,
       doc: data.doc,
-      image: imageUrl
+      image: imageUrl,
+      hide: data.hide,
     };
     const post = await Blog.create(newPost);
     if (!post) {
-      return c.json(
-        { message: "Error creating blog post!, Try again later" },
-        status.BAD_REQUEST
-      );
+      return c.json({ message: "Error creating blog post!, Try again later" }, status.BAD_REQUEST);
     }
     return c.json({
       success: true,
-      post
+      post,
     });
   })
   .patch(
@@ -105,7 +102,7 @@ const app = new Hono()
     zValidator(
       "param",
       z.object({
-        id: z.string().optional()
+        id: z.string().optional(),
       })
     ),
     async (c) => {
@@ -119,24 +116,24 @@ const app = new Hono()
       const summary = body.get("summary");
       const image = body.get("image");
       const doc = body.get("doc");
+      const hideRaw = body.get("hide");
+      const hide = hideRaw === "true";
       const tags = body.getAll("tags");
       const parsedData = {
         title,
         summary,
         doc,
         tags,
-        image
+        image,
+        hide,
       };
       const result = blogSchema.safeParse(parsedData);
       if (!result.success) {
         const errors = result.error.issues.map((err) => ({
           path: err.path.join("."),
-          message: err.message
+          message: err.message,
         }));
-        return c.json(
-          { success: false, message: "Validation failed", errors },
-          status.BAD_REQUEST
-        );
+        return c.json({ success: false, message: "Validation failed", errors }, status.BAD_REQUEST);
       }
       const { data } = result;
       let imageUrl = data.image;
@@ -148,7 +145,8 @@ const app = new Hono()
         summary: data.summary,
         tags: data.tags,
         doc: data.doc,
-        image: imageUrl
+        image: imageUrl,
+        hide: data.hide,
       };
       let post = await Blog.findById(id);
       if (!post) {
@@ -158,7 +156,7 @@ const app = new Hono()
       post = await post.save();
       return c.json<{ success: true; post: blogType }>({
         success: true,
-        post
+        post,
       });
     }
   )
@@ -168,7 +166,7 @@ const app = new Hono()
     zValidator(
       "param",
       z.object({
-        id: z.string().optional()
+        id: z.string().optional(),
       })
     ),
     async (c) => {
@@ -179,10 +177,7 @@ const app = new Hono()
       await dbConnect();
       const post = await Blog.findByIdAndDelete(id);
       if (!post) {
-        return c.json(
-          { message: "Error deleting blog post!, Try again later" },
-          status.NOT_FOUND
-        );
+        return c.json({ message: "Error deleting blog post!, Try again later" }, status.NOT_FOUND);
       }
       return c.status(status.NO_CONTENT);
     }

@@ -26,6 +26,10 @@ const blogSchema = new Schema(
     },
     readingTime: String,
     slug: String,
+    hide: {
+      type: Boolean,
+      default: false,
+    },
     createdAt: {
       type: Date,
       default: Date.now,
