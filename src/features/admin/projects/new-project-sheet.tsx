@@ -17,10 +17,10 @@ type FormValues = z.input<typeof projectSchema>;
 
 export const NewProjectSheet = () => {
   const { isOpen, onClose } = useNewProject();
-  const { mutate: createAccount, isPending } = useCreateProject();
+  const { mutate: createProject, isPending } = useCreateProject();
 
   const onSubmit = (values: FormValues) => {
-    createAccount(values, {
+    createProject(values, {
       onSuccess: () => {
         onClose();
       },

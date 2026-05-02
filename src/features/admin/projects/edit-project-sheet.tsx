@@ -33,6 +33,7 @@ export const EditProjectSheet = () => {
     techStack: project?.techStack?.map((item) => ({ item })) ?? [{ item: "" }],
     thumbnail: project?.thumbnail ?? "",
     sortIndex: project?.sortIndex ?? 999,
+    hide: project?.hide ?? false,
   };
 
   const onSubmit = (values: projectFormValues) => {

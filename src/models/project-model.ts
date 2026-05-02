@@ -41,6 +41,10 @@ const projectSchema = new Schema(
     thumbnail: { type: String, required: true },
     sortIndex: { type: Number, required: true, default: 999 },
     slug: String,
+    hide: {
+      type: Boolean,
+      default: false,
+    },
     createdAt: {
       type: Date,
       default: Date.now,

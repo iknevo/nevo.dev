@@ -51,7 +51,7 @@ export default function ExperienceSection() {
             <div
               className={cn(
                 "experience-item flex items-center justify-between",
-                item.hide && "opacity-40 grayscale"
+                item.hide && "opacity-50 grayscale"
               )}
               key={item._id}
             >

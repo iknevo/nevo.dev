@@ -7,10 +7,10 @@ export function useMe() {
     queryKey: ["me"],
     queryFn: async () => {
       const res = await api.auth.me.$get();
-      if (!res.ok) throw new Error("Failed to fetch accounts");
+      if (!res.ok) throw new Error("Failed to fetch account");
       const data = await res.json();
       return data;
-    }
+    },
   });
   return query;
 }

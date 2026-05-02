@@ -9,6 +9,7 @@ import {
   FieldDescription,
   FieldError,
   FieldGroup,
+  FieldLabel,
   FieldLegend,
   FieldSet,
 } from "@/src/components/ui/field";
@@ -27,6 +28,7 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from "@/src/components/ui/input-group";
+import { Switch } from "@/src/components/ui/switch";
 import { Textarea } from "@/src/components/ui/textarea";
 import { projectFormValues, projectSchema } from "@/src/definitions/projects-validations";
 
@@ -309,6 +311,22 @@ export default function ProjectForm({ defaultValues, id, onSubmit, onDelete, dis
               </FormControl>
               <FormMessage />
             </FormItem>
+          )}
+        />
+
+        <Controller
+          name="hide"
+          control={form.control}
+          render={({ field }) => (
+            <Field orientation="horizontal" className="justify-between">
+              <FieldLabel htmlFor="hide-switch">Hide</FieldLabel>
+              <Switch
+                name={field.name}
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                id="hide-switch"
+              />
+            </Field>
           )}
         />
 

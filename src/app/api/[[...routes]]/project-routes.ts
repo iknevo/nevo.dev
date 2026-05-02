@@ -13,7 +13,9 @@ import { Project, projectType } from "@/src/models/project-model";
 const app = new Hono()
   .get("/", async (c) => {
     await dbConnect();
-    const data = await Project.find().sort({ sortIndex: 1 });
+    const withHidden = c.req.query("withHidden") === "true";
+    const query = withHidden ? {} : { hide: { $ne: true } };
+    const data = await Project.find(query).sort({ sortIndex: 1 });
     if (!data)
       return c.json({ message: "Error getting projects!, Try again later" }, status.NOT_FOUND);
     return c.json({
@@ -56,6 +58,8 @@ const app = new Hono()
     const description = body.get("description");
     const thumbnail = body.get("thumbnail");
     const sortIndex = body.get("sortIndex");
+    const hideRaw = body.get("hide");
+    const hide = hideRaw === "true";
     const features = body.getAll("features");
     const techStack = body.getAll("techStack");
     const parsedData = {
@@ -68,6 +72,7 @@ const app = new Hono()
       techStack: techStack.map((t) => ({ item: t as string })),
       thumbnail,
       sortIndex: Number(sortIndex),
+      hide,
     };
     const result = projectSchema.safeParse(parsedData);
     if (!result.success) {
@@ -92,6 +97,7 @@ const app = new Hono()
       techStack: data.techStack.map((t) => t.item),
       thumbnail: thumbnailUrl,
       sortIndex: data.sortIndex,
+      hide: data.hide,
     };
     const project = await Project.create(newProject);
     if (!project) {
@@ -125,6 +131,8 @@ const app = new Hono()
       const description = body.get("description");
       const thumbnail = body.get("thumbnail");
       const sortIndex = body.get("sortIndex");
+      const hideRaw = body.get("hide");
+      const hide = hideRaw === "true";
       const features = body.getAll("features");
       const techStack = body.getAll("techStack");
       const parsedData = {
@@ -137,6 +145,7 @@ const app = new Hono()
         techStack: techStack.map((t) => ({ item: t as string })),
         thumbnail,
         sortIndex: Number(sortIndex),
+        hide,
       };
       const result = projectSchema.safeParse(parsedData);
       if (!result.success) {
@@ -161,6 +170,7 @@ const app = new Hono()
         techStack: data.techStack.map((t) => t.item),
         thumbnail: thumbnailUrl,
         sortIndex: data.sortIndex,
+        hide: data.hide,
       };
       let project = await Project.findById(id);
       if (!project) {

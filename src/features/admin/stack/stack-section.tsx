@@ -58,7 +58,7 @@ export default function StackSection() {
                   <div
                     className={cn(
                       "project-item group cursor pt-5 leading-none transition-all md:group-hover/projects:opacity-30 md:hover:opacity-100!",
-                      item.hide && "opacity-40 grayscale"
+                      item.hide && "opacity-50 grayscale"
                     )}
                     key={item._id}
                     onClick={() => onOpenEdit(item._id)}
