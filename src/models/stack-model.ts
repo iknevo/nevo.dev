@@ -1,4 +1,4 @@
-import { InferSchemaType, Model, Schema, model, models } from "mongoose";
+import { InferSchemaType, Model, Schema, Types, model, models } from "mongoose";
 
 const stackSchema = new Schema(
   {
@@ -18,6 +18,10 @@ const stackSchema = new Schema(
       required: true,
       default: "front",
     },
+    hide: {
+      type: Boolean,
+      default: false,
+    },
     createdAt: {
       type: Date,
       default: Date.now,
@@ -31,4 +35,7 @@ const stackSchema = new Schema(
 );
 
 export type stackType = InferSchemaType<typeof stackSchema>;
+export type stackItem = stackType & {
+  _id: Types.ObjectId;
+};
 export const Stack: Model<stackType> = models.Stack || model<stackType>("Stack", stackSchema);

@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 
 import {
@@ -6,7 +5,7 @@ import {
   SheetContent,
   SheetDescription,
   SheetHeader,
-  SheetTitle
+  SheetTitle,
 } from "@/src/components/ui/sheet";
 import { stackFormValues } from "@/src/definitions/stack-validations";
 import { useConfirm } from "@/src/hooks/use-confirm";
@@ -19,46 +18,36 @@ import { useOpenStack } from "./state/use-open-stack";
 
 export const EditStackSheet = () => {
   const { isOpen, onClose, id } = useOpenStack();
-  const { data: stackItem, isLoading: isLoadingStackItem } =
-    useGetStackItem(id);
-  const { mutate: updateStackItem, isPending: isUpdatingStackItem } =
-    useUpdateStackItem(id);
-  const { mutate: deleteStackItem, isPending: isDeletingStackItem } =
-    useDeleteStackItem(id);
+  const { data: stackItem, isLoading: isLoadingStackItem } = useGetStackItem(id);
+  const { mutate: updateStackItem, isPending: isUpdatingStackItem } = useUpdateStackItem(id);
+  const { mutate: deleteStackItem, isPending: isDeletingStackItem } = useDeleteStackItem(id);
   const [ConfirmDialog, confirm] = useConfirm();
-  const isDisabled =
-    isLoadingStackItem || isUpdatingStackItem || isDeletingStackItem;
-  const queryClient = useQueryClient();
+  const isDisabled = isLoadingStackItem || isUpdatingStackItem || isDeletingStackItem;
   const defaultValues = {
     name: stackItem?.name ?? "",
     type: stackItem?.type ?? "",
-    icon: stackItem?.icon ?? ""
+    icon: stackItem?.icon ?? "",
+    hide: stackItem?.hide ?? false,
   };
 
   const onSubmit = (values: stackFormValues) => {
     updateStackItem(values, {
       onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ["stack"]
-        });
-        queryClient.invalidateQueries({
-          queryKey: ["stack_item", id]
-        });
         onClose();
-      }
+      },
     });
   };
 
   const onDelete = async () => {
     const ok = await confirm({
       title: "Are You Sure?",
-      message: "You are about to delete this skill."
+      message: "You are about to delete this skill.",
     });
     if (ok) {
       deleteStackItem(undefined, {
         onSuccess: () => {
           onClose();
-        }
+        },
       });
     }
   };

@@ -1,8 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { Button } from "@/src/components/ui/button";
+import { Field, FieldLabel } from "@/src/components/ui/field";
 import {
   Form,
   FormControl,
@@ -19,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/src/components/ui/select";
+import { Switch } from "@/src/components/ui/switch";
 import { STACK } from "@/src/config/constants";
 import { stackFormValues, stackSchema } from "@/src/definitions/stack-validations";
 
@@ -37,6 +39,7 @@ export default function StackForm({ defaultValues, id, onSubmit, onDelete, disab
   });
   const handleSubmit = (values: stackFormValues) => {
     onSubmit(values);
+    console.log(values);
   };
   const handleDelete = () => {
     onDelete?.();
@@ -109,6 +112,21 @@ export default function StackForm({ defaultValues, id, onSubmit, onDelete, disab
               </FormControl>
               <FormMessage />
             </FormItem>
+          )}
+        />
+        <Controller
+          name="hide"
+          control={form.control}
+          render={({ field }) => (
+            <Field orientation="horizontal" className="justify-between">
+              <FieldLabel htmlFor="hide-switch">Hide</FieldLabel>
+              <Switch
+                name={field.name}
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                id="hide-switch"
+              />
+            </Field>
           )}
         />
 

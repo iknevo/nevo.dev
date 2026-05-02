@@ -8,6 +8,7 @@ import Image from "next/image";
 
 import SectionTitle from "@/src/components/section-title";
 import { Button } from "@/src/components/ui/button";
+import { cn } from "@/src/lib/utils";
 
 import { useGetStack } from "./api/use-get-stack";
 import { useNewStack } from "./state/use-new-stack";
@@ -16,7 +17,7 @@ import { useOpenStack } from "./state/use-open-stack";
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function StackSection() {
-  const { data: stack = [], isLoading } = useGetStack();
+  const { data: stack = [], isLoading } = useGetStack(true);
   const { onOpen } = useNewStack();
   const { onOpen: onOpenEdit } = useOpenStack();
 
@@ -50,14 +51,15 @@ export default function StackSection() {
         <div className="space-y-20">
           {stack.map(({ type, items }) => (
             <div className="flex flex-col gap-10" key={type}>
-              <h1 className="text-center text-5xl leading-none text-white/80 uppercase">
-                {type}
-              </h1>
+              <h1 className="text-center text-5xl leading-none text-white/80 uppercase">{type}</h1>
 
               <div className="grid grid-cols-2 items-center gap-10 md:grid-cols-3 lg:grid-cols-5">
                 {items.map((item) => (
                   <div
-                    className="project-item group cursor pt-5 leading-none transition-all md:group-hover/projects:opacity-30 md:hover:opacity-100!"
+                    className={cn(
+                      "project-item group cursor pt-5 leading-none transition-all md:group-hover/projects:opacity-30 md:hover:opacity-100!",
+                      item.hide && "opacity-40 grayscale"
+                    )}
                     key={item._id}
                     onClick={() => onOpenEdit(item._id)}
                   >
