@@ -82,7 +82,7 @@ export default function Experiences() {
               <div key={item._id} className="experience-item">
                 <p className="cursor md:text-xl text-white/80">{item.company}</p>
                 <p className="cursor mt-3.5 mb-2.5 text-xl leading-6 md:text-4xl">{item.title}</p>
-                <p className="cursor text-lg text-white/80">
+                <p className="cursor md:text-lg text-white/80">
                   {item.startDate} - {item.endDate}
                 </p>
               </div>
