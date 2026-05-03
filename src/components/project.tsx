@@ -15,12 +15,7 @@ interface Props {
 }
 gsap.registerPlugin(useGSAP);
 
-export default function Project({
-  index,
-  project,
-  selectedProject,
-  onMouseEnter
-}: Props) {
+export default function Project({ index, project, selectedProject, onMouseEnter }: Props) {
   const svgRef = useRef<SVGSVGElement>(null);
   const boxRef = useRef<SVGPathElement>(null);
   const arrowLineRef = useRef<SVGPathElement>(null);
@@ -40,12 +35,7 @@ export default function Project({
   const handleMouseEnter = () => {
     onMouseEnter(project.slug);
     timelineRef.current?.kill();
-    if (
-      !svgRef.current ||
-      !boxRef.current ||
-      !arrowLineRef.current ||
-      !arrowCurbRef.current
-    )
+    if (!svgRef.current || !boxRef.current || !arrowLineRef.current || !arrowCurbRef.current)
       return;
 
     const boxLength = boxRef.current.getTotalLength();
@@ -57,54 +47,54 @@ export default function Project({
     gsap.set(boxRef.current, {
       opacity: 0,
       strokeDasharray: boxLength,
-      strokeDashoffset: boxLength
+      strokeDashoffset: boxLength,
     });
 
     gsap.set(arrowLineRef.current, {
       opacity: 0,
       strokeDasharray: arrowLineLength,
-      strokeDashoffset: arrowLineLength
+      strokeDashoffset: arrowLineLength,
     });
 
     gsap.set(arrowCurbRef.current, {
       opacity: 0,
       strokeDasharray: arrowCurbLength,
-      strokeDashoffset: arrowCurbLength
+      strokeDashoffset: arrowCurbLength,
     });
 
     const tl = gsap.timeline({
       repeat: -1,
-      repeatDelay: 1
+      repeatDelay: 1,
     });
 
     tl.to(svgRef.current, {
       autoAlpha: 1,
-      duration: 0.2
+      duration: 0.2,
     })
       .to(boxRef.current, {
         opacity: 1,
         strokeDashoffset: 0,
-        duration: 0.4
+        duration: 0.4,
       })
       .to(
         arrowLineRef.current,
         {
           opacity: 1,
           strokeDashoffset: 0,
-          duration: 0.4
+          duration: 0.4,
         },
         "<0.2"
       )
       .to(arrowCurbRef.current, {
         opacity: 1,
         strokeDashoffset: 0,
-        duration: 0.4
+        duration: 0.4,
       })
       .to(
         svgRef.current,
         {
           autoAlpha: 0,
-          duration: 0.3
+          duration: 0.3,
         },
         "+=1"
       );
@@ -134,17 +124,15 @@ export default function Project({
           alt="Project"
           width="300"
           height="200"
-          className={cn("mb-6 w-full object-contain object-top")}
+          className={cn("mb-6 w-full object-contain object-top border border-primary/20")}
           key={project.slug}
           loading="lazy"
         />
       )}
       <div className="flex gap-2 md:gap-5">
-        <div className="text-white/80">
-          _{(index + 1).toString().padStart(2, "0")}.
-        </div>
+        <div className="text-white/80">_{(index + 1).toString().padStart(2, "0")}.</div>
         <div>
-          <h4 className="xs:text-6xl from-primary flex gap-4 bg-linear-to-r from-50% to-white to-50% bg-size-[200%] bg-clip-text bg-right text-3xl font-bold text-transparent transition-all duration-700 group-hover:bg-left">
+          <h4 className="sm:text-3xl from-primary flex gap-4 bg-linear-to-r from-50% to-white to-50% bg-size-[200%] bg-clip-text bg-right text-2xl font-bold text-transparent transition-all duration-700 group-hover:bg-left">
             {project.name}
             <span className="text-white opacity-0 transition-all group-hover:opacity-100">
               <svg
@@ -159,10 +147,7 @@ export default function Project({
                 strokeLinejoin="round"
                 ref={svgRef}
               >
-                <path
-                  ref={boxRef}
-                  d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
-                />
+                <path ref={boxRef} d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                 <path ref={arrowLineRef} d="M10 14 21 3" />
                 <path ref={arrowCurbRef} d="M15 3h6v6" />
               </svg>

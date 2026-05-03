@@ -2,6 +2,7 @@
 
 import { useLenis } from "lenis/react";
 import { MoveUpRight } from "lucide-react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -12,26 +13,31 @@ const COLORS = [
   "bg-yellow-500 text-black",
   "bg-blue-500 text-white",
   "bg-teal-500 text-black",
-  "bg-indigo-500 text-white"
+  "bg-violet-500 text-white",
+  "bg-lime-500 text-white",
 ];
 
 const MENU_LINKS = [
   {
     name: "Home",
-    url: "#"
+    url: "#",
   },
   {
     name: "About Me",
-    url: "#about-me"
+    url: "#about-me",
+  },
+  {
+    name: "Tech Stack",
+    url: "#my-stack",
   },
   {
     name: "Experience",
-    url: "#my-experience"
+    url: "#my-experience",
   },
   {
     name: "Projects",
-    url: "#selected-projects"
-  }
+    url: "#selected-projects",
+  },
 ];
 
 export default function Navbar() {
@@ -61,7 +67,7 @@ export default function Navbar() {
     if (target === "#") {
       lenis.scrollTo(0);
     } else {
-      lenis.scrollTo(target, { offset: -30 });
+      lenis.scrollTo(target, { offset: -50 });
     }
   };
 
@@ -69,9 +75,7 @@ export default function Navbar() {
     <>
       <nav className="sticky top-0 z-4">
         <button
-          className={cn(
-            "group absolute top-5 right-5 z-2 size-12 cursor-pointer md:right-10"
-          )}
+          className={cn("group absolute top-5 right-5 z-2 size-12 cursor-pointer md:right-10")}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           <span
@@ -79,7 +83,7 @@ export default function Navbar() {
               "absolute top-1/2 left-1/2 inline-block h-0.5 w-3/5 -translate-x-1/2 -translate-y-[5px] rounded-full bg-white duration-300",
               {
                 "-translate-y-1/2 rotate-45": isMenuOpen,
-                "md:group-hover:rotate-12": !isMenuOpen
+                "md:group-hover:rotate-12": !isMenuOpen,
               }
             )}
           ></span>
@@ -88,7 +92,7 @@ export default function Navbar() {
               "absolute top-1/2 left-1/2 inline-block h-0.5 w-3/5 -translate-x-1/2 translate-y-[5px] rounded-full bg-white duration-300",
               {
                 "-translate-y-1/2 -rotate-45": isMenuOpen,
-                "md:group-hover:-rotate-12": !isMenuOpen
+                "md:group-hover:-rotate-12": !isMenuOpen,
               }
             )}
           ></span>
@@ -96,12 +100,9 @@ export default function Navbar() {
       </nav>
 
       <div
-        className={cn(
-          "overlay fixed inset-0 z-2 bg-black/70 transition-all duration-150",
-          {
-            "pointer-events-none invisible opacity-0": !isMenuOpen
-          }
-        )}
+        className={cn("overlay fixed inset-0 z-2 bg-black/70 transition-all duration-150", {
+          "pointer-events-none invisible opacity-0": !isMenuOpen,
+        })}
         onClick={() => setIsMenuOpen(false)}
       ></div>
 
@@ -116,7 +117,7 @@ export default function Navbar() {
           className={cn(
             "bg-primary fixed inset-0 z-[-1] translate-x-1/2 scale-150 rounded-[50%] delay-150 duration-700",
             {
-              "translate-x-0": isMenuOpen
+              "translate-x-0": isMenuOpen,
             }
           )}
         ></div>
@@ -124,8 +125,13 @@ export default function Navbar() {
         <div className="mx-8 flex w-full max-w-[300px] grow sm:mx-auto md:items-center">
           <div className="flex w-full gap-10 max-lg:flex-col lg:justify-between">
             <div className="max-lg:order-2">
-              <p className="mb-5 text-white md:mb-8">SOCIAL</p>
+              <p className="mb-5 text-white md:mb-8">LINKS</p>
               <ul className="space-y-3">
+                <li>
+                  <Link href="/blog" className="text-lg capitalize hover:underline">
+                    Blog
+                  </Link>
+                </li>
                 {SOCIAL_LINKS.map((link) => (
                   <li key={link.name}>
                     <a

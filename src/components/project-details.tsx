@@ -101,7 +101,7 @@ export default function ProjectDetails({ id }: Props) {
             <div className="top-0 flex min-h-[calc(100dvh-100px)]" id="info">
               <div className="relative w-full">
                 <div className="mx-auto mb-10 flex max-w-7xl items-start gap-6">
-                  <h1 className="fade-in-later overflow-hidden text-4xl leading-none opacity-0 md:text-6xl">
+                  <h1 className="fade-in-later overflow-hidden text-3xl leading-none opacity-0 md:text-6xl">
                     <span className="cursor inline-block">{project.name}</span>
                   </h1>
 
