@@ -8,9 +8,9 @@ import { Loader2, PenLine } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import AdminSectionButton from "@/src/components/admin-section-button";
 import SectionTitle from "@/src/components/section-title";
 import TransitionLink from "@/src/components/transition-link";
-import { Button } from "@/src/components/ui/button";
 import { cn } from "@/src/lib/utils";
 
 import { useGetPosts } from "./api/use-get-posts";
@@ -33,13 +33,9 @@ export default function BlogSection() {
       <div className="container">
         <div className="mb-10 flex items-center justify-between">
           <SectionTitle title="My Blog" className="mb-0" />
-          <Button
-            className="dark flex items-center justify-center text-sm font-semibold md:text-lg"
-            variant={"outline"}
-            asChild
-          >
+          <AdminSectionButton asChild>
             <Link href="/admin/blog/add">New Post</Link>
-          </Button>
+          </AdminSectionButton>
         </div>
       </div>
 

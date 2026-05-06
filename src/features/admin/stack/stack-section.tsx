@@ -6,8 +6,8 @@ import { ScrollTrigger } from "gsap/all";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 
+import AdminSectionButton from "@/src/components/admin-section-button";
 import SectionTitle from "@/src/components/section-title";
-import { Button } from "@/src/components/ui/button";
 import { cn } from "@/src/lib/utils";
 
 import { useGetStack } from "./api/use-get-stack";
@@ -32,14 +32,8 @@ export default function StackSection() {
     <section id="my-stack">
       <div className="container">
         <div className="mb-10 flex items-center justify-between">
-          <SectionTitle title="TECH STACK" className="mb-0" />
-          <Button
-            className="dark flex items-center justify-center text-lg font-semibold"
-            variant={"outline"}
-            onClick={onOpen}
-          >
-            New Skill
-          </Button>
+          <SectionTitle title="STACK" className="mb-0" />
+          <AdminSectionButton onClick={onOpen}>New Skill</AdminSectionButton>
         </div>
 
         {stack.length === 0 && (

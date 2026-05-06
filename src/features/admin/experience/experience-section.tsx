@@ -5,8 +5,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { Loader2, PenLine } from "lucide-react";
 
+import AdminSectionButton from "@/src/components/admin-section-button";
 import SectionTitle from "@/src/components/section-title";
-import { Button } from "@/src/components/ui/button";
 import { cn } from "@/src/lib/utils";
 
 import { useGetExperience } from "./api/use-get-experience";
@@ -30,14 +30,8 @@ export default function ExperienceSection() {
     <section>
       <div className="container">
         <div className="mb-10 flex items-center justify-between">
-          <SectionTitle title="My Experience" className="mb-0" />
-          <Button
-            className="dark flex items-center justify-center text-sm font-semibold md:text-lg"
-            variant={"outline"}
-            onClick={onOpen}
-          >
-            New Experience
-          </Button>
+          <SectionTitle title="Experience" className="mb-0" />
+          <AdminSectionButton onClick={onOpen}>New Experience</AdminSectionButton>
         </div>
 
         {experience.length === 0 && (

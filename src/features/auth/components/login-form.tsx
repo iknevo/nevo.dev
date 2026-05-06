@@ -121,7 +121,11 @@ export default function LoginForm() {
         >
           Forgot Password?
         </button>
-        <Button as="button" disabled={isPending} className="cursor rounded-md">
+        <Button
+          as="button"
+          disabled={isPending}
+          className="cursor rounded-md text-white hover:text-black"
+        >
           {isPending ? <Loader2 className="animate-spin" /> : "Login"}
         </Button>
       </form>

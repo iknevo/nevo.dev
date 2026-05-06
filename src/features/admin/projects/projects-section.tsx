@@ -2,8 +2,8 @@
 
 import { Loader2 } from "lucide-react";
 
+import AdminSectionButton from "@/src/components/admin-section-button";
 import SectionTitle from "@/src/components/section-title";
-import { Button } from "@/src/components/ui/button";
 
 import { useGetProjects } from "./api/use-get-projects";
 import ProjectItem from "./project-item";
@@ -24,13 +24,7 @@ export default function ProjectsSection() {
     <div className="container pb-10">
       <div className="mb-10 flex items-center justify-between">
         <SectionTitle title="PROJECTS" className="mb-0" />
-        <Button
-          className="dark flex items-center justify-center text-lg font-semibold"
-          variant={"outline"}
-          onClick={onOpen}
-        >
-          New Project
-        </Button>
+        <AdminSectionButton onClick={onOpen}>New Project</AdminSectionButton>
       </div>
 
       {projects.length === 0 && (
