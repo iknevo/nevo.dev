@@ -3,11 +3,12 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import { Loader2 } from "lucide-react";
 import { useLayoutEffect, useRef } from "react";
 
 import SectionTitle from "@/src/components/section-title";
 import { useGetExperience } from "@/src/features/admin/experience/api/use-get-experience";
+
+import { LoaderSmall } from "./loader-small";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -69,9 +70,7 @@ export default function Experiences() {
         <SectionTitle title="My Experience" />
 
         {isLoading ? (
-          <div className="flex justify-center py-10">
-            <Loader2 className="slide-up size-20 animate-spin text-gray-500" />
-          </div>
+          <LoaderSmall />
         ) : experience.length === 0 ? (
           <p className="dark slide-up text-muted-foreground py-10 text-3xl">
             There&apos;s no experience added yet

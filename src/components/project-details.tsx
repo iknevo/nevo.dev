@@ -3,11 +3,13 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import { ArrowLeft, Code, ExternalLink, Loader2 } from "lucide-react";
+import { ArrowLeft, Code, ExternalLink } from "lucide-react";
 import { useLayoutEffect, useRef } from "react";
 
 import TransitionLink from "@/src/components/transition-link";
 import { useGetProject } from "@/src/features/admin/projects/api/use-get-project";
+
+import { LoaderSmall } from "./loader-small";
 
 interface Props {
   id: string;
@@ -88,7 +90,7 @@ export default function ProjectDetails({ id }: Props) {
         </TransitionLink>
         {isLoading ? (
           <div className="flex min-h-[50vh] items-center justify-center py-10">
-            <Loader2 className="slide-up size-20 animate-spin text-gray-500" />
+            <LoaderSmall />
           </div>
         ) : !project ? (
           <div className="flex min-h-[50vh] items-center justify-center py-10">

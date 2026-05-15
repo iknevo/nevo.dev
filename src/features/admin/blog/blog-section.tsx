@@ -4,11 +4,12 @@ import { useGSAP } from "@gsap/react";
 import { format } from "date-fns";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import { Loader2, PenLine } from "lucide-react";
+import { PenLine } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import AdminSectionButton from "@/src/components/admin-section-button";
+import { LoaderSmall } from "@/src/components/loader-small";
 import SectionTitle from "@/src/components/section-title";
 import TransitionLink from "@/src/components/transition-link";
 import { cn } from "@/src/lib/utils";
@@ -23,8 +24,8 @@ export default function BlogSection() {
 
   if (isLoading)
     return (
-      <div className="flex justify-center py-20">
-        <Loader2 className="size-20 animate-spin text-gray-500" />
+      <div className="flex justify-center">
+        <LoaderSmall className="py-20" />
       </div>
     );
 

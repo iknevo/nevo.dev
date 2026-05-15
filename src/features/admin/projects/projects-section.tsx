@@ -1,8 +1,7 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
-
 import AdminSectionButton from "@/src/components/admin-section-button";
+import { LoaderSmall } from "@/src/components/loader-small";
 import SectionTitle from "@/src/components/section-title";
 
 import { useGetProjects } from "./api/use-get-projects";
@@ -15,8 +14,8 @@ export default function ProjectsSection() {
 
   if (isLoading)
     return (
-      <div className="flex h-screen justify-center py-20">
-        <Loader2 className="size-20 animate-spin text-gray-500" />
+      <div className="flex justify-center">
+        <LoaderSmall className="py-20" />
       </div>
     );
 

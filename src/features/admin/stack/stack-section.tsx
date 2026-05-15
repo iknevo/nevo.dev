@@ -3,10 +3,10 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import { Loader2 } from "lucide-react";
 import Image from "next/image";
 
 import AdminSectionButton from "@/src/components/admin-section-button";
+import { LoaderSmall } from "@/src/components/loader-small";
 import SectionTitle from "@/src/components/section-title";
 import { cn } from "@/src/lib/utils";
 
@@ -23,8 +23,8 @@ export default function StackSection() {
 
   if (isLoading)
     return (
-      <div className="flex justify-center py-20">
-        <Loader2 className="size-20 animate-spin text-gray-500" />
+      <div className="flex justify-center ">
+        <LoaderSmall className="py-20" />
       </div>
     );
 
