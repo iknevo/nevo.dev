@@ -1,7 +1,8 @@
 "use client";
 
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
+import { LoaderSmall } from "@/src/components/loader-small";
 import TransitionLink from "@/src/components/transition-link";
 import { useGetPosts } from "@/src/features/admin/blog/api/use-get-posts";
 
@@ -9,14 +10,6 @@ import BlogPost from "./blog-post";
 
 export default function BlogsPage() {
   const { data: posts = [], isLoading } = useGetPosts();
-
-  // if (isLoading) {
-  //   return (
-  //     <div className="flex min-h-[60vh] items-center justify-center">
-  //       <Loader2 className="size-14 animate-spin text-gray-500 sm:size-20" />
-  //     </div>
-  //   );
-  // }
 
   return (
     <section className="mx-auto max-w-[1600px] px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-16 lg:px-16">
@@ -40,7 +33,7 @@ export default function BlogsPage() {
         )}
         {isLoading ? (
           <div className="flex min-h-[60vh] justify-center pt-40">
-            <Loader2 className="size-14 animate-spin text-gray-500 sm:size-20" />
+            <LoaderSmall className="p-0" />
           </div>
         ) : (
           <div className="flex flex-col md:mt-8">

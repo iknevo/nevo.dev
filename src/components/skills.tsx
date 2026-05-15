@@ -3,12 +3,13 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useLayoutEffect, useRef } from "react";
 
 import SectionTitle from "@/src/components/section-title";
 import { useGetStack } from "@/src/features/admin/stack/api/use-get-stack";
+
+import { LoaderSmall } from "./loader-small";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -85,9 +86,7 @@ export default function Skills() {
         <SectionTitle title="My Stack" />
 
         {isLoading ? (
-          <div className="flex justify-center py-10">
-            <Loader2 className="slide-up size-20 animate-spin text-gray-500" />
-          </div>
+          <LoaderSmall />
         ) : stack.length === 0 ? (
           <p className="dark slide-up text-muted-foreground py-10 text-3xl">
             There&apos;s no stack added yet
