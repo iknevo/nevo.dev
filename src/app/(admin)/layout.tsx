@@ -1,4 +1,5 @@
 import Cursor from "@/src/components/cursor";
+import ScrollProgressIndicator from "@/src/components/scroll-progress-indicator";
 import { AdminHeader } from "@/src/features/components/admin-header";
 import AdminNav from "@/src/features/components/admin-nav";
 
@@ -13,6 +14,7 @@ export default function Layout({ children }: Props) {
       <AdminNav />
       {children}
       <Cursor />
+      <ScrollProgressIndicator />
     </main>
   );
 }
