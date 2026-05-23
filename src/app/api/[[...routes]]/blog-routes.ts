@@ -160,6 +160,24 @@ const app = new Hono()
       });
     }
   )
+  .patch(
+    "/:id/view",
+    zValidator(
+      "param",
+      z.object({
+        id: z.string(),
+      })
+    ),
+    async (c) => {
+      const { id } = c.req.valid("param");
+      await dbConnect();
+      const post = await Blog.findByIdAndUpdate(id, { $inc: { views: 1 } });
+      if (!post) {
+        return c.json({ error: "Not Found" }, 404);
+      }
+      return c.json({ success: true });
+    }
+  )
   .delete(
     "/:id",
     authMiddleware,

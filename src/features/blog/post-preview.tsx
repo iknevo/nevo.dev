@@ -1,13 +1,15 @@
 "use client";
 
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
+import { LoaderSmall } from "@/src/components/loader-small";
 import TransitionLink from "@/src/components/transition-link";
 import { Badge } from "@/src/components/ui/badge";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { useGetPost } from "@/src/features/admin/blog/api/use-get-post";
+import { useTrackPostView } from "@/src/features/blog/hooks/use-track-post-view";
 import Preview from "@/src/features/code-editor/preview";
 
 interface Props {
@@ -17,6 +19,7 @@ interface Props {
 export default function PostPreview({ id }: Props) {
   const { data: post, isLoading } = useGetPost(id);
   const [loaded, setLoaded] = useState(false);
+  useTrackPostView(post?._id);
 
   return (
     <section className="mx-auto max-w-400 px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-16 lg:px-16 selection:!bg-primary select-text">
@@ -31,7 +34,7 @@ export default function PostPreview({ id }: Props) {
       <div className="mx-auto md:max-w-[80%]">
         {isLoading ? (
           <div className="flex min-h-[40vh] items-center justify-center">
-            <Loader2 className="size-16 animate-spin text-gray-500 sm:size-20" />
+            <LoaderSmall />
           </div>
         ) : !post ? (
           <div className="flex min-h-[40vh] items-center justify-center">
@@ -47,7 +50,15 @@ export default function PostPreview({ id }: Props) {
                   {post.title}
                 </h1>
                 <p className="text-sm text-white/60 sm:text-base">
-                  {post.readingTime}
+                  <span>{post.readingTime}</span>
+                  {post.views > 0 && (
+                    <>
+                      {" - "}
+                      <span>
+                        {post.views} {post.views === 1 ? "view" : "views"}
+                      </span>
+                    </>
+                  )}
                 </p>
               </div>
 
@@ -81,11 +92,7 @@ export default function PostPreview({ id }: Props) {
                 </Badge>
               ))}
             </div>
-
-            <Preview
-              doc={post.doc}
-              className="mt-8 max-w-full overflow-x-auto border-0 sm:mt-12"
-            />
+            <Preview doc={post.doc} className="mt-8 max-w-full overflow-x-auto border-0 sm:mt-12" />
           </>
         )}
       </div>
