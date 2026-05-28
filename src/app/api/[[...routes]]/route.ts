@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { handle } from "hono/vercel";
 import status from "http-status";
@@ -12,6 +13,21 @@ import projects from "./project-routes";
 import stack from "./stack-routes";
 
 const app = new Hono().basePath("/api");
+
+app.use(
+  "*",
+  cors({
+    origin: [
+      "https://nevo.qzz.io",
+      "https://www.nevo.qzz.io",
+      "https://iknevo-dev.vercel.app",
+      "http://localhost:3000",
+    ],
+    allowMethods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const routes = app
