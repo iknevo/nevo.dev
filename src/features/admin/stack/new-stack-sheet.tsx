@@ -32,7 +32,7 @@ export const NewStackSheet = () => {
       <SheetContent className="dark space-y-4 sm:max-w-md">
         <SheetHeader>
           <SheetTitle>New Stack Item</SheetTitle>
-          <SheetDescription>Create a new skill or tool</SheetDescription>
+          <SheetDescription>Add a new skill or tool</SheetDescription>
         </SheetHeader>
         <StackForm onSubmit={onSubmit} disabled={isPending} defaultValues={stackFormDefaults} />
       </SheetContent>

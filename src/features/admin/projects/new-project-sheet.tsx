@@ -32,7 +32,7 @@ export const NewProjectSheet = () => {
       <SheetContent className="dark space-y-4 sm:max-w-md">
         <SheetHeader>
           <SheetTitle>New Project</SheetTitle>
-          <SheetDescription>Create a new project</SheetDescription>
+          <SheetDescription>Add a new project</SheetDescription>
         </SheetHeader>
         <ProjectForm onSubmit={onSubmit} disabled={isPending} defaultValues={projectFormDefaults} />
       </SheetContent>

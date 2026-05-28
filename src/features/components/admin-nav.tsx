@@ -23,13 +23,13 @@ export default function AdminNav() {
         </li>
         <li>
           <Link
-            href="/admin/skills"
+            href="/admin/stack"
             className={cn(
               "rounded-sm px-2 py-2 text-xs font-semibold transition-all md:px-4 md:text-base",
-              pathname === "/admin/skills" && "bg-primary"
+              pathname === "/admin/stack" && "bg-primary"
             )}
           >
-            SKILLS
+            STACK
           </Link>
         </li>
         <li>

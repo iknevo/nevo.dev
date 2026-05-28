@@ -59,7 +59,7 @@ export const EditStackSheet = () => {
         <SheetContent className="dark space-y-4 sm:max-w-md">
           <SheetHeader>
             <SheetTitle>Edit Stack Item</SheetTitle>
-            <SheetDescription>Edit Or Delete stack item</SheetDescription>
+            <SheetDescription>Edit OR Delete a skill</SheetDescription>
           </SheetHeader>
 
           {isLoadingStackItem ? (

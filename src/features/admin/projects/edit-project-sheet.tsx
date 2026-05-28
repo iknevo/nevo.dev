@@ -65,7 +65,7 @@ export const EditProjectSheet = () => {
         <SheetContent className="dark space-y-4 sm:max-w-md">
           <SheetHeader>
             <SheetTitle>Edit Project</SheetTitle>
-            <SheetDescription>Edit project</SheetDescription>
+            <SheetDescription>Edit OR Delete a project</SheetDescription>
           </SheetHeader>
 
           {isLoadingProject ? (
