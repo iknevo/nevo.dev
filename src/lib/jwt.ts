@@ -59,7 +59,8 @@ export async function verifyAccessToken(
 ): Promise<AccessPayload | null> {
   try {
     return (await verify(token, env.jwt.secret, "HS256")) as AccessPayload;
-  } catch {
+  } catch (err) {
+    console.error("Access token verification failed:", err instanceof Error ? err.message : err);
     return null;
   }
 }
@@ -73,7 +74,8 @@ export async function verifyRefreshToken(
       env.jwt.refreshSecret,
       "HS256"
     )) as AccessPayload;
-  } catch {
+  } catch (err) {
+    console.error("Refresh token verification failed:", err instanceof Error ? err.message : err);
     return null;
   }
 }
