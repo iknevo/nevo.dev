@@ -13,7 +13,7 @@ import { LoaderSmall } from "./loader-small";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-export default function Skills() {
+export default function Stack() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { data: stack = [], isLoading } = useGetStack();
 

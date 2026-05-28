@@ -61,7 +61,7 @@ export const EditExperienceSheet = () => {
         <SheetContent className="dark space-y-4 sm:max-w-md">
           <SheetHeader>
             <SheetTitle>Edit Experience</SheetTitle>
-            <SheetDescription>Edit Or Delete experience</SheetDescription>
+            <SheetDescription>Edit OR Delete experience</SheetDescription>
           </SheetHeader>
 
           {isLoadingExpItem ? (

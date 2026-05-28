@@ -32,7 +32,7 @@ export const NewExperienceSheet = () => {
       <SheetContent className="dark space-y-4 sm:max-w-md">
         <SheetHeader>
           <SheetTitle>New Experience</SheetTitle>
-          <SheetDescription>Create a new experience</SheetDescription>
+          <SheetDescription>Add a new experience</SheetDescription>
         </SheetHeader>
         <ExperienceForm onSubmit={onSubmit} disabled={isPending} defaultValues={expFormDefaults} />
       </SheetContent>
