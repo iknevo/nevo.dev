@@ -25,7 +25,7 @@ app.use(
   cors({
     origin: (origin) => {
       if (!origin) return "";
-      return allowedOrigins.includes(origin) ? origin : "";
+      return allowedOrigins.includes(origin) ? origin : undefined;
     },
     credentials: true,
     allowMethods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
@@ -53,5 +53,6 @@ export const GET = handler;
 export const POST = handler;
 export const PATCH = handler;
 export const DELETE = handler;
+export const OPTIONS = handler;
 
 export type AppTypes = typeof routes;
