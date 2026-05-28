@@ -23,8 +23,8 @@ const schema = {
     ...defaultSchema.attributes,
     div: [...(defaultSchema.attributes?.div ?? []), ["style"], ["align"]],
     p: [...(defaultSchema.attributes?.p ?? []), ["style"], ["align"]],
-    span: [...(defaultSchema.attributes?.span ?? []), ["style"]]
-  }
+    span: [...(defaultSchema.attributes?.span ?? []), ["style"]],
+  },
 };
 
 function CustomPre(props: PreProps) {
@@ -51,7 +51,7 @@ function CustomPre(props: PreProps) {
         type="button"
         onClick={handleCopy}
       >
-        {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+        {copied ? <Check size={16} /> : <Copy size={16} />}
       </button>
       <pre
         {...props}
@@ -89,7 +89,7 @@ export default function Preview({ className, doc }: Props) {
               />
             );
           },
-          pre: CustomPre
+          pre: CustomPre,
         }}
       >
         {doc}
