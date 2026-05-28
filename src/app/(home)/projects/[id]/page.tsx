@@ -2,8 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import ProjectDetails from "@/src/components/project-details";
-import { api } from "@/src/lib/hono";
-import { ProjectResponse } from "@/src/types";
+import { serverFetch } from "@/src/lib/server-api";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -11,17 +10,13 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const res = await api.projects[":id"].$get({
-    param: { id }
-  });
-  if (!res.ok) throw new Error("Failed to fetch project");
-  const { data }: { data: ProjectResponse } = await res.json();
-
   if (!id) {
     return {
       title: "Project Not Found"
     };
   }
+
+  const { data } = await serverFetch(`/api/projects/${id}`);
 
   return {
     title: `${data.name}`,

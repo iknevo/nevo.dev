@@ -56,3 +56,4 @@ export const DELETE = handler;
 export const OPTIONS = handler;
 
 export type AppTypes = typeof routes;
+export { app };

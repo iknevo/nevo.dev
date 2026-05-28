@@ -2,8 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import PostPreview from "@/src/features/blog/post-preview";
-import { api } from "@/src/lib/hono";
-import { PostResponse } from "@/src/types";
+import { serverFetch } from "@/src/lib/server-api";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -11,17 +10,13 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const res = await api.blog[":id"].$get({
-    param: { id },
-  });
-  if (!res.ok) throw new Error("Failed to fetch post");
-  const { data }: { data: PostResponse } = await res.json();
-
   if (!id) {
     return {
       title: "Post Not Found",
     };
   }
+
+  const { data } = await serverFetch(`/api/blog/${id}`);
 
   return {
     title: `${data.title}`,
