@@ -17,12 +17,7 @@ const app = new Hono().basePath("/api");
 app.use(
   "*",
   cors({
-    origin: [
-      "https://nevo.qzz.io",
-      "https://www.nevo.qzz.io",
-      "https://iknevo-dev.vercel.app",
-      "http://localhost:3000",
-    ],
+    origin: ["https://nevo.is-a.dev", "https://nevo.qzz.io", "https://iknevo-dev.vercel.app"],
     allowMethods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
     allowHeaders: ["Content-Type", "Authorization"],
     credentials: true,
