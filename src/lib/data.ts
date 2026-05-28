@@ -3,7 +3,7 @@ export const GENERAL_INFO = {
   resume: "/resume.pdf",
 };
 
-export const SOCIAL_LINKS = [
+export const SOCIAL_LINKS: { name: string; url: string }[] = [
   { name: "github", url: "https://github.com/iknevo" },
   { name: "linkedin", url: "https://www.linkedin.com/in/ahmed-abdelhafiez" },
   { name: "Resume", url: GENERAL_INFO.resume },
