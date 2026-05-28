@@ -14,13 +14,23 @@ import stack from "./stack-routes";
 
 const app = new Hono().basePath("/api");
 
+const allowedOrigins = [
+  "https://nevo.is-a.dev",
+  "https://nevo.qzz.io",
+  "https://iknevo-dev.vercel.app",
+];
+
 app.use(
   "*",
   cors({
-    origin: ["https://nevo.is-a.dev", "https://nevo.qzz.io", "https://iknevo-dev.vercel.app"],
-    allowMethods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
-    allowHeaders: ["Content-Type", "Authorization"],
+    origin: (origin) => {
+      if (!origin) return "";
+      return allowedOrigins.includes(origin) ? origin : "";
+    },
     credentials: true,
+    allowMethods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization", "Cookie"],
+    exposeHeaders: ["Set-Cookie"],
   })
 );
 
