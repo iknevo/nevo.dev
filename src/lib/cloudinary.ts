@@ -16,7 +16,8 @@ export const uploadToCloudinary = async (file: File, folder: string) => {
     const uploadStream = cloudinary.uploader.upload_stream(
       { folder, format: "webp" },
       (error, result) => {
-        if (error || !result) reject(error);
+        if (error) reject(error);
+        else if (!result) reject(new Error("Cloudinary upload returned no result"));
         else resolve(result.secure_url);
       }
     );
