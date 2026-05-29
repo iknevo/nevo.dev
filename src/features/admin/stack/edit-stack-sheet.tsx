@@ -27,6 +27,7 @@ export const EditStackSheet = () => {
     name: stackItem?.name ?? "",
     type: stackItem?.type ?? "",
     icon: stackItem?.icon ?? "",
+    sortIndex: stackItem?.sortIndex ?? 999,
     hide: stackItem?.hide ?? false,
   };
 

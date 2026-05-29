@@ -24,6 +24,7 @@ const app = new Hono()
               },
             },
           ]),
+      { $sort: { sortIndex: 1 } },
       {
         $group: {
           _id: "$type",
@@ -113,6 +114,7 @@ const app = new Hono()
     const name = body.get("name");
     const icon = body.get("icon");
     const type = body.get("type");
+    const sortIndex = body.get("sortIndex");
     const hideRaw = body.get("hide");
     const hide = hideRaw === "true";
     const parsedData = {
@@ -120,6 +122,7 @@ const app = new Hono()
       icon,
       type,
       hide,
+      sortIndex: Number(sortIndex),
     };
 
     const result = stackSchema.safeParse(parsedData);
@@ -141,6 +144,7 @@ const app = new Hono()
       icon: iconUrl,
       type: data.type,
       hide: data.hide,
+      sortIndex: data.sortIndex,
     };
     const stack = await Stack.create(newStack);
     if (!stack) {
@@ -170,6 +174,7 @@ const app = new Hono()
       const name = body.get("name");
       const icon = body.get("icon");
       const type = body.get("type");
+      const sortIndex = body.get("sortIndex");
       const hideRaw = body.get("hide");
       const hide = hideRaw === "true";
       const parsedData = {
@@ -177,6 +182,7 @@ const app = new Hono()
         icon,
         type,
         hide,
+        sortIndex: Number(sortIndex),
       };
 
       const result = stackSchema.safeParse(parsedData);
@@ -198,6 +204,7 @@ const app = new Hono()
         icon: iconUrl,
         type: data.type,
         hide: data.hide,
+        sortIndex: data.sortIndex,
       };
       let stack = await Stack.findById(id);
       if (!stack) {
