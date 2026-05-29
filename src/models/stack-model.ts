@@ -18,6 +18,7 @@ const stackSchema = new Schema(
       required: true,
       default: "front",
     },
+    sortIndex: { type: Number, required: true, default: 999 },
     hide: {
       type: Boolean,
       default: false,

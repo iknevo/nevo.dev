@@ -113,6 +113,26 @@ export default function StackForm({ defaultValues, id, onSubmit, onDelete, disab
             </FormItem>
           )}
         />
+
+        <FormField
+          name="sortIndex"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Sort Index</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  disabled={disabled}
+                  placeholder="enter the index"
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Controller
           name="hide"
           control={form.control}

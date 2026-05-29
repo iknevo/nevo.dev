@@ -15,6 +15,7 @@ export function useUpdateStackItem(id?: string) {
       formData.append("name", values.name);
       formData.append("icon", values.icon);
       formData.append("type", values.type);
+      formData.append("sortIndex", String(values.sortIndex));
       formData.append("hide", String(values.hide));
 
       const res = await fetch(`/api/stack/${id}`, {

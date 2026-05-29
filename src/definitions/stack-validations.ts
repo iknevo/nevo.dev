@@ -8,6 +8,7 @@ export const stackSchema = z.object({
   ]),
   type: z.string(),
   hide: z.boolean(),
+  sortIndex: z.number().min(1, "Sort Index can't be less than 1"),
 });
 
 export type stackFormValues = z.infer<typeof stackSchema>;
@@ -18,4 +19,5 @@ export const stackFormDefaults: stackFormValues = {
   icon: "",
   type: "frontend",
   hide: false,
+  sortIndex: 999,
 };
