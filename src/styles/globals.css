@@ -20,6 +20,7 @@ body {
   --container-max-width-2xl: 1148px;
   --container-center: "true";
   --padding-section: 250px;
+  --font-mono: var(--font-jetbrains-mono);
   --animate-shine: shine 2s linear infinite;
 
   @keyframes shine {
@@ -114,9 +115,7 @@ body {
 
 .markdown-body pre,
 .markdown-body pre * {
-  white-space: pre-wrap !important;
-  word-break: break-word !important;
-  overflow-wrap: anywhere !important;
+  font-family: var(--font-jetbrains-mono), monospace;
 }
 
 .editor-container {
