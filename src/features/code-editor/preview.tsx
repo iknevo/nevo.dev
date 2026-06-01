@@ -1,5 +1,5 @@
 import "github-markdown-css/github-markdown.css";
-import "highlight.js/styles/pojoaque.css";
+import "highlight.js/styles/github-dark.css";
 import { Check, Copy } from "lucide-react";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
@@ -57,7 +57,7 @@ function CustomPre(props: PreProps) {
         {...props}
         ref={preRef}
         className={cn(
-          "overflow-x-auto rounded-xl !px-4 !py-8 text-[0.8rem] leading-relaxed sm:px-6 sm:!py-5 sm:text-sm md:text-[0.95rem]",
+          "overflow-x-auto rounded-xl !px-4 !py-8 text-[0.8rem] leading-relaxed sm:px-6 sm:!py-5 sm:text-sm md:text-[0.95rem] !bg-[#050505]",
           props.className
         )}
       />
