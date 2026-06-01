@@ -57,7 +57,7 @@ function CustomPre(props: PreProps) {
         {...props}
         ref={preRef}
         className={cn(
-          "overflow-x-auto rounded-xl !px-4 !py-8 text-[0.8rem] leading-relaxed sm:px-6 sm:!py-5 sm:text-sm md:text-[0.95rem] !bg-[#050505]",
+          "overflow-x-auto rounded-xl !px-4 !py-8 text-[0.8rem] leading-relaxed sm:px-6 sm:!py-5 sm:text-sm md:text-[0.95rem] !bg-[#080808]",
           props.className
         )}
       />
