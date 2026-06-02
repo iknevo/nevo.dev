@@ -4,11 +4,12 @@ import { useEffect } from "react";
 
 export function Signature() {
   useEffect(() => {
+    const year = new Date().getFullYear();
     console.log(
-      "%c NEVO %c Developed with ❤️ %c https://nevo.is-a.dev ",
-      "color:#fff; font-weight:bold; font-size:14px; padding:8px 12px; border-radius:6px 0 0 6px; background:linear-gradient(135deg, #ff0000, #ff4b2b);",
-      "color:#fff; font-size:14px; padding:8px 12px; background:linear-gradient(135deg, #1d2b64, #f8cdda);",
-      "font-size:14px; padding:8px 12px; border-radius:0 6px 6px 0; background:#1c1c1c;"
+      `%c NEVO %c © ${year} · Built with ❤️ %c https://nevo.is-a.dev `,
+      "color:#fff; font-weight:800; font-size:13px; padding:6px 10px; border-radius:4px 0 0 4px; background:linear-gradient(135deg, #d84e2c, #ff6b3d);",
+      "color:#d4d4d4; font-size:13px; padding:6px 10px; background:#1a1a1a;",
+      "color:#a0a0a0; font-size:13px; padding:6px 10px; border-radius:0 4px 4px 0; background:#0d0d0d;"
     );
   }, []);
   return null;
