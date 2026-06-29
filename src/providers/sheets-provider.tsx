@@ -1,6 +1,6 @@
 "use client";
 
-import { useMountedState } from "react-use";
+import { useSyncExternalStore } from "react";
 
 import { EditExperienceSheet } from "@/src/features/admin/experience/edit-experience-sheet";
 import { NewExperienceSheet } from "@/src/features/admin/experience/new-experience-sheet";
@@ -10,7 +10,11 @@ import { EditStackSheet } from "@/src/features/admin/stack/edit-stack-sheet";
 import { NewStackSheet } from "@/src/features/admin/stack/new-stack-sheet";
 
 export default function SheetsProvider() {
-  const isMounted = useMountedState();
+  const isMounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
   if (!isMounted) return null;
   return (
     <div>

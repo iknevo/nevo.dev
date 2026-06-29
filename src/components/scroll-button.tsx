@@ -4,7 +4,6 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useLenis } from "lenis/react";
 import { ChevronDown } from "lucide-react";
-import { motion } from "motion/react";
 import { useRef } from "react";
 
 import { cn } from "@/src/lib/utils";
@@ -50,6 +49,7 @@ export default function ScrollButton({
   return (
     <button
       onClick={handleClick}
+      aria-label={scrollToTop ? "Scroll to top" : "Scroll to projects"}
       className={cn(
         "group cursor relative size-30 cursor-pointer opacity-20",
         scrollToTop && "rotate-180"
@@ -70,17 +70,11 @@ export default function ScrollButton({
         />
       </svg>
 
-      <motion.div
-        transition={{
-          duration: 0.2,
-          ease: "circOut"
-        }}
-        className="flex aspect-square w-full items-center justify-center rounded-full"
-      >
+      <div className="flex aspect-square w-full items-center justify-center rounded-full">
         <div>
           <ChevronDown className="size-20 transition duration-300" />
         </div>
-      </motion.div>
+      </div>
     </button>
   );
 }
