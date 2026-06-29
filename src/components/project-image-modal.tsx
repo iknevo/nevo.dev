@@ -1,6 +1,7 @@
 "use client";
 
 import gsap from "gsap";
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 
 interface Props {
@@ -78,15 +79,24 @@ export default function ProjectImageModal({ modal, projects }: Props) {
     <>
       <div
         ref={containerRef}
-        className="pointer-events-none absolute z-50 h-[300px] w-[400px] overflow-hidden shadow-xl cursor-none dark bg-background/80 backdrop-blur-sm"
+        className="pointer-events-none absolute z-50 h-[300px] w-[400px] flex items-center justify-center overflow-hidden shadow-xl rounded-2xl cursor-none bg-white/2 backdrop-blur-sm"
       >
         <div
           className="absolute h-full w-full transition-[top] duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]"
           style={{ top: `${modal.index * -100}%` }}
         >
           {projects.map((project, i) => (
-            <div key={i} className="flex h-full w-full items-center justify-center">
-              <img src={project.thumbnail} alt="Project" className="h-auto w-full max-w-[340px]" />
+            <div
+              key={i}
+              className="flex h-full max-w-[340px] w-full relative items-center justify-center mx-auto"
+            >
+              <Image
+                src={project.thumbnail}
+                fill
+                sizes="340px"
+                alt="Project"
+                className="object-contain object-center"
+              />
             </div>
           ))}
         </div>

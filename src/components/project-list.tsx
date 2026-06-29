@@ -21,10 +21,12 @@ export default function ProjectList() {
   const [modal, setModal] = useState({ active: false, index: 0 });
 
   const handleMouseEnter = (index: number) => {
+    if (window.innerWidth < 768) return;
     setModal({ active: true, index });
   };
 
   const handleMouseLeave = (index: number) => {
+    if (window.innerWidth < 768) return;
     setModal({ active: false, index });
   };
 
