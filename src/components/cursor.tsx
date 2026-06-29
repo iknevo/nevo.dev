@@ -32,7 +32,7 @@ export default function Cursor() {
       innerScale={1}
       outerScale={3.5}
       trailingSpeed={10}
-      clickables={["a", "button:not(.no-cursor)", ".cursor"]}
+      clickables={["a:not(.no-cursor)", "button:not(.no-cursor)", ".cursor"]}
       outerStyle={{ mixBlendMode: "exclusion" }}
       innerStyle={{ mixBlendMode: "exclusion" }}
     />
