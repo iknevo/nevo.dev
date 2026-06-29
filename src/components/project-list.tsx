@@ -3,13 +3,12 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import Image from "next/image";
-import { MouseEvent, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 import Project from "@/src/components/project";
+import ProjectImageModal from "@/src/components/project-image-modal";
 import SectionTitle from "@/src/components/section-title";
 import { useGetProjects } from "@/src/features/admin/projects/api/use-get-projects";
-import { cn } from "@/src/lib/utils";
 
 import { LoaderSmall } from "./loader-small";
 
@@ -19,63 +18,23 @@ export default function ProjectList() {
   const { data: projects = [], isLoading } = useGetProjects();
   const containerRef = useRef<HTMLDivElement>(null);
   const projectListRef = useRef<HTMLDivElement>(null);
-  const imageContainer = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
-  const [selectedProject, setSelectedProject] = useState<string | null>("");
+  const [modal, setModal] = useState({ active: false, index: 0 });
+
+  const handleMouseEnter = (index: number) => {
+    if (window.innerWidth < 768) return;
+    setModal({ active: true, index });
+  };
+
+  const handleMouseLeave = (index: number) => {
+    if (window.innerWidth < 768) return;
+    setModal({ active: false, index });
+  };
 
   useLayoutEffect(() => {
     if (!isLoading && projects.length > 0) {
       ScrollTrigger.refresh();
     }
   }, [isLoading, projects]);
-
-  useGSAP(
-    (_, contextSafe) => {
-      if (window.innerWidth < 768) {
-        setSelectedProject(null);
-        return;
-      }
-
-      const handleMouseMove = contextSafe?.((e: MouseEvent) => {
-        if (!containerRef.current) return;
-        if (!imageContainer.current) return;
-
-        if (window.innerWidth < 768) {
-          setSelectedProject(null);
-          return;
-        }
-
-        const containerRect = containerRef.current?.getBoundingClientRect();
-        const imageRect = imageContainer.current.getBoundingClientRect();
-        const offsetTop = e.clientY - containerRect.y;
-
-        if (
-          containerRect.y > e.clientY ||
-          containerRect.bottom < e.clientY ||
-          containerRect.x > e.clientX ||
-          containerRect.right < e.clientX
-        ) {
-          return gsap.to(imageContainer.current, {
-            duration: 0.3,
-            opacity: 0,
-          });
-        }
-
-        gsap.to(imageContainer.current, {
-          y: offsetTop - imageRect.height / 2,
-          duration: 1,
-          opacity: 1,
-        });
-      }) as any;
-
-      window.addEventListener("mousemove", handleMouseMove);
-
-      return () => {
-        window.removeEventListener("mousemove", handleMouseMove);
-      };
-    },
-    { scope: containerRef, dependencies: [projects] }
-  );
 
   useGSAP(
     () => {
@@ -98,15 +57,6 @@ export default function ProjectList() {
     { scope: containerRef, dependencies: [projects] }
   );
 
-  const handleMouseEnter = (slug: string) => {
-    if (window.innerWidth < 768) {
-      setSelectedProject(null);
-      return;
-    }
-
-    setSelectedProject(slug);
-  };
-
   return (
     <section className="pb-section" id="selected-projects">
       <div className="container">
@@ -120,38 +70,15 @@ export default function ProjectList() {
           </p>
         ) : (
           <div className="group/projects relative" ref={containerRef}>
-            {selectedProject !== null && (
-              <div
-                className="pointer-events-none absolute top-0 right-0 z-1 aspect-3/4 w-[200px] overflow-hidden opacity-0 max-md:hidden xl:w-[350px]"
-                ref={imageContainer}
-              >
-                {projects.map((project) => (
-                  <Image
-                    src={project.thumbnail}
-                    alt="Project"
-                    width="400"
-                    height="500"
-                    className={cn(
-                      "absolute inset-0 h-full w-full object-contain object-top transition-all duration-500",
-                      {
-                        "opacity-0": project.slug !== selectedProject,
-                      }
-                    )}
-                    ref={imageRef}
-                    key={project.slug}
-                  />
-                ))}
-              </div>
-            )}
-
+            <ProjectImageModal modal={modal} projects={projects} />
             <div className="flex flex-col max-md:gap-10" ref={projectListRef}>
               {projects.map((project, index) => (
                 <Project
                   index={index}
                   project={project}
-                  selectedProject={selectedProject}
-                  onMouseEnter={handleMouseEnter}
                   key={project._id}
+                  onEnter={handleMouseEnter}
+                  onLeave={handleMouseLeave}
                 />
               ))}
             </div>

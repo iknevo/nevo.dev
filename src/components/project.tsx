@@ -4,25 +4,23 @@ import Image from "next/image";
 import { useRef } from "react";
 
 import TransitionLink from "@/src/components/transition-link";
-import { cn } from "@/src/lib/utils";
 import { ProjectResponse } from "@/src/types";
 
 interface Props {
   index: number;
   project: ProjectResponse;
-  selectedProject: string | null;
-  onMouseEnter: (_slug: string) => void;
+  onEnter: (index: number) => void;
+  onLeave: (index: number) => void;
 }
 gsap.registerPlugin(useGSAP);
 
-export default function Project({ index, project, selectedProject, onMouseEnter }: Props) {
+export default function Project({ index, project, onEnter, onLeave }: Props) {
   const svgRef = useRef<SVGSVGElement>(null);
   const boxRef = useRef<SVGPathElement>(null);
   const arrowLineRef = useRef<SVGPathElement>(null);
   const arrowCurbRef = useRef<SVGPathElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
-  // Setup GSAP context safely
   useGSAP(
     () => {
       return () => {
@@ -33,7 +31,7 @@ export default function Project({ index, project, selectedProject, onMouseEnter 
   );
 
   const handleMouseEnter = () => {
-    onMouseEnter(project.slug);
+    onEnter(index);
     timelineRef.current?.kill();
     if (!svgRef.current || !boxRef.current || !arrowLineRef.current || !arrowCurbRef.current)
       return;
@@ -103,6 +101,7 @@ export default function Project({ index, project, selectedProject, onMouseEnter 
   };
 
   const handleMouseLeave = () => {
+    onLeave(index);
     timelineRef.current?.kill();
     timelineRef.current = null;
 
@@ -114,21 +113,19 @@ export default function Project({ index, project, selectedProject, onMouseEnter 
   return (
     <TransitionLink
       href={`/projects/${project.slug}`}
-      className="project-item group py-5 leading-none transition-all first:pt-0! last:border-none last:pb-0 md:border-b md:group-hover/projects:opacity-30 md:hover:opacity-100!"
+      className="project-item group no-cursor py-5 leading-none transition-all first:pt-0! last:border-none last:pb-0 md:border-b md:group-hover/projects:opacity-30 md:hover:opacity-100!"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {selectedProject === null && (
-        <Image
-          src={project.thumbnail}
-          alt="Project"
-          width="300"
-          height="200"
-          className={cn("mb-6 w-full object-contain object-top border border-primary/20")}
-          key={project.slug}
-          loading="lazy"
-        />
-      )}
+      <Image
+        src={project.thumbnail}
+        alt="Project"
+        width="300"
+        height="200"
+        className="mb-6 w-full object-contain object-top border border-primary/20 md:hidden"
+        key={project.slug}
+        loading="eager"
+      />
       <div className="flex gap-2 md:gap-5">
         <div className="text-white/80">_{(index + 1).toString().padStart(2, "0")}.</div>
         <div>
