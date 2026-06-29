@@ -1,4 +1,4 @@
-import "github-markdown-css/github-markdown.css";
+import "github-markdown-css/github-markdown-dark.css";
 import "highlight.js/styles/github-dark.css";
 import { Check, Copy } from "lucide-react";
 import Image from "next/image";
