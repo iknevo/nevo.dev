@@ -49,6 +49,7 @@ export default function ScrollButton({
   return (
     <button
       onClick={handleClick}
+      aria-label={scrollToTop ? "Scroll to top" : "Scroll to projects"}
       className={cn(
         "group cursor relative size-30 cursor-pointer opacity-20",
         scrollToTop && "rotate-180"

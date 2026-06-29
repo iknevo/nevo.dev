@@ -75,6 +75,7 @@ export default function Navbar() {
     <>
       <nav className="sticky top-0 z-4">
         <button
+          aria-label="Toggle menu"
           className={cn("group absolute top-5 right-5 z-2 size-12 cursor-pointer md:right-10")}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
