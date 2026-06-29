@@ -13,10 +13,21 @@ export default function ProjectImageModal({ modal, projects }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLDivElement>(null);
+  const parentRectRef = useRef<DOMRect | null>(null);
 
   useEffect(() => {
     const parent = containerRef.current?.offsetParent as HTMLElement | null;
     if (!parent) return;
+
+    const updateRect = () => {
+      parentRectRef.current = parent.getBoundingClientRect();
+    };
+    updateRect();
+
+    const ro = new ResizeObserver(updateRect);
+    ro.observe(parent);
+
+    window.addEventListener("scroll", updateRect, { passive: true });
 
     const moveContainerX = gsap.quickTo(containerRef.current!, "left", {
       duration: 0.8,
@@ -44,7 +55,8 @@ export default function ProjectImageModal({ modal, projects }: Props) {
     });
 
     const onMouseMove = (e: MouseEvent) => {
-      const rect = parent.getBoundingClientRect();
+      const rect = parentRectRef.current;
+      if (!rect) return;
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       moveContainerX(x);
@@ -56,7 +68,11 @@ export default function ProjectImageModal({ modal, projects }: Props) {
     };
 
     window.addEventListener("mousemove", onMouseMove);
-    return () => window.removeEventListener("mousemove", onMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("scroll", updateRect);
+      ro.disconnect();
+    };
   }, []);
 
   useEffect(() => {

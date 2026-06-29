@@ -8,26 +8,29 @@ import { cn } from "@/src/lib/utils";
 
 export default function ScrollProgressIndicator() {
   const [hidden, setHidden] = useState(true);
-  const [scroll, setScroll] = useState(0);
   const lenis = useLenis();
+  const barRef = useRef<HTMLDivElement>(null);
+  const hiddenRef = useRef(true);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (!lenis) return;
 
     const handleScroll = ({ progress }: Lenis) => {
-      const nextScroll = +progress;
+      const bar = barRef.current;
+      if (bar) {
+        bar.style.height = `${progress * 100}%`;
+      }
 
-      setScroll((prev) => (prev === nextScroll ? prev : nextScroll));
-
-      if (nextScroll > 0.01 && nextScroll < 0.99) {
-        setHidden(false);
-      } else {
-        setHidden(true);
+      const shouldHide = progress <= 0.01 || progress >= 0.99;
+      if (shouldHide !== hiddenRef.current) {
+        hiddenRef.current = shouldHide;
+        setHidden(shouldHide);
       }
 
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       timeoutRef.current = setTimeout(() => {
+        hiddenRef.current = true;
         setHidden(true);
       }, 300);
     };
@@ -48,8 +51,9 @@ export default function ScrollProgressIndicator() {
       )}
     >
       <div
+        ref={barRef}
         className="bg-primary w-full rounded-full"
-        style={{ height: `${scroll * 100}%` }}
+        style={{ height: "0%" }}
       />
     </div>
   );
