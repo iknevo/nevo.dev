@@ -5,7 +5,7 @@ import { env } from "@/src/config/env";
 cloudinary.config({
   cloud_name: env.cloudinary.cloud_name,
   api_key: env.cloudinary.api_key,
-  api_secret: env.cloudinary.api_secret
+  api_secret: env.cloudinary.api_secret,
 });
 
 export const uploadToCloudinary = async (file: File, folder: string) => {
@@ -15,6 +15,23 @@ export const uploadToCloudinary = async (file: File, folder: string) => {
   return new Promise<string>((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
       { folder, format: "webp" },
+      (error, result) => {
+        if (error) reject(error);
+        else if (!result) reject(new Error("Cloudinary upload returned no result"));
+        else resolve(result.secure_url);
+      }
+    );
+    uploadStream.end(buffer);
+  });
+};
+
+export const uploadPdfToCloudinary = async (file: File, folder: string) => {
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+
+  return new Promise<string>((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      { folder, resource_type: "raw" },
       (error, result) => {
         if (error) reject(error);
         else if (!result) reject(new Error("Cloudinary upload returned no result"));
