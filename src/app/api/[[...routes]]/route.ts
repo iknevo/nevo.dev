@@ -10,6 +10,7 @@ import auth from "./auth-routes";
 import blog from "./blog-routes";
 import experience from "./experience-routes";
 import projects from "./project-routes";
+import resume from "./resume-routes";
 import stack from "./stack-routes";
 
 const app = new Hono().basePath("/api");
@@ -40,7 +41,8 @@ const routes = app
   .route("/projects", projects)
   .route("/stack", stack)
   .route("/experience", experience)
-  .route("/blog", blog);
+  .route("/blog", blog)
+  .route("/resume", resume);
 
 app.use(logger());
 app.onError(errorHandler);

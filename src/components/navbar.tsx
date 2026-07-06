@@ -145,6 +145,15 @@ export default function Navbar() {
                     </a>
                   </li>
                 ))}
+                <li>
+                  <Link
+                    href="/resume"
+                    target="_blank"
+                    className="text-lg capitalize hover:underline"
+                  >
+                    Resume
+                  </Link>
+                </li>
               </ul>
             </div>
             <div className="">

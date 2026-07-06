@@ -54,6 +54,17 @@ export default function AdminNav() {
             BLOG
           </Link>
         </li>
+        <li>
+          <Link
+            href="/admin/resume"
+            className={cn(
+              "rounded-sm px-2 py-2 text-xs font-semibold transition-all md:px-4 md:text-base",
+              pathname === "/admin/resume" && "bg-primary"
+            )}
+          >
+            RESUME
+          </Link>
+        </li>
       </ul>
     </div>
   );

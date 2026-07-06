@@ -58,6 +58,7 @@
     "react-dom": "19.2.3",
     "react-hook-form": "^7.62.0",
     "react-markdown": "^10.1.0",
+    "react-pdf": "^10.4.1",
     "reading-time": "^1.5.0",
     "rehype-highlight": "^7.0.2",
     "rehype-raw": "^7.0.0",
