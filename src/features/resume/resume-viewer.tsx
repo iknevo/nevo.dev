@@ -10,11 +10,14 @@ import { LoaderSmall } from "@/src/components/loader-small";
 
 export default function ResumeViewer() {
   const [numPages, setNumPages] = useState<number | null>(null);
+  const [loadError, setLoadError] = useState<Error | null>(null);
 
   useEffect(() => {
     pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
     document.title = "RESUME";
   }, []);
+
+  if (loadError) throw loadError;
 
   const handleLoadSuccess = ({ numPages: pages }: { numPages: number }) => {
     setNumPages(pages);
@@ -46,13 +49,8 @@ export default function ResumeViewer() {
         <Document
           file="/api/resume"
           onLoadSuccess={handleLoadSuccess}
+          onLoadError={(error) => setLoadError(error)}
           loading={<LoaderSmall className="py-30" />}
-          error={
-            <div className="flex min-h-screen flex-col items-center justify-center gap-2 bg-black">
-              <p className="text-base text-gray-400">Failed to load resume.</p>
-              <p className="text-sm text-gray-300">Try uploading it again from the admin panel.</p>
-            </div>
-          }
           noData={
             <div className="flex min-h-screen flex-col items-center justify-center gap-2 bg-black">
               <p className="text-base text-gray-400">No resume available.</p>
