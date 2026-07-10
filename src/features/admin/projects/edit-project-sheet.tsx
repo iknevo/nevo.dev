@@ -18,7 +18,7 @@ import { useOpenProject } from "./state/use-open-project";
 
 export const EditProjectSheet = () => {
   const { isOpen, onClose, id } = useOpenProject();
-  const { data: project, isLoading: isLoadingProject } = useGetProject(id);
+  const { data: project, isLoading: isLoadingProject } = useGetProject(id, true);
   const { mutate: updateProject, isPending: isUpdatingProject } = useUpdateProject(id);
   const { mutate: deleteProject, isPending: isDeletingProject } = useDeleteProject(id);
   const [ConfirmDialog, confirm] = useConfirm();

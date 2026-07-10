@@ -30,20 +30,27 @@ const app = new Hono()
         id: z.string().optional(),
       })
     ),
+    zValidator(
+      "query",
+      z.object({
+        withHidden: z.string().optional(),
+      })
+    ),
     async (c) => {
       const { id } = c.req.valid("param");
       if (!id) {
         return c.json({ error: "Missing project id" }, status.BAD_REQUEST);
       }
       await dbConnect();
+      const withHidden = c.req.query("withHidden") === "true";
       let data;
       if (mongoose.Types.ObjectId.isValid(id)) {
         data = await Project.findById(id);
       } else {
         data = await Project.findOne({ slug: id });
       }
-      if (!data) {
-        return c.json({ error: "Not Found", id }, status.NOT_FOUND);
+      if (!data || (!withHidden && data.hide)) {
+        return c.json({ error: "Project Not Found", id }, status.NOT_FOUND);
       }
       return c.json({ data });
     }

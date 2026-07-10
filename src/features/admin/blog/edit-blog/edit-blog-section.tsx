@@ -26,7 +26,7 @@ type FormValues = z.input<typeof blogSchema>;
 
 export default function EditBlogSection({ id }: Props) {
   const router = useRouter();
-  const { data: post, isLoading, isError } = useGetPost(id);
+  const { data: post, isLoading, isError } = useGetPost(id, true);
 
   const { mutate: updatePost, isPending: isUpdating } = useUpdatePost(id);
   const { mutate: deletePost, isPending: isDeleting } = useDeletePost(id);

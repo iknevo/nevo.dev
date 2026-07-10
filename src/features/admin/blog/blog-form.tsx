@@ -3,7 +3,6 @@ import { Eye, EyeClosed, Trash } from "lucide-react";
 import { useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import ScrollButton from "@/src/components/scroll-button";
 import { Button } from "@/src/components/ui/button";
 import { Field } from "@/src/components/ui/field";
 import {
@@ -172,10 +171,6 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
           </Button>
         </div>
       </form>
-
-      <div className="right-6 bottom-6 hidden xl:absolute xl:block">
-        <ScrollButton scrollToTop />
-      </div>
     </Form>
   );
 }

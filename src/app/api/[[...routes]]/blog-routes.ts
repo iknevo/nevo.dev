@@ -30,20 +30,27 @@ const app = new Hono()
         id: z.string().optional(),
       })
     ),
+    zValidator(
+      "query",
+      z.object({
+        withHidden: z.string().optional(),
+      })
+    ),
     async (c) => {
       const { id } = c.req.valid("param");
       if (!id) {
         return c.json({ error: "Missing post id" }, status.BAD_REQUEST);
       }
       await dbConnect();
+      const withHidden = c.req.query("withHidden") === "true";
       let data;
       if (mongoose.Types.ObjectId.isValid(id)) {
         data = await Blog.findById(id);
       } else {
         data = await Blog.findOne({ slug: id });
       }
-      if (!data) {
-        return c.json({ error: "Not Found", id }, 404);
+      if (!data || (!withHidden && data.hide)) {
+        return c.json({ error: "Post Not Found", id }, status.NOT_FOUND);
       }
       return c.json({ data });
     }
@@ -173,7 +180,7 @@ const app = new Hono()
       await dbConnect();
       const post = await Blog.findByIdAndUpdate(id, { $inc: { views: 1 } });
       if (!post) {
-        return c.json({ error: "Not Found" }, 404);
+        return c.json({ error: "Not Found" }, status.NOT_FOUND);
       }
       return c.json({ success: true });
     }

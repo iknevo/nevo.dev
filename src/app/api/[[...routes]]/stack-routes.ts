@@ -103,7 +103,7 @@ const app = new Hono()
       await dbConnect();
       const data = await Stack.findById(id);
       if (!data) {
-        return c.json({ error: "Not Found" }, 404);
+        return c.json({ error: "Not Found" }, status.NOT_FOUND);
       }
       return c.json({ data });
     }

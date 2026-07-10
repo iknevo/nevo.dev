@@ -16,12 +16,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const { data } = await serverFetch(`/api/blog/${id}`);
-
-  return {
-    title: `${data.title}`,
-    description: `${data.summary}`,
-  };
+  try {
+    const { data } = await serverFetch(`/api/blog/${id}`);
+    return {
+      title: `${data.title}`,
+      description: `${data.summary}`,
+    };
+  } catch {
+    return {
+      title: "Post Not Found",
+    };
+  }
 }
 
 export default async function Page({ params }: Props) {

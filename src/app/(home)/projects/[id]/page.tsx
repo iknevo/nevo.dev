@@ -16,12 +16,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const { data } = await serverFetch(`/api/projects/${id}`);
-
-  return {
-    title: `${data.name}`,
-    description: `${data.description}`
-  };
+  try {
+    const { data } = await serverFetch(`/api/projects/${id}`);
+    return {
+      title: `${data.name}`,
+      description: `${data.description}`
+    };
+  } catch {
+    return {
+      title: "Project Not Found"
+    };
+  }
 }
 
 export default async function Page({ params }: Props) {
