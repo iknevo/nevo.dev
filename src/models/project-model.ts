@@ -57,6 +57,10 @@ const projectSchema = new Schema(
   }
 );
 
+projectSchema.index({ slug: 1 });
+projectSchema.index({ sortIndex: 1 });
+projectSchema.index({ hide: 1 });
+
 projectSchema.pre("save", async function (next) {
   this.slug = slugify(this.name, {
     replacement: "-",

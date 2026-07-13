@@ -15,7 +15,7 @@ const app = new Hono()
     await dbConnect();
     const withHidden = c.req.query("withHidden") === "true";
     const query = withHidden ? {} : { hide: { $ne: true } };
-    const data = await Blog.find(query).sort({ createdAt: -1 });
+    const data = await Blog.find(query).select("-doc").sort({ createdAt: -1 });
     if (!data)
       return c.json({ message: "Error getting blog posts!, Try again later" }, status.NOT_FOUND);
     return c.json({
@@ -158,7 +158,7 @@ const app = new Hono()
       };
       let post = await Blog.findById(id);
       if (!post) {
-        return c.json({ message: "Blog Post not found!" }, status.BAD_REQUEST);
+        return c.json({ message: "Blog Post not found" }, status.BAD_REQUEST);
       }
       Object.assign(post, newPost);
       post = await post.save();

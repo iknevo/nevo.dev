@@ -46,6 +46,10 @@ const blogSchema = new Schema(
   }
 );
 
+blogSchema.index({ slug: 1 });
+blogSchema.index({ createdAt: -1 });
+blogSchema.index({ hide: 1 });
+
 blogSchema.pre("save", async function (next) {
   this.slug = slugify(this.title, {
     replacement: "-",

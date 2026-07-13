@@ -7,19 +7,19 @@ const userSchema = new Schema({
     type: String,
     required: true,
     unique: true,
-    trim: true
+    trim: true,
   },
   email: {
     type: String,
     required: true,
     unique: true,
-    trim: true
+    trim: true,
   },
   password: {
     type: String,
     required: [true, "Password is required"],
     minlength: [8, "password must be at least 8 characters"],
-    select: false
+    select: false,
   },
   passwordConfirm: {
     type: String,
@@ -28,13 +28,15 @@ const userSchema = new Schema({
       validator: function (this: UserType, value: string) {
         return this.password === value;
       },
-      message: "Passwords must match"
-    }
+      message: "Passwords must match",
+    },
   },
   passwordChangedAt: Date,
   passwordResetToken: String,
-  passwordResetExpires: Date
+  passwordResetExpires: Date,
 });
+
+userSchema.index({ passwordResetToken: 1 }, { sparse: true });
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
@@ -49,18 +51,13 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.methods.checkPassword = async (
-  inputPass: string,
-  userPass: string
-) => {
+userSchema.methods.checkPassword = async (inputPass: string, userPass: string) => {
   return await bcrypt.compare(inputPass, userPass);
 };
 
 userSchema.methods.createPasswordResetToken = function () {
   const resetToken = randomBytes(32).toString("hex");
-  this.passwordResetToken = createHash("sha256")
-    .update(resetToken)
-    .digest("hex");
+  this.passwordResetToken = createHash("sha256").update(resetToken).digest("hex");
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
   return resetToken;
 };
@@ -79,5 +76,4 @@ export interface UserDocument extends InferSchemaType<typeof userSchema> {
   createPasswordResetToken(): string;
   changedPasswordAfter(issuedAt: number): boolean;
 }
-export const User: Model<UserDocument> =
-  models.User || model<UserDocument>("User", userSchema);
+export const User: Model<UserDocument> = models.User || model<UserDocument>("User", userSchema);

@@ -182,7 +182,7 @@ const app = new Hono()
       };
       let project = await Project.findById(id);
       if (!project) {
-        return c.json({ message: "Project not found!" }, status.BAD_REQUEST);
+        return c.json({ message: "Project not found" }, status.BAD_REQUEST);
       }
       Object.assign(project, newProject);
       project = await project.save();
