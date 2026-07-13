@@ -8,10 +8,10 @@ import { env } from "@/src/config/env";
 import {
   LoginFormSchema,
   PasswordResetSchema,
-  PasswordUpdateSchema
+  PasswordUpdateSchema,
 } from "@/src/definitions/auth-validations";
 import dbConnect from "@/src/lib/db";
-import { sendEmail } from "@/src/lib/email";
+import { sendPasswordResetEmail } from "@/src/lib/email";
 import type { AccessPayload } from "@/src/lib/jwt";
 import { authMiddleware, sendTokens } from "@/src/lib/jwt";
 import { zValidator } from "@/src/lib/zod-wrapper";
@@ -29,10 +29,7 @@ const app = new Hono<Env>()
     await dbConnect();
     const user = await User.findById(userPayload.id);
     if (!user) {
-      return c.json(
-        { success: false, message: "User not found" },
-        status.UNAUTHORIZED
-      );
+      return c.json({ success: false, message: "User not found" }, status.UNAUTHORIZED);
     }
     return c.json({ user: { name: user.name, email: user.email } }, status.OK);
   })
@@ -41,10 +38,7 @@ const app = new Hono<Env>()
     await dbConnect();
     const user = await User.findOne({ email }).select("+password");
     if (!user || !(await user.checkPassword(password, user.password))) {
-      return c.json(
-        { message: "Invalid Email or Password!" },
-        status.FORBIDDEN
-      );
+      return c.json({ message: "Invalid Email or Password" }, status.FORBIDDEN);
     }
     await sendTokens(c, user._id.toString());
     return c.json({ message: "Welcome NEVO." }, status.OK);
@@ -54,13 +48,13 @@ const app = new Hono<Env>()
       path: "/",
       httpOnly: true,
       secure: env.production,
-      sameSite: "Strict"
+      sameSite: "Strict",
     });
     deleteCookie(c, "refreshToken", {
       path: "/",
       httpOnly: true,
       secure: env.production,
-      sameSite: "Strict"
+      sameSite: "Strict",
     });
     return c.json({ message: "Successfully logged out" }, status.OK);
   })
@@ -69,7 +63,7 @@ const app = new Hono<Env>()
     zValidator(
       "json",
       z.object({
-        email: z.email()
+        email: z.email(),
       })
     ),
     async (c) => {
@@ -78,7 +72,7 @@ const app = new Hono<Env>()
       const user = await User.findOne({ email });
       if (!user) {
         return c.json(
-          { success: false, message: "User not found" },
+          { success: false, message: "There was an error sending email, Please try again later." },
           status.UNAUTHORIZED
         );
       }
@@ -87,18 +81,12 @@ const app = new Hono<Env>()
       const host = c.req.header("host");
       const protocol = c.req.url.startsWith("https") ? "https" : "http";
       const resetUrl = `${protocol}://${host}/auth/reset-password/${resetPasswordToken}`;
-      const message = `Forgot your password? submit a request with you new password to ${resetUrl}.\nIf you didn't forget your password please ignore this email`;
       try {
-        await sendEmail({
-          email: user.email,
-          subject: "Your password reset token (valid for 10 minutes)",
-          message
-        });
+        await sendPasswordResetEmail(user.email, resetUrl);
         return c.json(
           {
             success: true,
-            message: `email sent, please check your email.`,
-            token: resetPasswordToken
+            message: "email sent, please check your email.",
           },
           status.OK
         );
@@ -110,7 +98,7 @@ const app = new Hono<Env>()
         return c.json(
           {
             success: false,
-            message: "There was an error sending email, Please try again later."
+            message: "There was an error sending email, Please try again later.",
           },
           status.INTERNAL_SERVER_ERROR
         );
@@ -122,7 +110,7 @@ const app = new Hono<Env>()
     zValidator(
       "param",
       z.object({
-        token: z.string()
+        token: z.string(),
       })
     ),
     zValidator("json", PasswordResetSchema),
@@ -133,11 +121,14 @@ const app = new Hono<Env>()
       await dbConnect();
       const user = await User.findOne({
         passwordResetToken: hashedToken,
-        passwordResetExpires: { $gt: Date.now() }
+        passwordResetExpires: { $gt: Date.now() },
       }).select("+password");
       if (!user) {
         return c.json(
-          { success: false, message: "User not found" },
+          {
+            success: false,
+            message: "There was an error reseting password, Please try again later.",
+          },
           status.UNAUTHORIZED
         );
       }
@@ -150,7 +141,7 @@ const app = new Hono<Env>()
       return c.json(
         {
           success: true,
-          message: "Password Reset Successfully"
+          message: "Password Reset Successfully",
         },
         status.OK
       );
@@ -162,16 +153,12 @@ const app = new Hono<Env>()
     authMiddleware,
     async (c) => {
       const userPayload = c.get("user");
-      const { password, passwordConfirm, passwordCurrent } =
-        c.req.valid("json");
+      const { password, passwordConfirm, passwordCurrent } = c.req.valid("json");
       await dbConnect();
       const user = await User.findById(userPayload.id).select("+password");
-      if (
-        !user ||
-        !(await user.checkPassword(passwordCurrent, user.password))
-      ) {
+      if (!user || !(await user.checkPassword(passwordCurrent, user.password))) {
         return c.json(
-          { success: false, message: "Your current password is wrong!" },
+          { success: false, message: "Your current password is wrong" },
           status.UNAUTHORIZED
         );
       }
@@ -182,7 +169,7 @@ const app = new Hono<Env>()
       return c.json(
         {
           success: true,
-          message: "Password Updated Successfully"
+          message: "Password Updated Successfully",
         },
         status.OK
       );
