@@ -13,13 +13,7 @@ type Props = {
   variant?: Variant;
 } & (ComponentProps<typeof Link> | ButtonProps);
 
-export default function Button({
-  variant,
-  className,
-  children,
-  as = "link",
-  ...rest
-}: Props) {
+export default function Button({ variant, className, children, as = "link", ...rest }: Props) {
   const variantClasses = {
     primary: `bg-primary text-black font-semibold  hover:bg-primary`,
     secondary: `bg-secondary text-secondary-foreground hover:bg-secondary-hover`,
@@ -30,11 +24,11 @@ export default function Button({
     light: `bg-background-active text-foreground hover:bg-background-active`,
     dark: `bg-foreground text-background hover:bg-foreground/80`,
     link: `text-foreground hover:text-primary`,
-    "no-color": ""
+    "no-color": "",
   }[variant || "primary"];
 
   const buttonClasses = cn(
-    `group h-12 px-8 inline-flex justify-center items-center gap-2 text-lg uppercase tracking-widest outline-none transition-colors relative overflow-hidden`,
+    "group py-4 px-8 inline-flex justify-center items-center gap-2 text-lg uppercase tracking-widest outline-none transition-colors relative overflow-hidden",
     variantClasses,
     className
   );

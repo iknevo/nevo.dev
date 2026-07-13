@@ -52,7 +52,7 @@ export default function UpdatePasswordForm() {
       </div>
 
       <div className="grid gap-8 md:grid-cols-12">
-        <div className="dark space-y-5 rounded-lg border p-8 md:col-span-8">
+        <div className="dark space-y-5 rounded-lg border p-6 md:col-span-8">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)} className="gap-6 flex flex-col">
               <FormField
@@ -118,7 +118,7 @@ export default function UpdatePasswordForm() {
               <Button
                 as="button"
                 disabled={isPending}
-                className="cursor mt-9 self-end rounded-md font-semibold text-white transition-colors duration-500 hover:text-black"
+                className="cursor self-end rounded-md px-3 py-1 md:px-6 md:py-2 font-semibold text-white transition-colors duration-500 hover:text-black"
               >
                 Update
               </Button>
