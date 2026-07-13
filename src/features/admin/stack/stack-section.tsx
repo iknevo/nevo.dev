@@ -45,9 +45,9 @@ export default function StackSection() {
         <div className="space-y-20">
           {stack.map(({ type, items }) => (
             <div className="flex flex-col gap-10" key={type}>
-              <h1 className="text-center text-5xl leading-none text-white/80 uppercase">{type}</h1>
+              <h1 className="text-center text-3xl leading-none text-white/80 uppercase md:text-5xl">{type}</h1>
 
-              <div className="grid grid-cols-2 items-center gap-10 md:grid-cols-3 lg:grid-cols-5">
+              <div className="grid grid-cols-3 items-center gap-5 md:grid-cols-3 md:gap-10 lg:grid-cols-5">
                 {items.map((item) => (
                   <div
                     className={cn(
@@ -57,7 +57,7 @@ export default function StackSection() {
                     key={item._id}
                     onClick={() => onOpenEdit(item._id)}
                   >
-                    <div className="mx-auto w-25 h-25 flex items-center justify-center">
+                    <div className="mx-auto flex size-16 items-center justify-center md:size-25">
                       <Image
                         src={item.icon}
                         alt={item.name}
@@ -68,7 +68,7 @@ export default function StackSection() {
                       />
                     </div>
 
-                    <div className="mt-5 text-center text-lg">
+                    <div className="mt-3 text-center text-sm md:mt-5 md:text-lg">
                       <p className="from-primary bg-linear-to-r from-50% to-white to-50% bg-size-[200%] bg-clip-text bg-right text-transparent transition-all duration-700 group-hover:bg-left">
                         {item.name}
                       </p>

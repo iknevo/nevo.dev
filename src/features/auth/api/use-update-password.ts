@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
 import { toast } from "sonner";
 
@@ -12,6 +12,7 @@ type RequestType = InferRequestType<
 >["json"];
 
 export function useUpdatePassword() {
+  const queryClient = useQueryClient();
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (json) => {
       const res = await api.auth["update-password"].$patch({
@@ -22,6 +23,9 @@ export function useUpdatePassword() {
         throw new Error(data.message);
       }
       return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["me"] });
     },
     onError: (err) => {
       console.error(err);

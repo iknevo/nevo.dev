@@ -52,9 +52,7 @@ export default function ExperienceSection() {
             >
               <div>
                 <p className="cursor text-white/80 md:text-xl">{item.company}</p>
-                <p className="cursor mt-3.5 mb-2.5 text-2xl leading-none md:text-4xl">
-                  {item.title}
-                </p>
+                <p className="cursor mt-3.5 mb-2.5 text-lg md:text-4xl">{item.title}</p>
                 <p className="cursor text-sm text-white/80 md:text-lg">
                   {item.startDate} - {item.endDate}
                 </p>

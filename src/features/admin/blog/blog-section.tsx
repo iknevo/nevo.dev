@@ -57,9 +57,7 @@ export default function BlogSection() {
           >
             <TransitionLink href={`/blog/post/${post.slug}`}>
               <div>
-                <p className="cursor mt-3.5 mb-2.5 text-2xl leading-none md:text-4xl">
-                  {post.title}
-                </p>
+                <p className="cursor mt-3.5 mb-2.5 text-lg md:text-4xl">{post.title}</p>
                 <p className="cursor text-sm text-white/80 md:text-lg">
                   {format(post.createdAt, "dd MMMM, yyyy")}{" "}
                   {post?.readingTime && "/ " + post.readingTime}

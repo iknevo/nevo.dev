@@ -14,7 +14,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/src/components/ui/form";
 import { InputPassword } from "@/src/components/ui/input-password";
 import { PasswordResetSchema } from "@/src/definitions/auth-validations";
@@ -33,15 +33,15 @@ export default function ResetPasswordForm({ token }: Props) {
     resolver: zodResolver(PasswordResetSchema),
     defaultValues: {
       password: "",
-      passwordConfirm: ""
-    }
+      passwordConfirm: "",
+    },
   });
   const handleSubmit = (values: FormValues) => {
     resetMutation.mutate(values, {
       onSuccess: ({ message }) => {
         toast.success(message);
         router.push("/admin");
-      }
+      },
     });
   };
 
@@ -91,7 +91,11 @@ export default function ResetPasswordForm({ token }: Props) {
             </FormItem>
           )}
         />
-        <Button as="button" disabled={isPending} className="cursor rounded-md">
+        <Button
+          as="button"
+          disabled={isPending}
+          className="cursor rounded-md font-semibold text-primary-foreground transition-colors duration-500 hover:text-black"
+        >
           {isPending ? <Loader2 className="animate-spin" /> : "Update Password"}
         </Button>
       </form>

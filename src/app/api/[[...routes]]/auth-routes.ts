@@ -31,7 +31,7 @@ const app = new Hono<Env>()
     if (!user) {
       return c.json({ success: false, message: "User not found" }, status.UNAUTHORIZED);
     }
-    return c.json({ user: { name: user.name, email: user.email } }, status.OK);
+    return c.json({ user: { name: user.name, email: user.email, passwordChangedAt: user.passwordChangedAt } }, status.OK);
   })
   .post("/login", zValidator("json", LoginFormSchema), async (c) => {
     const { email, password } = c.req.valid("json");
