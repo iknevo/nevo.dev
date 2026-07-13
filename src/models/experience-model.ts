@@ -39,6 +39,9 @@ const experienceSchema = new Schema(
   }
 );
 
+experienceSchema.index({ sortIndex: 1 });
+experienceSchema.index({ hide: 1 });
+
 export type expType = InferSchemaType<typeof experienceSchema>;
 export const Experience: Model<expType> =
   models.Experience || model<expType>("Experience", experienceSchema);

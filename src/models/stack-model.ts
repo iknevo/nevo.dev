@@ -35,6 +35,9 @@ const stackSchema = new Schema(
   }
 );
 
+stackSchema.index({ type: 1, sortIndex: 1 });
+stackSchema.index({ hide: 1 });
+
 export type stackType = InferSchemaType<typeof stackSchema>;
 export type stackItem = stackType & {
   _id: Types.ObjectId;

@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { rateLimiter } from "hono-rate-limiter";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { handle } from "hono/vercel";
@@ -25,13 +26,27 @@ app.use(
   "*",
   cors({
     origin: (origin) => {
-      if (!origin) return "";
+      if (!origin) return undefined;
       return allowedOrigins.includes(origin) ? origin : undefined;
     },
     credentials: true,
     allowMethods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
     allowHeaders: ["Content-Type", "Authorization", "Cookie"],
     exposeHeaders: ["Set-Cookie"],
+  })
+);
+
+app.use(
+  "*",
+  rateLimiter({
+    windowMs: 60 * 1000,
+    limit: 60,
+    keyGenerator: (c) =>
+      c.req.header("x-forwarded-for")?.split(",")[0]?.trim() ??
+      c.req.header("x-real-ip") ??
+      "unknown",
+    standardHeaders: "draft-7",
+    message: { message: "Too many requests, please try again later." },
   })
 );
 
