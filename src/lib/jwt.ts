@@ -5,6 +5,7 @@ import { sign, verify } from "hono/jwt";
 import { JWTPayload } from "hono/utils/jwt/types";
 
 import { env } from "@/src/config/env";
+import status from "http-status";
 
 export interface AccessPayload extends JWTPayload {
   id: string;
@@ -80,16 +81,36 @@ export async function verifyRefreshToken(
   }
 }
 
-export const authMiddleware = createMiddleware(async (c, next) => {
-  const refreshToken = getCookie(c, "refreshToken");
+export const withHiddenAuth = createMiddleware(async (c, next) => {
+  const withHidden = c.req.query("withHidden") === "true";
+  if (!withHidden) {
+    return next();
+  }
 
+  const refreshToken = getCookie(c, "refreshToken");
   if (!refreshToken) {
-    return c.json({ success: false, message: "Unauthorized" }, 401);
+    return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
   }
 
   const payload = await verifyRefreshToken(refreshToken);
   if (!payload) {
-    return c.json({ success: false, message: "Unauthorized" }, 401);
+    return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
+  }
+
+  c.set("user", { id: payload.id });
+  await next();
+});
+
+export const authMiddleware = createMiddleware(async (c, next) => {
+  const refreshToken = getCookie(c, "refreshToken");
+
+  if (!refreshToken) {
+    return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
+  }
+
+  const payload = await verifyRefreshToken(refreshToken);
+  if (!payload) {
+    return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
   }
 
   const accessToken = await generateAccessToken(payload.id);

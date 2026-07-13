@@ -7,11 +7,11 @@ import { STACK, STACK_SORT } from "@/src/config/constants";
 import { stackSchema } from "@/src/definitions/stack-validations";
 import { uploadToCloudinary } from "@/src/lib/cloudinary";
 import dbConnect from "@/src/lib/db";
-import { authMiddleware } from "@/src/lib/jwt";
+import { authMiddleware, withHiddenAuth } from "@/src/lib/jwt";
 import { Stack, stackItem, stackType } from "@/src/models/stack-model";
 
 const app = new Hono()
-  .get("/", async (c) => {
+  .get("/", withHiddenAuth, async (c) => {
     await dbConnect();
     const withHidden = c.req.query("withHidden") === "true";
     const data = await Stack.aggregate([

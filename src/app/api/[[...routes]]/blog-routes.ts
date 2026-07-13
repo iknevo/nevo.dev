@@ -7,11 +7,11 @@ import { z } from "zod";
 import { blogSchema } from "@/src/definitions/blog-validation";
 import { uploadToCloudinary } from "@/src/lib/cloudinary";
 import dbConnect from "@/src/lib/db";
-import { authMiddleware } from "@/src/lib/jwt";
+import { authMiddleware, withHiddenAuth } from "@/src/lib/jwt";
 import { Blog, blogType } from "@/src/models/blog-model";
 
 const app = new Hono()
-  .get("/", async (c) => {
+  .get("/", withHiddenAuth, async (c) => {
     await dbConnect();
     const withHidden = c.req.query("withHidden") === "true";
     const query = withHidden ? {} : { hide: { $ne: true } };
@@ -36,6 +36,7 @@ const app = new Hono()
         withHidden: z.string().optional(),
       })
     ),
+    withHiddenAuth,
     async (c) => {
       const { id } = c.req.valid("param");
       if (!id) {

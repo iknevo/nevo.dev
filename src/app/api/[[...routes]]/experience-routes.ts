@@ -5,11 +5,11 @@ import { z } from "zod";
 
 import { experienceSchema } from "@/src/definitions/experience-validations";
 import dbConnect from "@/src/lib/db";
-import { authMiddleware } from "@/src/lib/jwt";
+import { authMiddleware, withHiddenAuth } from "@/src/lib/jwt";
 import { Experience } from "@/src/models/experience-model";
 
 const app = new Hono()
-  .get("/", async (c) => {
+  .get("/", withHiddenAuth, async (c) => {
     await dbConnect();
     const withHidden = c.req.query("withHidden") === "true";
     const query = withHidden ? {} : { hide: { $ne: true } };
