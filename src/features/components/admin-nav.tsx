@@ -56,7 +56,7 @@ export default function AdminNav() {
       <div className="md:hidden dark">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="w-full justify-between text-xs font-semibold">
+            <Button variant="outline" className="w-full justify-between text-sm font-semibold">
               {activeItem?.label ?? "NAVIGATION"}
               <ChevronDown />
             </Button>
@@ -67,7 +67,7 @@ export default function AdminNav() {
                 <DropdownMenuItem key={item.href} asChild>
                   <Link
                     href={item.href}
-                    className={cn("text-xs font-semibold", item.match(pathname) && "bg-primary")}
+                    className={cn("text-sm font-semibold", item.match(pathname) && "bg-primary")}
                   >
                     {item.label}
                   </Link>
