@@ -26,8 +26,8 @@ app.use(
   "*",
   cors({
     origin: (origin) => {
-      if (!origin) return undefined;
-      return allowedOrigins.includes(origin) ? origin : undefined;
+      if (!origin) return null;
+      return allowedOrigins.includes(origin) ? origin : null;
     },
     credentials: true,
     allowMethods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],

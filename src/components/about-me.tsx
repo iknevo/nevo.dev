@@ -76,9 +76,9 @@ export default function AboutMe() {
 
         <div className="mt-9 grid items-start gap-8 md:grid-cols-12">
           <div className="cursor space-y-4 md:col-span-5">
-            <h1 className="slide-up-and-fade text-4xl leading-tight font-semibold sm:text-5xl">
+            <h2 className="slide-up-and-fade text-4xl leading-tight font-semibold sm:text-5xl">
               I&apos;m Ahmed.
-            </h1>
+            </h2>
             <p className="slide-up-and-fade max-w-md text-lg text-white/75">
               Also known as NEVO, a front-end developer focused on building
               modern, responsive web applications with clean UI and great

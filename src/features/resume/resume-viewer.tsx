@@ -59,7 +59,7 @@ export default function ResumeViewer() {
           }
           className="flex flex-col items-center gap-8"
         >
-          {Array.from({ length: numPages ?? 3 }, (_, i) => (
+          {numPages && Array.from({ length: numPages }, (_, i) => (
             <Page
               key={i + 1}
               pageNumber={i + 1}

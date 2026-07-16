@@ -4,4 +4,11 @@ module.exports = {
   generateRobotsTxt: true,
   sitemapSize: 7000,
   exclude: ["/admin/*", "/auth/*"],
+  robotsTxtPolicies: [
+    {
+      userAgent: "*",
+      allow: "/",
+      disallow: ["/admin", "/admin/*", "/auth", "/auth/*"],
+    },
+  ],
 };

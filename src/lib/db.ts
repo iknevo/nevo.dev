@@ -2,10 +2,8 @@ import mongoose from "mongoose";
 
 import { env } from "@/src/config/env";
 
-let isConnected = false;
-
 const dbConnect = async (): Promise<typeof mongoose> => {
-  if (isConnected) {
+  if (mongoose.connection.readyState === 1) {
     return mongoose;
   }
 
@@ -13,7 +11,6 @@ const dbConnect = async (): Promise<typeof mongoose> => {
     await mongoose.connect(env.database, {
       dbName: env.databaseName
     });
-    isConnected = true;
 
     console.log(`✅ DATABASE connected`);
 

@@ -20,7 +20,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { data } = await serverFetch(`/api/projects/${id}`);
     return {
       title: `${data.name}`,
-      description: `${data.description}`
+      description: `${data.description}`,
+      alternates: {
+        canonical: `/projects/${id}`,
+      },
     };
   } catch {
     return {

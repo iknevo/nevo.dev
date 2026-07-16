@@ -4,7 +4,7 @@ import { useLenis } from "lenis/react";
 import { MoveUpRight } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { GENERAL_INFO, SOCIAL_LINKS } from "@/src/lib/data";
 import { cn } from "@/src/lib/utils";
@@ -45,6 +45,47 @@ export default function Navbar() {
   const lenis = useLenis();
   const pathname = usePathname();
   const router = useRouter();
+  const menuPanelRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  const closeMenu = useCallback(() => {
+    setIsMenuOpen(false);
+    menuButtonRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isMenuOpen) return;
+      if (e.key === "Escape") {
+        closeMenu();
+        return;
+      }
+      if (e.key === "Tab" && menuPanelRef.current) {
+        const focusable = menuPanelRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isMenuOpen, closeMenu]);
+
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMenuOpen]);
 
   const handleClick = (target: string) => {
     const isHome = pathname === "/" || pathname === "";
@@ -59,6 +100,7 @@ export default function Navbar() {
             lenis.scrollTo(target, { offset: -30 });
           }, 1000);
       }
+      closeMenu();
       return;
     }
 
@@ -69,13 +111,17 @@ export default function Navbar() {
     } else {
       lenis.scrollTo(target, { offset: -50 });
     }
+    closeMenu();
   };
 
   return (
     <>
-      <nav className="sticky top-0 z-4">
+      <nav className="sticky top-0 z-4" aria-label="Main navigation">
         <button
+          ref={menuButtonRef}
           aria-label="Toggle menu"
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-menu"
           className={cn("group absolute top-5 right-5 z-2 size-12 cursor-pointer md:right-10")}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
@@ -104,10 +150,15 @@ export default function Navbar() {
         className={cn("overlay fixed inset-0 z-2 bg-black/70 transition-all duration-150", {
           "pointer-events-none invisible opacity-0": !isMenuOpen,
         })}
-        onClick={() => setIsMenuOpen(false)}
+        onClick={closeMenu}
       ></div>
 
       <div
+        ref={menuPanelRef}
+        id="mobile-menu"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile navigation menu"
         className={cn(
           "fixed top-0 right-0 z-3 h-svh w-[500px] max-w-[calc(100vw-3rem)] translate-x-full transform gap-y-14 overflow-hidden transition-transform duration-700",
           "flex flex-col py-10 lg:justify-center",
@@ -162,10 +213,7 @@ export default function Navbar() {
                 {MENU_LINKS.map((link, idx) => (
                   <li key={link.name}>
                     <button
-                      onClick={() => {
-                        handleClick(link.url);
-                        setIsMenuOpen(false);
-                      }}
+                      onClick={() => handleClick(link.url)}
                       className="group flex items-center gap-3 text-xl"
                     >
                       <span

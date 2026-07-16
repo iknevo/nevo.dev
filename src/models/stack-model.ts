@@ -16,7 +16,7 @@ const stackSchema = new Schema(
       type: String,
       enum: ["frontend", "backend", "mobile", "testing", "tools", "studying"],
       required: true,
-      default: "front",
+      default: "frontend",
     },
     sortIndex: { type: Number, required: true, default: 999 },
     hide: {

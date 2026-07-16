@@ -27,10 +27,6 @@ const experienceSchema = new Schema(
       default: false,
     },
     sortIndex: { type: Number, required: true },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
   },
   {
     toJSON: { virtuals: true },

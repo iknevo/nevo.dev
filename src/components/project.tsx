@@ -119,7 +119,7 @@ export default function Project({ index, project, onEnter, onLeave }: Props) {
     >
       <Image
         src={project.thumbnail}
-        alt="Project"
+        alt={project.name}
         width="300"
         height="200"
         className="mb-6 w-full object-contain object-top border border-primary/20 md:hidden"

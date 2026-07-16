@@ -36,6 +36,19 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: {
       canonical: "/",
     },
+    openGraph: {
+      title: "NEVO | Front-End Developer",
+      description:
+        "Front-End developer building modern, responsive web applications and portfolios for the web.",
+      url: "/",
+      siteName: "NEVO",
+      images: [{ url: "/og.png", width: 1200, height: 630 }],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: ["/og.png"],
+    },
   };
 }
 

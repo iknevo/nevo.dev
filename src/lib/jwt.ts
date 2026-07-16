@@ -3,9 +3,11 @@ import { getCookie, setCookie } from "hono/cookie";
 import { createMiddleware } from "hono/factory";
 import { sign, verify } from "hono/jwt";
 import { JWTPayload } from "hono/utils/jwt/types";
+import status from "http-status";
 
 import { env } from "@/src/config/env";
-import status from "http-status";
+import dbConnect from "@/src/lib/db";
+import { User } from "@/src/models/user-model";
 
 export interface AccessPayload extends JWTPayload {
   id: string;
@@ -18,7 +20,7 @@ function sendAccessCookie(c: Context, token: string) {
     path: "/",
     httpOnly: true,
     secure: env.production,
-    sameSite: "Strict"
+    sameSite: "Strict",
   });
 }
 
@@ -28,14 +30,14 @@ function sendRefreshCookie(c: Context, token: string) {
     httpOnly: true,
     secure: env.production,
     sameSite: "Strict",
-    maxAge: env.refreshCookiesMaxAge
+    maxAge: env.refreshCookiesMaxAge,
   });
 }
 
 async function generateAccessToken(id: string): Promise<string> {
   const payload: AccessPayload = {
     id,
-    exp: Math.floor(Date.now() / 1000) + 60 * env.jwt.accessExpiresIn
+    exp: Math.floor(Date.now() / 1000) + 60 * env.jwt.accessExpiresIn,
   };
   return await sign(payload, env.jwt.secret, "HS256");
 }
@@ -43,7 +45,7 @@ async function generateAccessToken(id: string): Promise<string> {
 export async function generateRefreshToken(id: string): Promise<string> {
   const payload: AccessPayload = {
     id,
-    exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * env.jwt.refreshExpiresIn
+    exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * env.jwt.refreshExpiresIn,
   };
   return await sign(payload, env.jwt.refreshSecret, "HS256");
 }
@@ -55,9 +57,7 @@ export async function sendTokens(c: Context, id: string): Promise<void> {
   sendRefreshCookie(c, refreshToken);
 }
 
-export async function verifyAccessToken(
-  token: string
-): Promise<AccessPayload | null> {
+export async function verifyAccessToken(token: string): Promise<AccessPayload | null> {
   try {
     return (await verify(token, env.jwt.secret, "HS256")) as AccessPayload;
   } catch (err) {
@@ -66,15 +66,9 @@ export async function verifyAccessToken(
   }
 }
 
-export async function verifyRefreshToken(
-  token: string
-): Promise<AccessPayload | null> {
+export async function verifyRefreshToken(token: string): Promise<AccessPayload | null> {
   try {
-    return (await verify(
-      token,
-      env.jwt.refreshSecret,
-      "HS256"
-    )) as AccessPayload;
+    return (await verify(token, env.jwt.refreshSecret, "HS256")) as AccessPayload;
   } catch (err) {
     console.error("Refresh token verification failed:", err instanceof Error ? err.message : err);
     return null;
@@ -87,13 +81,33 @@ export const withHiddenAuth = createMiddleware(async (c, next) => {
     return next();
   }
 
+  const accessToken = getCookie(c, "accessToken");
   const refreshToken = getCookie(c, "refreshToken");
+
+  if (accessToken) {
+    const payload = await verifyAccessToken(accessToken);
+    if (payload) {
+      await dbConnect();
+      const user = await User.findById(payload.id);
+      if (user && !user.changedPasswordAfter(payload.iat!)) {
+        c.set("user", { id: payload.id });
+        return next();
+      }
+    }
+  }
+
   if (!refreshToken) {
     return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
   }
 
   const payload = await verifyRefreshToken(refreshToken);
   if (!payload) {
+    return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
+  }
+
+  await dbConnect();
+  const user = await User.findById(payload.id);
+  if (!user || user.changedPasswordAfter(payload.iat!)) {
     return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
   }
 
@@ -102,8 +116,26 @@ export const withHiddenAuth = createMiddleware(async (c, next) => {
 });
 
 export const authMiddleware = createMiddleware(async (c, next) => {
+  const accessToken = getCookie(c, "accessToken");
   const refreshToken = getCookie(c, "refreshToken");
 
+  // Try access token first
+  if (accessToken) {
+    const payload = await verifyAccessToken(accessToken);
+    if (payload) {
+      await dbConnect();
+      const user = await User.findById(payload.id);
+      if (user && !user.changedPasswordAfter(payload.iat!)) {
+        c.set("user", {
+          id: payload.id,
+          exp: payload.exp,
+        });
+        return next();
+      }
+    }
+  }
+
+  // Fall back to refresh token
   if (!refreshToken) {
     return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
   }
@@ -113,14 +145,23 @@ export const authMiddleware = createMiddleware(async (c, next) => {
     return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
   }
 
-  const accessToken = await generateAccessToken(payload.id);
-  sendAccessCookie(c, accessToken);
+  await dbConnect();
+  const user = await User.findById(payload.id);
+  if (!user) {
+    return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
+  }
+
+  if (user.changedPasswordAfter(payload.iat!)) {
+    return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
+  }
+
+  const newAccessToken = await generateAccessToken(payload.id);
+  sendAccessCookie(c, newAccessToken);
 
   c.set("user", {
     id: payload.id,
-    exp: Math.floor(Date.now() / 1000) + 60 * env.jwt.accessExpiresIn
+    exp: Math.floor(Date.now() / 1000) + 60 * env.jwt.accessExpiresIn,
   });
-  c.header("Authorization", `Bearer ${accessToken}`);
 
   await next();
 });

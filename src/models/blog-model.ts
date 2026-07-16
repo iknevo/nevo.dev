@@ -34,10 +34,6 @@ const blogSchema = new Schema(
       type: Number,
       default: 0,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
   },
   {
     toJSON: { virtuals: true },

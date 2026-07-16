@@ -16,7 +16,7 @@ export default async function Footer() {
           <a
             href="https://github.com/iknevo"
             target="_blank"
-            rel="noreferrer noopenner"
+            rel="noreferrer noopener"
             className="leading-none text-white/80 hover:text-white hover:underline"
           >
             built by NEVO {"<3"}

@@ -6,7 +6,7 @@ export const stackSchema = z.object({
     z.string(),
     z.instanceof(File).refine((file) => file.size > 0, { error: "Please add an Icon" }),
   ]),
-  type: z.string(),
+  type: z.enum(["frontend", "backend", "mobile", "testing", "tools", "studying"]),
   hide: z.boolean(),
   sortIndex: z.number().min(1, "Sort Index can't be less than 1"),
 });

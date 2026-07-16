@@ -1,9 +1,0 @@
-# *
-User-agent: *
-Allow: /
-
-# Host
-Host: https://nevo.is-a.dev
-
-# Sitemaps
-Sitemap: https://nevo.is-a.dev/sitemap.xml

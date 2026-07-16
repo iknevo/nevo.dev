@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeClosed, Trash } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { Button } from "@/src/components/ui/button";
@@ -34,7 +34,11 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
     resolver: zodResolver(blogSchema),
     defaultValues: defaultValues,
   });
-  form.setValue("doc", doc, { shouldDirty: true });
+
+  useEffect(() => {
+    form.setValue("doc", doc, { shouldDirty: true });
+  }, [doc, form]);
+
   const [showPreview, setShowPreview] = useState<boolean>(false);
   const handleChangeDoc = useCallback((newDoc: string) => setDoc(newDoc), []);
 
