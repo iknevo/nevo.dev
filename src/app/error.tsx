@@ -73,7 +73,7 @@ export default function Error({
             as="link"
             href="/"
             variant="primary"
-            className="rounded-md font-semibold text-white transition-colors duration-500 hover:text-black"
+            className="rounded-md max-sm:text-xs max-sm:px-2 max-sm:py-4 font-semibold text-white transition-colors duration-500 hover:text-black"
           >
             Back Home
           </Button>
@@ -81,7 +81,7 @@ export default function Error({
             as="button"
             onClick={reset}
             variant="secondary"
-            className="rounded-md font-semibold"
+            className="rounded-md max-sm:text-xs max-sm:px-2 max-sm:py-4 font-semibold"
           >
             Try Again
           </Button>

@@ -5,12 +5,7 @@ interface Props {
   className?: string;
 }
 
-export default function ShinyText({
-  text,
-  disabled = false,
-  speed = 5,
-  className = ""
-}: Props) {
+export default function ShinyText({ text, disabled = false, speed = 5, className = "" }: Props) {
   const animationDuration = `${speed}s`;
 
   return (
@@ -24,7 +19,7 @@ export default function ShinyText({
         backgroundSize: "200% 100%",
         WebkitBackgroundClip: "text",
         animationDuration: animationDuration,
-        willChange: "background-position"
+        willChange: "background-position",
       }}
     >
       {text}
