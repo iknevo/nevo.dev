@@ -73,11 +73,11 @@ export default function Banner() {
       >
         <div className="max-w-[544px] flex-col items-start justify-center self-center pt-12 sm:pt-20 max-lg:flex md:pt-0">
           <h1
-            className="banner-title slide-up-and-fade leading-[.95]"
-            style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)" }}
+            className="banner-title slide-up-and-fade leading-[1]"
+            style={{ fontSize: "clamp(2.8rem, 8vw, 5rem)" }}
           >
             <span className="text-primary cursor">FRONTEND</span>
-            <br /> <span className="cursor lg:ml-4">DEVELOPER</span>
+            <br /> <span className="cursor lg:ml-3">DEVELOPER</span>
           </h1>
           <ShinyText
             className="slide-up-and-fade cursor text-lg md:text-xl"
