@@ -4,19 +4,15 @@ import { toast } from "sonner";
 
 import { api } from "@/src/lib/hono";
 
-type ResponseType = InferResponseType<
-  (typeof api.auth)["update-password"]["$patch"]
->;
-type RequestType = InferRequestType<
-  (typeof api.auth)["update-password"]["$patch"]
->["json"];
+type ResponseType = InferResponseType<(typeof api.auth)["update-password"]["$patch"]>;
+type RequestType = InferRequestType<(typeof api.auth)["update-password"]["$patch"]>["json"];
 
 export function useUpdatePassword() {
   const queryClient = useQueryClient();
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (json) => {
       const res = await api.auth["update-password"].$patch({
-        json
+        json,
       });
       const data: ResponseType = await res.json();
       if ("success" in data && data.success === false) {
@@ -30,7 +26,7 @@ export function useUpdatePassword() {
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    }
+    },
   });
   return mutation;
 }

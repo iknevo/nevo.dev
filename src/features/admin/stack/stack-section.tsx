@@ -45,7 +45,9 @@ export default function StackSection() {
         <div className="space-y-20">
           {stack.map(({ type, items }) => (
             <div className="flex flex-col gap-10" key={type}>
-              <h1 className="text-center text-3xl leading-none text-white/80 uppercase md:text-5xl">{type}</h1>
+              <h1 className="text-center text-3xl leading-none text-white/80 uppercase md:text-5xl">
+                {type}
+              </h1>
 
               <div className="grid grid-cols-3 items-center gap-5 md:grid-cols-3 md:gap-10 lg:grid-cols-5">
                 {items.map((item) => (

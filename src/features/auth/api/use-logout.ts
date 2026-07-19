@@ -16,7 +16,7 @@ export function useLogout() {
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    }
+    },
   });
   return mutation;
 }

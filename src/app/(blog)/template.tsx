@@ -11,14 +11,14 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
     tl.to(".page-transition--inner", {
       yPercent: 0,
-      duration: 0.2
+      duration: 0.2,
     })
       .to(".page-transition--inner", {
         yPercent: -100,
-        duration: 0.2
+        duration: 0.2,
       })
       .to(".page-transition", {
-        yPercent: -100
+        yPercent: -100,
       });
   });
 

@@ -9,7 +9,7 @@ const dbConnect = async (): Promise<typeof mongoose> => {
 
   try {
     await mongoose.connect(env.database, {
-      dbName: env.databaseName
+      dbName: env.databaseName,
     });
 
     console.log(`✅ DATABASE connected`);

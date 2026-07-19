@@ -8,7 +8,7 @@ export default function StickyEmail() {
         className="bg-bottom! px-3 text-lg tracking-wider text-white/80 transition-colors hover:bg-center! hover:text-white"
         style={{
           textOrientation: "mixed",
-          writingMode: "vertical-rl"
+          writingMode: "vertical-rl",
         }}
       >
         {GENERAL_INFO.email}

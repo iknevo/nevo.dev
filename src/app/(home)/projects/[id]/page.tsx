@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   if (!id) {
     return {
-      title: "Project Not Found"
+      title: "Project Not Found",
     };
   }
 
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   } catch {
     return {
-      title: "Project Not Found"
+      title: "Project Not Found",
     };
   }
 }

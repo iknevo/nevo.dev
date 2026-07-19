@@ -31,7 +31,7 @@ export function useLogin() {
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    }
+    },
   });
   return mutation;
 }

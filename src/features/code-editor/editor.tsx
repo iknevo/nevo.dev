@@ -11,12 +11,7 @@ interface Props {
   disabled?: boolean;
 }
 
-export default function Editor({
-  initialDoc,
-  className,
-  onChange,
-  disabled
-}: Props) {
+export default function Editor({ initialDoc, className, onChange, disabled }: Props) {
   const handleChange = useCallback(
     (state: EditorState) => onChange(state.doc.toString()),
     [onChange]
@@ -25,7 +20,7 @@ export default function Editor({
   const [containerRef] = useCodemirror<HTMLDivElement>({
     initialDoc,
     onChange: handleChange,
-    disabled
+    disabled,
   });
 
   return (

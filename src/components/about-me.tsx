@@ -23,14 +23,14 @@ export default function AboutMe() {
           trigger: container.current,
           start: "top 70%",
           end: "bottom bottom",
-          scrub: 0.5
-        }
+          scrub: 0.5,
+        },
       });
 
       tl.from(".slide-up-and-fade", {
         y: 150,
         opacity: 0,
-        stagger: 0.05
+        stagger: 0.05,
       });
     },
     { scope: container }
@@ -44,14 +44,14 @@ export default function AboutMe() {
           trigger: container.current,
           start: "bottom 50%",
           end: "bottom 10%",
-          scrub: 0.5
-        }
+          scrub: 0.5,
+        },
       });
 
       tl.to(".slide-up-and-fade", {
         y: -150,
         opacity: 0,
-        stagger: 0.02
+        stagger: 0.02,
       });
     },
     { scope: container }
@@ -70,9 +70,7 @@ export default function AboutMe() {
           />
         </h2>
 
-        <p className="slide-up-and-fade border-b pb-3 text-gray-400">
-          This is me.
-        </p>
+        <p className="slide-up-and-fade border-b pb-3 text-gray-400">This is me.</p>
 
         <div className="mt-9 grid items-start gap-8 md:grid-cols-12">
           <div className="cursor space-y-4 md:col-span-5">
@@ -80,25 +78,23 @@ export default function AboutMe() {
               I&apos;m Ahmed.
             </h2>
             <p className="slide-up-and-fade max-w-md text-lg text-white/75">
-              Also known as NEVO, a front-end developer focused on building
-              modern, responsive web applications with clean UI and great
-              performance.
+              Also known as NEVO, a front-end developer focused on building modern, responsive web
+              applications with clean UI and great performance.
             </p>
           </div>
 
           <div className="cursor md:col-span-7">
             <div className="max-w-[500px] space-y-3 text-base text-white/80 sm:text-lg">
               <p className="slide-up-and-fade">
-                A {age} year old frontend web developer based in Cairo, Egypt.
-                Dedicated to turning ideas into creative solutions. I specialize
-                in creating seamless and intuitive user experiences.
+                A {age} year old frontend web developer based in Cairo, Egypt. Dedicated to turning
+                ideas into creative solutions. I specialize in creating seamless and intuitive user
+                experiences.
               </p>
               <p className="slide-up-and-fade">
-                My approach focuses on creating scalable, high-performing
-                solutions tailored to both user needs and business objectives.
-                By prioritizing performance, accessibility, and responsiveness,
-                I strive to deliver experiences that not only engage users but
-                also drive tangible results.
+                My approach focuses on creating scalable, high-performing solutions tailored to both
+                user needs and business objectives. By prioritizing performance, accessibility, and
+                responsiveness, I strive to deliver experiences that not only engage users but also
+                drive tangible results.
               </p>
             </div>
           </div>

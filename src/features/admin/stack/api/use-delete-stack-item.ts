@@ -8,7 +8,7 @@ export function useDeleteStackItem(id?: string) {
   const mutation = useMutation({
     mutationFn: async () => {
       const res = await api.stack[":id"].$delete({
-        param: { id }
+        param: { id },
       });
       const data = await res.json();
       return data;
@@ -21,7 +21,7 @@ export function useDeleteStackItem(id?: string) {
     onError: (err) => {
       console.error(err);
       toast.error("Failed to delete stack item");
-    }
+    },
   });
 
   return mutation;

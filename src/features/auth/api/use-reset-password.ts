@@ -4,9 +4,7 @@ import { toast } from "sonner";
 
 import { api } from "@/src/lib/hono";
 
-type ResponseType = InferResponseType<
-  (typeof api.auth)["reset-password"][":token"]["$patch"]
->;
+type ResponseType = InferResponseType<(typeof api.auth)["reset-password"][":token"]["$patch"]>;
 type RequestType = InferRequestType<
   (typeof api.auth)["reset-password"][":token"]["$patch"]
 >["json"];
@@ -16,7 +14,7 @@ export function useResetPassword(token: string) {
     mutationFn: async (json) => {
       const res = await api.auth["reset-password"][":token"].$patch({
         param: { token },
-        json
+        json,
       });
       const data: ResponseType = await res.json();
       if ("success" in data && data.success === false) {
@@ -27,7 +25,7 @@ export function useResetPassword(token: string) {
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    }
+    },
   });
   return mutation;
 }

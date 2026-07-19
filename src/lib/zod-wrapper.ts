@@ -3,10 +3,7 @@ import type { ValidationTargets } from "hono";
 import status from "http-status";
 import { ZodType } from "zod";
 
-export const zValidator = <
-  T extends ZodType,
-  Target extends keyof ValidationTargets
->(
+export const zValidator = <T extends ZodType, Target extends keyof ValidationTargets>(
   target: Target,
   schema: T
 ) =>
@@ -17,9 +14,6 @@ export const zValidator = <
         const field = error.path.join(".");
         return `${field}: ${error.message}`;
       });
-      return c.json(
-        { success: false, errors: errorMessages },
-        status.BAD_REQUEST
-      );
+      return c.json({ success: false, errors: errorMessages }, status.BAD_REQUEST);
     }
   });

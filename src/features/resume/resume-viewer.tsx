@@ -59,15 +59,16 @@ export default function ResumeViewer() {
           }
           className="flex flex-col items-center gap-8"
         >
-          {numPages && Array.from({ length: numPages }, (_, i) => (
-            <Page
-              key={i + 1}
-              pageNumber={i + 1}
-              renderTextLayer
-              width={pageWidth}
-              className="rounded-lg shadow-[0_0_30px_rgba(255,255,255,0.05)]"
-            />
-          ))}
+          {numPages &&
+            Array.from({ length: numPages }, (_, i) => (
+              <Page
+                key={i + 1}
+                pageNumber={i + 1}
+                renderTextLayer
+                width={pageWidth}
+                className="rounded-lg shadow-[0_0_30px_rgba(255,255,255,0.05)]"
+              />
+            ))}
         </Document>
       </div>
     </>

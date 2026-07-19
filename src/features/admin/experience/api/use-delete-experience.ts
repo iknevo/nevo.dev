@@ -8,7 +8,7 @@ export function useDeleteExperience(id?: string) {
   const mutation = useMutation({
     mutationFn: async () => {
       const res = await api.experience[":id"].$delete({
-        param: { id }
+        param: { id },
       });
       const data = await res.json();
       return data;
@@ -21,7 +21,7 @@ export function useDeleteExperience(id?: string) {
     onError: (err) => {
       console.error(err);
       toast.error("Failed to delete experience");
-    }
+    },
   });
 
   return mutation;

@@ -7,10 +7,7 @@ import { forwardRef, useState } from "react";
 import { Badge } from "@/src/components/ui/badge";
 import { Input } from "@/src/components/ui/input";
 
-type InputTagsProps = Omit<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  "value" | "onChange"
-> & {
+type InputTagsProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange"> & {
   value: string[];
   onChange: (value: string[]) => void;
 };

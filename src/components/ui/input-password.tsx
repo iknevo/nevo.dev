@@ -29,10 +29,7 @@ function InputPassword({ className, ...props }: React.ComponentProps<"input">) {
           onClick={handleShowPassword}
         />
       ) : (
-        <Eye
-          className="absolute top-1/2 right-4 -translate-y-1/2"
-          onClick={handleShowPassword}
-        />
+        <Eye className="absolute top-1/2 right-4 -translate-y-1/2" onClick={handleShowPassword} />
       )}
     </div>
   );

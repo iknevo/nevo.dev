@@ -37,10 +37,8 @@ function sendError(err: any, c: Context) {
     {
       status: err.isOperational ? err.status : "error",
       error: err,
-      message: err.isOperational
-        ? err.message
-        : "Something Went Wrong!, Please try again.",
-      ...(env.development && { stack: err.stack })
+      message: err.isOperational ? err.message : "Something Went Wrong!, Please try again.",
+      ...(env.development && { stack: err.stack }),
     },
     err.isOperational ? err.statusCode : status.INTERNAL_SERVER_ERROR
   );

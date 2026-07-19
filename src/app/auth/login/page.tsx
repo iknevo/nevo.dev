@@ -4,7 +4,7 @@ import Cursor from "@/src/components/cursor";
 import LoginForm from "@/src/features/auth/components/login-form";
 
 export const metadata: Metadata = {
-  title: "LOGIN"
+  title: "LOGIN",
 };
 
 export default function Page() {

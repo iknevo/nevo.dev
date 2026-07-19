@@ -4,12 +4,8 @@ import { toast } from "sonner";
 
 import { api } from "@/src/lib/hono";
 
-type ResponseType = InferResponseType<
-  (typeof api.auth)["forgot-password"]["$post"]
->;
-type RequestType = InferRequestType<
-  (typeof api.auth)["forgot-password"]["$post"]
->["json"];
+type ResponseType = InferResponseType<(typeof api.auth)["forgot-password"]["$post"]>;
+type RequestType = InferRequestType<(typeof api.auth)["forgot-password"]["$post"]>["json"];
 
 export function useForgetPassword() {
   const mutation = useMutation<ResponseType, Error, RequestType>({
@@ -24,7 +20,7 @@ export function useForgetPassword() {
     onError: (err) => {
       console.error(err);
       toast.error(err.message);
-    }
+    },
   });
   return mutation;
 }

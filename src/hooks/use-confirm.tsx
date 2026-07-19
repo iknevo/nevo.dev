@@ -6,7 +6,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle
+  AlertDialogTitle,
 } from "@/src/components/ui/alert-dialog";
 import { Button } from "@/src/components/ui/button";
 
@@ -17,11 +17,9 @@ type Options = {
 
 export function useConfirm(): [
   () => JSX.Element,
-  ({ title, message }: Options) => Promise<boolean>
+  ({ title, message }: Options) => Promise<boolean>,
 ] {
-  const [promise, setPromise] = useState<((value: boolean) => void) | null>(
-    null
-  );
+  const [promise, setPromise] = useState<((value: boolean) => void) | null>(null);
   const [options, setOptions] = useState<Options | null>(null);
 
   function confirm({ title, message }: Options) {

@@ -3,11 +3,11 @@
 import { useMemo } from "react";
 
 import { DotMatrixBase } from "@/src/lib/dotmatrix-core";
-import { useDotMatrixPhases } from "@/src/lib/dotmatrix-hooks";
 import { rowMajorIndex } from "@/src/lib/dotmatrix-core";
+import type { DotAnimationResolver, DotMatrixCommonProps } from "@/src/lib/dotmatrix-core";
+import { useDotMatrixPhases } from "@/src/lib/dotmatrix-hooks";
 import { usePrefersReducedMotion } from "@/src/lib/dotmatrix-hooks";
 import { useSteppedCycle } from "@/src/lib/dotmatrix-hooks";
-import type { DotAnimationResolver, DotMatrixCommonProps } from "@/src/lib/dotmatrix-core";
 
 export type DotmSquare20Props = DotMatrixCommonProps;
 
@@ -28,7 +28,7 @@ const PERIMETER_PATH: readonly number[] = [
   rowMajorIndex(4, 0),
   rowMajorIndex(3, 0),
   rowMajorIndex(2, 0),
-  rowMajorIndex(1, 0)
+  rowMajorIndex(1, 0),
 ];
 
 const LOOP_LEN = PERIMETER_PATH.length;
@@ -45,7 +45,7 @@ const TWIST_INNER_BY_HEAD_STEP: ReadonlyMap<number, number> = new Map([
   [0, rowMajorIndex(1, 1)],
   [4, rowMajorIndex(1, 3)],
   [8, rowMajorIndex(3, 3)],
-  [12, rowMajorIndex(3, 1)]
+  [12, rowMajorIndex(3, 1)],
 ]);
 
 function pathStepForCellIndex(cellIndex: number): number {
@@ -68,10 +68,14 @@ export function DotmSquare20({
   ...rest
 }: DotmSquare20Props) {
   const reducedMotion = usePrefersReducedMotion();
-  const { phase: matrixPhase, onMouseEnter, onMouseLeave } = useDotMatrixPhases({
+  const {
+    phase: matrixPhase,
+    onMouseEnter,
+    onMouseLeave,
+  } = useDotMatrixPhases({
     animated: Boolean(animated && !reducedMotion),
     hoverAnimated: Boolean(hoverAnimated && !reducedMotion),
-    speed
+    speed,
   });
   const headStep = useSteppedCycle({
     active: !reducedMotion && matrixPhase !== "idle",

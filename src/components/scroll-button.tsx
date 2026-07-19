@@ -13,10 +13,7 @@ type Props = {
   animate?: boolean;
 };
 
-export default function ScrollButton({
-  scrollToTop = false,
-  animate = true
-}: Props) {
+export default function ScrollButton({ scrollToTop = false, animate = true }: Props) {
   const lenis = useLenis();
   const circleRef = useRef<SVGCircleElement | null>(null);
 
@@ -35,13 +32,13 @@ export default function ScrollButton({
       const length = circleRef.current.getTotalLength();
       gsap.set(circleRef.current, {
         strokeDasharray: length,
-        strokeDashoffset: length
+        strokeDashoffset: length,
       });
       gsap.to(circleRef.current, {
         strokeDashoffset: 0 - length,
         duration: 5,
         ease: "none",
-        repeat: -1
+        repeat: -1,
       });
     }
   }, []);
@@ -55,19 +52,8 @@ export default function ScrollButton({
         scrollToTop && "rotate-180"
       )}
     >
-      <svg
-        className="absolute inset-0 h-full w-full"
-        viewBox="0 0 100 100"
-        fill="none"
-      >
-        <circle
-          ref={circleRef}
-          cx="50"
-          cy="50"
-          r="48"
-          stroke="white"
-          strokeWidth="3"
-        />
+      <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" fill="none">
+        <circle ref={circleRef} cx="50" cy="50" r="48" stroke="white" strokeWidth="3" />
       </svg>
 
       <div className="flex aspect-square w-full items-center justify-center rounded-full">

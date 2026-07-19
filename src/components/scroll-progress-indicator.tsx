@@ -50,11 +50,7 @@ export default function ScrollProgressIndicator() {
         hidden ? "opacity-0" : "opacity-100"
       )}
     >
-      <div
-        ref={barRef}
-        className="bg-primary w-full rounded-full"
-        style={{ height: "0%" }}
-      />
+      <div ref={barRef} className="bg-primary w-full rounded-full" style={{ height: "0%" }} />
     </div>
   );
 }

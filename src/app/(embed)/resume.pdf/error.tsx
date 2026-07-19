@@ -12,9 +12,7 @@ export default function Error({
       <p className="text-center text-base text-gray-400">
         Something went wrong loading the resume.
       </p>
-      <p className="text-sm text-gray-500">
-        {error.message}
-      </p>
+      <p className="text-sm text-gray-500">{error.message}</p>
       <button
         onClick={() => reset()}
         className="hover:bg-white/15 rounded-full bg-white/10 px-6 py-2 text-sm text-white transition-all"
