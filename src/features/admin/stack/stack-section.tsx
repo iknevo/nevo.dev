@@ -23,7 +23,7 @@ export default function StackSection() {
 
   if (isLoading)
     return (
-      <div className="flex justify-center ">
+      <div className="flex justify-center">
         <LoaderSmall className="py-20" />
       </div>
     );
@@ -66,7 +66,7 @@ export default function StackSection() {
                         width={100}
                         height={100}
                         quality={100}
-                        className="object-contain w-full h-full transition-transform duration-500 group-hover:scale-105"
+                        className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>
 

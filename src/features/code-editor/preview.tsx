@@ -47,7 +47,7 @@ function CustomPre(props: PreProps) {
   return (
     <div className="relative">
       <button
-        className="no-cursor absolute top-2 right-2 flex items-center justify-center rounded-md border border-white/20 size-8 transition-colors duration-200 hover:text-white/40"
+        className="no-cursor absolute top-2 right-2 flex size-8 items-center justify-center rounded-md border border-white/20 transition-colors duration-200 hover:text-white/40"
         type="button"
         onClick={handleCopy}
       >
@@ -57,7 +57,7 @@ function CustomPre(props: PreProps) {
         {...props}
         ref={preRef}
         className={cn(
-          "overflow-x-auto whitespace-pre rounded-xl !px-4 !py-8 !text-sm leading-relaxed sm:px-6 sm:!py-5 sm:!text-sm md:!text-[0.95rem] !bg-[#0d0d0d] font-mono",
+          "overflow-x-auto rounded-xl !bg-[#0d0d0d] !px-4 !py-8 font-mono !text-sm leading-relaxed whitespace-pre sm:px-6 sm:!py-5 sm:!text-sm md:!text-[0.95rem]",
           props.className
         )}
       />

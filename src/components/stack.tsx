@@ -104,13 +104,13 @@ export default function Stack() {
                       className="slide-up flex items-center gap-3.5 leading-none"
                       key={item.name}
                     >
-                      <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12">
+                      <div className="flex h-10 w-10 items-center justify-center md:h-12 md:w-12">
                         <Image
                           src={item.icon}
                           alt={item.name}
                           width={40}
                           height={40}
-                          className="w-full h-full object-contain"
+                          className="h-full w-full object-contain"
                         />
                       </div>
 

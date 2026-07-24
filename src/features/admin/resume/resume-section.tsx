@@ -1,5 +1,6 @@
 "use client";
 
+import { format } from "date-fns";
 import { ExternalLink } from "lucide-react";
 import { useRef, useState } from "react";
 
@@ -45,24 +46,20 @@ export default function ResumeSection() {
         <SectionTitle title="RESUME" className="mb-0" />
       </div>
 
-      <div className="grid gap-8 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2">
         <div className="dark space-y-5 rounded-lg border p-8">
           <h3 className="text-lg font-semibold">Current Resume</h3>
           {resume?.url ? (
             <div className="space-y-4">
-              <p className="text-sm leading-relaxed text-muted-foreground">
+              <p className="text-muted-foreground leading-relaxed">
                 A resume PDF is uploaded and accessible at{" "}
                 <code className="rounded bg-white/5 px-1.5 py-0.5 text-xs">/resume</code>
               </p>
               {resume.updatedAt && (
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <div className="text-muted-foreground flex items-center gap-2">
                   Last updated{" "}
                   <span className="text-white">
-                    {new Date(resume.updatedAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
+                    {format(resume.updatedAt, "dd/MM/yyyy 'at' hh:mm a")}
                   </span>
                 </div>
               )}
@@ -71,7 +68,7 @@ export default function ResumeSection() {
                   href="/resume"
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="inline-flex items-center gap-1.5 text-sm text-blue-400 hover:text-blue-300 hover:underline"
+                  className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 hover:underline"
                 >
                   <ExternalLink size={14} />
                   View current resume
@@ -80,11 +77,11 @@ export default function ResumeSection() {
             </div>
           ) : (
             <div className="space-y-3">
-              <p className="text-sm leading-relaxed text-muted-foreground">
+              <p className="text-muted-foreground text-sm leading-relaxed">
                 No resume uploaded yet. Upload a PDF using the form to make it available at{" "}
                 <code className="rounded bg-white/5 px-1.5 py-0.5 text-xs">/resume</code>.
               </p>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
                 Visitors will see a 404 until a resume is uploaded.
               </p>
             </div>
@@ -99,10 +96,10 @@ export default function ResumeSection() {
               type="file"
               accept=".pdf"
               onChange={handleFileChange}
-              className="dark file:text-white block w-full text-sm text-muted-foreground file:mr-4 file:cursor-pointer file:rounded file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-semibold"
+              className="dark text-muted-foreground file:bg-primary block w-full text-sm file:mr-4 file:cursor-pointer file:rounded file:border-0 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white"
             />
             {selectedFile && (
-              <p className="flex items-center gap-2 text-sm text-muted-foreground">
+              <p className="text-muted-foreground flex items-center gap-2 text-sm">
                 <span className="truncate">{selectedFile.name}</span>
                 <span className="shrink-0 text-xs">
                   ({(selectedFile.size / 1024).toFixed(0)} KB)

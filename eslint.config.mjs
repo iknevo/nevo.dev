@@ -13,17 +13,17 @@ const eslintConfig = defineConfig([
         {
           blankLine: "always",
           prev: "directive",
-          next: "*"
+          next: "*",
         },
         {
           blankLine: "any",
           prev: "directive",
-          next: "directive"
-        }
-      ]
-    }
+          next: "directive",
+        },
+      ],
+    },
   },
-  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"])
+  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
 ]);
 
 export default eslintConfig;

@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -51,10 +52,10 @@ export default function UpdatePasswordForm() {
         <SectionTitle title="UPDATE PASSWORD" className="mb-0" />
       </div>
 
-      <div className="grid gap-8 md:grid-cols-12">
+      <div className="grid gap-4 md:grid-cols-12">
         <div className="dark space-y-5 rounded-lg border p-6 md:col-span-8">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)} className="gap-6 flex flex-col">
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-6">
               <FormField
                 name="passwordCurrent"
                 control={form.control}
@@ -118,7 +119,7 @@ export default function UpdatePasswordForm() {
               <Button
                 as="button"
                 disabled={isPending}
-                className="cursor self-end rounded-md px-3 py-1 md:px-6 md:py-2 font-semibold text-white transition-colors duration-500 hover:text-black"
+                className="cursor self-end rounded-md px-3 py-1 font-semibold text-white transition-colors duration-500 hover:text-black md:px-6 md:py-2"
               >
                 Update
               </Button>
@@ -132,17 +133,11 @@ export default function UpdatePasswordForm() {
             <p className="text-muted-foreground">
               Your password was last updated on{" "}
               <span className="text-white">
-                {new Date(passwordChangedAt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
+                {format(new Date(passwordChangedAt), "dd/MM/yyyy 'at' hh:mm a")}
               </span>
             </p>
           ) : (
-            <p className="text-sm text-muted-foreground">Your password has not been changed yet.</p>
+            <p className="text-muted-foreground text-sm">Your password has not been changed yet.</p>
           )}
         </div>
       </div>

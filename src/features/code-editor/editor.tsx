@@ -26,7 +26,7 @@ export default function Editor({ initialDoc, className, onChange, disabled }: Pr
   return (
     <div
       className={cn(
-        "h-full overflow-hidden editor-container rounded-sm border-1 border-white/10 selection:!bg-primary select-text",
+        "editor-container selection:!bg-primary h-full overflow-hidden rounded-sm border-1 border-white/10 select-text",
         className
       )}
       data-lenis-prevent

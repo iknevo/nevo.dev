@@ -128,7 +128,7 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
           <Button
             type="button"
             onClick={() => setShowPreview((s) => !s)}
-            className="text-white md:font-semibold md:text-xl"
+            className="text-white md:text-xl md:font-semibold"
           >
             {showPreview ? "Hide Preview" : "Show Preview"}
           </Button>
@@ -162,9 +162,9 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
                   className="relative"
                 >
                   {field.value ? (
-                    <EyeClosed className="size-5 text-muted-foreground" />
+                    <EyeClosed className="text-muted-foreground size-5" />
                   ) : (
-                    <Eye className="size-5 text-foreground" />
+                    <Eye className="text-foreground size-5" />
                   )}
                 </Button>
               </Field>

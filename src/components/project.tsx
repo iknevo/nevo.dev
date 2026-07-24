@@ -122,14 +122,14 @@ export default function Project({ index, project, onEnter, onLeave }: Props) {
         alt={project.name}
         width="300"
         height="200"
-        className="mb-6 w-full object-contain object-top border border-primary/20 md:hidden"
+        className="border-primary/20 mb-6 w-full border object-contain object-top md:hidden"
         key={project.slug}
         loading="eager"
       />
       <div className="flex gap-2 md:gap-5">
         <div className="text-white/80">_{(index + 1).toString().padStart(2, "0")}.</div>
         <div>
-          <h4 className="sm:text-3xl from-primary flex gap-4 bg-linear-to-r from-50% to-white to-50% bg-size-[200%] bg-clip-text bg-right text-2xl font-bold text-transparent transition-all duration-700 group-hover:bg-left">
+          <h4 className="from-primary flex gap-4 bg-linear-to-r from-50% to-white to-50% bg-size-[200%] bg-clip-text bg-right text-2xl font-bold text-transparent transition-all duration-700 group-hover:bg-left sm:text-3xl">
             {project.name}
             <span className="text-white opacity-0 transition-all group-hover:opacity-100">
               <svg

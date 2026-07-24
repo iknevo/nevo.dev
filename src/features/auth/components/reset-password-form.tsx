@@ -94,7 +94,7 @@ export default function ResetPasswordForm({ token }: Props) {
         <Button
           as="button"
           disabled={isPending}
-          className="cursor rounded-md font-semibold text-primary-foreground transition-colors duration-500 hover:text-black"
+          className="cursor text-primary-foreground rounded-md font-semibold transition-colors duration-500 hover:text-black"
         >
           {isPending ? <Loader2 className="animate-spin" /> : "Update Password"}
         </Button>

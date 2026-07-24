@@ -22,7 +22,7 @@ export default function PostPreview({ id }: Props) {
   useTrackPostView(post?._id);
 
   return (
-    <section className="mx-auto max-w-400 px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-16 lg:px-16 selection:!bg-primary select-text">
+    <section className="selection:!bg-primary mx-auto max-w-400 px-4 pt-4 pb-12 select-text sm:px-6 sm:pt-6 sm:pb-16 lg:px-16">
       <TransitionLink
         href="/blog"
         className="group mb-10 inline-flex h-12 items-center gap-2 sm:mb-14"
@@ -65,7 +65,7 @@ export default function PostPreview({ id }: Props) {
               <p className="text-lg text-white/90 sm:text-xl">{post.summary}</p>
 
               {post.image && (
-                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg dark">
+                <div className="dark relative aspect-[16/9] w-full overflow-hidden rounded-lg">
                   {!loaded && <Skeleton className="absolute inset-0" />}
                   <Image
                     src={post.image}

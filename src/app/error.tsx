@@ -62,7 +62,7 @@ export default function Error({
       ))}
 
       <div>
-        <span className="text-7xl  text-white md:text-9xl">500</span>
+        <span className="text-7xl text-white md:text-9xl">500</span>
         <h1 className="text-2xl leading-snug text-white md:text-3xl">
           Something broke.
           <br />
@@ -73,7 +73,7 @@ export default function Error({
             as="link"
             href="/"
             variant="primary"
-            className="rounded-md max-sm:text-xs max-sm:px-2 max-sm:py-4 font-semibold text-white transition-colors duration-500 hover:text-black"
+            className="rounded-md font-semibold text-white transition-colors duration-500 hover:text-black max-sm:px-2 max-sm:py-4 max-sm:text-xs"
           >
             Back Home
           </Button>
@@ -81,7 +81,7 @@ export default function Error({
             as="button"
             onClick={reset}
             variant="secondary"
-            className="rounded-md max-sm:text-xs max-sm:px-2 max-sm:py-4 font-semibold"
+            className="rounded-md font-semibold max-sm:px-2 max-sm:py-4 max-sm:text-xs"
           >
             Try Again
           </Button>

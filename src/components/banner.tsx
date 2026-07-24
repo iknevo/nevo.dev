@@ -71,7 +71,7 @@ export default function Banner() {
         className="container flex min-h-svh justify-center gap-10 max-lg:flex-col max-md:pb-10 lg:items-end lg:justify-between lg:gap-0"
         ref={containerRef}
       >
-        <div className="max-w-[544px] flex-col items-start justify-center self-center pt-12 sm:pt-20 max-lg:flex md:pt-0">
+        <div className="max-w-[544px] flex-col items-start justify-center self-center pt-12 max-lg:flex sm:pt-20 md:pt-0">
           <h1
             className="banner-title slide-up-and-fade leading-[1]"
             style={{ fontSize: "clamp(2.8rem, 8vw, 5rem)" }}
@@ -91,7 +91,7 @@ export default function Banner() {
               <Button
                 as="button"
                 variant="primary"
-                className="banner-Button slide-up-and-fade cursor mt-9 rounded-md py-3 px-6 text-base font-semibold text-primary-foreground transition-colors duration-500 hover:text-black sm:py-4 sm:px-8 sm:text-lg"
+                className="banner-Button slide-up-and-fade cursor text-primary-foreground mt-9 rounded-md px-6 py-3 text-base font-semibold transition-colors duration-500 hover:text-black sm:px-8 sm:py-4 sm:text-lg"
               >
                 My Blog
               </Button>

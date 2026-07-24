@@ -53,7 +53,7 @@ export default function AdminNav() {
         ))}
       </ul>
 
-      <div className="md:hidden dark">
+      <div className="dark md:hidden">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-full justify-between text-sm font-semibold">
@@ -61,7 +61,7 @@ export default function AdminNav() {
               <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="min-w-[var(--radix-dropdown-menu-trigger-width)] dark">
+          <DropdownMenuContent className="dark min-w-[var(--radix-dropdown-menu-trigger-width)]">
             <DropdownMenuGroup>
               {navItems.map((item) => (
                 <DropdownMenuItem key={item.href} asChild>

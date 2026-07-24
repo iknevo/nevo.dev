@@ -95,7 +95,7 @@ export default function ProjectImageModal({ modal, projects }: Props) {
     <>
       <div
         ref={containerRef}
-        className="pointer-events-none absolute z-50 h-[300px] w-[400px] flex items-center justify-center overflow-hidden shadow-xl rounded-2xl cursor-none bg-white/2 backdrop-blur-sm"
+        className="pointer-events-none absolute z-50 flex h-[300px] w-[400px] cursor-none items-center justify-center overflow-hidden rounded-2xl bg-white/2 shadow-xl backdrop-blur-sm"
       >
         <div
           className="absolute h-full w-full transition-[top] duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]"
@@ -104,7 +104,7 @@ export default function ProjectImageModal({ modal, projects }: Props) {
           {projects.map((project, i) => (
             <div
               key={i}
-              className="flex h-full max-w-[340px] w-full relative items-center justify-center mx-auto"
+              className="relative mx-auto flex h-full w-full max-w-[340px] items-center justify-center"
             >
               <Image
                 src={project.thumbnail}

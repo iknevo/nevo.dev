@@ -79,9 +79,9 @@ export default function Experiences() {
           <div className="grid gap-14">
             {experience.map((item) => (
               <div key={item._id} className="experience-item">
-                <p className="md:text-xl text-white/80">{item.company}</p>
+                <p className="text-white/80 md:text-xl">{item.company}</p>
                 <p className="mt-3.5 mb-2.5 text-xl leading-6 md:text-4xl">{item.title}</p>
-                <p className="md:text-lg text-white/80">
+                <p className="text-white/80 md:text-lg">
                   {item.startDate} - {item.endDate}
                 </p>
               </div>

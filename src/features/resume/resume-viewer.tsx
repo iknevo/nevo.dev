@@ -35,13 +35,13 @@ export default function ResumeViewer() {
           }
         `}
       </style>
-      <div className="bg-black/50 md:bg-transparent sticky backdrop-blur-sm md:backdrop-blur-none top-0 z-50 flex items-center justify-end border-b border-white/10 px-4 py-3">
+      <div className="sticky top-0 z-50 flex items-center justify-end border-b border-white/10 bg-black/50 px-4 py-3 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none">
         <a
           href="/api/resume"
           download="ahmed_abdelhafiez_frontend_developer.pdf"
-          className="hover:bg-white/15 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-white transition-all"
+          className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-white transition-all hover:bg-white/15"
         >
-          <Download size={14} />
+          <Download size={18} />
           Download
         </a>
       </div>
@@ -54,7 +54,7 @@ export default function ResumeViewer() {
           noData={
             <div className="flex min-h-screen flex-col items-center justify-center gap-2 bg-black">
               <p className="text-base text-gray-400">No resume available.</p>
-              <p className="text-sm text-gray-300">Upload one from the admin panel first.</p>
+              <p className="text-gray-300">Upload one from the admin panel first.</p>
             </div>
           }
           className="flex flex-col items-center gap-8"
