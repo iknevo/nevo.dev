@@ -42,11 +42,16 @@ export async function generateMetadata(): Promise<Metadata> {
         "Front-End developer building modern, responsive web applications and portfolios for the web.",
       url: "/",
       siteName: "NEVO",
-      images: [{ url: "/og.png", width: 1200, height: 630 }],
+      images: [
+        { url: "/og.png", width: 1200, height: 630, alt: "Ahmed Abdlehafiez Front-End developer" },
+      ],
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
+      title: "NEVO | Front-End Developer",
+      description:
+        "Front-End developer building modern, responsive web applications and portfolios for the web.",
       images: ["/og.png"],
     },
   };
