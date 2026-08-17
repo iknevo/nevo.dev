@@ -1,12 +1,13 @@
 "use client";
 
-import { Download } from "lucide-react";
+import { ArrowLeft, Download } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 
 import { LoaderSmall } from "@/src/components/loader-small";
+import TransitionLink from "@/src/components/transition-link";
 
 export default function ResumeViewer() {
   const [numPages, setNumPages] = useState<number | null>(null);
@@ -35,7 +36,11 @@ export default function ResumeViewer() {
           }
         `}
       </style>
-      <div className="sticky top-0 z-50 flex items-center justify-end border-b border-white/10 bg-black/50 px-4 py-3 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none">
+      <div className="sticky top-0 z-50 flex items-center justify-between border-b border-white/10 bg-black/50 px-4 py-3 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none">
+        <TransitionLink href="/" className="group inline-flex h-12 items-center gap-2">
+          <ArrowLeft className="group-hover:text-primary transition-all duration-300 group-hover:-translate-x-1" />
+          Back
+        </TransitionLink>
         <a
           href="/api/resume"
           download="ahmed_abdelhafiez_frontend_developer.pdf"
