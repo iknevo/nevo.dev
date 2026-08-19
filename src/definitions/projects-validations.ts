@@ -26,7 +26,7 @@ export const projectSchema = z.object({
     z.string(),
     z.instanceof(File).refine((file) => file.size > 0, { error: "Please add a Thumbnail" }),
   ]),
-  sortIndex: z.number().min(1, "Sort Index can't be less than 1"),
+  sortIndex: z.number().min(1, "Sort Index can't be less than 1").optional(),
   hide: z.boolean(),
 });
 
@@ -41,6 +41,5 @@ export const projectFormDefaults: projectFormValues = {
   features: [{ item: "" }],
   techStack: [{ item: "" }],
   thumbnail: "",
-  sortIndex: 999,
   hide: false,
 };

@@ -28,7 +28,6 @@ export const EditExperienceSheet = () => {
     company: expItem?.company ?? "",
     startDate: expItem?.startDate ?? "",
     endDate: expItem?.endDate ?? "",
-    sortIndex: expItem?.sortIndex ?? 999,
     hide: expItem?.hide ?? false,
   };
 

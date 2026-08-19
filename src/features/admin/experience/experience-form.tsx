@@ -97,25 +97,6 @@ export default function ExperienceForm({ defaultValues, id, onSubmit, onDelete, 
           )}
         />
 
-        <FormField
-          name="sortIndex"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Sort Index</FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  disabled={disabled}
-                  placeholder="enter the index"
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         <Controller
           name="hide"
           control={form.control}

@@ -19,7 +19,6 @@ export function useCreateProject() {
       formData.append("sourceCode", values.sourceCode);
       formData.append("description", values.description);
       formData.append("thumbnail", values.thumbnail);
-      formData.append("sortIndex", String(values.sortIndex));
       formData.append("hide", String(values.hide));
 
       values.features.forEach((feat) => {

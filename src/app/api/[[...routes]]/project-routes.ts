@@ -10,6 +10,16 @@ import dbConnect from "@/src/lib/db";
 import { authMiddleware, withHiddenAuth } from "@/src/lib/jwt";
 import { Project, projectType } from "@/src/models/project-model";
 
+async function bulkReorderProjects(ids: string[]) {
+  const operations = ids.map((id, index) => ({
+    updateOne: {
+      filter: { _id: id },
+      update: { $set: { sortIndex: index + 1 } },
+    },
+  }));
+  await Project.bulkWrite(operations);
+}
+
 const app = new Hono()
   .get("/", withHiddenAuth, async (c) => {
     await dbConnect();
@@ -56,6 +66,20 @@ const app = new Hono()
       return c.json({ data });
     }
   )
+  .patch(
+    "/reorder",
+    authMiddleware,
+    zValidator("json", z.object({ ids: z.array(z.string()) })),
+    async (c) => {
+      await dbConnect();
+      const { ids } = c.req.valid("json");
+      if (ids.length === 0) {
+        return c.json({ message: "No items to reorder" }, status.BAD_REQUEST);
+      }
+      await bulkReorderProjects(ids);
+      return c.json({ success: true });
+    }
+  )
   .post("/", authMiddleware, async (c) => {
     await dbConnect();
     const body = await c.req.formData();
@@ -79,7 +103,7 @@ const app = new Hono()
       features: features.map((f) => ({ item: f as string })),
       techStack: techStack.map((t) => ({ item: t as string })),
       thumbnail,
-      sortIndex: Number(sortIndex),
+      sortIndex: sortIndex !== null ? Number(sortIndex) : undefined,
       hide,
     };
     const result = projectSchema.safeParse(parsedData);
@@ -94,6 +118,10 @@ const app = new Hono()
     let thumbnailUrl = data.thumbnail;
     if (data.thumbnail instanceof File) {
       thumbnailUrl = await uploadToCloudinary(data.thumbnail, "projects/thumbnails");
+    }
+    if (!data.sortIndex) {
+      const maxItem = await Project.findOne().sort({ sortIndex: -1 }).select("sortIndex");
+      data.sortIndex = (maxItem?.sortIndex ?? 0) + 1;
     }
     const newProject = {
       name: data.name,
@@ -152,7 +180,7 @@ const app = new Hono()
         features: features.map((f) => ({ item: f as string })),
         techStack: techStack.map((t) => ({ item: t as string })),
         thumbnail,
-        sortIndex: Number(sortIndex),
+        sortIndex: sortIndex && sortIndex !== "" ? Number(sortIndex) : undefined,
         hide,
       };
       const result = projectSchema.safeParse(parsedData);
@@ -168,6 +196,10 @@ const app = new Hono()
       if (data.thumbnail instanceof File) {
         thumbnailUrl = await uploadToCloudinary(data.thumbnail, "projects/thumbnails");
       }
+      let project = await Project.findById(id);
+      if (!project) {
+        return c.json({ message: "Project not found" }, status.BAD_REQUEST);
+      }
       const newProject = {
         name: data.name,
         year: Number(data.year),
@@ -177,13 +209,9 @@ const app = new Hono()
         features: data.features.map((f) => f.item),
         techStack: data.techStack.map((t) => t.item),
         thumbnail: thumbnailUrl,
-        sortIndex: data.sortIndex,
+        sortIndex: data.sortIndex ?? project.sortIndex,
         hide: data.hide,
       };
-      let project = await Project.findById(id);
-      if (!project) {
-        return c.json({ message: "Project not found" }, status.BAD_REQUEST);
-      }
       Object.assign(project, newProject);
       project = await project.save();
       return c.json<{ success: true; project: projectType }>({
@@ -211,6 +239,10 @@ const app = new Hono()
       if (!project) {
         return c.json({ message: "Error deleting project!, Try again later" }, status.NOT_FOUND);
       }
+      await Project.updateMany(
+        { sortIndex: { $gt: project.sortIndex } },
+        { $inc: { sortIndex: -1 } }
+      );
       return c.status(status.NO_CONTENT);
     }
   );

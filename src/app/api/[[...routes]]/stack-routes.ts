@@ -10,6 +10,16 @@ import dbConnect from "@/src/lib/db";
 import { authMiddleware, withHiddenAuth } from "@/src/lib/jwt";
 import { Stack, stackItem, stackType } from "@/src/models/stack-model";
 
+async function bulkReorderStack(ids: string[]) {
+  const operations = ids.map((id, index) => ({
+    updateOne: {
+      filter: { _id: id },
+      update: { $set: { sortIndex: index + 1 } },
+    },
+  }));
+  await Stack.bulkWrite(operations);
+}
+
 const app = new Hono()
   .get("/", withHiddenAuth, async (c) => {
     await dbConnect();
@@ -24,7 +34,7 @@ const app = new Hono()
               },
             },
           ]),
-      { $sort: { sortIndex: 1 } },
+      { $sort: { type: 1, sortIndex: 1 } },
       {
         $group: {
           _id: "$type",
@@ -108,6 +118,20 @@ const app = new Hono()
       return c.json({ data });
     }
   )
+  .patch(
+    "/reorder",
+    authMiddleware,
+    zValidator("json", z.object({ ids: z.array(z.string()) })),
+    async (c) => {
+      await dbConnect();
+      const { ids } = c.req.valid("json");
+      if (ids.length === 0) {
+        return c.json({ message: "No items to reorder" }, status.BAD_REQUEST);
+      }
+      await bulkReorderStack(ids);
+      return c.json({ success: true });
+    }
+  )
   .post("/", authMiddleware, async (c) => {
     await dbConnect();
     const body = await c.req.formData();
@@ -122,7 +146,7 @@ const app = new Hono()
       icon,
       type,
       hide,
-      sortIndex: Number(sortIndex),
+      sortIndex: sortIndex !== null ? Number(sortIndex) : undefined,
     };
 
     const result = stackSchema.safeParse(parsedData);
@@ -138,6 +162,12 @@ const app = new Hono()
     let iconUrl = data.icon;
     if (data.icon instanceof File) {
       iconUrl = await uploadToCloudinary(data.icon, "tech-stack");
+    }
+    if (!data.sortIndex) {
+      const maxItem = await Stack.findOne({ type: data.type })
+        .sort({ sortIndex: -1 })
+        .select("sortIndex");
+      data.sortIndex = (maxItem?.sortIndex ?? 0) + 1;
     }
     const newStack = {
       name: data.name,
@@ -182,7 +212,7 @@ const app = new Hono()
         icon,
         type,
         hide,
-        sortIndex: Number(sortIndex),
+        sortIndex: sortIndex && sortIndex !== "" ? Number(sortIndex) : undefined,
       };
 
       const result = stackSchema.safeParse(parsedData);
@@ -199,17 +229,17 @@ const app = new Hono()
       if (data.icon instanceof File) {
         iconUrl = await uploadToCloudinary(data.icon, "tech-stack");
       }
+      let stack = await Stack.findById(id);
+      if (!stack) {
+        return c.json({ message: "stack item not found" }, status.BAD_REQUEST);
+      }
       const newStack = {
         name: data.name,
         icon: iconUrl,
         type: data.type,
         hide: data.hide,
-        sortIndex: data.sortIndex,
+        sortIndex: data.sortIndex ?? stack.sortIndex,
       };
-      let stack = await Stack.findById(id);
-      if (!stack) {
-        return c.json({ message: "stack item not found" }, status.BAD_REQUEST);
-      }
       Object.assign(stack, newStack);
       stack = await stack.save();
       return c.json<{ success: true; stack: stackType }>({
@@ -237,6 +267,10 @@ const app = new Hono()
       if (!stack) {
         return c.json({ message: "Error deleting stack item!, Try again later" }, status.NOT_FOUND);
       }
+      await Stack.updateMany(
+        { type: stack.type, sortIndex: { $gt: stack.sortIndex } },
+        { $inc: { sortIndex: -1 } }
+      );
       return c.status(status.NO_CONTENT);
     }
   );

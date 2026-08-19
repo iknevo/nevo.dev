@@ -32,7 +32,6 @@ export const EditProjectSheet = () => {
     features: project?.features?.map((item) => ({ item })) ?? [{ item: "" }],
     techStack: project?.techStack?.map((item) => ({ item })) ?? [{ item: "" }],
     thumbnail: project?.thumbnail ?? "",
-    sortIndex: project?.sortIndex ?? 999,
     hide: project?.hide ?? false,
   };
 
@@ -62,7 +61,7 @@ export const EditProjectSheet = () => {
     <>
       <ConfirmDialog />
       <Sheet open={isOpen} onOpenChange={onClose}>
-        <SheetContent className="dark space-y-4 sm:max-w-md">
+        <SheetContent className="dark space-y-4 sm:max-w-md md:max-w-xl">
           <SheetHeader>
             <SheetTitle>Edit Project</SheetTitle>
             <SheetDescription>Edit OR Delete a project</SheetDescription>

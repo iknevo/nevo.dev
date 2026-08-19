@@ -8,6 +8,16 @@ import dbConnect from "@/src/lib/db";
 import { authMiddleware, withHiddenAuth } from "@/src/lib/jwt";
 import { Experience } from "@/src/models/experience-model";
 
+async function bulkReorderExperience(ids: string[]) {
+  const operations = ids.map((id, index) => ({
+    updateOne: {
+      filter: { _id: id },
+      update: { $set: { sortIndex: index + 1 } },
+    },
+  }));
+  await Experience.bulkWrite(operations);
+}
+
 const app = new Hono()
   .get("/", withHiddenAuth, async (c) => {
     await dbConnect();
@@ -42,9 +52,27 @@ const app = new Hono()
       return c.json({ data });
     }
   )
+  .patch(
+    "/reorder",
+    authMiddleware,
+    zValidator("json", z.object({ ids: z.array(z.string()) })),
+    async (c) => {
+      await dbConnect();
+      const { ids } = c.req.valid("json");
+      if (ids.length === 0) {
+        return c.json({ message: "No items to reorder" }, status.BAD_REQUEST);
+      }
+      await bulkReorderExperience(ids);
+      return c.json({ success: true }, status.OK);
+    }
+  )
   .post("/", authMiddleware, zValidator("json", experienceSchema), async (c) => {
     await dbConnect();
     const data = c.req.valid("json");
+    if (!data.sortIndex) {
+      const maxItem = await Experience.findOne().sort({ sortIndex: -1 }).select("sortIndex");
+      data.sortIndex = (maxItem?.sortIndex ?? 0) + 1;
+    }
     const exp = await Experience.create(data);
     if (!exp) {
       return c.json({ message: "Error creating experience!, Try again later" }, status.BAD_REQUEST);
@@ -72,6 +100,13 @@ const app = new Hono()
       }
       await dbConnect();
       const data = c.req.valid("json");
+      const existing = await Experience.findById(id);
+      if (!existing) {
+        return c.json({ message: "experience not found" }, status.BAD_REQUEST);
+      }
+      if (!data.sortIndex) {
+        data.sortIndex = existing.sortIndex;
+      }
       const exp = await Experience.findByIdAndUpdate(id, data);
       if (!exp) {
         return c.json({ message: "experience not found" }, status.BAD_REQUEST);
@@ -97,10 +132,14 @@ const app = new Hono()
         return c.json({ error: "Missing id" }, status.BAD_REQUEST);
       }
       await dbConnect();
-      const stack = await Experience.findByIdAndDelete(id);
-      if (!stack) {
+      const exp = await Experience.findByIdAndDelete(id);
+      if (!exp) {
         return c.json({ message: "Error deleting experience!, Try again later" }, status.NOT_FOUND);
       }
+      await Experience.updateMany(
+        { sortIndex: { $gt: exp.sortIndex } },
+        { $inc: { sortIndex: -1 } }
+      );
       return c.status(status.NO_CONTENT);
     }
   );

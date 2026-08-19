@@ -29,7 +29,7 @@ export const NewProjectSheet = () => {
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="dark space-y-4 sm:max-w-md">
+      <SheetContent className="dark space-y-4 sm:max-w-md md:max-w-xl">
         <SheetHeader>
           <SheetTitle>New Project</SheetTitle>
           <SheetDescription>Add a new project</SheetDescription>
