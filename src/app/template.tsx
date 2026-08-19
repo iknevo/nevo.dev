@@ -24,7 +24,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
   return (
     <div>
-      <div className="page-transition fixed top-0 left-0 z-5 h-screen w-screen bg-black">
+      <div className="page-transition fixed top-0 left-0 z-9999999 h-screen w-screen bg-black">
         <div className="page-transition--inner bg-primary-dark fixed top-0 left-0 z-5 h-screen w-screen translate-y-full" />
       </div>
       {children}
