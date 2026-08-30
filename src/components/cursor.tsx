@@ -7,16 +7,14 @@ export default function Cursor() {
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   useEffect(() => {
-    const checkTouchDevice = () => {
-      const hasTouchScreen =
-        "ontouchstart" in window ||
-        navigator.maxTouchPoints > 0 ||
-        (navigator as any).msMaxTouchPoints > 0;
+    const pointer = window.matchMedia("(pointer: coarse)");
 
-      setIsTouchDevice(hasTouchScreen);
-    };
+    const update = () => setIsTouchDevice(pointer.matches);
 
-    checkTouchDevice();
+    update();
+    pointer.addEventListener("change", update);
+
+    return () => pointer.removeEventListener("change", update);
   }, []);
 
   if (isTouchDevice) {

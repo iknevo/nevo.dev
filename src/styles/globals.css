@@ -3,11 +3,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
-*,
-body {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  cursor: none;
+@media (hover: hover) and (pointer: fine) {
+  *,
+  body {
+    cursor: none;
+  }
 }
 
 @theme {
