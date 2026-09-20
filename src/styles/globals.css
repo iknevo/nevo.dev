@@ -113,6 +113,19 @@
   }
 }
 
+.star-spike {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 9999px;
+  pointer-events: none;
+  opacity: 0.45;
+}
+.star-spike--v {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
 .markdown-body pre,
 .markdown-body pre * {
   font-family: var(--font-jetbrains-mono), monospace;
