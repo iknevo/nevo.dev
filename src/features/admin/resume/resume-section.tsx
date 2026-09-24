@@ -1,7 +1,7 @@
 "use client";
 
 import { format } from "date-fns";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, X } from "lucide-react";
 import { useRef, useState } from "react";
 
 import SectionTitle from "@/src/components/section-title";
@@ -24,6 +24,13 @@ export default function ResumeSection() {
         return;
       }
       setSelectedFile(file);
+    }
+  };
+
+  const handleCancel = () => {
+    setSelectedFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -89,9 +96,9 @@ export default function ResumeSection() {
           )}
         </div>
 
-        <div className="dark space-y-5 rounded-lg border p-8">
+        <div className="dark flex h-full flex-col space-y-5 rounded-lg border p-8">
           <h3 className="text-lg font-semibold">Upload New Resume</h3>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-1 flex-col gap-4">
             <div className="flex-1">
               <input
                 ref={fileInputRef}
@@ -100,22 +107,34 @@ export default function ResumeSection() {
                 onChange={handleFileChange}
                 className="dark text-muted-foreground file:bg-primary block w-full text-sm file:mr-4 file:cursor-pointer file:rounded file:border-0 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white"
               />
-              {selectedFile && (
-                <p className="text-muted-foreground mt-2 flex items-center gap-2 text-sm">
-                  <span className="truncate">{selectedFile.name}</span>
-                  <span className="shrink-0 text-xs">
-                    ({(selectedFile.size / 1024).toFixed(0)} KB)
-                  </span>
-                </p>
-              )}
+              <div className="text-muted-foreground mt-2 flex min-h-8 items-center gap-2 text-sm">
+                {selectedFile && (
+                  <>
+                    <span className="truncate">{selectedFile.name}</span>
+                    <span className="shrink-0 text-xs">
+                      ({(selectedFile.size / 1024).toFixed(0)} KB)
+                    </span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={handleCancel}
+                      aria-label="Cancel selected file"
+                      className="text-muted-foreground ml-auto hover:text-white"
+                    >
+                      <X />
+                    </Button>
+                  </>
+                )}
+              </div>
             </div>
             <Button
               onClick={handleUpload}
               disabled={!selectedFile || uploadMutation.isPending}
               variant={!selectedFile ? "outline" : "default"}
-              className={cn("w-full", selectedFile && "text-white")}
+              className={cn("mt-auto w-full", selectedFile && "text-white")}
             >
-              {uploadMutation.isPending ? "Uploading..." : "Upload Resume"}
+              {uploadMutation.isPending ? "Uploading" : "Upload Resume"}
             </Button>
           </div>
         </div>
