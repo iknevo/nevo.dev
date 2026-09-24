@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 
 import SectionTitle from "@/src/components/section-title";
 import { Button } from "@/src/components/ui/button";
+import { cn } from "@/src/lib/utils";
 
 import { useGetResume } from "./api/use-get-resume";
 import { useUploadResume } from "./api/use-upload-resume";
@@ -90,27 +91,29 @@ export default function ResumeSection() {
 
         <div className="dark space-y-5 rounded-lg border p-8">
           <h3 className="text-lg font-semibold">Upload New Resume</h3>
-          <div className="space-y-4">
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".pdf"
-              onChange={handleFileChange}
-              className="dark text-muted-foreground file:bg-primary block w-full text-sm file:mr-4 file:cursor-pointer file:rounded file:border-0 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white"
-            />
-            {selectedFile && (
-              <p className="text-muted-foreground flex items-center gap-2 text-sm">
-                <span className="truncate">{selectedFile.name}</span>
-                <span className="shrink-0 text-xs">
-                  ({(selectedFile.size / 1024).toFixed(0)} KB)
-                </span>
-              </p>
-            )}
+          <div className="flex flex-col gap-4">
+            <div className="flex-1">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf"
+                onChange={handleFileChange}
+                className="dark text-muted-foreground file:bg-primary block w-full text-sm file:mr-4 file:cursor-pointer file:rounded file:border-0 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white"
+              />
+              {selectedFile && (
+                <p className="text-muted-foreground mt-2 flex items-center gap-2 text-sm">
+                  <span className="truncate">{selectedFile.name}</span>
+                  <span className="shrink-0 text-xs">
+                    ({(selectedFile.size / 1024).toFixed(0)} KB)
+                  </span>
+                </p>
+              )}
+            </div>
             <Button
               onClick={handleUpload}
               disabled={!selectedFile || uploadMutation.isPending}
-              variant="outline"
-              className="w-full"
+              variant={!selectedFile ? "outline" : "default"}
+              className={cn("w-full", selectedFile && "text-white")}
             >
               {uploadMutation.isPending ? "Uploading..." : "Upload Resume"}
             </Button>
