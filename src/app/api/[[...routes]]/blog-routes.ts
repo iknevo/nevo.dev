@@ -61,7 +61,8 @@ const app = new Hono()
     const body = await c.req.formData();
     const title = body.get("title");
     const summary = body.get("summary");
-    const image = body.get("image");
+    let image = body.get("image");
+    if (image instanceof File && image.size === 0) image = "";
     const doc = body.get("doc");
     const hideRaw = body.get("hide");
     const hide = hideRaw === "true";
@@ -119,10 +120,15 @@ const app = new Hono()
         return c.json({ error: "Missing id" }, status.BAD_REQUEST);
       }
       await dbConnect();
+      const existingPost = await Blog.findById(id);
+      if (!existingPost) {
+        return c.json({ message: "Blog Post not found" }, status.BAD_REQUEST);
+      }
       const body = await c.req.formData();
       const title = body.get("title");
       const summary = body.get("summary");
-      const image = body.get("image");
+      let image = body.get("image");
+      if (image instanceof File && image.size === 0) image = existingPost.image ?? "";
       const doc = body.get("doc");
       const hideRaw = body.get("hide");
       const hide = hideRaw === "true";

@@ -19,6 +19,7 @@ import { Textarea } from "@/src/components/ui/textarea";
 import { blogFormValues, blogSchema } from "@/src/definitions/blog-validation";
 import Editor from "@/src/features/code-editor/editor";
 import Preview from "@/src/features/code-editor/preview";
+import ImagePreview from "@/src/features/admin/shared/image-preview";
 
 type Props = {
   id?: string;
@@ -95,15 +96,17 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
               <FormControl>
                 <Input
                   type="file"
+                  accept="image/*"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
-                    field.onChange(file ?? new File([], ""));
+                    field.onChange(file ?? field.value);
                   }}
                   name={field.name}
                   ref={field.ref}
                   disabled={disabled}
                 />
               </FormControl>
+              <ImagePreview value={field.value} label="Current image" />
               <FormMessage />
             </FormItem>
           )}

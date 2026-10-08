@@ -200,9 +200,14 @@ const app = new Hono()
         return c.json({ error: "Missing id" }, status.BAD_REQUEST);
       }
       await dbConnect();
+      const existingStack = await Stack.findById(id);
+      if (!existingStack) {
+        return c.json({ message: "stack item not found" }, status.BAD_REQUEST);
+      }
       const body = await c.req.formData();
       const name = body.get("name");
-      const icon = body.get("icon");
+      let icon = body.get("icon");
+      if (icon instanceof File && icon.size === 0) icon = existingStack.icon;
       const type = body.get("type");
       const sortIndex = body.get("sortIndex");
       const hideRaw = body.get("hide");

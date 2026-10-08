@@ -23,6 +23,7 @@ import {
 import { Switch } from "@/src/components/ui/switch";
 import { STACK } from "@/src/config/constants";
 import { stackFormValues, stackSchema } from "@/src/definitions/stack-validations";
+import ImagePreview from "@/src/features/admin/shared/image-preview";
 
 type Props = {
   id?: string;
@@ -70,15 +71,17 @@ export default function StackForm({ defaultValues, id, onSubmit, onDelete, disab
               <FormControl>
                 <Input
                   type="file"
+                  accept="image/*"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
-                    field.onChange(file ?? new File([], ""));
+                    field.onChange(file ?? field.value);
                   }}
                   name={field.name}
                   ref={field.ref}
                   disabled={disabled}
                 />
               </FormControl>
+              <ImagePreview value={field.value} label="Current icon" />
               <FormMessage />
             </FormItem>
           )}

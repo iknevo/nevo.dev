@@ -159,13 +159,18 @@ const app = new Hono()
         return c.json({ error: "Missing id" }, status.BAD_REQUEST);
       }
       await dbConnect();
+      const existingProject = await Project.findById(id);
+      if (!existingProject) {
+        return c.json({ message: "Project not found" }, status.BAD_REQUEST);
+      }
       const body = await c.req.formData();
       const name = body.get("name");
       const year = body.get("year");
       const liveUrl = body.get("liveUrl");
       const sourceCode = body.get("sourceCode");
       const description = body.get("description");
-      const thumbnail = body.get("thumbnail");
+      let thumbnail = body.get("thumbnail");
+      if (thumbnail instanceof File && thumbnail.size === 0) thumbnail = existingProject.thumbnail;
       const sortIndex = body.get("sortIndex");
       const hideRaw = body.get("hide");
       const hide = hideRaw === "true";
