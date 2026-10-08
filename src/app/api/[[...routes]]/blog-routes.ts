@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import { z } from "zod";
 
 import { blogSchema } from "@/src/definitions/blog-validation";
-import { uploadToCloudinary } from "@/src/lib/cloudinary";
+import { destroyCloudinaryAsset, deriveCloudinaryPublicId, uploadToCloudinary } from "@/src/lib/cloudinary";
 import dbConnect from "@/src/lib/db";
 import { authMiddleware, withHiddenAuth } from "@/src/lib/jwt";
 import { Blog, blogType } from "@/src/models/blog-model";
@@ -84,9 +84,15 @@ const app = new Hono()
       return c.json({ success: false, message: "Validation failed", errors }, status.BAD_REQUEST);
     }
     const { data } = result;
-    let imageUrl = data.image;
+    let imageUrl: string;
+    let imagePublicId: string | undefined;
     if (data.image instanceof File) {
-      imageUrl = await uploadToCloudinary(data.image, "blogs/images");
+      const uploaded = await uploadToCloudinary(data.image, "blogs/images");
+      imageUrl = uploaded.url;
+      imagePublicId = uploaded.publicId;
+    } else {
+      imageUrl = data.image;
+      imagePublicId = deriveCloudinaryPublicId(imageUrl) ?? undefined;
     }
     const newPost = {
       title: data.title,
@@ -94,6 +100,7 @@ const app = new Hono()
       tags: data.tags,
       doc: data.doc,
       image: imageUrl,
+      imagePublicId,
       hide: data.hide,
     };
     const post = await Blog.create(newPost);
@@ -150,9 +157,23 @@ const app = new Hono()
         return c.json({ success: false, message: "Validation failed", errors }, status.BAD_REQUEST);
       }
       const { data } = result;
-      let imageUrl = data.image;
+      const oldImageUrl = existingPost.image;
+      const oldImagePublicId =
+        existingPost.imagePublicId ??
+        (oldImageUrl ? deriveCloudinaryPublicId(oldImageUrl) : null);
+
+      let imageUrl: string;
+      let imagePublicId: string | undefined;
       if (data.image instanceof File) {
-        imageUrl = await uploadToCloudinary(data.image, "blogs/images");
+        const uploaded = await uploadToCloudinary(data.image, "blogs/images");
+        imageUrl = uploaded.url;
+        imagePublicId = uploaded.publicId;
+      } else {
+        imageUrl = data.image;
+        imagePublicId =
+          imageUrl && imageUrl !== oldImageUrl
+            ? (deriveCloudinaryPublicId(imageUrl) ?? undefined)
+            : (existingPost.imagePublicId ?? undefined);
       }
       const newPost = {
         title: data.title,
@@ -160,17 +181,18 @@ const app = new Hono()
         tags: data.tags,
         doc: data.doc,
         image: imageUrl,
+        imagePublicId,
         hide: data.hide,
       };
-      let post = await Blog.findById(id);
-      if (!post) {
-        return c.json({ message: "Blog Post not found" }, status.BAD_REQUEST);
+      Object.assign(existingPost, newPost);
+      await existingPost.save();
+
+      if (oldImagePublicId && imageUrl !== oldImageUrl && oldImagePublicId !== imagePublicId) {
+        await destroyCloudinaryAsset(oldImagePublicId);
       }
-      Object.assign(post, newPost);
-      post = await post.save();
       return c.json<{ success: true; post: blogType }>({
         success: true,
-        post,
+        post: existingPost,
       });
     }
   )
@@ -210,6 +232,11 @@ const app = new Hono()
       const post = await Blog.findByIdAndDelete(id);
       if (!post) {
         return c.json({ message: "Error deleting blog post!, Try again later" }, status.NOT_FOUND);
+      }
+      const publicId =
+        post.imagePublicId ?? (post.image ? deriveCloudinaryPublicId(post.image) : null);
+      if (publicId) {
+        await destroyCloudinaryAsset(publicId);
       }
       return c.status(status.NO_CONTENT);
     }

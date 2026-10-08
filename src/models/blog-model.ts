@@ -20,6 +20,7 @@ const blogSchema = new Schema(
     image: {
       type: String,
     },
+    imagePublicId: String,
     doc: {
       type: String,
       required: [true, "Blog's body is required"],

@@ -1,7 +1,11 @@
 import { Hono } from "hono";
 import status from "http-status";
 
-import { uploadPdfToCloudinary } from "@/src/lib/cloudinary";
+import {
+  destroyCloudinaryAsset,
+  deriveCloudinaryPublicId,
+  uploadPdfToCloudinary,
+} from "@/src/lib/cloudinary";
 import dbConnect from "@/src/lib/db";
 import { authMiddleware } from "@/src/lib/jwt";
 import { Resume } from "@/src/models/resume-model";
@@ -48,9 +52,22 @@ const app = new Hono()
       return c.json({ message: "Only PDF files are allowed" }, status.BAD_REQUEST);
     }
 
-    const url = await uploadPdfToCloudinary(file, "resume");
+    const existingResume = await Resume.findOne();
 
-    const resume = await Resume.findOneAndUpdate({}, { url }, { upsert: true, new: true });
+    const { url, publicId } = await uploadPdfToCloudinary(file, "resume");
+
+    const resume = await Resume.findOneAndUpdate(
+      {},
+      { url, publicId },
+      { upsert: true, new: true }
+    );
+
+    const oldPublicId =
+      existingResume?.publicId ??
+      (existingResume?.url ? deriveCloudinaryPublicId(existingResume.url) : null);
+    if (oldPublicId && oldPublicId !== publicId) {
+      await destroyCloudinaryAsset(oldPublicId, "raw");
+    }
 
     return c.json({ success: true, url: resume.url, updatedAt: resume.updatedAt });
   });

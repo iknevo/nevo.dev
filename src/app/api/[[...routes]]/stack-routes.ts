@@ -1,3 +1,4 @@
+// oxlint-disable unicorn/no-thenable
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import status from "http-status";
@@ -5,7 +6,11 @@ import { z } from "zod";
 
 import { STACK, STACK_SORT } from "@/src/config/constants";
 import { stackSchema } from "@/src/definitions/stack-validations";
-import { uploadToCloudinary } from "@/src/lib/cloudinary";
+import {
+  deriveCloudinaryPublicId,
+  destroyCloudinaryAsset,
+  uploadToCloudinary,
+} from "@/src/lib/cloudinary";
 import dbConnect from "@/src/lib/db";
 import { authMiddleware, withHiddenAuth } from "@/src/lib/jwt";
 import { Stack, stackItem, stackType } from "@/src/models/stack-model";
@@ -159,9 +164,15 @@ const app = new Hono()
       return c.json({ success: false, message: "Validation failed", errors }, status.BAD_REQUEST);
     }
     const { data } = result;
-    let iconUrl = data.icon;
+    let iconUrl: string;
+    let iconPublicId: string | undefined;
     if (data.icon instanceof File) {
-      iconUrl = await uploadToCloudinary(data.icon, "tech-stack");
+      const uploaded = await uploadToCloudinary(data.icon, "tech-stack");
+      iconUrl = uploaded.url;
+      iconPublicId = uploaded.publicId;
+    } else {
+      iconUrl = data.icon;
+      iconPublicId = deriveCloudinaryPublicId(iconUrl) ?? undefined;
     }
     if (!data.sortIndex) {
       const maxItem = await Stack.findOne({ type: data.type })
@@ -172,6 +183,7 @@ const app = new Hono()
     const newStack = {
       name: data.name,
       icon: iconUrl,
+      iconPublicId,
       type: data.type,
       hide: data.hide,
       sortIndex: data.sortIndex,
@@ -230,26 +242,40 @@ const app = new Hono()
         return c.json({ success: false, message: "Validation failed", errors }, status.BAD_REQUEST);
       }
       const { data } = result;
-      let iconUrl = data.icon;
+      const oldIconUrl = existingStack.icon;
+      const oldIconPublicId =
+        existingStack.iconPublicId ?? (oldIconUrl ? deriveCloudinaryPublicId(oldIconUrl) : null);
+
+      let iconUrl: string;
+      let iconPublicId: string | undefined;
       if (data.icon instanceof File) {
-        iconUrl = await uploadToCloudinary(data.icon, "tech-stack");
-      }
-      let stack = await Stack.findById(id);
-      if (!stack) {
-        return c.json({ message: "stack item not found" }, status.BAD_REQUEST);
+        const uploaded = await uploadToCloudinary(data.icon, "tech-stack");
+        iconUrl = uploaded.url;
+        iconPublicId = uploaded.publicId;
+      } else {
+        iconUrl = data.icon;
+        iconPublicId =
+          iconUrl && iconUrl !== oldIconUrl
+            ? (deriveCloudinaryPublicId(iconUrl) ?? undefined)
+            : (existingStack.iconPublicId ?? undefined);
       }
       const newStack = {
         name: data.name,
         icon: iconUrl,
+        iconPublicId,
         type: data.type,
         hide: data.hide,
-        sortIndex: data.sortIndex ?? stack.sortIndex,
+        sortIndex: data.sortIndex ?? existingStack.sortIndex,
       };
-      Object.assign(stack, newStack);
-      stack = await stack.save();
+      Object.assign(existingStack, newStack);
+      await existingStack.save();
+
+      if (oldIconPublicId && iconUrl !== oldIconUrl && oldIconPublicId !== iconPublicId) {
+        await destroyCloudinaryAsset(oldIconPublicId);
+      }
       return c.json<{ success: true; stack: stackType }>({
         success: true,
-        stack,
+        stack: existingStack,
       });
     }
   )
@@ -271,6 +297,11 @@ const app = new Hono()
       const stack = await Stack.findByIdAndDelete(id);
       if (!stack) {
         return c.json({ message: "Error deleting stack item!, Try again later" }, status.NOT_FOUND);
+      }
+      const publicId =
+        stack.iconPublicId ?? (stack.icon ? deriveCloudinaryPublicId(stack.icon) : null);
+      if (publicId) {
+        await destroyCloudinaryAsset(publicId);
       }
       await Stack.updateMany(
         { type: stack.type, sortIndex: { $gt: stack.sortIndex } },
