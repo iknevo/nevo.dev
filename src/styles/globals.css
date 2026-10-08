@@ -21,6 +21,7 @@
   --container-center: "true";
   --padding-section: 250px;
   --font-mono: var(--font-jetbrains-mono);
+  --font-anton: var(--font-anton-display);
   --animate-shine: shine 2s linear infinite;
 
   @keyframes shine {
