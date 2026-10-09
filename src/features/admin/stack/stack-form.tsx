@@ -81,7 +81,7 @@ export default function StackForm({ defaultValues, id, onSubmit, onDelete, disab
                   disabled={disabled}
                 />
               </FormControl>
-              <ImagePreview value={field.value} label="Current icon" />
+              <ImagePreview value={field.value} label="Current icon" fit="contain" />
               <FormMessage />
             </FormItem>
           )}

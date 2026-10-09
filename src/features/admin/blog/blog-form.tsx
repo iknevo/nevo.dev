@@ -17,9 +17,9 @@ import { Input } from "@/src/components/ui/input";
 import { InputTags } from "@/src/components/ui/tags-input";
 import { Textarea } from "@/src/components/ui/textarea";
 import { blogFormValues, blogSchema } from "@/src/definitions/blog-validation";
+import ImagePreview from "@/src/features/admin/shared/image-preview";
 import Editor from "@/src/features/code-editor/editor";
 import Preview from "@/src/features/code-editor/preview";
-import ImagePreview from "@/src/features/admin/shared/image-preview";
 
 type Props = {
   id?: string;
