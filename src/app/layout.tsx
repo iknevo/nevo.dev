@@ -2,7 +2,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "lenis/dist/lenis.css";
 import { ReactLenis } from "lenis/react";
 import type { Metadata } from "next";
-import { JetBrains_Mono, Josefin_Sans } from "next/font/google";
+import { Anton, JetBrains_Mono, Josefin_Sans } from "next/font/google";
 import { headers } from "next/headers";
 
 import Providers from "@/src/providers/providers";
@@ -16,6 +16,13 @@ const josefin = Josefin_Sans({
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains-mono",
+  display: "swap",
+});
+
+const anton = Anton({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-anton-display",
   display: "swap",
 });
 
@@ -65,7 +72,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${josefin.className} ${jetbrainsMono.variable} relative bg-black text-white antialiased select-none`}
+        className={`${josefin.className} ${jetbrainsMono.variable} ${anton.variable} relative bg-black text-white antialiased select-none`}
       >
         <ReactLenis
           root

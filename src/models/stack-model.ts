@@ -12,6 +12,7 @@ const stackSchema = new Schema(
       type: String,
       required: [true, "Stack's icon is required"],
     },
+    iconPublicId: String,
     type: {
       type: String,
       enum: ["frontend", "backend", "mobile", "testing", "tools", "studying"],

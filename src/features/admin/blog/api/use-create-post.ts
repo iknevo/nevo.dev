@@ -16,6 +16,8 @@ export function useCreatePost() {
       formData.append("summary", values.summary);
       formData.append("doc", values.doc);
       formData.append("image", values.image);
+      formData.append("hide", String(values.hide));
+
       values.tags.forEach((tag) => {
         if (tag) formData.append("tags", tag);
       });

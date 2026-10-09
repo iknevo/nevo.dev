@@ -5,7 +5,11 @@ import mongoose from "mongoose";
 import { z } from "zod";
 
 import { projectSchema } from "@/src/definitions/projects-validations";
-import { uploadToCloudinary } from "@/src/lib/cloudinary";
+import {
+  destroyCloudinaryAsset,
+  deriveCloudinaryPublicId,
+  uploadToCloudinary,
+} from "@/src/lib/cloudinary";
 import dbConnect from "@/src/lib/db";
 import { authMiddleware, withHiddenAuth } from "@/src/lib/jwt";
 import { Project, projectType } from "@/src/models/project-model";
@@ -115,9 +119,15 @@ const app = new Hono()
       return c.json({ success: false, message: "Validation failed", errors }, status.BAD_REQUEST);
     }
     const { data } = result;
-    let thumbnailUrl = data.thumbnail;
+    let thumbnailUrl: string;
+    let thumbnailPublicId: string | undefined;
     if (data.thumbnail instanceof File) {
-      thumbnailUrl = await uploadToCloudinary(data.thumbnail, "projects/thumbnails");
+      const uploaded = await uploadToCloudinary(data.thumbnail, "projects/thumbnails");
+      thumbnailUrl = uploaded.url;
+      thumbnailPublicId = uploaded.publicId;
+    } else {
+      thumbnailUrl = data.thumbnail;
+      thumbnailPublicId = deriveCloudinaryPublicId(thumbnailUrl) ?? undefined;
     }
     if (!data.sortIndex) {
       const maxItem = await Project.findOne().sort({ sortIndex: -1 }).select("sortIndex");
@@ -132,6 +142,7 @@ const app = new Hono()
       features: data.features.map((f) => f.item),
       techStack: data.techStack.map((t) => t.item),
       thumbnail: thumbnailUrl,
+      thumbnailPublicId,
       sortIndex: data.sortIndex,
       hide: data.hide,
     };
@@ -159,13 +170,18 @@ const app = new Hono()
         return c.json({ error: "Missing id" }, status.BAD_REQUEST);
       }
       await dbConnect();
+      const existingProject = await Project.findById(id);
+      if (!existingProject) {
+        return c.json({ message: "Project not found" }, status.BAD_REQUEST);
+      }
       const body = await c.req.formData();
       const name = body.get("name");
       const year = body.get("year");
       const liveUrl = body.get("liveUrl");
       const sourceCode = body.get("sourceCode");
       const description = body.get("description");
-      const thumbnail = body.get("thumbnail");
+      let thumbnail = body.get("thumbnail");
+      if (thumbnail instanceof File && thumbnail.size === 0) thumbnail = existingProject.thumbnail;
       const sortIndex = body.get("sortIndex");
       const hideRaw = body.get("hide");
       const hide = hideRaw === "true";
@@ -192,13 +208,23 @@ const app = new Hono()
         return c.json({ success: false, message: "Validation failed", errors }, status.BAD_REQUEST);
       }
       const { data } = result;
-      let thumbnailUrl = data.thumbnail;
+      const oldThumbnailUrl = existingProject.thumbnail;
+      const oldThumbnailPublicId =
+        existingProject.thumbnailPublicId ??
+        (oldThumbnailUrl ? deriveCloudinaryPublicId(oldThumbnailUrl) : null);
+
+      let thumbnailUrl: string;
+      let thumbnailPublicId: string | undefined;
       if (data.thumbnail instanceof File) {
-        thumbnailUrl = await uploadToCloudinary(data.thumbnail, "projects/thumbnails");
-      }
-      let project = await Project.findById(id);
-      if (!project) {
-        return c.json({ message: "Project not found" }, status.BAD_REQUEST);
+        const uploaded = await uploadToCloudinary(data.thumbnail, "projects/thumbnails");
+        thumbnailUrl = uploaded.url;
+        thumbnailPublicId = uploaded.publicId;
+      } else {
+        thumbnailUrl = data.thumbnail;
+        thumbnailPublicId =
+          thumbnailUrl && thumbnailUrl !== oldThumbnailUrl
+            ? (deriveCloudinaryPublicId(thumbnailUrl) ?? undefined)
+            : (existingProject.thumbnailPublicId ?? undefined);
       }
       const newProject = {
         name: data.name,
@@ -209,14 +235,23 @@ const app = new Hono()
         features: data.features.map((f) => f.item),
         techStack: data.techStack.map((t) => t.item),
         thumbnail: thumbnailUrl,
-        sortIndex: data.sortIndex ?? project.sortIndex,
+        thumbnailPublicId,
+        sortIndex: data.sortIndex ?? existingProject.sortIndex,
         hide: data.hide,
       };
-      Object.assign(project, newProject);
-      project = await project.save();
+      Object.assign(existingProject, newProject);
+      await existingProject.save();
+
+      if (
+        oldThumbnailPublicId &&
+        thumbnailUrl !== oldThumbnailUrl &&
+        oldThumbnailPublicId !== thumbnailPublicId
+      ) {
+        await destroyCloudinaryAsset(oldThumbnailPublicId);
+      }
       return c.json<{ success: true; project: projectType }>({
         success: true,
-        project,
+        project: existingProject,
       });
     }
   )
@@ -238,6 +273,12 @@ const app = new Hono()
       const project = await Project.findByIdAndDelete(id);
       if (!project) {
         return c.json({ message: "Error deleting project!, Try again later" }, status.NOT_FOUND);
+      }
+      const publicId =
+        project.thumbnailPublicId ??
+        (project.thumbnail ? deriveCloudinaryPublicId(project.thumbnail) : null);
+      if (publicId) {
+        await destroyCloudinaryAsset(publicId);
       }
       await Project.updateMany(
         { sortIndex: { $gt: project.sortIndex } },

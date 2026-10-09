@@ -6,6 +6,7 @@ const resumeSchema = new Schema(
       type: String,
       required: [true, "Resume URL is required"],
     },
+    publicId: String,
   },
   { timestamps: true }
 );

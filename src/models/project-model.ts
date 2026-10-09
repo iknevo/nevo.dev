@@ -39,6 +39,7 @@ const projectSchema = new Schema(
       default: [],
     },
     thumbnail: { type: String, required: true },
+    thumbnailPublicId: String,
     sortIndex: { type: Number, required: true, default: 999 },
     slug: String,
     hide: {
