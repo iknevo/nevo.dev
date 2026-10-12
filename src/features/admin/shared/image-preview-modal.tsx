@@ -67,10 +67,13 @@ export default function ImagePreviewModal({ value, fit = "cover", disabled, clas
           <ImageUpscale />
         </Button>
       </DialogTrigger>
-      <DialogContent className="overflow-hidden p-0 sm:max-w-3xl">
+      <DialogContent
+        className="dark overflow-hidden rounded-none p-2 sm:max-w-3xl"
+        showCloseButton={false}
+      >
         <DialogTitle className="sr-only">{alt}</DialogTitle>
         <DialogDescription className="sr-only">{detail}</DialogDescription>
-        <div className="group relative h-[60vh] max-h-[80vh] w-full overflow-hidden bg-black">
+        <div className="group relative h-[60vh] max-h-[80vh] w-full overflow-hidden">
           {isFile ? (
             // eslint-disable-next-line @next/next/no-img-element -- blob: object URLs are not handled by next/image
             <img
@@ -91,7 +94,7 @@ export default function ImagePreviewModal({ value, fit = "cover", disabled, clas
             href={src}
             target="_blank"
             rel="noreferrer noopener"
-            className="hover:bg-primary absolute top-4 left-4 inline-flex size-12 items-center justify-center bg-gray-950/70 text-white opacity-0 transition-all group-hover:opacity-100 hover:text-white"
+            className="hover:bg-primary absolute top-2 right-2 inline-flex size-12 items-center justify-center bg-gray-950/70 text-white opacity-0 transition-all group-hover:opacity-100 hover:text-white"
           >
             <ExternalLink />
           </a>
