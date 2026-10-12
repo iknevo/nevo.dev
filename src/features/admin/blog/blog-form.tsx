@@ -17,7 +17,7 @@ import { Input } from "@/src/components/ui/input";
 import { InputTags } from "@/src/components/ui/tags-input";
 import { Textarea } from "@/src/components/ui/textarea";
 import { blogFormValues, blogSchema } from "@/src/definitions/blog-validation";
-import ImagePreview from "@/src/features/admin/shared/image-preview";
+import ImagePreviewModal from "@/src/features/admin/shared/image-preview-modal";
 import Editor from "@/src/features/code-editor/editor";
 import Preview from "@/src/features/code-editor/preview";
 
@@ -93,20 +93,26 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
           render={({ field }) => (
             <FormItem>
               <FormLabel>Image</FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    field.onChange(file ?? field.value);
-                  }}
-                  name={field.name}
-                  ref={field.ref}
+              <div className="relative">
+                <FormControl>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      field.onChange(file ?? field.value);
+                    }}
+                    name={field.name}
+                    ref={field.ref}
+                    disabled={disabled}
+                  />
+                </FormControl>
+                <ImagePreviewModal
+                  value={field.value}
                   disabled={disabled}
+                  className="absolute top-1/2 right-2 -translate-y-1/2"
                 />
-              </FormControl>
-              <ImagePreview value={field.value} label="Current image" />
+              </div>
               <FormMessage />
             </FormItem>
           )}

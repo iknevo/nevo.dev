@@ -31,7 +31,7 @@ import {
 import { Switch } from "@/src/components/ui/switch";
 import { Textarea } from "@/src/components/ui/textarea";
 import { projectFormValues, projectSchema } from "@/src/definitions/projects-validations";
-import ImagePreview from "@/src/features/admin/shared/image-preview";
+import ImagePreviewModal from "@/src/features/admin/shared/image-preview-modal";
 
 type Props = {
   id?: string;
@@ -153,20 +153,27 @@ export default function ProjectForm({ defaultValues, id, onSubmit, onDelete, dis
           render={({ field }) => (
             <FormItem>
               <FormLabel>Thumbnail</FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    field.onChange(file ?? field.value);
-                  }}
-                  name={field.name}
-                  ref={field.ref}
+              <div className="relative">
+                <FormControl>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      field.onChange(file ?? field.value);
+                    }}
+                    name={field.name}
+                    ref={field.ref}
+                    disabled={disabled}
+                  />
+                </FormControl>
+                <ImagePreviewModal
+                  value={field.value}
                   disabled={disabled}
+                  className="absolute top-1/2 right-2 -translate-y-1/2"
+                  fit="contain"
                 />
-              </FormControl>
-              <ImagePreview value={field.value} label="Current thumbnail" />
+              </div>
               <FormMessage />
             </FormItem>
           )}
