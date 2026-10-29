@@ -34,7 +34,13 @@ export const NewProjectSheet = () => {
           <SheetTitle>New Project</SheetTitle>
           <SheetDescription>Add a new project</SheetDescription>
         </SheetHeader>
-        <ProjectForm onSubmit={onSubmit} disabled={isPending} defaultValues={projectFormDefaults} />
+        {isOpen && (
+          <ProjectForm
+            onSubmit={onSubmit}
+            disabled={isPending}
+            defaultValues={projectFormDefaults}
+          />
+        )}
       </SheetContent>
     </Sheet>
   );

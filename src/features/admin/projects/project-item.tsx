@@ -39,6 +39,7 @@ export default function ProjectItem({ project }: Props) {
         <button
           type="button"
           aria-label={`Edit ${project.name}`}
+          title={`Edit ${project.name}`}
           onClick={() => onOpen(project._id)}
           className="no-cursor cursor-none"
         >

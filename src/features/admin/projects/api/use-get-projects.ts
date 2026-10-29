@@ -12,7 +12,7 @@ export function useGetProjects(withHidden: boolean = false) {
           withHidden,
         },
       });
-      if (!res.ok) throw new Error("Failed to fetch projects");
+      if (!res.ok) throw new Error("Failed to load projects");
       const { data } = await res.json();
       return data;
     },
