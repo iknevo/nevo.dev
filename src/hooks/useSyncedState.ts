@@ -2,7 +2,7 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { useSyncExternalStore } from "react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 
 interface Store<T> {
   subscribe: (listener: () => void) => () => void;
@@ -31,8 +31,7 @@ function createStore<T>(): Store<T> {
 
 export function useSyncedState<T>(queryKey: unknown[], initialData: T) {
   const queryClient = useQueryClient();
-  const storeRef = useRef<Store<T>>(createStore<T>());
-  const store = storeRef.current;
+  const store = useMemo(() => createStore<T>(), []);
   const keyString = queryKey.join();
 
   useEffect(() => {
@@ -62,7 +61,7 @@ export function useSyncedState<T>(queryKey: unknown[], initialData: T) {
         typeof newData === "function" ? (newData as (prev: T) => T)(current) : newData
       );
     },
-    [store]
+    [initialData, store]
   );
 
   return [data, setData] as const;
