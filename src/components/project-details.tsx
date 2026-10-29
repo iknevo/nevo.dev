@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useLayoutEffect, useRef } from "react";
 
 import TransitionLink from "@/src/components/transition-link";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/src/components/ui/tooltip";
 import { useGetProject } from "@/src/features/admin/projects/api/use-get-project";
 
 import { LoaderSmall } from "./loader-small";
@@ -122,28 +123,36 @@ export default function ProjectDetails({ id }: Props) {
 
                   <div className="fade-in-later flex items-center gap-4 opacity-0">
                     {project.sourceCode && (
-                      <a
-                        href={project.sourceCode}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        aria-label={`View ${project.name} source code`}
-                        title="View source code"
-                        className="hover:text-primary focus-visible:outline-primary rounded-sm outline-offset-4 focus-visible:outline-2"
-                      >
-                        <Code size={30} />
-                      </a>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <a
+                            href={project.sourceCode}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            aria-label={`View ${project.name} source code`}
+                            className="hover:text-primary focus-visible:outline-primary rounded-sm outline-offset-4 focus-visible:outline-2"
+                          >
+                            <Code size={30} />
+                          </a>
+                        </TooltipTrigger>
+                        <TooltipContent>View source code</TooltipContent>
+                      </Tooltip>
                     )}
                     {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        aria-label={`Open ${project.name} live site`}
-                        title="Open live site"
-                        className="hover:text-primary focus-visible:outline-primary rounded-sm outline-offset-4 focus-visible:outline-2"
-                      >
-                        <ExternalLink size={30} />
-                      </a>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            aria-label={`Open ${project.name} live site`}
+                            className="hover:text-primary focus-visible:outline-primary rounded-sm outline-offset-4 focus-visible:outline-2"
+                          >
+                            <ExternalLink size={30} />
+                          </a>
+                        </TooltipTrigger>
+                        <TooltipContent>Open live site</TooltipContent>
+                      </Tooltip>
                     )}
                   </div>
                 </div>
@@ -199,16 +208,20 @@ export default function ProjectDetails({ id }: Props) {
                   sizes="(min-width: 1280px) 1148px, calc(100vw - 3rem)"
                   className="object-cover object-center transition-transform duration-700"
                 />
-                <a
-                  href={project.thumbnail}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  aria-label={`Open ${project.name} image`}
-                  title="Open project image"
-                  className="hover:bg-primary absolute top-4 right-4 inline-flex size-12 items-center justify-center bg-gray-950/70 text-white opacity-0 transition-all group-hover:opacity-100 hover:text-white"
-                >
-                  <ExternalLink />
-                </a>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <a
+                      href={project.thumbnail}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      aria-label={`Open ${project.name} image`}
+                      className="hover:bg-primary absolute top-4 right-4 inline-flex size-12 items-center justify-center bg-gray-950/70 text-white opacity-0 transition-all group-hover:opacity-100 hover:text-white"
+                    >
+                      <ExternalLink />
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent>Open project image</TooltipContent>
+                </Tooltip>
               </div>
             </figure>
 

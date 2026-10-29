@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const blogSchema = z.object({
-  title: z.string().min(3, "Blog's title is required"),
-  summary: z.string().min(3, "Blog's summary is required"),
-  tags: z.array(z.string()).min(1, "Add at least one tag"),
+  title: z.string().trim().min(3, "Blog's title is required"),
+  summary: z.string().trim().min(3, "Blog's summary is required"),
+  tags: z.array(z.string().trim().min(1, "Tags can't be empty")).min(1, "Add at least one tag"),
   image: z.union([z.string(), z.instanceof(File)]),
   doc: z.string().min(3, "Blog's body is required"),
   hide: z.boolean(),
