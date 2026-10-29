@@ -74,22 +74,23 @@ const app = new Hono<Env>()
       await dbConnect();
       const user = await User.findOne({ email });
       if (!user) {
-        return c.json(
-          { success: false, message: "There was an error sending email, Please try again later." },
-          status.UNAUTHORIZED
-        );
+        return c.json({
+          success: true,
+          message: "If an account exists, a password-reset email has been sent.",
+        });
       }
       const resetPasswordToken = user.createPasswordResetToken();
       await user.save({ validateBeforeSave: false });
-      const host = c.req.header("host");
-      const protocol = c.req.url.startsWith("https") ? "https" : "http";
-      const resetUrl = `${protocol}://${host}/auth/reset-password/${resetPasswordToken}`;
+      const resetUrl = new URL(
+        `/auth/reset-password/${resetPasswordToken}`,
+        env.NEXT_PUBLIC_APP_URL
+      ).toString();
       try {
         await sendPasswordResetEmail(user.email, resetUrl);
         return c.json(
           {
             success: true,
-            message: "email sent, please check your email.",
+            message: "If an account exists, a password-reset email has been sent.",
           },
           status.OK
         );

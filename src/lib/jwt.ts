@@ -37,6 +37,7 @@ function sendRefreshCookie(c: Context, token: string) {
 async function generateAccessToken(id: string): Promise<string> {
   const payload: AccessPayload = {
     id,
+    iat: Math.floor(Date.now() / 1000),
     exp: Math.floor(Date.now() / 1000) + 60 * env.jwt.accessExpiresIn,
   };
   return await sign(payload, env.jwt.secret, "HS256");
@@ -45,6 +46,7 @@ async function generateAccessToken(id: string): Promise<string> {
 export async function generateRefreshToken(id: string): Promise<string> {
   const payload: AccessPayload = {
     id,
+    iat: Math.floor(Date.now() / 1000),
     exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * env.jwt.refreshExpiresIn,
   };
   return await sign(payload, env.jwt.refreshSecret, "HS256");

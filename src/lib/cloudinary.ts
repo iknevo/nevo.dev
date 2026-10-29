@@ -1,6 +1,28 @@
 import { v2 as cloudinary } from "cloudinary";
 
 import { env } from "@/src/config/env";
+import { AppError } from "@/src/lib/error-handlers";
+
+const MAX_IMAGE_UPLOAD_BYTES = 10 * 1024 * 1024;
+const MAX_PDF_UPLOAD_BYTES = 10 * 1024 * 1024;
+
+function validateImageFile(file: File) {
+  if (!file.type.startsWith("image/")) {
+    throw new AppError("Only image files are allowed", 400);
+  }
+  if (file.size > MAX_IMAGE_UPLOAD_BYTES) {
+    throw new AppError("Image must be 10 MB or smaller", 400);
+  }
+}
+
+function validatePdfFile(file: File) {
+  if (file.type !== "application/pdf") {
+    throw new AppError("Only PDF files are allowed", 400);
+  }
+  if (file.size > MAX_PDF_UPLOAD_BYTES) {
+    throw new AppError("PDF must be 10 MB or smaller", 400);
+  }
+}
 
 cloudinary.config({
   cloud_name: env.cloudinary.cloud_name,
@@ -14,6 +36,7 @@ export type UploadedAsset = {
 };
 
 export const uploadToCloudinary = async (file: File, folder: string): Promise<UploadedAsset> => {
+  validateImageFile(file);
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
 
@@ -31,6 +54,7 @@ export const uploadToCloudinary = async (file: File, folder: string): Promise<Up
 };
 
 export const uploadPdfToCloudinary = async (file: File, folder: string): Promise<UploadedAsset> => {
+  validatePdfFile(file);
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
 

@@ -7,7 +7,7 @@ function getEnv(key: string, required = true): string {
 }
 
 export const env = {
-  NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL!,
+  NEXT_PUBLIC_APP_URL: getEnv("NEXT_PUBLIC_APP_URL"),
   nodeEnv: process.env.NODE_ENV || "development",
   development: process.env.NODE_ENV === "development",
   production: process.env.NODE_ENV === "production",
