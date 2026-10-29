@@ -4,7 +4,6 @@ import { type KeyboardEvent, useCallback, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { Button } from "@/src/components/ui/button";
-import { Field } from "@/src/components/ui/field";
 import {
   Form,
   FormControl,
@@ -89,14 +88,8 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  disabled={disabled}
-                  maxLength={120}
-                  placeholder="e.g. first blog post"
-                />
+                <Input {...field} disabled={disabled} placeholder="e.g. first blog post" />
               </FormControl>
-              <p className="text-muted-foreground text-right text-xs">{field.value.length}/120</p>
               <FormMessage />
             </FormItem>
           )}
@@ -112,12 +105,10 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
                 <Textarea
                   {...field}
                   disabled={disabled}
-                  maxLength={240}
                   placeholder="what is this all about"
                   className="min-h-30"
                 />
               </FormControl>
-              <p className="text-muted-foreground text-right text-xs">{field.value.length}/240</p>
               <FormMessage />
             </FormItem>
           )}
@@ -144,6 +135,7 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
                       field.ref(node);
                     }}
                     disabled={disabled}
+                    className="file:bg-primary file:mr-3 file:cursor-pointer file:rounded file:border-0 file:px-3 file:py-1.5 file:font-medium file:text-white"
                   />
                 </FormControl>
                 <ImagePreviewModal
@@ -170,6 +162,13 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
                   </Tooltip>
                 )}
               </div>
+              <p className="text-muted-foreground truncate text-xs" aria-live="polite">
+                {field.value instanceof File
+                  ? `${field.value.name} · ${(field.value.size / 1024).toFixed(0)} KB`
+                  : field.value
+                    ? "Current image attached"
+                    : "No image selected"}
+              </p>
               <FormMessage />
             </FormItem>
           )}
@@ -260,53 +259,61 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
           <FormField name="doc" control={form.control} render={() => <FormMessage />} />
         </div>
 
-        <div className="flex justify-end gap-4">
-          {!!id && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  className="text-white"
-                  type="button"
-                  variant="destructive"
-                  aria-label="Delete post"
-                  disabled={disabled}
-                  onClick={handleDelete}
-                >
-                  <Trash className="size-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Delete post</TooltipContent>
-            </Tooltip>
-          )}
-
-          <Controller
-            name="hide"
-            control={form.control}
-            render={({ field }) => (
-              <Field orientation="horizontal" className="justify-between">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      aria-label={field.value ? "Make post visible" : "Hide post"}
-                      disabled={disabled}
-                      onClick={() => field.onChange(!field.value)}
-                      className="relative"
-                    >
-                      {field.value ? (
-                        <EyeClosed className="text-muted-foreground size-5" />
-                      ) : (
-                        <Eye className="text-foreground size-5" />
-                      )}
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>{field.value ? "Make post visible" : "Hide post"}</TooltipContent>
-                </Tooltip>
-              </Field>
+        <div className="flex flex-col-reverse gap-4 border-t border-white/10 pt-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            {!!id && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    aria-label="Delete post"
+                    disabled={disabled}
+                    onClick={handleDelete}
+                  >
+                    <Trash className="size-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Delete post</TooltipContent>
+              </Tooltip>
             )}
-          />
+
+            <Controller
+              name="hide"
+              control={form.control}
+              render={({ field }) => (
+                <div className="flex items-center gap-2">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        aria-label={field.value ? "Make post visible" : "Hide post"}
+                        aria-pressed={!field.value}
+                        disabled={disabled}
+                        onClick={() => field.onChange(!field.value)}
+                      >
+                        {field.value ? (
+                          <EyeClosed className="text-muted-foreground size-5" />
+                        ) : (
+                          <Eye className="text-foreground size-5" />
+                        )}
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      {field.value ? "Make post visible" : "Hide post"}
+                    </TooltipContent>
+                  </Tooltip>
+                  <span className="text-muted-foreground text-sm">
+                    {field.value ? "Hidden" : "Visible"}
+                  </span>
+                </div>
+              )}
+            />
+          </div>
+
           <Button type="submit" className="text-white" disabled={disabled}>
             {disabled && <Loader2 className="size-4 animate-spin" />}
             {disabled ? "Saving..." : id ? "Save Changes" : "Submit blog"}
