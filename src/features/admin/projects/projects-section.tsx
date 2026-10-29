@@ -18,7 +18,6 @@ import {
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
 import { useQueryClient } from "@tanstack/react-query";
-import { cn } from "cn";
 
 import AdminSectionButton from "@/src/components/admin-section-button";
 import { LoaderSmall } from "@/src/components/loader-small";
@@ -85,22 +84,7 @@ export default function ProjectsSection() {
   return (
     <div className="container pb-10">
       <div className="mb-10 flex items-center justify-between">
-        <div className="flex min-w-0 items-center gap-2">
-          <SectionTitle title="PROJECTS" className="mb-0" />
-          <div className="text-muted-foreground flex shrink-0 items-center gap-2 px-2.5">
-            <span className="font-medium text-white/80 tabular-nums">{items.length}</span>
-            <span
-              aria-hidden="true"
-              className={cn(
-                "bg-primary size-1.5 rounded-full opacity-0 transition-opacity",
-                isSavingOrder && "animate-pulse opacity-100"
-              )}
-            />
-            <span className="sr-only" role="status">
-              {isSavingOrder && "Saving project order"}
-            </span>
-          </div>
-        </div>
+        <SectionTitle title="PROJECTS" className="mb-0" />
         <AdminSectionButton onClick={onOpen}>New Project</AdminSectionButton>
       </div>
 
