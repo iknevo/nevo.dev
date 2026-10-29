@@ -102,7 +102,11 @@ export default function ExperienceSection() {
                         {item.startDate} - {item.endDate}
                       </p>
                     </div>
-                    <button className="no-cursor cursor-none">
+                    <button
+                      type="button"
+                      aria-label={`Edit ${item.company} experience`}
+                      className="no-cursor cursor-none"
+                    >
                       <PenLine className="cursor size-7 md:size-8" />
                     </button>
                   </div>

@@ -36,7 +36,12 @@ export default function ProjectItem({ project }: Props) {
         <p className="from-primary bg-linear-to-r from-50% to-white to-50% bg-size-[200%] bg-clip-text bg-right text-transparent transition-all duration-700 group-hover:bg-left">
           {project.name}
         </p>
-        <button onClick={() => onOpen(project._id)} className="no-cursor cursor-none">
+        <button
+          type="button"
+          aria-label={`Edit ${project.name}`}
+          onClick={() => onOpen(project._id)}
+          className="no-cursor cursor-none"
+        >
           <PenLine className="size-5" />
         </button>
       </div>

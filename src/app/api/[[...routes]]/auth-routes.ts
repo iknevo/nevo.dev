@@ -1,11 +1,14 @@
 import { createHash } from "crypto";
 import { Hono } from "hono";
+import type { Context } from "hono";
+import { rateLimiter } from "hono-rate-limiter";
 import { deleteCookie } from "hono/cookie";
 import status from "http-status";
 import { z } from "zod";
 
 import { env } from "@/src/config/env";
 import {
+  EmailSchema,
   LoginFormSchema,
   PasswordResetSchema,
   PasswordUpdateSchema,
@@ -23,6 +26,29 @@ type Env = {
   };
 };
 
+function getClientIp(c: Context) {
+  return (
+    c.req.header("x-forwarded-for")?.split(",")[0]?.trim() ?? c.req.header("x-real-ip") ?? "unknown"
+  );
+}
+
+const loginRateLimit = rateLimiter({
+  windowMs: 15 * 60 * 1000,
+  limit: 5,
+  keyGenerator: (c) => `login:${getClientIp(c)}`,
+  standardHeaders: "draft-7",
+  skipSuccessfulRequests: true,
+  message: { message: "Too many login attempts. Please try again later." },
+});
+
+const forgotPasswordRateLimit = rateLimiter({
+  windowMs: 60 * 60 * 1000,
+  limit: 3,
+  keyGenerator: (c) => `forgot-password:${getClientIp(c)}`,
+  standardHeaders: "draft-7",
+  message: { message: "Too many reset requests. Please try again later." },
+});
+
 const app = new Hono<Env>()
   .get("/me", authMiddleware, async (c) => {
     const userPayload = c.get("user");
@@ -36,7 +62,7 @@ const app = new Hono<Env>()
       status.OK
     );
   })
-  .post("/login", zValidator("json", LoginFormSchema), async (c) => {
+  .post("/login", loginRateLimit, zValidator("json", LoginFormSchema), async (c) => {
     const { email, password } = c.req.valid("json");
     await dbConnect();
     const user = await User.findOne({ email }).select("+password");
@@ -63,10 +89,11 @@ const app = new Hono<Env>()
   })
   .post(
     "/forgot-password",
+    forgotPasswordRateLimit,
     zValidator(
       "json",
       z.object({
-        email: z.email(),
+        email: EmailSchema,
       })
     ),
     async (c) => {

@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 import { verifyRefreshToken } from "./lib/jwt";
+import { getSafeAdminRedirect } from "./lib/safe-redirect";
 
 export async function proxy(req: NextRequest) {
   const { pathname, searchParams } = req.nextUrl;
@@ -11,7 +12,7 @@ export async function proxy(req: NextRequest) {
       id: string;
     };
     if (decoded?.id) {
-      const redirectTo = searchParams.get("from") || "/admin";
+      const redirectTo = getSafeAdminRedirect(searchParams.get("from"));
       return NextResponse.redirect(new URL(redirectTo, req.url));
     }
   }
@@ -39,7 +40,7 @@ export async function proxy(req: NextRequest) {
 
 function redirectToLogin(req: NextRequest) {
   const loginUrl = new URL("/auth/login", req.url);
-  loginUrl.searchParams.set("from", req.nextUrl.pathname);
+  loginUrl.searchParams.set("from", getSafeAdminRedirect(req.nextUrl.pathname));
   return NextResponse.redirect(loginUrl);
 }
 

@@ -71,6 +71,7 @@ export default function UpdatePasswordForm() {
                         disabled={isPending}
                         placeholder="current password"
                         className="md:py-5"
+                        autoComplete="current-password"
                       />
                     </FormControl>
                   </FormItem>
@@ -91,6 +92,7 @@ export default function UpdatePasswordForm() {
                         disabled={isPending}
                         placeholder="password"
                         className="md:py-5"
+                        autoComplete="new-password"
                       />
                     </FormControl>
                   </FormItem>
@@ -111,6 +113,7 @@ export default function UpdatePasswordForm() {
                         disabled={isPending}
                         placeholder="confirm your password"
                         className="md:py-5"
+                        autoComplete="new-password"
                       />
                     </FormControl>
                   </FormItem>
