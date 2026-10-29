@@ -54,20 +54,23 @@ function ProjectNavigation({
 
   return (
     <nav
-      className="project-navigation grid grid-cols-2 max-sm:grid-cols-1 border-y border-white/15"
+      className="project-navigation grid grid-cols-2 border-y border-white/15 max-sm:grid-cols-1"
       aria-label="Project navigation"
     >
       {previousProject ? (
         <TransitionLink
           href={`/projects/${previousProject.slug}`}
           aria-label={`Go to previous project: ${previousProject.name}`}
-          className="group flex min-w-0 flex-col gap-2 py-5 pr-6 text-left transition-colors focus-visible:text-primary focus-visible:outline-none"
+          className="group focus-visible:text-primary flex min-w-0 flex-col gap-2 py-5 pr-6 text-left transition-colors focus-visible:outline-none"
         >
-          <span className="flex items-center gap-2 text-[10px] tracking-[0.18em] text-white/45 uppercase transition-colors group-hover:text-primary">
-            <ArrowLeft className="size-3.5 shrink-0 transition-transform group-hover:-translate-x-1" aria-hidden="true" />
+          <span className="group-hover:text-primary flex items-center gap-2 text-[10px] tracking-[0.18em] text-white/45 uppercase transition-colors">
+            <ArrowLeft
+              className="size-3.5 shrink-0 transition-transform group-hover:-translate-x-1"
+              aria-hidden="true"
+            />
             Previous
           </span>
-          <span className="truncate text-base text-white/90 transition-colors group-hover:text-primary sm:text-lg">
+          <span className="group-hover:text-primary truncate text-base text-white/90 transition-colors sm:text-lg">
             {previousProject.name}
           </span>
         </TransitionLink>
@@ -78,13 +81,16 @@ function ProjectNavigation({
         <TransitionLink
           href={`/projects/${nextProject.slug}`}
           aria-label={`Go to next project: ${nextProject.name}`}
-          className={`group flex min-w-0 flex-col items-end gap-2 py-5 pl-6 text-right transition-colors focus-visible:text-primary focus-visible:outline-none ${previousProject ? "border-l border-white/15 max-sm:border-t max-sm:border-l-0 max-sm:pt-4" : ""}`}
+          className={`group focus-visible:text-primary flex min-w-0 flex-col items-end gap-2 py-5 pl-6 text-right transition-colors focus-visible:outline-none ${previousProject ? "border-l border-white/15 max-sm:border-t max-sm:border-l-0 max-sm:pt-4" : ""}`}
         >
-          <span className="flex items-center gap-2 text-[10px] tracking-[0.18em] text-white/45 uppercase transition-colors group-hover:text-primary">
+          <span className="group-hover:text-primary flex items-center gap-2 text-[10px] tracking-[0.18em] text-white/45 uppercase transition-colors">
             Next
-            <ArrowRight className="size-3.5 shrink-0 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+            <ArrowRight
+              className="size-3.5 shrink-0 transition-transform group-hover:translate-x-1"
+              aria-hidden="true"
+            />
           </span>
-          <span className="truncate text-base text-white/90 transition-colors group-hover:text-primary sm:text-lg">
+          <span className="group-hover:text-primary truncate text-base text-white/90 transition-colors sm:text-lg">
             {nextProject.name}
           </span>
         </TransitionLink>

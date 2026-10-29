@@ -5,7 +5,11 @@ import mongoose from "mongoose";
 import { z } from "zod";
 
 import { blogSchema } from "@/src/definitions/blog-validation";
-import { destroyCloudinaryAsset, deriveCloudinaryPublicId, uploadToCloudinary } from "@/src/lib/cloudinary";
+import {
+  deriveCloudinaryPublicId,
+  destroyCloudinaryAsset,
+  uploadToCloudinary,
+} from "@/src/lib/cloudinary";
 import dbConnect from "@/src/lib/db";
 import { authMiddleware, withHiddenAuth } from "@/src/lib/jwt";
 import { Blog, blogType } from "@/src/models/blog-model";
@@ -159,8 +163,7 @@ const app = new Hono()
       const { data } = result;
       const oldImageUrl = existingPost.image;
       const oldImagePublicId =
-        existingPost.imagePublicId ??
-        (oldImageUrl ? deriveCloudinaryPublicId(oldImageUrl) : null);
+        existingPost.imagePublicId ?? (oldImageUrl ? deriveCloudinaryPublicId(oldImageUrl) : null);
 
       let imageUrl: string;
       let imagePublicId: string | undefined;

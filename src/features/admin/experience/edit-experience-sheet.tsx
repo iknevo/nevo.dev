@@ -1,5 +1,6 @@
 import { Loader2 } from "lucide-react";
 
+import { Button } from "@/src/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -18,7 +19,12 @@ import { useOpenExperience } from "./state/use-open-experience";
 
 export const EditExperienceSheet = () => {
   const { isOpen, onClose, id } = useOpenExperience();
-  const { data: expItem, isLoading: isLoadingExpItem } = useGetExperienceItem(id);
+  const {
+    data: expItem,
+    isLoading: isLoadingExpItem,
+    isError: isExpItemError,
+    refetch: refetchExpItem,
+  } = useGetExperienceItem(id);
   const { mutate: updateExpItem, isPending: isUpdatingExpItem } = useUpdateExperienceItem(id);
   const { mutate: deleteExpItem, isPending: isDeletingExpItem } = useDeleteExperience(id);
   const [ConfirmDialog, confirm] = useConfirm();
@@ -66,6 +72,13 @@ export const EditExperienceSheet = () => {
           {isLoadingExpItem ? (
             <div className="flex items-center justify-center">
               <Loader2 className="text-muted-foreground size-8 animate-spin" />
+            </div>
+          ) : isExpItemError || !expItem ? (
+            <div className="flex flex-col items-center gap-4 py-8 text-center">
+              <p className="text-muted-foreground">We couldn&apos;t load this experience.</p>
+              <Button variant="outline" onClick={() => refetchExpItem()}>
+                Try again
+              </Button>
             </div>
           ) : (
             <ExperienceForm

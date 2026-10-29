@@ -11,11 +11,11 @@ export function useDeleteExperience(id?: string) {
       const res = await api.experience[":id"].$delete({
         param: { id },
       });
-      const data = await res.json();
       if (!res.ok) {
+        const data = await res.json();
         throw new Error(getApiErrorMessage(data, res.status));
       }
-      return data;
+      return null;
     },
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ["exp_item", id] });

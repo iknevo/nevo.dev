@@ -12,7 +12,7 @@ export function useGetExperience(withHidden: boolean = false) {
           withHidden,
         },
       });
-      if (!res.ok) throw new Error("Failed to fetch experience");
+      if (!res.ok) throw new Error("Failed to load experience");
       const { data } = await res.json();
       return data;
     },

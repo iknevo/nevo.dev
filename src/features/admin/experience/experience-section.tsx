@@ -23,6 +23,7 @@ import { PenLine } from "lucide-react";
 import AdminSectionButton from "@/src/components/admin-section-button";
 import { LoaderSmall } from "@/src/components/loader-small";
 import SectionTitle from "@/src/components/section-title";
+import { Button } from "@/src/components/ui/button";
 import { useSyncedState } from "@/src/hooks/useSyncedState";
 import { cn } from "@/src/lib/utils";
 import { ExperienceResponse } from "@/src/types";
@@ -32,11 +33,11 @@ import { useNewExperience } from "./state/use-new-experience";
 import { useOpenExperience } from "./state/use-open-experience";
 
 export default function ExperienceSection() {
-  const { isLoading } = useGetExperience(true);
+  const { isLoading, isError, refetch } = useGetExperience(true);
   const { onOpen } = useNewExperience();
   const { onOpen: onOpenEdit } = useOpenExperience();
   const queryClient = useQueryClient();
-  const { mutate: reorder } = useReorder(["experience"]);
+  const { mutate: reorder, isPending: isSavingOrder } = useReorder(["experience"]);
   const [items, setItems] = useSyncedState<ExperienceResponse[]>(["experience"], []);
 
   const sensors = useSensors(
@@ -46,12 +47,31 @@ export default function ExperienceSection() {
     })
   );
 
-  if (isLoading)
+  if (isLoading && items.length === 0)
     return (
       <div className="flex justify-center">
         <LoaderSmall className="py-20" />
       </div>
     );
+
+  if (isError && items.length === 0) {
+    return (
+      <section>
+        <div className="container pb-10">
+          <div className="mb-10 flex items-center justify-between">
+            <SectionTitle title="Experience" className="mb-0" />
+            <AdminSectionButton onClick={onOpen}>New Experience</AdminSectionButton>
+          </div>
+          <div className="dark flex flex-col items-center gap-4 rounded-lg border border-dashed p-10 text-center">
+            <p className="text-muted-foreground">We couldn&apos;t load your experience.</p>
+            <Button variant="outline" onClick={() => refetch()}>
+              Try again
+            </Button>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
@@ -74,6 +94,15 @@ export default function ExperienceSection() {
           <AdminSectionButton onClick={onOpen}>New Experience</AdminSectionButton>
         </div>
 
+        {isError && (
+          <div className="dark mb-6 flex items-center justify-between gap-4 rounded-md border border-dashed px-4 py-3 text-sm">
+            <p className="text-muted-foreground">Couldn&apos;t refresh the experience list.</p>
+            <Button variant="outline" size="sm" onClick={() => refetch()}>
+              Try again
+            </Button>
+          </div>
+        )}
+
         {items.length === 0 && (
           <p className="dark text-muted-foreground py-10 text-center text-3xl">
             There&apos;s no experience added yet
@@ -87,29 +116,32 @@ export default function ExperienceSection() {
           >
             <div className="grid gap-6">
               {items.map((item) => (
-                <SortableItem key={item._id} id={item._id}>
-                  <div
+                <SortableItem key={item._id} id={item._id} disabled={isSavingOrder}>
+                  <button
+                    type="button"
+                    aria-label={`Edit ${item.company} experience`}
                     className={cn(
-                      "experience-item flex items-center justify-between",
+                      "experience-item group flex w-full items-center justify-between text-left focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:outline-none",
                       item.hide && "opacity-50 grayscale"
                     )}
                     onClick={() => onOpenEdit(item._id)}
                   >
                     <div>
-                      <p className="cursor text-white/80 md:text-xl">{item.company}</p>
-                      <p className="cursor mt-3.5 mb-2.5 text-lg md:text-4xl">{item.title}</p>
-                      <p className="cursor text-sm text-white/80 md:text-lg">
+                      <p className="text-white/80 md:text-xl">{item.company}</p>
+                      <p className="mt-3.5 mb-2.5 text-lg md:text-4xl">{item.title}</p>
+                      <p className="text-sm text-white/80 md:text-lg">
                         {item.startDate} - {item.endDate}
                       </p>
+                      {item.hide && (
+                        <span className="text-muted-foreground mt-2 block text-xs tracking-wider uppercase">
+                          Hidden
+                        </span>
+                      )}
                     </div>
-                    <button
-                      type="button"
-                      aria-label={`Edit ${item.company} experience`}
-                      className="no-cursor cursor-none"
-                    >
+                    <span className="no-cursor cursor-none rounded-sm p-1 text-white/50 transition-colors group-hover:text-white">
                       <PenLine className="cursor size-7 md:size-8" />
-                    </button>
-                  </div>
+                    </span>
+                  </button>
                 </SortableItem>
               ))}
             </div>
