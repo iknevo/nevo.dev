@@ -1,9 +1,5 @@
-"use client";
-
-import dynamic from "next/dynamic";
-
-const ResumeViewer = dynamic(() => import("@/src/features/resume/resume-viewer"), { ssr: false });
+import ResumeRoute from "@/src/features/resume/resume-route";
 
 export default function ResumePage() {
-  return <ResumeViewer />;
+  return <ResumeRoute />;
 }
