@@ -5,6 +5,7 @@ import Footer from "@/src/components/footer";
 import Navbar from "@/src/components/navbar";
 import ScrollProgressIndicator from "@/src/components/scroll-progress-indicator";
 import StickyEmail from "@/src/components/sticky-email";
+import ParticleBackground from "@/src/components/particle-background";
 import "@/src/styles/globals.css";
 
 type Props = {
@@ -22,6 +23,7 @@ export default function Layout({ children }: Props) {
       <ScrollProgressIndicator />
       <Cursor />
       <StickyEmail />
+      <ParticleBackground subtle />
     </>
   );
 }

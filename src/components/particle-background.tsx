@@ -12,6 +12,10 @@ const STAR_COUNT = 260;
 
 const LAYERS = ["far", "near"] as const;
 
+interface Props {
+  subtle?: boolean;
+}
+
 type StarLayer = (typeof LAYERS)[number];
 
 type Star = {
@@ -120,11 +124,11 @@ function buildTwinkle(star: HTMLElement, cfg: Star) {
   return tl;
 }
 
-export default function ParticleBackground() {
+export default function ParticleBackground({ subtle = false }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const starsByLayer = useMemo(() => {
-    const stars = Array.from({ length: STAR_COUNT }, (_, i) => buildStar(i));
+    const stars = Array.from({ length: subtle ? 160 : STAR_COUNT }, (_, i) => buildStar(i));
     const grouped: Record<StarLayer, Star[]> = { far: [], near: [] };
     stars.forEach((star) => grouped[star.layer].push(star));
     return {
@@ -132,7 +136,7 @@ export default function ParticleBackground() {
       near: grouped.near,
       ordered: [...grouped.far, ...grouped.near],
     };
-  }, []);
+  }, [subtle]);
 
   useGSAP(
     () => {
@@ -168,6 +172,21 @@ export default function ParticleBackground() {
             scrub: 0.8,
           },
         });
+
+        const banner = document.querySelector<HTMLElement>("#banner");
+        if (banner) {
+          gsap.to(container, {
+            opacity: 0.3,
+            ease: "none",
+            scrollTrigger: {
+              trigger: banner,
+              start: "bottom 90%",
+              end: "bottom 45%",
+              scrub: 0.8,
+              invalidateOnRefresh: true,
+            },
+          });
+        }
 
         if (!window.matchMedia("(pointer: coarse)").matches) {
           const mouseLayers = container.querySelectorAll<HTMLElement>("[data-mouse-layer]");
@@ -236,6 +255,8 @@ export default function ParticleBackground() {
   return (
     <div
       ref={containerRef}
+      aria-hidden="true"
+      style={subtle ? { opacity: 0.24 } : undefined}
       className={cn("pointer-events-none fixed inset-0 -z-10 overflow-hidden", "mix-blend-screen")}
     >
       {LAYERS.map((layer) => (
