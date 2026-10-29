@@ -3,13 +3,16 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import { ArrowLeft, Code, ExternalLink } from "lucide-react";
+import { useLenis } from "lenis/react";
+import { ArrowDown, ArrowLeft, Code, ExternalLink } from "lucide-react";
+import Image from "next/image";
 import { useLayoutEffect, useRef } from "react";
 
 import TransitionLink from "@/src/components/transition-link";
 import { useGetProject } from "@/src/features/admin/projects/api/use-get-project";
 
 import { LoaderSmall } from "./loader-small";
+import RelatedProjects from "./related-projects";
 
 interface Props {
   id: string;
@@ -18,15 +21,24 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export default function ProjectDetails({ id }: Props) {
   const { data: project, isLoading } = useGetProject(id);
+  const lenis = useLenis();
   const containerRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
+    const scrollToTop = () => {
+      window.scrollTo(0, 0);
+      lenis?.scrollTo(0, { immediate: true, force: true });
+    };
+
+    scrollToTop();
+    const frame = requestAnimationFrame(scrollToTop);
+    return () => cancelAnimationFrame(frame);
+  }, [id, lenis]);
+
+  useLayoutEffect(() => {
     if (!isLoading && project) {
-      const id = requestAnimationFrame(() => {
-        window.scrollTo(0, 0);
-        ScrollTrigger.refresh();
-      });
-      return () => cancelAnimationFrame(id);
+      const frame = requestAnimationFrame(() => ScrollTrigger.refresh());
+      return () => cancelAnimationFrame(frame);
     }
   }, [isLoading, project]);
 
@@ -48,7 +60,6 @@ export default function ProjectDetails({ id }: Props) {
       });
       return () => {
         tl.kill();
-        ScrollTrigger.getAll().forEach((st) => st.kill());
       };
     },
     { scope: containerRef, dependencies: [project, isLoading] }
@@ -75,7 +86,6 @@ export default function ProjectDetails({ id }: Props) {
       });
       return () => {
         tween.kill();
-        ScrollTrigger.getAll().forEach((st) => st.kill());
       };
     },
     { scope: containerRef, dependencies: [project, isLoading] }
@@ -89,7 +99,10 @@ export default function ProjectDetails({ id }: Props) {
           Back
         </TransitionLink>
         {isLoading ? (
-          <div className="flex min-h-[50vh] items-center justify-center py-10">
+          <div
+            className="flex min-h-[50vh] items-center justify-center py-10"
+            aria-label="Loading project"
+          >
             <LoaderSmall />
           </div>
         ) : !project ? (
@@ -100,7 +113,7 @@ export default function ProjectDetails({ id }: Props) {
           </div>
         ) : (
           <>
-            <div className="top-0 flex min-h-[calc(100dvh-100px)]" id="info">
+            <div className="top-0 flex lg:min-h-[calc(100dvh-100px)]" id="info">
               <div className="relative w-full">
                 <div className="mx-auto mb-10 flex max-w-7xl items-start gap-6">
                   <h1 className="fade-in-later overflow-hidden text-3xl leading-none opacity-0 md:text-6xl">
@@ -113,7 +126,9 @@ export default function ProjectDetails({ id }: Props) {
                         href={project.sourceCode}
                         target="_blank"
                         rel="noreferrer noopener"
-                        className="hover:text-primary"
+                        aria-label={`View ${project.name} source code`}
+                        title="View source code"
+                        className="hover:text-primary focus-visible:outline-primary rounded-sm outline-offset-4 focus-visible:outline-2"
                       >
                         <Code size={30} />
                       </a>
@@ -123,7 +138,9 @@ export default function ProjectDetails({ id }: Props) {
                         href={project.liveUrl}
                         target="_blank"
                         rel="noreferrer noopener"
-                        className="hover:text-primary"
+                        aria-label={`Open ${project.name} live site`}
+                        title="Open live site"
+                        className="hover:text-primary focus-visible:outline-primary rounded-sm outline-offset-4 focus-visible:outline-2"
                       >
                         <ExternalLink size={30} />
                       </a>
@@ -165,30 +182,37 @@ export default function ProjectDetails({ id }: Props) {
                     )}
                   </div>
                 </div>
+
+                <div className="fade-in-later hidden items-center gap-2 text-xs tracking-[0.2em] text-white/40 uppercase lg:flex">
+                  <ArrowDown className="size-4 animate-bounce" aria-hidden="true" />
+                  Scroll to explore
+                </div>
               </div>
             </div>
 
-            <div className="fade-in-later relative mx-auto max-w-7xl">
-              <div
-                key={project.thumbnail}
-                className="group relative aspect-[750/400] w-full bg-black"
-                style={{
-                  backgroundImage: `url(${project.thumbnail})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center 50%",
-                  backgroundRepeat: "no-repeat",
-                }}
-              >
+            <figure className="fade-in-later relative mx-auto max-w-7xl">
+              <div className="group relative aspect-[750/400] w-full overflow-hidden bg-black">
+                <Image
+                  src={project.thumbnail}
+                  alt={`${project.name} project preview`}
+                  fill
+                  sizes="(min-width: 1280px) 1148px, calc(100vw - 3rem)"
+                  className="object-cover object-center transition-transform duration-700"
+                />
                 <a
                   href={project.thumbnail}
                   target="_blank"
                   rel="noreferrer noopener"
+                  aria-label={`Open ${project.name} image`}
+                  title="Open project image"
                   className="hover:bg-primary absolute top-4 right-4 inline-flex size-12 items-center justify-center bg-gray-950/70 text-white opacity-0 transition-all group-hover:opacity-100 hover:text-white"
                 >
                   <ExternalLink />
                 </a>
               </div>
-            </div>
+            </figure>
+
+            <RelatedProjects currentProjectId={project._id} />
           </>
         )}
       </div>
