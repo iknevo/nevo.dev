@@ -1,5 +1,6 @@
 import { Loader2 } from "lucide-react";
 
+import { Button } from "@/src/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -18,7 +19,12 @@ import { useOpenStack } from "./state/use-open-stack";
 
 export const EditStackSheet = () => {
   const { isOpen, onClose, id } = useOpenStack();
-  const { data: stackItem, isLoading: isLoadingStackItem } = useGetStackItem(id);
+  const {
+    data: stackItem,
+    isLoading: isLoadingStackItem,
+    isError: isStackItemError,
+    refetch: refetchStackItem,
+  } = useGetStackItem(id);
   const { mutate: updateStackItem, isPending: isUpdatingStackItem } = useUpdateStackItem(id);
   const { mutate: deleteStackItem, isPending: isDeletingStackItem } = useDeleteStackItem(id);
   const [ConfirmDialog, confirm] = useConfirm();
@@ -65,6 +71,13 @@ export const EditStackSheet = () => {
           {isLoadingStackItem ? (
             <div className="flex items-center justify-center">
               <Loader2 className="text-muted-foreground size-8 animate-spin" />
+            </div>
+          ) : isStackItemError || !stackItem ? (
+            <div className="flex flex-col items-center gap-4 py-8 text-center">
+              <p className="text-muted-foreground">We couldn&apos;t load this skill.</p>
+              <Button variant="outline" onClick={() => refetchStackItem()}>
+                Try again
+              </Button>
             </div>
           ) : (
             <StackForm

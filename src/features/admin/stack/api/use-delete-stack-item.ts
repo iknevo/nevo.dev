@@ -11,11 +11,11 @@ export function useDeleteStackItem(id?: string) {
       const res = await api.stack[":id"].$delete({
         param: { id },
       });
-      const data = await res.json();
       if (!res.ok) {
+        const data = await res.json();
         throw new Error(getApiErrorMessage(data, res.status));
       }
-      return data;
+      return null;
     },
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ["stack_item", id] });

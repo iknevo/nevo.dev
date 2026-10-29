@@ -11,7 +11,7 @@ export function useGetStack(withHidden: boolean = false) {
           withHidden,
         },
       });
-      if (!res.ok) throw new Error("Failed to fetch stack");
+      if (!res.ok) throw new Error("Failed to load stack");
       const { data } = await res.json();
       return data;
     },

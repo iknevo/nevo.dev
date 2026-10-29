@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const stackSchema = z.object({
-  name: z.string().min(3, "Stack's name is required"),
+  name: z.string().trim().min(3, "Stack's name is required"),
   icon: z.union([
-    z.string(),
+    z.string().trim().min(1, "Please add an Icon"),
     z.instanceof(File).refine((file) => file.size > 0, { error: "Please add an Icon" }),
   ]),
   type: z.enum(["frontend", "backend", "mobile", "testing", "tools", "studying"]),
