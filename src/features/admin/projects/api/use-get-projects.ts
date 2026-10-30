@@ -5,7 +5,7 @@ import { ProjectResponse } from "@/src/types";
 
 export function useGetProjects(withHidden: boolean = false) {
   const query = useQuery<ProjectResponse[]>({
-    queryKey: ["projects"],
+    queryKey: ["projects", withHidden],
     queryFn: async () => {
       const res = await api.projects.$get({
         query: {

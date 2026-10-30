@@ -23,7 +23,7 @@ export const projectSchema = z.object({
     )
     .min(1, "Add at least one tech stack item"),
   thumbnail: z.union([
-    z.string(),
+    z.string().trim().min(1, "Please add a Thumbnail"),
     z.instanceof(File).refine((file) => file.size > 0, { error: "Please add a Thumbnail" }),
   ]),
   sortIndex: z.number().min(1, "Sort Index can't be less than 1").optional(),

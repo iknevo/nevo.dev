@@ -56,8 +56,8 @@ export default function ImagePreviewModal({ value, fit = "cover", disabled, clas
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <Tooltip>
-        <DialogTrigger asChild>
-          <TooltipTrigger asChild>
+        <TooltipTrigger asChild>
+          <DialogTrigger asChild>
             <Button
               type="button"
               variant="ghost"
@@ -68,8 +68,8 @@ export default function ImagePreviewModal({ value, fit = "cover", disabled, clas
             >
               <ImageUpscale />
             </Button>
-          </TooltipTrigger>
-        </DialogTrigger>
+          </DialogTrigger>
+        </TooltipTrigger>
         <TooltipContent>Preview image</TooltipContent>
       </Tooltip>
       <DialogContent

@@ -34,8 +34,8 @@ export default function ProjectsSection() {
   const { isLoading, isError, refetch } = useGetProjects(true);
   const { onOpen } = useNewProject();
   const queryClient = useQueryClient();
-  const { mutate: reorder, isPending: isSavingOrder } = useReorder(["projects"]);
-  const [items, setItems] = useSyncedState<ProjectResponse[]>(["projects"], []);
+  const { mutate: reorder, isPending: isSavingOrder } = useReorder(["projects", true]);
+  const [items, setItems] = useSyncedState<ProjectResponse[]>(["projects", true], []);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -76,7 +76,7 @@ export default function ProjectsSection() {
     const newIndex = items.findIndex((item) => item._id === over.id);
     const newOrder = arrayMove(items, oldIndex, newIndex);
     setItems(newOrder);
-    queryClient.setQueryData(["projects"], newOrder);
+    queryClient.setQueryData(["projects", true], newOrder);
 
     reorder({ ids: newOrder.map((item) => item._id) });
   }

@@ -37,8 +37,8 @@ export default function ExperienceSection() {
   const { onOpen } = useNewExperience();
   const { onOpen: onOpenEdit } = useOpenExperience();
   const queryClient = useQueryClient();
-  const { mutate: reorder, isPending: isSavingOrder } = useReorder(["experience"]);
-  const [items, setItems] = useSyncedState<ExperienceResponse[]>(["experience"], []);
+  const { mutate: reorder, isPending: isSavingOrder } = useReorder(["experience", true]);
+  const [items, setItems] = useSyncedState<ExperienceResponse[]>(["experience", true], []);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -81,7 +81,7 @@ export default function ExperienceSection() {
     const newIndex = items.findIndex((item) => item._id === over.id);
     const newOrder = arrayMove(items, oldIndex, newIndex);
     setItems(newOrder);
-    queryClient.setQueryData(["experience"], newOrder);
+    queryClient.setQueryData(["experience", true], newOrder);
 
     reorder({ ids: newOrder.map((item) => item._id) });
   }

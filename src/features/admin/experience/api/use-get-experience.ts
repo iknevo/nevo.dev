@@ -5,7 +5,7 @@ import { ExperienceResponse } from "@/src/types";
 
 export function useGetExperience(withHidden: boolean = false) {
   const query = useQuery<ExperienceResponse[]>({
-    queryKey: ["experience"],
+    queryKey: ["experience", withHidden],
     queryFn: async () => {
       const res = await api.experience.$get({
         query: {
