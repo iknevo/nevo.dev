@@ -34,7 +34,13 @@ export const NewExperienceSheet = () => {
           <SheetTitle>New Experience</SheetTitle>
           <SheetDescription>Add a new experience</SheetDescription>
         </SheetHeader>
-        <ExperienceForm onSubmit={onSubmit} disabled={isPending} defaultValues={expFormDefaults} />
+        {isOpen && (
+          <ExperienceForm
+            onSubmit={onSubmit}
+            disabled={isPending}
+            defaultValues={expFormDefaults}
+          />
+        )}
       </SheetContent>
     </Sheet>
   );

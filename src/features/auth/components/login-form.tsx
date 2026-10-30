@@ -21,6 +21,7 @@ import { InputPassword } from "@/src/components/ui/input-password";
 import { LoginFormSchema } from "@/src/definitions/auth-validations";
 import { useForgetPassword } from "@/src/features/auth/api/use-forget-password";
 import { useLogin } from "@/src/features/auth/api/use-login";
+import { getSafeAdminRedirect } from "@/src/lib/safe-redirect";
 
 type FormValues = z.input<typeof LoginFormSchema>;
 
@@ -41,8 +42,8 @@ export default function LoginForm() {
   const handleSubmit = async (values: FormValues) => {
     loginMutation.mutate(values, {
       onSuccess: () => {
-        const redirectTo = searchParams.get("from") || "/admin";
-        router.push(redirectTo);
+        const redirectTo = getSafeAdminRedirect(searchParams.get("from"));
+        router.replace(redirectTo);
       },
     });
   };
@@ -87,7 +88,7 @@ export default function LoginForm() {
                   className="md:py-6"
                   disabled={isPending}
                   placeholder="example@gmail.com"
-                  autoComplete="on"
+                  autoComplete="email"
                 />
               </FormControl>
             </FormItem>

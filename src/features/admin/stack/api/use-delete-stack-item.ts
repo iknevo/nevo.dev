@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
+import { getApiErrorMessage } from "@/src/lib/api-error";
 import { api } from "@/src/lib/hono";
 
 export function useDeleteStackItem(id?: string) {
@@ -10,8 +11,11 @@ export function useDeleteStackItem(id?: string) {
       const res = await api.stack[":id"].$delete({
         param: { id },
       });
-      const data = await res.json();
-      return data;
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(getApiErrorMessage(data, res.status));
+      }
+      return null;
     },
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ["stack_item", id] });
@@ -20,7 +24,7 @@ export function useDeleteStackItem(id?: string) {
     },
     onError: (err) => {
       console.error(err);
-      toast.error("Failed to delete stack item");
+      toast.error(err.message || "Failed to delete stack item");
     },
   });
 

@@ -18,6 +18,7 @@ export default function ProjectList() {
   const { data: projects = [], isLoading } = useGetProjects();
   const containerRef = useRef<HTMLDivElement>(null);
   const projectListRef = useRef<HTMLDivElement>(null);
+  const restoredScrollRef = useRef(false);
   const [modal, setModal] = useState({ active: false, index: 0 });
 
   const handleMouseEnter = (index: number) => {
@@ -35,6 +36,20 @@ export default function ProjectList() {
       ScrollTrigger.refresh();
     }
   }, [isLoading, projects]);
+
+  useLayoutEffect(() => {
+    if (isLoading || restoredScrollRef.current) return;
+
+    const savedScroll = sessionStorage.getItem("projects-scroll-y");
+    if (savedScroll === null) return;
+
+    const scrollY = Number(savedScroll);
+    if (!Number.isFinite(scrollY)) return;
+
+    restoredScrollRef.current = true;
+    sessionStorage.removeItem("projects-scroll-y");
+    requestAnimationFrame(() => window.scrollTo(0, scrollY));
+  }, [isLoading]);
 
   useGSAP(
     () => {

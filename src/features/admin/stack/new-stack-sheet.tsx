@@ -34,7 +34,9 @@ export const NewStackSheet = () => {
           <SheetTitle>New Stack Item</SheetTitle>
           <SheetDescription>Add a new skill or tool</SheetDescription>
         </SheetHeader>
-        <StackForm onSubmit={onSubmit} disabled={isPending} defaultValues={stackFormDefaults} />
+        {isOpen && (
+          <StackForm onSubmit={onSubmit} disabled={isPending} defaultValues={stackFormDefaults} />
+        )}
       </SheetContent>
     </Sheet>
   );

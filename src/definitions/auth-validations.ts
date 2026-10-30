@@ -1,7 +1,13 @@
 import { z } from "zod";
 
+export const EmailSchema = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .pipe(z.email({ error: "Please enter a valid email." }));
+
 export const LoginFormSchema = z.object({
-  email: z.email({ error: "Please enter a valid email." }),
+  email: EmailSchema,
   password: z.string().min(8, { error: "Password must be at least 8 characters" }),
 });
 

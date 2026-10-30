@@ -37,5 +37,5 @@ export default async function Page({ params }: Props) {
   if (!id) {
     return notFound();
   }
-  return <ProjectDetails id={id} />;
+  return <ProjectDetails key={id} id={id} />;
 }

@@ -2,6 +2,7 @@ import { PenLine } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/src/components/ui/tooltip";
 import { cn } from "@/src/lib/utils";
 import { ProjectResponse } from "@/src/types";
 
@@ -36,9 +37,19 @@ export default function ProjectItem({ project }: Props) {
         <p className="from-primary bg-linear-to-r from-50% to-white to-50% bg-size-[200%] bg-clip-text bg-right text-transparent transition-all duration-700 group-hover:bg-left">
           {project.name}
         </p>
-        <button onClick={() => onOpen(project._id)} className="no-cursor cursor-none">
-          <PenLine className="size-5" />
-        </button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              type="button"
+              aria-label={`Edit ${project.name}`}
+              onClick={() => onOpen(project._id)}
+              className="no-cursor cursor-none"
+            >
+              <PenLine className="size-5" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent>Edit {project.name}</TooltipContent>
+        </Tooltip>
       </div>
     </div>
   );

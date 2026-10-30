@@ -74,6 +74,7 @@ export default function EditBlogSection({ id }: Props) {
               className="dark flex items-center justify-center text-lg font-semibold"
               variant={"outline"}
               onClick={() => router.back()}
+              disabled={disabled}
             >
               Cancel
             </Button>
@@ -89,6 +90,7 @@ export default function EditBlogSection({ id }: Props) {
             </p>
           ) : (
             <BlogForm
+              key={id}
               id={id}
               onSubmit={onSubmit}
               onDelete={onDelete}

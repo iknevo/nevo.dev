@@ -72,113 +72,121 @@ export default function ProjectForm({ defaultValues, id, onSubmit, onDelete, dis
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 pt-4">
-        <FormField
-          name="name"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input {...field} disabled={disabled} placeholder="e.g. My Awesome Project" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="space-y-4">
+          <h3 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
+            Project details
+          </h3>
+          <FormField
+            name="name"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input {...field} disabled={disabled} placeholder="e.g. My Awesome Project" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          name="year"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Year</FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  disabled={disabled}
-                  placeholder="2025"
-                  onChange={(e) => field.onChange(e.target.value.toString())}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          name="liveUrl"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Live URL</FormLabel>
-              <FormControl>
-                <Input {...field} disabled={disabled} placeholder="preview url" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          name="sourceCode"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Repo URL</FormLabel>
-              <FormControl>
-                <Input {...field} disabled={disabled} placeholder="code url" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          name="description"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea {...field} disabled={disabled} placeholder="what is this all about" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          name="thumbnail"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Thumbnail</FormLabel>
-              <div className="relative">
+          <FormField
+            name="year"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Year</FormLabel>
                 <FormControl>
                   <Input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      field.onChange(file ?? field.value);
-                    }}
-                    name={field.name}
-                    ref={field.ref}
+                    {...field}
                     disabled={disabled}
+                    placeholder="2025"
+                    onChange={(e) => field.onChange(e.target.value.toString())}
                   />
                 </FormControl>
-                <ImagePreviewModal
-                  value={field.value}
-                  disabled={disabled}
-                  className="absolute top-1/2 right-2 -translate-y-1/2"
-                  fit="contain"
-                />
-              </div>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="space-y-4 border-t border-white/10 pt-5">
+          <h3 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
+            Links & media
+          </h3>
+          <FormField
+            name="liveUrl"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Live URL</FormLabel>
+                <FormControl>
+                  <Input {...field} disabled={disabled} placeholder="preview url" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
+          <FormField
+            name="sourceCode"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Repo URL</FormLabel>
+                <FormControl>
+                  <Input {...field} disabled={disabled} placeholder="code url" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="description"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Textarea {...field} disabled={disabled} placeholder="what is this all about" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="thumbnail"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Thumbnail</FormLabel>
+                <div className="relative">
+                  <FormControl>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        field.onChange(file ?? field.value);
+                      }}
+                      name={field.name}
+                      ref={field.ref}
+                      disabled={disabled}
+                    />
+                  </FormControl>
+                  <ImagePreviewModal
+                    value={field.value}
+                    disabled={disabled}
+                    className="absolute top-1/2 right-2 -translate-y-1/2"
+                    fit="contain"
+                  />
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <FieldSet className="gap-4">
           <FieldLegend variant="label">Features</FieldLegend>
           <FieldDescription>add project&apos;s features</FieldDescription>
@@ -305,38 +313,51 @@ export default function ProjectForm({ defaultValues, id, onSubmit, onDelete, dis
           )}
         </FieldSet>
 
-        <Controller
-          name="hide"
-          control={form.control}
-          render={({ field }) => (
-            <Field orientation="horizontal" className="justify-between">
-              <FieldLabel htmlFor="hide-switch">Hide</FieldLabel>
-              <Switch
-                name={field.name}
-                checked={field.value}
-                onCheckedChange={field.onChange}
-                id="hide-switch"
-              />
-            </Field>
-          )}
-        />
+        <div className="space-y-4 border-t border-white/10 pt-5">
+          <div>
+            <h3 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
+              Visibility
+            </h3>
+            <p className="text-muted-foreground mt-1 text-sm">
+              Hidden projects stay available here but are removed from the public site.
+            </p>
+          </div>
+          <Controller
+            name="hide"
+            control={form.control}
+            render={({ field }) => (
+              <Field orientation="horizontal" className="justify-between">
+                <FieldLabel htmlFor="hide-switch">Hide project</FieldLabel>
+                <Switch
+                  name={field.name}
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  id="hide-switch"
+                  disabled={disabled}
+                />
+              </Field>
+            )}
+          />
+        </div>
 
-        <Button className="text-foreground w-full" disabled={disabled}>
-          {id ? "Save Changes" : "Create Project"}
-        </Button>
-
-        {!!id && (
-          <Button
-            className="text-foreground w-full"
-            type="button"
-            variant="outline"
-            disabled={disabled}
-            onClick={handleDelete}
-          >
-            <Trash className="size-4" />
-            <span>Delete Project</span>
+        <div className="bg-background/95 sticky bottom-0 z-10 -mx-1 space-y-2 border-t border-white/10 py-4 backdrop-blur">
+          <Button className="text-foreground w-full" disabled={disabled}>
+            {id ? "Save Changes" : "Create Project"}
           </Button>
-        )}
+
+          {!!id && (
+            <Button
+              className="text-foreground w-full"
+              type="button"
+              variant="outline"
+              disabled={disabled}
+              onClick={handleDelete}
+            >
+              <Trash className="size-4" />
+              <span>Delete Project</span>
+            </Button>
+          )}
+        </div>
       </form>
     </Form>
   );

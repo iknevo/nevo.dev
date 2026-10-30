@@ -113,6 +113,9 @@ export default function Project({ index, project, onEnter, onLeave }: Props) {
   return (
     <TransitionLink
       href={`/projects/${project.slug}`}
+      onClick={() => {
+        sessionStorage.setItem("projects-scroll-y", String(window.scrollY));
+      }}
       className="project-item group no-cursor py-5 leading-none transition-all first:pt-0! last:border-none last:pb-0 md:border-b md:group-hover/projects:opacity-30 md:hover:opacity-100!"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

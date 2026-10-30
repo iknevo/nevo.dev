@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/src/components/ui/dialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/src/components/ui/tooltip";
 import { cn } from "@/src/lib/utils";
 
 type Props = {
@@ -54,19 +55,23 @@ export default function ImagePreviewModal({ value, fit = "cover", disabled, clas
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-sm"
-          disabled={disabled}
-          aria-label={`Preview ${alt}`}
-          title="Preview image"
-          className={cn("text-muted-foreground hover:text-foreground", className)}
-        >
-          <ImageUpscale />
-        </Button>
-      </DialogTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DialogTrigger asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              disabled={disabled}
+              aria-label={`Preview ${alt}`}
+              className={cn("text-muted-foreground hover:text-foreground", className)}
+            >
+              <ImageUpscale />
+            </Button>
+          </DialogTrigger>
+        </TooltipTrigger>
+        <TooltipContent>Preview image</TooltipContent>
+      </Tooltip>
       <DialogContent
         className="dark overflow-hidden rounded-none p-2 sm:max-w-3xl"
         showCloseButton={false}
@@ -90,14 +95,20 @@ export default function ImagePreviewModal({ value, fit = "cover", disabled, clas
               className={objectClassName}
             />
           )}
-          <a
-            href={src}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="hover:bg-primary absolute top-2 right-2 inline-flex size-12 items-center justify-center bg-gray-950/70 text-white opacity-0 transition-all group-hover:opacity-100 hover:text-white"
-          >
-            <ExternalLink />
-          </a>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <a
+                href={src}
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="Open image in a new tab"
+                className="hover:bg-primary absolute top-2 right-2 inline-flex size-12 items-center justify-center bg-gray-950/70 text-white opacity-0 transition-all group-hover:opacity-100 hover:text-white"
+              >
+                <ExternalLink />
+              </a>
+            </TooltipTrigger>
+            <TooltipContent>Open image in a new tab</TooltipContent>
+          </Tooltip>
         </div>
       </DialogContent>
     </Dialog>

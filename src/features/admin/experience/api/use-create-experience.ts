@@ -3,6 +3,7 @@ import { InferResponseType } from "hono";
 import { toast } from "sonner";
 
 import { expFormValues } from "@/src/definitions/experience-validations";
+import { getApiErrorMessage } from "@/src/lib/api-error";
 import { api } from "@/src/lib/hono";
 
 type ResponseType = InferResponseType<typeof api.experience.$post>;
@@ -13,6 +14,9 @@ export function useCreateExperience() {
     mutationFn: async (json) => {
       const res = await api.experience.$post({ json });
       const data = await res.json();
+      if (!res.ok) {
+        throw new Error(getApiErrorMessage(data, res.status));
+      }
       return data;
     },
     onSuccess: () => {

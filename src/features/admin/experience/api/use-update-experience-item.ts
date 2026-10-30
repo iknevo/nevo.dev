@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
 import { toast } from "sonner";
 
+import { getApiErrorMessage } from "@/src/lib/api-error";
 import { api } from "@/src/lib/hono";
 
 type ResponseType = InferResponseType<(typeof api.experience)[":id"]["$patch"]>;
@@ -13,6 +14,9 @@ export function useUpdateExperienceItem(id?: string) {
     mutationFn: async (json) => {
       const res = await api.experience[":id"].$patch({ param: { id }, json });
       const data = await res.json();
+      if (!res.ok) {
+        throw new Error(getApiErrorMessage(data, res.status));
+      }
       return data;
     },
     onSuccess: () => {
@@ -22,6 +26,7 @@ export function useUpdateExperienceItem(id?: string) {
       queryClient.invalidateQueries({
         queryKey: ["exp_item", id],
       });
+      toast.success("Experience Updated");
     },
     onError: (err) => {
       console.error(err);

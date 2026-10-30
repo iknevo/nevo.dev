@@ -65,6 +65,8 @@ export default function BlogSection() {
               </div>
             </TransitionLink>
             <button
+              type="button"
+              aria-label={`Edit ${post.title}`}
               className="no-cursor cursor-none"
               onClick={() => router.push(`/admin/blog/edit/${post._id}`)}
             >

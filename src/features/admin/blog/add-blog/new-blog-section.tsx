@@ -37,6 +37,7 @@ export default function NewBlogSection() {
             className="dark flex items-center justify-center text-lg font-semibold"
             variant={"outline"}
             onClick={() => router.back()}
+            disabled={isPending}
           >
             Cancel
           </Button>

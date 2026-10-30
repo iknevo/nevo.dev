@@ -66,6 +66,7 @@ export default function ResetPasswordForm({ token }: Props) {
                   disabled={isPending}
                   placeholder="password"
                   className="md:py-6"
+                  autoComplete="new-password"
                 />
               </FormControl>
             </FormItem>
@@ -86,6 +87,7 @@ export default function ResetPasswordForm({ token }: Props) {
                   disabled={isPending}
                   placeholder="confirm your password"
                   className="md:py-6"
+                  autoComplete="new-password"
                 />
               </FormControl>
             </FormItem>
