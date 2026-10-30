@@ -7,21 +7,12 @@ import { useState } from "react";
 import { Badge } from "@/src/components/ui/badge";
 import { Input } from "@/src/components/ui/input";
 
-type InputTagsProps = Omit<
-  React.ComponentPropsWithRef<"input">,
-  "value" | "onChange"
-> & {
+type InputTagsProps = Omit<React.ComponentPropsWithRef<"input">, "value" | "onChange"> & {
   value: string[];
   onChange: (value: string[]) => void;
 };
 
-export function InputTags({
-  value,
-  onChange,
-  className,
-  ref,
-  ...props
-}: InputTagsProps) {
+export function InputTags({ value, onChange, className, ref, ...props }: InputTagsProps) {
   const [tag, setTag] = useState("");
 
   const addTag = () => {

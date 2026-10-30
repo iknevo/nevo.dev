@@ -77,6 +77,39 @@
   will-change: transform;
 }
 
+@keyframes project-preview-enter {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes project-preview-exit {
+  to {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+}
+
+.project-preview-enter {
+  animation: project-preview-enter 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.project-preview-exit {
+  animation: project-preview-exit 360ms ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-preview-enter,
+  .project-preview-exit {
+    animation: none;
+  }
+}
+
 @keyframes float {
   0%,
   100% {
