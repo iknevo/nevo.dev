@@ -34,9 +34,16 @@ export default function ProjectItem({ project }: Props) {
         </div>
       </Link>
       <div className="mt-5 flex items-center justify-between gap-2 md:gap-5">
-        <p className="from-primary bg-linear-to-r from-50% to-white to-50% bg-size-[200%] bg-clip-text bg-right text-transparent transition-all duration-700 group-hover:bg-left">
-          {project.name}
-        </p>
+        <div className="min-w-0">
+          <p className="from-primary bg-linear-to-r from-50% to-white to-50% bg-size-[200%] bg-clip-text bg-right text-transparent transition-all duration-700 group-hover:bg-left">
+            {project.name}
+          </p>
+          {project.hide && (
+            <span className="text-muted-foreground mt-2 block text-[10px] tracking-wider uppercase">
+              Hidden
+            </span>
+          )}
+        </div>
         <Tooltip>
           <TooltipTrigger asChild>
             <button
