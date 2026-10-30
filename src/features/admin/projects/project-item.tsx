@@ -28,7 +28,7 @@ export default function ProjectItem({ project }: Props) {
             src={project.thumbnail}
             alt={project.name}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
