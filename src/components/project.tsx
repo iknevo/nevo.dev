@@ -37,7 +37,7 @@ export default function Project({ index, project, active, onPreview }: Props) {
       />
       <span
         className={cn(
-          "font-mono text-[10px] tracking-[0.12em] sm:text-[11px]",
+          "font-anton text-sm tracking-wide",
           active ? "text-primary" : "text-white/35"
         )}
       >
