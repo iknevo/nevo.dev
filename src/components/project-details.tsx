@@ -4,10 +4,11 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useLenis } from "lenis/react";
-import { ArrowDown, ArrowLeft, Code, ExternalLink } from "lucide-react";
+import { ArrowDown, ArrowLeft, Code, Expand, ExternalLink } from "lucide-react";
 import Image from "next/image";
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
+import ImageLightbox from "@/src/components/image-lightbox";
 import TransitionLink from "@/src/components/transition-link";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/src/components/ui/tooltip";
 import { useGetProject } from "@/src/features/admin/projects/api/use-get-project";
@@ -24,6 +25,13 @@ export default function ProjectDetails({ id }: Props) {
   const { data: project, isLoading } = useGetProject(id);
   const lenis = useLenis();
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isImageOpen, setIsImageOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isImageOpen) return;
+    lenis?.stop();
+    return () => lenis?.start();
+  }, [isImageOpen, lenis]);
 
   useLayoutEffect(() => {
     const scrollToTop = () => {
@@ -210,20 +218,26 @@ export default function ProjectDetails({ id }: Props) {
                 />
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <a
-                      href={project.thumbnail}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      aria-label={`Open ${project.name} image`}
-                      className="hover:bg-primary absolute top-4 right-4 inline-flex size-8 items-center justify-center bg-gray-950/70 text-white opacity-100 transition-all hover:text-white lg:size-12 lg:opacity-0 lg:group-hover:opacity-100"
+                    <button
+                      type="button"
+                      onClick={() => setIsImageOpen(true)}
+                      aria-label={`View ${project.name} image full screen`}
+                      className="hover:bg-primary absolute top-4 right-4 inline-flex size-8 cursor-pointer items-center justify-center bg-gray-950/70 text-white opacity-100 transition-all hover:text-white lg:size-12 lg:opacity-0 lg:group-hover:opacity-100"
                     >
-                      <ExternalLink />
-                    </a>
+                      <Expand />
+                    </button>
                   </TooltipTrigger>
-                  <TooltipContent>Open project image</TooltipContent>
+                  <TooltipContent>View full screen</TooltipContent>
                 </Tooltip>
               </div>
             </figure>
+
+            <ImageLightbox
+              src={project.thumbnail}
+              alt={`${project.name} project preview`}
+              open={isImageOpen}
+              onOpenChange={setIsImageOpen}
+            />
 
             <RelatedProjects currentProjectId={project._id} />
           </>
