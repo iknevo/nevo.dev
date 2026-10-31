@@ -215,7 +215,7 @@ export default function ProjectDetails({ id }: Props) {
                       target="_blank"
                       rel="noreferrer noopener"
                       aria-label={`Open ${project.name} image`}
-                      className="hover:bg-primary absolute top-4 right-4 inline-flex size-12 items-center justify-center bg-gray-950/70 text-white opacity-0 transition-all group-hover:opacity-100 hover:text-white"
+                      className="hover:bg-primary absolute top-4 right-4 inline-flex size-8 items-center justify-center bg-gray-950/70 text-white opacity-100 transition-all hover:text-white lg:size-12 lg:opacity-0 lg:group-hover:opacity-100"
                     >
                       <ExternalLink />
                     </a>
