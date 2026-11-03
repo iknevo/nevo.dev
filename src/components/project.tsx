@@ -23,7 +23,7 @@ export default function Project({ index, project, active, onPreview }: Props) {
       aria-current={active ? "true" : undefined}
       className={cn(
         "project-item group focus-visible:outline-primary relative flex w-full items-center gap-4 border-b border-white/[0.07] py-5 text-left transition-colors duration-300 last:border-b-0 focus-visible:outline-2 focus-visible:outline-offset-2 sm:py-6",
-        active ? "text-white" : "text-white/45 hover:text-white"
+        active ? "text-white" : "text-white/55 hover:text-white"
       )}
     >
       <span
@@ -37,8 +37,8 @@ export default function Project({ index, project, active, onPreview }: Props) {
       />
       <span
         className={cn(
-          "font-anton text-sm tracking-wide",
-          active ? "text-primary" : "text-white/35"
+          "font-mono text-[10px] tracking-[0.12em] sm:text-[11px]",
+          active ? "text-primary" : "text-white/50"
         )}
       >
         {(index + 1).toString().padStart(2, "0")}

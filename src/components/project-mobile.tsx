@@ -39,7 +39,7 @@ export default function ProjectMobile({ index, project }: Props) {
           {project.techStack.slice(0, 3).map((tech) => (
             <li
               key={tech}
-              className="font-mono text-[10px] tracking-[0.08em] text-white/45 sm:text-[11px]"
+              className="font-mono text-[11px] font-medium tracking-[0.08em] text-white/65 sm:text-xs"
             >
               {tech}
             </li>

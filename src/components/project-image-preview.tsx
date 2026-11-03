@@ -16,7 +16,7 @@ export default function ProjectImagePreview({ activeIndex, previousIndex, projec
 
   return (
     <article aria-live="polite" className="w-full">
-      <div className="mb-3 flex items-center justify-between font-mono text-[10px] tracking-[0.13em] text-white/35 sm:mb-4 sm:text-[11px]">
+      <div className="mb-3 flex items-center justify-between font-mono text-[10px] tracking-[0.13em] text-white/55 sm:mb-4 sm:text-[11px]">
         <span>SELECTED WORK</span>
         <span>
           {(activeIndex + 1).toString().padStart(2, "0")} /{" "}
@@ -51,7 +51,7 @@ export default function ProjectImagePreview({ activeIndex, previousIndex, projec
           <h3 className="text-2xl leading-none font-semibold tracking-[-0.045em] text-white sm:text-3xl">
             {activeProject.name}
           </h3>
-          <p className="mt-3 line-clamp-2 max-w-xl text-sm leading-relaxed text-white/55 sm:text-[15px] lg:line-clamp-1">
+          <p className="mt-3 line-clamp-2 max-w-xl text-sm leading-relaxed text-white/75 sm:text-[15px] lg:line-clamp-1">
             {activeProject.description}
           </p>
           {activeProject.techStack.length > 0 && (
@@ -59,7 +59,7 @@ export default function ProjectImagePreview({ activeIndex, previousIndex, projec
               {activeProject.techStack.slice(0, 3).map((tech) => (
                 <li
                   key={tech}
-                  className="font-mono text-[10px] tracking-[0.08em] text-white/35 sm:text-[11px]"
+                  className="font-mono text-[11px] font-medium tracking-[0.08em] text-white/65 sm:text-xs"
                 >
                   {tech}
                 </li>
