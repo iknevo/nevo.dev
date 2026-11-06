@@ -50,6 +50,8 @@ app.use(
   })
 );
 
+app.use(logger());
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const routes = app
   .route("/auth", auth)
@@ -59,7 +61,6 @@ const routes = app
   .route("/blog", blog)
   .route("/resume", resume);
 
-app.use(logger());
 app.onError(errorHandler);
 app.notFound((c) => {
   return c.json({ message: `${c.req.path} is not found` }, status.NOT_FOUND);

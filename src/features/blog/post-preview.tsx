@@ -76,7 +76,6 @@ export default function PostPreview({ id }: Props) {
                     onLoadingComplete={() => setLoaded(true)}
                     priority
                   />
-                  )
                 </div>
               )}
             </div>
