@@ -4,11 +4,11 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useLenis } from "lenis/react";
-import { ArrowDown, ArrowLeft, Code, Expand, ExternalLink } from "lucide-react";
+import { ArrowDown, ArrowLeft, Code, ExternalLink } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 
-import ImageLightbox from "@/src/components/image-lightbox";
+import ImageWithLightbox from "@/src/components/image-with-lightbox";
 import TransitionLink from "@/src/components/transition-link";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/src/components/ui/tooltip";
 import { useGetProject } from "@/src/features/admin/projects/api/use-get-project";
@@ -25,13 +25,6 @@ export default function ProjectDetails({ id }: Props) {
   const { data: project, isLoading } = useGetProject(id);
   const lenis = useLenis();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isImageOpen, setIsImageOpen] = useState(false);
-
-  useEffect(() => {
-    if (!isImageOpen) return;
-    lenis?.stop();
-    return () => lenis?.start();
-  }, [isImageOpen, lenis]);
 
   useLayoutEffect(() => {
     const scrollToTop = () => {
@@ -208,7 +201,11 @@ export default function ProjectDetails({ id }: Props) {
             </div>
 
             <figure className="fade-in-later relative mx-auto max-w-7xl">
-              <div className="group relative aspect-[750/400] w-full overflow-hidden bg-black">
+              <ImageWithLightbox
+                src={project.thumbnail}
+                alt={`${project.name} project preview`}
+                className="aspect-[750/400] w-full bg-black"
+              >
                 <Image
                   src={project.thumbnail}
                   alt={`${project.name} project preview`}
@@ -216,28 +213,8 @@ export default function ProjectDetails({ id }: Props) {
                   sizes="(min-width: 1280px) 1148px, calc(100vw - 3rem)"
                   className="object-cover object-center transition-transform duration-700"
                 />
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      type="button"
-                      onClick={() => setIsImageOpen(true)}
-                      aria-label={`View ${project.name} image full screen`}
-                      className="hover:bg-primary absolute top-4 right-4 inline-flex size-8 cursor-pointer items-center justify-center bg-gray-950/70 text-white opacity-100 transition-all hover:text-white lg:size-12 lg:opacity-0 lg:group-hover:opacity-100"
-                    >
-                      <Expand />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent>View full screen</TooltipContent>
-                </Tooltip>
-              </div>
+              </ImageWithLightbox>
             </figure>
-
-            <ImageLightbox
-              src={project.thumbnail}
-              alt={`${project.name} project preview`}
-              open={isImageOpen}
-              onOpenChange={setIsImageOpen}
-            />
 
             <RelatedProjects currentProjectId={project._id} />
           </>
