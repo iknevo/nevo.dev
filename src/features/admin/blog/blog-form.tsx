@@ -135,7 +135,7 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
                       field.ref(node);
                     }}
                     disabled={disabled}
-                    className="file:bg-primary file:mr-3 file:cursor-pointer file:rounded file:border-0 file:px-3 file:py-1.5 file:font-medium file:text-white"
+                    
                   />
                 </FormControl>
                 <ImagePreviewModal

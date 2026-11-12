@@ -130,26 +130,8 @@ export default function ResumeSection() {
                   accept=".pdf,application/pdf"
                   onChange={handleFileChange}
                   aria-label="Choose resume PDF"
-                  className="sr-only"
-                  tabIndex={-1}
+                  className="block w-full"
                 />
-                <div
-                  className={cn(
-                    "flex min-h-28 flex-col items-center justify-center gap-3 rounded-md border border-dashed border-white/20 p-5 text-center transition-colors",
-                    !uploadMutation.isPending && "hover:border-white/40"
-                  )}
-                >
-                  <FileText className="text-muted-foreground size-6" aria-hidden="true" />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={uploadMutation.isPending}
-                  >
-                    Choose PDF
-                  </Button>
-                  <span className="text-muted-foreground text-xs">PDF files only</span>
-                </div>
 
                 <div className="text-muted-foreground mt-2 flex min-h-8 items-center gap-2 text-sm">
                   {selectedFile ? (
