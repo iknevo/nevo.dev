@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
+import ImageWithLightbox from "@/src/components/image-with-lightbox";
 import { LoaderSmall } from "@/src/components/loader-small";
 import TransitionLink from "@/src/components/transition-link";
 import { Badge } from "@/src/components/ui/badge";
@@ -65,7 +66,11 @@ export default function PostPreview({ id }: Props) {
               <p className="text-lg text-white/90 sm:text-xl">{post.summary}</p>
 
               {post.image && (
-                <div className="dark relative aspect-[16/9] w-full overflow-hidden rounded-lg">
+                <ImageWithLightbox
+                  src={post.image}
+                  alt={post.title}
+                  className="dark aspect-[16/9] w-full rounded-lg"
+                >
                   {!loaded && <Skeleton className="absolute inset-0" />}
                   <Image
                     src={post.image}
@@ -76,7 +81,7 @@ export default function PostPreview({ id }: Props) {
                     onLoadingComplete={() => setLoaded(true)}
                     priority
                   />
-                </div>
+                </ImageWithLightbox>
               )}
             </div>
 
