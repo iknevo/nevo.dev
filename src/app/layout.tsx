@@ -77,7 +77,7 @@ export default function RootLayout({
         <ReactLenis
           root
           options={{
-            lerp: 0.1,
+            lerp: 0.12,
             duration: 1.4,
           }}
         >
