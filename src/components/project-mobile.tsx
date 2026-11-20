@@ -15,24 +15,26 @@ export default function ProjectMobile({ index, project }: Props) {
       onClick={() => {
         sessionStorage.setItem("projects-scroll-y", String(window.scrollY));
       }}
-      className="group focus-visible:outline-primary block focus-visible:outline-2 focus-visible:outline-offset-4"
+      className="project-card group focus-visible:outline-primary block focus-visible:outline-2 focus-visible:outline-offset-4"
     >
-      <div className="relative aspect-[16/10] w-full overflow-hidden bg-white/[0.025]">
+      <div className="w-full overflow-hidden rounded-lg">
         <Image
           src={project.thumbnail}
           alt={`${project.name} preview`}
-          fill
+          width={1600}
+          height={1000}
           sizes="(max-width: 1023px) 100vw, 0px"
-          className="object-contain p-2 transition-transform duration-500 group-hover:scale-[1.015] sm:p-4"
+          className="block h-auto w-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
         />
       </div>
       <div className="mt-5 flex items-baseline gap-3 sm:mt-6 sm:gap-4">
         <span className="text-primary font-mono text-sm tracking-[0.12em]">
           {(index + 1).toString().padStart(2, "0")}
         </span>
-        <h3 className="text-2xl leading-none font-semibold tracking-[-0.04em] text-white sm:text-3xl">
+        <h3 className="min-w-0 flex-1 truncate text-2xl leading-[1.15] font-semibold tracking-[-0.04em] text-white sm:text-3xl">
           {project.name}
         </h3>
+        <span className="font-mono text-xs tracking-[0.08em] text-white/50">{project.year}</span>
       </div>
       {project.techStack.length > 0 && (
         <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-1.5">
