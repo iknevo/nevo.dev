@@ -30,7 +30,6 @@ export default function Experiences() {
           trigger: containerRef.current,
           start: "top 60%",
           end: "bottom 50%",
-          toggleActions: "restart none none reverse",
           scrub: 1,
         },
       });

@@ -48,10 +48,11 @@ export default function AboutMe() {
         },
       });
 
-      tl.to(".slide-up-and-fade", {
+      // Animate the container, not the children: the in-animation above already tweens y/opacity
+      // on the children, and two scrubbed tweens on the same properties fight each other.
+      tl.to(container.current, {
         y: -150,
         opacity: 0,
-        stagger: 0.02,
       });
     },
     { scope: container }

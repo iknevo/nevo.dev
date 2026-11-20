@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import AnimatedCursor from "react-animated-cursor";
 
 export default function Cursor() {
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  // null until we know the pointer type, so the cursor never mounts (and flashes) on touch devices.
+  const [isTouchDevice, setIsTouchDevice] = useState<boolean | null>(null);
 
   useEffect(() => {
     const pointer = window.matchMedia("(pointer: coarse)");
@@ -17,7 +18,7 @@ export default function Cursor() {
     return () => pointer.removeEventListener("change", update);
   }, []);
 
-  if (isTouchDevice) {
+  if (isTouchDevice !== false) {
     return null;
   }
 
