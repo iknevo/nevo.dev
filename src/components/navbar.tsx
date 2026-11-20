@@ -81,11 +81,15 @@ export default function Navbar() {
   }, [isMenuOpen, closeMenu]);
 
   useEffect(() => {
+    // Lenis scrolls programmatically, which `overflow: hidden` doesn't block, so pause it too.
     document.body.style.overflow = isMenuOpen ? "hidden" : "";
+    if (isMenuOpen) lenis?.stop();
+    else lenis?.start();
     return () => {
       document.body.style.overflow = "";
+      lenis?.start();
     };
-  }, [isMenuOpen]);
+  }, [isMenuOpen, lenis]);
 
   const handleClick = (target: string) => {
     const isHome = pathname === "/" || pathname === "";
@@ -106,10 +110,11 @@ export default function Navbar() {
 
     if (!lenis) return;
 
+    // `force`: Lenis is stopped while the menu is open, and it only restarts after the close renders.
     if (target === "#") {
-      lenis.scrollTo(0);
+      lenis.scrollTo(0, { force: true });
     } else {
-      lenis.scrollTo(target, { offset: -50 });
+      lenis.scrollTo(target, { offset: -50, force: true });
     }
     closeMenu();
   };
@@ -156,6 +161,7 @@ export default function Navbar() {
       <div
         ref={menuPanelRef}
         id="mobile-menu"
+        inert={!isMenuOpen}
         role="dialog"
         aria-modal="true"
         aria-label="Mobile navigation menu"

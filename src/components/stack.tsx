@@ -45,11 +45,6 @@ export default function Stack() {
         ease: "none",
         stagger: 0.4,
       });
-
-      return () => {
-        tl.scrollTrigger?.kill();
-        tl.kill();
-      };
     },
     { scope: containerRef, dependencies: [stack] }
   );
@@ -71,11 +66,6 @@ export default function Stack() {
         y: -150,
         opacity: 0,
       });
-
-      return () => {
-        tl.scrollTrigger?.kill();
-        tl.kill();
-      };
     },
     { scope: containerRef, dependencies: [stack] }
   );

@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useEffect, useRef, useState } from "react";
 
-import Button from "@/src/components/button";
+import { ButtonFill, buttonClasses } from "@/src/components/button";
 import Magnet from "@/src/components/magnet";
 import ShinyText from "@/src/components/shiny-text";
 
@@ -41,16 +41,12 @@ export default function Banner() {
     { scope: containerRef }
   );
 
+  // Line-by-line reveal of the code block, desktop only (on smaller screens it's one paragraph).
   useGSAP(
-    (context: gsap.Context) => {
-      if (!context) return;
-
-      const animateUps = context.selector?.(".animateUp") ?? [];
-
-      if (animateUps.length > 0) {
-        const wrapperTl = gsap.timeline();
-
-        wrapperTl.to(".wrapper", { overflow: "hidden", duration: 0.4 }).from(animateUps, {
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 1024px)", () => {
+        gsap.from(".animateUp", {
           y: "100%",
           duration: 2,
           delay: 1.5,
@@ -61,7 +57,7 @@ export default function Banner() {
             toggleActions: "play none none reverse",
           },
         });
-      }
+      });
     },
     { scope: codeRef }
   );
@@ -87,14 +83,15 @@ export default function Banner() {
           "
           />
           <Magnet magnetStrength={4} disabled={isMobile}>
-            <TransitionLink href={"/blog"}>
-              <Button
-                as="button"
-                variant="primary"
-                className="banner-Button slide-up-and-fade cursor text-primary-foreground mt-9 rounded-md px-6 py-3 text-base font-semibold transition-colors duration-500 hover:text-black sm:px-8 sm:py-4 sm:text-lg"
-              >
-                My Blog
-              </Button>
+            <TransitionLink
+              href="/blog"
+              className={buttonClasses(
+                "primary",
+                "banner-Button slide-up-and-fade cursor text-primary-foreground mt-9 rounded-md px-6 py-3 text-base font-semibold transition-colors duration-500 hover:text-black sm:px-8 sm:py-4 sm:text-lg"
+              )}
+            >
+              <ButtonFill />
+              <span className="z-1">My Blog</span>
             </TransitionLink>
           </Magnet>
         </div>
@@ -105,32 +102,25 @@ export default function Banner() {
             className="slide-up-and-fade flex flex-col text-xs tracking-widest text-white md:text-sm lg:text-sm"
           >
             <span className="text-primary block text-lg font-bold">{"<span>"}</span>
-            {isMobile ? (
-              <div className="inline-block leading-7">
-                <span className="ms-4 inline-block">
-                  Proficient in the latest web technologies and frameworks, continuously expanding
-                  my skill set to stay at the forefront of the industry.
+            {/* Same markup on every screen size: separate lines for the reveal on desktop, one
+                flowing paragraph below lg. */}
+            <div className="inline-block leading-7 max-lg:ms-4 lg:translate-x-5">
+              <div className="wrapper overflow-hidden max-lg:inline">
+                <span className="animateUp inline-block max-lg:inline">
+                  Proficient in the latest web technologies and{" "}
                 </span>
               </div>
-            ) : (
-              <div className="inline-block leading-7 md:translate-x-5">
-                <div className="wrapper">
-                  <span className="animateUp inline-block">
-                    Proficient in the latest web technologies and
-                  </span>
-                </div>
-                <div className="wrapper">
-                  <span className="animateUp inline-block">
-                    frameworks, continuously expanding my skill set
-                  </span>
-                </div>
-                <div className="wrapper">
-                  <span className="animateUp inline-block">
-                    to stay at the forefront of the industry.
-                  </span>
-                </div>
+              <div className="wrapper overflow-hidden max-lg:inline">
+                <span className="animateUp inline-block max-lg:inline">
+                  frameworks, continuously expanding my skill set{" "}
+                </span>
               </div>
-            )}
+              <div className="wrapper overflow-hidden max-lg:inline">
+                <span className="animateUp inline-block max-lg:inline">
+                  to stay at the forefront of the industry.
+                </span>
+              </div>
+            </div>
             <span className="text-primary block text-lg font-bold">{"</span>"}</span>
           </code>
         </div>

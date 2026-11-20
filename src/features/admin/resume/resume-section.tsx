@@ -1,7 +1,7 @@
 "use client";
 
 import { format } from "date-fns";
-import { ExternalLink, FileText, Upload, X } from "lucide-react";
+import { ExternalLink, Upload, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
