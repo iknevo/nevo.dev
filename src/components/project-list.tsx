@@ -3,7 +3,7 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 import Project from "@/src/components/project";
 import ProjectImagePreview from "@/src/components/project-image-preview";
@@ -19,36 +19,7 @@ export default function ProjectList() {
   const { data: projects = [], isLoading } = useGetProjects();
   const containerRef = useRef<HTMLDivElement>(null);
   const restoredScrollRef = useRef(false);
-  const previewIndexRef = useRef(0);
-  const transitionIdRef = useRef(0);
-  const transitionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [previewIndex, setPreviewIndex] = useState(0);
-  const [previousPreviewIndex, setPreviousPreviewIndex] = useState<number | null>(null);
-
-  const handlePreviewChange = (index: number) => {
-    if (previewIndexRef.current === index) return;
-
-    const previousIndex = previewIndexRef.current;
-    previewIndexRef.current = index;
-    setPreviousPreviewIndex(previousIndex);
-    setPreviewIndex(index);
-
-    if (transitionTimeoutRef.current) clearTimeout(transitionTimeoutRef.current);
-    const transitionId = ++transitionIdRef.current;
-    transitionTimeoutRef.current = setTimeout(() => {
-      if (transitionIdRef.current === transitionId) {
-        setPreviousPreviewIndex(null);
-        transitionTimeoutRef.current = null;
-      }
-    }, 380);
-  };
-
-  useEffect(
-    () => () => {
-      if (transitionTimeoutRef.current) clearTimeout(transitionTimeoutRef.current);
-    },
-    []
-  );
 
   useLayoutEffect(() => {
     if (!isLoading && projects.length > 0) {
@@ -70,22 +41,38 @@ export default function ProjectList() {
     requestAnimationFrame(() => window.scrollTo(0, scrollY));
   }, [isLoading]);
 
+  // One-time staggered entrance.
   useGSAP(
     () => {
-      if (!containerRef.current) return;
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top bottom",
-          end: "top 80%",
-          toggleActions: "restart none none reverse",
-          scrub: 1,
-        },
-      });
+      if (!containerRef.current || !projects.length) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      tl.from(containerRef.current, {
-        y: 150,
-        opacity: 0,
+      const trigger = { trigger: containerRef.current, start: "top 80%", once: true };
+
+      gsap.from(".project-preview-wrap", {
+        y: 30,
+        autoAlpha: 0,
+        duration: 1,
+        ease: "expo.out",
+        scrollTrigger: trigger,
+      });
+      gsap.from(".project-item", {
+        y: 20,
+        autoAlpha: 0,
+        duration: 0.8,
+        ease: "expo.out",
+        stagger: 0.06,
+        delay: 0.1,
+        scrollTrigger: trigger,
+      });
+      gsap.utils.toArray<HTMLElement>(".project-card").forEach((card) => {
+        gsap.from(card, {
+          y: 40,
+          autoAlpha: 0,
+          duration: 1,
+          ease: "expo.out",
+          scrollTrigger: { trigger: card, start: "top 90%", once: true },
+        });
       });
     },
     { scope: containerRef, dependencies: [projects] }
@@ -111,21 +98,17 @@ export default function ProjectList() {
             </div>
 
             <div className="hidden items-start gap-8 lg:grid lg:grid-cols-[minmax(0,3fr)_minmax(300px,2fr)] lg:gap-10 xl:gap-14">
-              <div className="lg:sticky lg:top-24 lg:self-start">
-                <ProjectImagePreview
-                  activeIndex={previewIndex}
-                  previousIndex={previousPreviewIndex}
-                  projects={projects}
-                />
+              <div className="project-preview-wrap lg:sticky lg:top-24 lg:self-start">
+                <ProjectImagePreview activeIndex={previewIndex} projects={projects} />
               </div>
-              <div className="group/projects flex flex-col lg:pt-1">
+              <div className="relative flex flex-col lg:pt-1">
                 {projects.map((project, index) => (
                   <Project
                     index={index}
                     project={project}
                     key={project._id}
                     active={previewIndex === index}
-                    onPreview={handlePreviewChange}
+                    onPreview={setPreviewIndex}
                   />
                 ))}
               </div>

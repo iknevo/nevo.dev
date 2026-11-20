@@ -135,7 +135,6 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
                       field.ref(node);
                     }}
                     disabled={disabled}
-                    
                   />
                 </FormControl>
                 <ImagePreviewModal
