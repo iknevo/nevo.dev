@@ -1,6 +1,8 @@
 {
   "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
   "importOrder": [
+    "^server-only$",
+    "^client-only$",
     "<THIRD_PARTY_MODULES>",
     "^@/lib/(.*)$",
     "^@/src/(.*)$",
