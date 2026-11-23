@@ -2,7 +2,6 @@ import { createHash } from "crypto";
 import { Hono } from "hono";
 import type { Context } from "hono";
 import { rateLimiter } from "hono-rate-limiter";
-import { deleteCookie } from "hono/cookie";
 import status from "http-status";
 import { z } from "zod";
 
@@ -16,7 +15,7 @@ import {
 import dbConnect from "@/src/lib/db";
 import { sendPasswordResetEmail } from "@/src/lib/email";
 import type { AccessPayload } from "@/src/lib/jwt";
-import { authMiddleware, sendTokens } from "@/src/lib/jwt";
+import { authMiddleware, clearAuthCookies, sendTokens } from "@/src/lib/jwt";
 import { zValidator } from "@/src/lib/zod-wrapper";
 import { User } from "@/src/models/user-model";
 
@@ -67,24 +66,13 @@ const app = new Hono<Env>()
     await dbConnect();
     const user = await User.findOne({ email }).select("+password");
     if (!user || !(await user.checkPassword(password, user.password))) {
-      return c.json({ message: "Invalid Email or Password" }, status.FORBIDDEN);
+      return c.json({ message: "Invalid email or password" }, status.FORBIDDEN);
     }
     await sendTokens(c, user._id.toString());
     return c.json({ message: "Welcome NEVO." }, status.OK);
   })
-  .post("/logout", authMiddleware, async (c) => {
-    deleteCookie(c, "accessToken", {
-      path: "/",
-      httpOnly: true,
-      secure: env.production,
-      sameSite: "Strict",
-    });
-    deleteCookie(c, "refreshToken", {
-      path: "/",
-      httpOnly: true,
-      secure: env.production,
-      sameSite: "Strict",
-    });
+  .post("/logout", async (c) => {
+    clearAuthCookies(c);
     return c.json({ message: "Successfully logged out" }, status.OK);
   })
   .post(
@@ -129,7 +117,7 @@ const app = new Hono<Env>()
         return c.json(
           {
             success: false,
-            message: "There was an error sending email, Please try again later.",
+            message: "Couldn't send the reset email. Please try again later.",
           },
           status.INTERNAL_SERVER_ERROR
         );
@@ -158,9 +146,10 @@ const app = new Hono<Env>()
         return c.json(
           {
             success: false,
-            message: "There was an error reseting password, Please try again later.",
+            message:
+              "This reset link is invalid or has expired. Request a new one from the login page.",
           },
-          status.UNAUTHORIZED
+          status.GONE
         );
       }
       user.password = password;
@@ -172,7 +161,7 @@ const app = new Hono<Env>()
       return c.json(
         {
           success: true,
-          message: "Password Reset Successfully",
+          message: "Password reset. You're signed in.",
         },
         status.OK
       );
@@ -180,8 +169,8 @@ const app = new Hono<Env>()
   )
   .patch(
     "/update-password",
-    zValidator("json", PasswordUpdateSchema),
     authMiddleware,
+    zValidator("json", PasswordUpdateSchema),
     async (c) => {
       const userPayload = c.get("user");
       const { password, passwordConfirm, passwordCurrent } = c.req.valid("json");
@@ -190,7 +179,7 @@ const app = new Hono<Env>()
       if (!user || !(await user.checkPassword(passwordCurrent, user.password))) {
         return c.json(
           { success: false, message: "Your current password is wrong" },
-          status.UNAUTHORIZED
+          status.BAD_REQUEST
         );
       }
       user.password = password;
@@ -200,7 +189,7 @@ const app = new Hono<Env>()
       return c.json(
         {
           success: true,
-          message: "Password Updated Successfully",
+          message: "Password updated",
         },
         status.OK
       );

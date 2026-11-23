@@ -9,11 +9,13 @@ export const zValidator = <T extends ZodType, Target extends keyof ValidationTar
 ) =>
   zv(target, schema, (result, c) => {
     if (!result.success) {
-      const errorsArr = JSON.parse(result.error.message);
-      const errorMessages = errorsArr.map((error: any) => {
-        const field = error.path.join(".");
-        return `${field}: ${error.message}`;
-      });
-      return c.json({ success: false, errors: errorMessages }, status.BAD_REQUEST);
+      const errors = result.error.issues.map((issue) => ({
+        path: issue.path.join("."),
+        message: issue.message,
+      }));
+      return c.json(
+        { success: false, message: errors[0]?.message ?? "Validation failed", errors },
+        status.BAD_REQUEST
+      );
     }
   });

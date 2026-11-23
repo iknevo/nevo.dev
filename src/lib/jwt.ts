@@ -1,5 +1,5 @@
 import { Context } from "hono";
-import { getCookie, setCookie } from "hono/cookie";
+import { deleteCookie, getCookie, setCookie } from "hono/cookie";
 import { createMiddleware } from "hono/factory";
 import { sign, verify } from "hono/jwt";
 import { JWTPayload } from "hono/utils/jwt/types";
@@ -52,6 +52,23 @@ export async function generateRefreshToken(id: string): Promise<string> {
   return await sign(payload, env.jwt.refreshSecret, "HS256");
 }
 
+const authCookieOptions = {
+  path: "/",
+  httpOnly: true,
+  secure: env.production,
+  sameSite: "Strict",
+} as const;
+
+export function clearAuthCookies(c: Context) {
+  deleteCookie(c, "accessToken", authCookieOptions);
+  deleteCookie(c, "refreshToken", authCookieOptions);
+}
+
+function unauthorized(c: Context) {
+  clearAuthCookies(c);
+  return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
+}
+
 export async function sendTokens(c: Context, id: string): Promise<void> {
   const accessToken = await generateAccessToken(id);
   const refreshToken = await generateRefreshToken(id);
@@ -99,18 +116,18 @@ export const withHiddenAuth = createMiddleware(async (c, next) => {
   }
 
   if (!refreshToken) {
-    return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
+    return unauthorized(c);
   }
 
   const payload = await verifyRefreshToken(refreshToken);
   if (!payload) {
-    return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
+    return unauthorized(c);
   }
 
   await dbConnect();
   const user = await User.findById(payload.id);
   if (!user || user.changedPasswordAfter(payload.iat!)) {
-    return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
+    return unauthorized(c);
   }
 
   c.set("user", { id: payload.id });
@@ -137,24 +154,19 @@ export const authMiddleware = createMiddleware(async (c, next) => {
     }
   }
 
-  // Fall back to refresh token
   if (!refreshToken) {
-    return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
+    return unauthorized(c);
   }
 
   const payload = await verifyRefreshToken(refreshToken);
   if (!payload) {
-    return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
+    return unauthorized(c);
   }
 
   await dbConnect();
   const user = await User.findById(payload.id);
-  if (!user) {
-    return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
-  }
-
-  if (user.changedPasswordAfter(payload.iat!)) {
-    return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
+  if (!user || user.changedPasswordAfter(payload.iat!)) {
+    return unauthorized(c);
   }
 
   const newAccessToken = await generateAccessToken(payload.id);

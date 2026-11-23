@@ -24,8 +24,8 @@ export function handleCastErr(err: any) {
 export function handleDuplicateErr(err: any) {
   const field = Object.keys(err.keyValue)[0];
   const value = err.keyValue[field];
-  const message = `Duplicate value for field (${field}: ${value}). Please use another value!`;
-  return new AppError(message, status.BAD_REQUEST);
+  const message = `"${value}" is already taken. Please use a different ${field}.`;
+  return new AppError(message, status.CONFLICT);
 }
 export function handleValidationErr(err: any) {
   const errors = Object.values(err.errors).map((el: any) => el.message);
@@ -36,8 +36,8 @@ function sendError(err: any, c: Context) {
   return c.json(
     {
       status: err.isOperational ? err.status : "error",
-      error: err,
-      message: err.isOperational ? err.message : "Something Went Wrong!, Please try again.",
+      ...(env.development && { error: err }),
+      message: err.isOperational ? err.message : "Something went wrong. Please try again.",
       ...(env.development && { stack: err.stack }),
     },
     err.isOperational ? err.statusCode : status.INTERNAL_SERVER_ERROR
