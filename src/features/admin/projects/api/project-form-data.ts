@@ -12,8 +12,6 @@ export function toProjectFormData(values: projectFormValues) {
   values.features.forEach((feat) => {
     if (feat.item) formData.append("features", feat.item);
   });
-  values.techStack.forEach((tech) => {
-    if (tech.item) formData.append("techStack", tech.item);
-  });
+  values.techStack.forEach((tech) => formData.append("techStack", tech));
   return formData;
 }

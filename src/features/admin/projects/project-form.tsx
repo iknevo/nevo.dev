@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, XIcon } from "lucide-react";
 import { useEffect } from "react";
-import { Controller, type FieldArrayPath, useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { Button } from "@/src/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/src/components/ui/field";
@@ -26,6 +26,8 @@ import { projectFormValues, projectSchema } from "@/src/definitions/projects-val
 import { getUploadSizeError } from "@/src/definitions/upload";
 import FormSection from "@/src/features/admin/shared/form-section";
 import ImagePreviewModal from "@/src/features/admin/shared/image-preview-modal";
+
+import SkillsSelect from "./skills-select";
 
 type Props = {
   formId: string;
@@ -198,13 +200,23 @@ export default function ProjectForm({
         </FormSection>
 
         <FormSection title="Tech stack" description="Technologies used to build it.">
-          <ListField
-            form={form}
+          <FormField
             name="techStack"
-            itemLabel="technology"
-            placeholder="e.g. Next.js"
-            addLabel="Add technology"
-            disabled={disabled}
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <SkillsSelect
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    ref={field.ref}
+                    disabled={disabled}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
         </FormSection>
 
@@ -236,7 +248,7 @@ export default function ProjectForm({
 
 type ListFieldProps = {
   form: ReturnType<typeof useForm<projectFormValues>>;
-  name: Extract<FieldArrayPath<projectFormValues>, "features" | "techStack">;
+  name: "features";
   itemLabel: string;
   placeholder: string;
   addLabel: string;

@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { Switch } from "@/src/components/ui/switch";
-import { STACK } from "@/src/config/constants";
+import { STACK_TYPE_OPTIONS } from "@/src/config/constants";
 import { stackFormValues, stackSchema } from "@/src/definitions/stack-validations";
 import { getUploadSizeError } from "@/src/definitions/upload";
 import FormSection from "@/src/features/admin/shared/form-section";
@@ -33,15 +33,6 @@ type Props = {
   onDirtyChange?: (isDirty: boolean) => void;
   disabled?: boolean;
 };
-
-const TYPE_OPTIONS = [
-  { value: STACK.frontend, label: "Front-End" },
-  { value: STACK.backend, label: "Back-End" },
-  { value: STACK.mobile, label: "Mobile" },
-  { value: STACK.testing, label: "Testing" },
-  { value: STACK.tools, label: "Tools" },
-  { value: STACK.studying, label: "Studying" },
-];
 
 export default function StackForm({
   formId,
@@ -96,7 +87,7 @@ export default function StackForm({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {TYPE_OPTIONS.map((option) => (
+                    {STACK_TYPE_OPTIONS.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
                       </SelectItem>

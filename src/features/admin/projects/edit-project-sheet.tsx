@@ -11,6 +11,7 @@ import { useDeleteProject } from "./api/use-delete-project";
 import { useGetProject } from "./api/use-get-project";
 import { useUpdateProject } from "./api/use-update-project";
 import ProjectForm from "./project-form";
+import { uniqueSkillNames } from "./skills-select";
 import { useOpenProject } from "./state/use-open-project";
 
 const FORM_ID = "edit-project-form";
@@ -81,9 +82,7 @@ export const EditProjectSheet = () => {
               features: project.features?.length
                 ? project.features.map((item) => ({ item }))
                 : [{ item: "" }],
-              techStack: project.techStack?.length
-                ? project.techStack.map((item) => ({ item }))
-                : [{ item: "" }],
+              techStack: uniqueSkillNames(project.techStack ?? []),
               thumbnail: project.thumbnail ?? "",
               hide: project.hide ?? false,
             }}

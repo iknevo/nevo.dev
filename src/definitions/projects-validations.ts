@@ -19,13 +19,7 @@ export const projectSchema = z.object({
       })
     )
     .min(1, "Add at least one feature"),
-  techStack: z
-    .array(
-      z.object({
-        item: z.string().trim().min(1, "Technology cannot be empty"),
-      })
-    )
-    .min(1, "Add at least one tech stack item"),
+  techStack: z.array(z.string().trim().min(1)).min(1, "Add at least one technology"),
   thumbnail: z.union([
     z.string().trim().min(1, "Please add a Thumbnail"),
     z.instanceof(File).refine((file) => file.size > 0, { error: "Please add a Thumbnail" }),
@@ -43,7 +37,7 @@ export const projectFormDefaults: projectFormValues = {
   sourceCode: "",
   description: "",
   features: [{ item: "" }],
-  techStack: [{ item: "" }],
+  techStack: [],
   thumbnail: "",
   hide: false,
 };

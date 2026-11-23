@@ -1,6 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 
 import TransitionLink from "@/src/components/transition-link";
+import { PROJECT_CARD_SKILLS_COUNT } from "@/src/config/constants";
 import { cn } from "@/src/lib/utils";
 import { ProjectResponse } from "@/src/types";
 
@@ -105,7 +106,7 @@ export default function Project({ index, project, active, onPreview }: Props) {
 
             {project.techStack.length > 0 && (
               <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-1.5">
-                {project.techStack.slice(0, 3).map((tech) => (
+                {project.techStack.slice(0, PROJECT_CARD_SKILLS_COUNT).map((tech) => (
                   <li
                     key={tech}
                     className="font-mono text-[11px] font-medium tracking-[0.08em] text-white/50"
