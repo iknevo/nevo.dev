@@ -1,5 +1,4 @@
 // oxlint-disable unicorn/no-thenable
-import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import status from "http-status";
 import { z } from "zod";
@@ -10,9 +9,11 @@ import {
   deriveCloudinaryPublicId,
   destroyCloudinaryAsset,
   uploadToCloudinary,
+  withUploadRollback,
 } from "@/src/lib/cloudinary";
 import dbConnect from "@/src/lib/db";
 import { authMiddleware, withHiddenAuth } from "@/src/lib/jwt";
+import { zValidator } from "@/src/lib/zod-wrapper";
 import { Stack, stackItem, stackType } from "@/src/models/stack-model";
 
 async function bulkReorderStack(ids: string[]) {
@@ -161,7 +162,10 @@ const app = new Hono()
         path: err.path.join("."),
         message: err.message,
       }));
-      return c.json({ success: false, message: "Validation failed", errors }, status.BAD_REQUEST);
+      return c.json(
+        { success: false, message: errors[0]?.message ?? "Validation failed", errors },
+        status.BAD_REQUEST
+      );
     }
     const { data } = result;
     let iconUrl: string;
@@ -188,7 +192,10 @@ const app = new Hono()
       hide: data.hide,
       sortIndex: data.sortIndex,
     };
-    const stack = await Stack.create(newStack);
+    const stack = await withUploadRollback(
+      data.icon instanceof File ? iconPublicId : undefined,
+      () => Stack.create(newStack)
+    );
     if (!stack) {
       return c.json({ message: "Error creating stack!, Try again later" }, status.BAD_REQUEST);
     }
@@ -239,7 +246,10 @@ const app = new Hono()
           path: err.path.join("."),
           message: err.message,
         }));
-        return c.json({ success: false, message: "Validation failed", errors }, status.BAD_REQUEST);
+        return c.json(
+          { success: false, message: errors[0]?.message ?? "Validation failed", errors },
+          status.BAD_REQUEST
+        );
       }
       const { data } = result;
       const oldIconUrl = existingStack.icon;
@@ -259,16 +269,34 @@ const app = new Hono()
             ? (deriveCloudinaryPublicId(iconUrl) ?? undefined)
             : (existingStack.iconPublicId ?? undefined);
       }
+      const oldType = existingStack.type;
+      const oldSortIndex = existingStack.sortIndex;
+      const typeChanged = data.type !== oldType;
+      let nextSortIndex = data.sortIndex ?? oldSortIndex;
+      if (typeChanged && data.sortIndex === undefined) {
+        const maxItem = await Stack.findOne({ type: data.type })
+          .sort({ sortIndex: -1 })
+          .select("sortIndex");
+        nextSortIndex = (maxItem?.sortIndex ?? 0) + 1;
+      }
       const newStack = {
         name: data.name,
         icon: iconUrl,
         iconPublicId,
         type: data.type,
         hide: data.hide,
-        sortIndex: data.sortIndex ?? existingStack.sortIndex,
+        sortIndex: nextSortIndex,
       };
       Object.assign(existingStack, newStack);
-      await existingStack.save();
+      await withUploadRollback(data.icon instanceof File ? iconPublicId : undefined, () =>
+        existingStack.save()
+      );
+      if (typeChanged) {
+        await Stack.updateMany(
+          { type: oldType, sortIndex: { $gt: oldSortIndex } },
+          { $inc: { sortIndex: -1 } }
+        );
+      }
 
       if (oldIconPublicId && iconUrl !== oldIconUrl && oldIconPublicId !== iconPublicId) {
         await destroyCloudinaryAsset(oldIconPublicId);
@@ -307,7 +335,7 @@ const app = new Hono()
         { type: stack.type, sortIndex: { $gt: stack.sortIndex } },
         { $inc: { sortIndex: -1 } }
       );
-      return c.status(status.NO_CONTENT);
+      return c.body(null, status.NO_CONTENT);
     }
   );
 

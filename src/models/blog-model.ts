@@ -1,6 +1,7 @@
 import { InferSchemaType, Model, Schema, model, models } from "mongoose";
 import readingTime from "reading-time";
-import slugify from "slugify";
+
+import { uniqueSlug } from "@/src/lib/slug";
 
 const blogSchema = new Schema(
   {
@@ -48,11 +49,9 @@ blogSchema.index({ createdAt: -1 });
 blogSchema.index({ hide: 1 });
 
 blogSchema.pre("save", async function (next) {
-  this.slug = slugify(this.title, {
-    replacement: "-",
-    lower: true,
-    trim: true,
-  });
+  if (this.isNew || !this.slug) {
+    this.slug = await uniqueSlug(this.constructor as Model<any>, this.title, this._id);
+  }
   next();
 });
 

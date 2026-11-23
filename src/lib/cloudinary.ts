@@ -1,17 +1,15 @@
 import { v2 as cloudinary } from "cloudinary";
 
 import { env } from "@/src/config/env";
+import { MAX_UPLOAD_BYTES, MAX_UPLOAD_LABEL } from "@/src/definitions/upload";
 import { AppError } from "@/src/lib/error-handlers";
-
-const MAX_IMAGE_UPLOAD_BYTES = 10 * 1024 * 1024;
-const MAX_PDF_UPLOAD_BYTES = 10 * 1024 * 1024;
 
 function validateImageFile(file: File) {
   if (!file.type.startsWith("image/")) {
     throw new AppError("Only image files are allowed", 400);
   }
-  if (file.size > MAX_IMAGE_UPLOAD_BYTES) {
-    throw new AppError("Image must be 10 MB or smaller", 400);
+  if (file.size > MAX_UPLOAD_BYTES) {
+    throw new AppError(`Image must be ${MAX_UPLOAD_LABEL} or smaller`, 400);
   }
 }
 
@@ -19,8 +17,8 @@ function validatePdfFile(file: File) {
   if (file.type !== "application/pdf") {
     throw new AppError("Only PDF files are allowed", 400);
   }
-  if (file.size > MAX_PDF_UPLOAD_BYTES) {
-    throw new AppError("PDF must be 10 MB or smaller", 400);
+  if (file.size > MAX_UPLOAD_BYTES) {
+    throw new AppError(`PDF must be ${MAX_UPLOAD_LABEL} or smaller`, 400);
   }
 }
 
@@ -81,6 +79,19 @@ export const destroyCloudinaryAsset = async (
     console.warn(`Failed to destroy Cloudinary asset "${publicId}"`, error);
   }
 };
+
+export async function withUploadRollback<T>(
+  uploadedPublicId: string | undefined,
+  write: () => Promise<T>,
+  resourceType: "image" | "raw" = "image"
+): Promise<T> {
+  try {
+    return await write();
+  } catch (err) {
+    if (uploadedPublicId) await destroyCloudinaryAsset(uploadedPublicId, resourceType);
+    throw err;
+  }
+}
 
 export const deriveCloudinaryPublicId = (url: string): string | null => {
   try {
