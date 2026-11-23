@@ -1,9 +1,22 @@
 import "server-only";
 
+import { headers } from "next/headers";
+
 import { app } from "@/src/app/api/[[...routes]]/route";
 
-export async function serverFetch(path: string) {
-  const res = await app.request(path);
+type ServerFetchOptions = {
+  withCookies?: boolean;
+};
+
+export async function serverFetch(path: string, { withCookies = false }: ServerFetchOptions = {}) {
+  const incoming = await headers();
+  const forwarded: Record<string, string> = {};
+  const forwardedFor = incoming.get("x-forwarded-for");
+  if (forwardedFor) forwarded["x-forwarded-for"] = forwardedFor;
+  const cookie = withCookies ? incoming.get("cookie") : null;
+  if (cookie) forwarded.cookie = cookie;
+
+  const res = await app.request(path, { headers: forwarded });
   if (!res.ok) {
     const body = await res.json().catch(() => null);
     throw new Error(body?.message || body?.error || `Request failed with status ${res.status}`);

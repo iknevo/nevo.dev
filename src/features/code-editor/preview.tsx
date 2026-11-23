@@ -27,6 +27,14 @@ const schema = {
   },
 };
 
+function isCloudinaryUrl(src: string) {
+  try {
+    return new URL(src).hostname === "res.cloudinary.com";
+  } catch {
+    return false;
+  }
+}
+
 function CustomPre(props: PreProps) {
   const [copied, setCopied] = useState(false);
   const preRef = useRef<HTMLPreElement | null>(null);
@@ -49,6 +57,7 @@ function CustomPre(props: PreProps) {
       <button
         className="no-cursor absolute top-2 right-2 flex size-8 items-center justify-center rounded-md border border-white/20 transition-colors duration-200 hover:text-white/40"
         type="button"
+        aria-label={copied ? "Copied" : "Copy code"}
         onClick={handleCopy}
       >
         {copied ? <Check size={16} /> : <Copy size={16} />}
@@ -78,15 +87,23 @@ export default function Preview({ className, doc }: Props) {
         rehypePlugins={[rehypeRaw, [rehypeSanitize, schema], rehypeHighlight]}
         components={{
           img: ({ src, alt = "" }) => {
-            if (!src) return null;
+            if (!src || typeof src !== "string") return null;
+            if (isCloudinaryUrl(src)) {
+              return (
+                <Image
+                  src={src}
+                  alt={alt}
+                  width={800}
+                  height={600}
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  style={{ height: "auto" }}
+                  className="my-4 rounded"
+                />
+              );
+            }
             return (
-              <Image
-                src={src.toString()}
-                alt={alt}
-                width={800}
-                height={600}
-                className="my-4 rounded"
-              />
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={src} alt={alt} loading="lazy" className="my-4 h-auto max-w-full rounded" />
             );
           },
           pre: CustomPre,

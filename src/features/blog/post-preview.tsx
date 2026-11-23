@@ -2,6 +2,7 @@
 
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import ImageWithLightbox from "@/src/components/image-with-lightbox";
@@ -18,9 +19,10 @@ interface Props {
 }
 
 export default function PostPreview({ id }: Props) {
-  const { data: post, isLoading } = useGetPost(id);
+  const isPreview = useSearchParams().get("preview") === "1";
+  const { data: post, isLoading } = useGetPost(id, isPreview);
   const [loaded, setLoaded] = useState(false);
-  useTrackPostView(post?._id);
+  useTrackPostView(isPreview ? undefined : post?._id);
 
   return (
     <section className="selection:!bg-primary mx-auto max-w-400 px-4 pt-4 pb-12 select-text sm:px-6 sm:pt-6 sm:pb-16 lg:px-16">
@@ -46,6 +48,11 @@ export default function PostPreview({ id }: Props) {
         ) : (
           <>
             <div className="space-y-6 sm:space-y-8">
+              {post.hide && (
+                <p className="rounded-md border border-dashed border-white/20 px-4 py-3 text-sm text-white/70">
+                  Hidden post: only you can see this preview.
+                </p>
+              )}
               <div className="border-accent/20 flex flex-col gap-3 border-b pb-4 sm:flex-row sm:items-end sm:justify-between">
                 <h1 className="text-2xl leading-tight font-semibold sm:text-3xl lg:text-4xl">
                   {post.title}
