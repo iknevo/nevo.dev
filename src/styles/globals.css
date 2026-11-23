@@ -4,8 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @media (hover: hover) and (pointer: fine) {
-  *,
-  body {
+  .custom-cursor,
+  .custom-cursor * {
     cursor: none;
   }
 }

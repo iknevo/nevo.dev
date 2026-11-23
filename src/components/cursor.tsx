@@ -18,6 +18,12 @@ export default function Cursor() {
     return () => pointer.removeEventListener("change", update);
   }, []);
 
+  useEffect(() => {
+    if (isTouchDevice !== false) return;
+    document.documentElement.classList.add("custom-cursor");
+    return () => document.documentElement.classList.remove("custom-cursor");
+  }, [isTouchDevice]);
+
   if (isTouchDevice !== false) {
     return null;
   }
@@ -26,6 +32,7 @@ export default function Cursor() {
     <AnimatedCursor
       innerSize={10}
       outerSize={50}
+      showSystemCursor
       color="255,255,255"
       outerAlpha={1}
       innerScale={1}
