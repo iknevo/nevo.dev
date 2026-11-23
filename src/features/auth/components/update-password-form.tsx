@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import SectionTitle from "@/src/components/section-title";
 import { Button } from "@/src/components/ui/button";
 import {
   Form,
@@ -20,6 +19,7 @@ import {
 } from "@/src/components/ui/form";
 import { InputPassword } from "@/src/components/ui/input-password";
 import { PasswordUpdateSchema } from "@/src/definitions/auth-validations";
+import AdminSection from "@/src/features/admin/shared/admin-section";
 import { useMe } from "@/src/features/auth/api/use-me";
 import { useUpdatePassword } from "@/src/features/auth/api/use-update-password";
 
@@ -38,25 +38,27 @@ export default function UpdatePasswordForm() {
     },
   });
   const { isDirty } = form.formState;
-  const handleSubmit = (values: FormValues) => {
-    updateMutation.mutate(values, {
-      onSuccess: ({ message }) => {
-        toast.success(message);
-        form.reset();
-      },
-    });
+  const handleSubmit = async (values: FormValues) => {
+    try {
+      const { message } = await updateMutation.mutateAsync(values);
+      toast.success(message);
+      form.reset();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Couldn't update the password.";
+      if (/current password/i.test(message)) {
+        form.setError("passwordCurrent", { message }, { shouldFocus: true });
+      } else {
+        toast.error(message);
+      }
+    }
   };
 
   const passwordChangedAt = meQuery.data?.user.passwordChangedAt;
 
   return (
-    <div className="container pb-10">
-      <div className="mb-10 flex items-center justify-between">
-        <SectionTitle title="UPDATE PASSWORD" className="mb-0" />
-      </div>
-
+    <AdminSection title="Password">
       <div className="grid gap-4 md:grid-cols-12">
-        <div className="dark space-y-5 rounded-lg border p-6 md:col-span-8">
+        <div className="dark space-y-5 rounded-lg border border-white/10 p-6 md:col-span-8 md:p-8">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-6">
               <FormField
@@ -64,19 +66,16 @@ export default function UpdatePasswordForm() {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <div className="flex min-h-5 items-center justify-between">
-                      <FormLabel>Current Password</FormLabel>
-                      <FormMessage />
-                    </div>
+                    <FormLabel>Current password</FormLabel>
                     <FormControl>
                       <InputPassword
                         {...field}
                         disabled={isPending}
-                        placeholder="current password"
-                        className="md:py-5"
+                        placeholder="Current password"
                         autoComplete="current-password"
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -85,20 +84,17 @@ export default function UpdatePasswordForm() {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <div className="flex min-h-5 items-center justify-between">
-                      <FormLabel>Password</FormLabel>
-                      <FormMessage />
-                    </div>
+                    <FormLabel>New password</FormLabel>
                     <FormControl>
                       <InputPassword
                         {...field}
                         disabled={isPending}
-                        placeholder="password"
-                        className="md:py-5"
+                        placeholder="New password"
                         autoComplete="new-password"
                       />
                     </FormControl>
                     <FormDescription>At least 8 characters.</FormDescription>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -107,19 +103,16 @@ export default function UpdatePasswordForm() {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <div className="flex min-h-5 items-center justify-between">
-                      <FormLabel>Confirm Password</FormLabel>
-                      <FormMessage />
-                    </div>
+                    <FormLabel>Confirm new password</FormLabel>
                     <FormControl>
                       <InputPassword
                         {...field}
                         disabled={isPending}
-                        placeholder="confirm your password"
-                        className="md:py-5"
+                        placeholder="Repeat the new password"
                         autoComplete="new-password"
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -134,15 +127,15 @@ export default function UpdatePasswordForm() {
                   Reset
                 </Button>
                 <Button type="submit" disabled={isPending} className="text-white">
-                  {isPending && <Loader2 className="size-4 animate-spin" />}
-                  {isPending ? "Updating..." : "Update password"}
+                  {isPending && <Loader2 className="animate-spin" />}
+                  {isPending ? "Saving..." : "Update password"}
                 </Button>
               </div>
             </form>
           </Form>
         </div>
 
-        <div className="dark space-y-5 rounded-lg border p-8 md:col-span-4">
+        <div className="dark space-y-5 rounded-lg border border-white/10 p-6 md:col-span-4 md:p-8">
           <h3 className="text-lg font-semibold">Security status</h3>
           {meQuery.isLoading ? (
             <Loader2 className="text-muted-foreground size-5 animate-spin" aria-label="Loading" />
@@ -168,6 +161,6 @@ export default function UpdatePasswordForm() {
           )}
         </div>
       </div>
-    </div>
+    </AdminSection>
   );
 }

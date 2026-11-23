@@ -12,7 +12,7 @@ export default function LogoutButton() {
   const handleLogout = () => {
     mutate(undefined, {
       onSuccess: () => {
-        router.push("/auth/login");
+        router.replace("/auth/login");
       },
     });
   };

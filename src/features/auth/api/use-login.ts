@@ -1,31 +1,23 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
 import { toast } from "sonner";
 
+import { toApiError } from "@/src/lib/api-error";
 import { api } from "@/src/lib/hono";
 
-type ResponseType = InferResponseType<typeof api.auth.login.$post>;
+type ResponseType = InferResponseType<typeof api.auth.login.$post, 200>;
 type RequestType = InferRequestType<typeof api.auth.login.$post>["json"];
 
 export function useLogin() {
-  const mutation = useMutation<ResponseType, Error, RequestType>({
+  const queryClient = useQueryClient();
+  return useMutation<ResponseType, Error, RequestType>({
     mutationFn: async (json) => {
       const res = await api.auth.login.$post({ json });
-      if (!res.ok) {
-        let message = `Request failed with status ${res.status}`;
-        try {
-          const errData = await res.json();
-          message = errData.message || message;
-        } catch {
-          const text = await res.text();
-          if (text) message = text;
-        }
-        throw new Error(message);
-      }
-      const data = await res.json();
-      return data;
+      if (!res.ok) throw await toApiError(res);
+      return res.json();
     },
     onSuccess: ({ message }) => {
+      queryClient.clear();
       toast.success(message);
     },
     onError: (err) => {
@@ -33,5 +25,4 @@ export function useLogin() {
       toast.error(err.message);
     },
   });
-  return mutation;
 }
