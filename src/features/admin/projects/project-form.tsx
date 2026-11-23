@@ -1,18 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Trash, XIcon } from "lucide-react";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { Plus, XIcon } from "lucide-react";
+import { useEffect } from "react";
+import { Controller, type FieldArrayPath, useFieldArray, useForm } from "react-hook-form";
 
 import { Button } from "@/src/components/ui/button";
-import {
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-  FieldLegend,
-  FieldSet,
-} from "@/src/components/ui/field";
+import { Field, FieldError, FieldLabel } from "@/src/components/ui/field";
 import {
   Form,
   FormControl,
@@ -31,51 +23,39 @@ import {
 import { Switch } from "@/src/components/ui/switch";
 import { Textarea } from "@/src/components/ui/textarea";
 import { projectFormValues, projectSchema } from "@/src/definitions/projects-validations";
+import { getUploadSizeError } from "@/src/definitions/upload";
+import FormSection from "@/src/features/admin/shared/form-section";
 import ImagePreviewModal from "@/src/features/admin/shared/image-preview-modal";
 
 type Props = {
-  id?: string;
-  defaultValues?: projectFormValues;
-  onSubmit: (values: projectFormValues) => void;
-  onDelete?: () => void;
+  formId: string;
+  defaultValues: projectFormValues;
+  onSubmit: (values: projectFormValues) => unknown;
+  onDirtyChange?: (isDirty: boolean) => void;
   disabled?: boolean;
 };
 
-export default function ProjectForm({ defaultValues, id, onSubmit, onDelete, disabled }: Props) {
+export default function ProjectForm({
+  formId,
+  defaultValues,
+  onSubmit,
+  onDirtyChange,
+  disabled,
+}: Props) {
   const form = useForm<projectFormValues>({
     resolver: zodResolver(projectSchema),
-    defaultValues: defaultValues,
+    defaultValues,
   });
-  const {
-    fields: techStackFields,
-    append: addTechStack,
-    remove: removeTechStack,
-  } = useFieldArray({
-    name: "techStack",
-    control: form.control,
-  });
-  const {
-    fields: featuresFields,
-    append: addFeature,
-    remove: removeFeature,
-  } = useFieldArray({
-    name: "features",
-    control: form.control,
-  });
-  const handleSubmit = (values: projectFormValues) => {
-    onSubmit(values);
-  };
-  const handleDelete = () => {
-    onDelete?.();
-  };
+  const { isDirty } = form.formState;
+
+  useEffect(() => {
+    onDirtyChange?.(isDirty);
+  }, [isDirty, onDirtyChange]);
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 pt-4">
-        <div className="space-y-4">
-          <h3 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
-            Project details
-          </h3>
+      <form id={formId} onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" noValidate>
+        <FormSection title="Project details">
           <FormField
             name="name"
             control={form.control}
@@ -100,41 +80,9 @@ export default function ProjectForm({ defaultValues, id, onSubmit, onDelete, dis
                   <Input
                     {...field}
                     disabled={disabled}
-                    placeholder="2025"
-                    onChange={(e) => field.onChange(e.target.value.toString())}
+                    inputMode="numeric"
+                    placeholder={new Date().getFullYear().toString()}
                   />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="space-y-4 border-t border-white/10 pt-5">
-          <h3 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
-            Links & media
-          </h3>
-          <FormField
-            name="liveUrl"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Live URL</FormLabel>
-                <FormControl>
-                  <Input {...field} disabled={disabled} placeholder="preview url" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            name="sourceCode"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Repo URL</FormLabel>
-                <FormControl>
-                  <Input {...field} disabled={disabled} placeholder="code url" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -148,12 +96,54 @@ export default function ProjectForm({ defaultValues, id, onSubmit, onDelete, dis
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Textarea {...field} disabled={disabled} placeholder="what is this all about" />
+                  <Textarea
+                    {...field}
+                    rows={4}
+                    disabled={disabled}
+                    placeholder="What is this project about?"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+        </FormSection>
+
+        <FormSection title="Links & media">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <FormField
+              name="liveUrl"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Live URL</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="url" disabled={disabled} placeholder="https://" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              name="sourceCode"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Repo URL</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="url"
+                      disabled={disabled}
+                      placeholder="https://github.com/…"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           <FormField
             name="thumbnail"
@@ -168,7 +158,15 @@ export default function ProjectForm({ defaultValues, id, onSubmit, onDelete, dis
                       accept="image/*"
                       onChange={(e) => {
                         const file = e.target.files?.[0];
-                        field.onChange(file ?? field.value);
+                        if (!file) return;
+                        const sizeError = getUploadSizeError(file);
+                        if (sizeError) {
+                          e.target.value = "";
+                          form.setError("thumbnail", { message: sizeError });
+                          return;
+                        }
+                        form.clearErrors("thumbnail");
+                        field.onChange(file);
                       }}
                       name={field.name}
                       ref={field.ref}
@@ -177,188 +175,139 @@ export default function ProjectForm({ defaultValues, id, onSubmit, onDelete, dis
                   </FormControl>
                   <ImagePreviewModal
                     value={field.value}
+                    fit="contain"
                     disabled={disabled}
                     className="absolute top-1/2 right-2 -translate-y-1/2"
-                    fit="contain"
                   />
                 </div>
                 <FormMessage />
               </FormItem>
             )}
           />
-        </div>
-        <FieldSet className="gap-4">
-          <FieldLegend variant="label">Features</FieldLegend>
-          <FieldDescription>add project&apos;s features</FieldDescription>
-          <FieldGroup className="gap-4">
-            {featuresFields.map((field, index) => (
-              <Controller
-                key={field.id}
-                name={`features.${index}.item`}
-                control={form.control}
-                render={({ field: controllerField, fieldState }) => (
-                  <Field
-                    orientation="horizontal"
-                    data-invalid={fieldState.invalid}
-                    className="w-full"
-                  >
-                    <FieldContent className="w-full flex-1">
-                      <InputGroup>
-                        <InputGroupInput
-                          {...controllerField}
-                          id={`form-rhf-array-feature-${index}`}
-                          aria-invalid={fieldState.invalid}
-                          placeholder="feature"
-                          type="text"
-                          className="w-full flex-1"
-                          disabled={disabled}
-                        />
-                        {featuresFields.length > 1 && (
-                          <InputGroupAddon align={"inline-end"}>
-                            <InputGroupButton
-                              type="button"
-                              variant="ghost"
-                              size="icon-xs"
-                              onClick={() => removeFeature(index)}
-                              disabled={disabled}
-                              aria-label={`Remove feature ${index + 1}`}
-                            >
-                              <XIcon />
-                            </InputGroupButton>
-                          </InputGroupAddon>
-                        )}
-                      </InputGroup>
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                    </FieldContent>
-                  </Field>
-                )}
-              />
-            ))}
-            <Button
-              type="button"
-              variant="outline"
-              disabled={disabled}
-              size="sm"
-              className="mb-2"
-              onClick={() => addFeature({ item: "" })}
-            >
-              Add Feature
-            </Button>
-          </FieldGroup>
-          {form.formState.errors.features?.root && (
-            <FieldError errors={[form.formState.errors.features.root]} />
-          )}
-        </FieldSet>
+        </FormSection>
 
-        <FieldSet className="gap-4">
-          <FieldLegend variant="label">Tech Stack</FieldLegend>
-          <FieldDescription>add technologies used</FieldDescription>
-          <FieldGroup className="gap-4">
-            {techStackFields.map((field, index) => (
-              <Controller
-                key={field.id}
-                name={`techStack.${index}.item`}
-                control={form.control}
-                render={({ field: controllerField, fieldState }) => (
-                  <Field
-                    orientation="horizontal"
-                    data-invalid={fieldState.invalid}
-                    className="w-full"
-                  >
-                    <FieldContent className="w-full flex-1">
-                      <InputGroup>
-                        <InputGroupInput
-                          {...controllerField}
-                          id={`form-rhf-array-technology-${index}`}
-                          aria-invalid={fieldState.invalid}
-                          placeholder="technology"
-                          type="text"
-                          disabled={disabled}
-                          className="w-full flex-1"
-                        />
-                        {techStackFields.length > 1 && (
-                          <InputGroupAddon align={"inline-end"}>
-                            <InputGroupButton
-                              type="button"
-                              variant="ghost"
-                              size="icon-xs"
-                              onClick={() => removeTechStack(index)}
-                              disabled={disabled}
-                              aria-label={`Remove technology ${index + 1}`}
-                            >
-                              <XIcon />
-                            </InputGroupButton>
-                          </InputGroupAddon>
-                        )}
-                      </InputGroup>
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                    </FieldContent>
-                  </Field>
-                )}
-              />
-            ))}
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="mb-2"
-              disabled={disabled}
-              onClick={() => addTechStack({ item: "" })}
-            >
-              Add Technology
-            </Button>
-          </FieldGroup>
-          {form.formState.errors.techStack?.root && (
-            <FieldError errors={[form.formState.errors.techStack.root]} />
-          )}
-        </FieldSet>
+        <FormSection title="Features" description="What the project does, one item per line.">
+          <ListField
+            form={form}
+            name="features"
+            itemLabel="feature"
+            placeholder="e.g. Real-time collaboration"
+            addLabel="Add feature"
+            disabled={disabled}
+          />
+        </FormSection>
 
-        <div className="space-y-4 border-t border-white/10 pt-5">
-          <div>
-            <h3 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
-              Visibility
-            </h3>
-            <p className="text-muted-foreground mt-1 text-sm">
-              Hidden projects stay available here but are removed from the public site.
-            </p>
-          </div>
+        <FormSection title="Tech stack" description="Technologies used to build it.">
+          <ListField
+            form={form}
+            name="techStack"
+            itemLabel="technology"
+            placeholder="e.g. Next.js"
+            addLabel="Add technology"
+            disabled={disabled}
+          />
+        </FormSection>
+
+        <FormSection
+          title="Visibility"
+          description="Hidden projects stay available here but are removed from the public site."
+        >
           <Controller
             name="hide"
             control={form.control}
             render={({ field }) => (
               <Field orientation="horizontal" className="justify-between">
-                <FieldLabel htmlFor="hide-switch">Hide project</FieldLabel>
+                <FieldLabel htmlFor="project-hide-switch">Hide project</FieldLabel>
                 <Switch
                   name={field.name}
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  id="hide-switch"
+                  id="project-hide-switch"
                   disabled={disabled}
                 />
               </Field>
             )}
           />
-        </div>
-
-        <div className="bg-background/95 sticky bottom-0 z-10 -mx-1 space-y-2 border-t border-white/10 py-4 backdrop-blur">
-          <Button className="text-foreground w-full" disabled={disabled}>
-            {id ? "Save Changes" : "Create Project"}
-          </Button>
-
-          {!!id && (
-            <Button
-              className="text-foreground w-full"
-              type="button"
-              variant="outline"
-              disabled={disabled}
-              onClick={handleDelete}
-            >
-              <Trash className="size-4" />
-              <span>Delete Project</span>
-            </Button>
-          )}
-        </div>
+        </FormSection>
       </form>
     </Form>
+  );
+}
+
+type ListFieldProps = {
+  form: ReturnType<typeof useForm<projectFormValues>>;
+  name: Extract<FieldArrayPath<projectFormValues>, "features" | "techStack">;
+  itemLabel: string;
+  placeholder: string;
+  addLabel: string;
+  disabled?: boolean;
+};
+
+function ListField({ form, name, itemLabel, placeholder, addLabel, disabled }: ListFieldProps) {
+  const { fields, append, remove } = useFieldArray({ name, control: form.control });
+  const rootError = form.formState.errors[name]?.root ?? form.formState.errors[name];
+
+  return (
+    <div className="space-y-3">
+      {fields.map((item, index) => (
+        <Controller
+          key={item.id}
+          name={`${name}.${index}.item`}
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid} className="gap-1.5">
+              <InputGroup>
+                <InputGroupInput
+                  {...field}
+                  id={`project-${name}-${index}`}
+                  aria-label={`${itemLabel} ${index + 1}`}
+                  aria-invalid={fieldState.invalid}
+                  placeholder={placeholder}
+                  disabled={disabled}
+                  onKeyDown={(e) => {
+                    if (e.key !== "Enter") return;
+                    e.preventDefault();
+                    if (index < fields.length - 1) {
+                      form.setFocus(`${name}.${index + 1}.item`);
+                    } else if (field.value.trim()) {
+                      append({ item: "" });
+                    }
+                  }}
+                />
+                {fields.length > 1 && (
+                  <InputGroupAddon align="inline-end">
+                    <InputGroupButton
+                      type="button"
+                      variant="ghost"
+                      size="icon-xs"
+                      onClick={() => remove(index)}
+                      disabled={disabled}
+                      aria-label={`Remove ${itemLabel} ${index + 1}`}
+                    >
+                      <XIcon />
+                    </InputGroupButton>
+                  </InputGroupAddon>
+                )}
+              </InputGroup>
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+      ))}
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        disabled={disabled}
+        onClick={() => append({ item: "" })}
+        className="text-muted-foreground hover:text-foreground -ml-2"
+      >
+        <Plus />
+        {addLabel}
+      </Button>
+      {rootError && "message" in rootError && typeof rootError.message === "string" && (
+        <FieldError errors={[{ message: rootError.message }]} />
+      )}
+    </div>
   );
 }

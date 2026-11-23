@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeClosed, Loader2, Pencil, Trash, X } from "lucide-react";
-import { type KeyboardEvent, useCallback, useRef, useState } from "react";
+import { type KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { Button } from "@/src/components/ui/button";
@@ -17,6 +17,7 @@ import { InputTags } from "@/src/components/ui/tags-input";
 import { Textarea } from "@/src/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/src/components/ui/tooltip";
 import { blogFormValues, blogSchema } from "@/src/definitions/blog-validation";
+import { MAX_UPLOAD_LABEL, formatBytes, getUploadSizeError } from "@/src/definitions/upload";
 import ImagePreviewModal from "@/src/features/admin/shared/image-preview-modal";
 import Editor from "@/src/features/code-editor/editor";
 import Preview from "@/src/features/code-editor/preview";
@@ -24,12 +25,22 @@ import Preview from "@/src/features/code-editor/preview";
 type Props = {
   id?: string;
   defaultValues: blogFormValues;
-  onSubmit: (values: blogFormValues) => void;
+  onSubmit: (values: blogFormValues) => unknown;
   onDelete?: () => void;
+  onDirtyChange?: (isDirty: boolean) => void;
   disabled?: boolean;
+  isSaving?: boolean;
 };
 
-export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabled }: Props) {
+export default function BlogForm({
+  id,
+  defaultValues,
+  onSubmit,
+  onDelete,
+  onDirtyChange,
+  disabled,
+  isSaving,
+}: Props) {
   const [doc, setDoc] = useState<string>(defaultValues.doc);
   const editTabRef = useRef<HTMLButtonElement>(null);
   const previewTabRef = useRef<HTMLButtonElement>(null);
@@ -38,17 +49,22 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
     resolver: zodResolver(blogSchema),
     defaultValues: defaultValues,
   });
+  const { isDirty } = form.formState;
+
+  useEffect(() => {
+    onDirtyChange?.(isDirty);
+  }, [isDirty, onDirtyChange]);
 
   const [showPreview, setShowPreview] = useState<boolean>(false);
   const handleChangeDoc = useCallback(
     (newDoc: string) => {
       setDoc(newDoc);
       form.setValue("doc", newDoc, {
-        shouldDirty: newDoc !== defaultValues.doc,
-        shouldValidate: true,
+        shouldDirty: true,
+        shouldValidate: form.formState.isSubmitted,
       });
     },
-    [defaultValues.doc, form]
+    [form]
   );
 
   const handleTabKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
@@ -70,17 +86,9 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
     if (imageInputRef.current) imageInputRef.current.value = "";
   };
 
-  const handleSubmit = (values: blogFormValues) => {
-    onSubmit(values);
-  };
-
-  const handleDelete = () => {
-    onDelete?.();
-  };
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="dark space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="dark space-y-4" noValidate>
         <FormField
           name="title"
           control={form.control}
@@ -127,7 +135,15 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
                     accept="image/*"
                     onChange={(e) => {
                       const file = e.target.files?.[0];
-                      field.onChange(file ?? field.value);
+                      if (!file) return;
+                      const sizeError = getUploadSizeError(file);
+                      if (sizeError) {
+                        e.target.value = "";
+                        form.setError("image", { message: sizeError });
+                        return;
+                      }
+                      form.clearErrors("image");
+                      field.onChange(file);
                     }}
                     name={field.name}
                     ref={(node) => {
@@ -163,10 +179,10 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
               </div>
               <p className="text-muted-foreground truncate text-xs" aria-live="polite">
                 {field.value instanceof File
-                  ? `${field.value.name} · ${(field.value.size / 1024).toFixed(0)} KB`
+                  ? `${field.value.name} · ${formatBytes(field.value.size)}`
                   : field.value
                     ? "Current image attached"
-                    : "No image selected"}
+                    : `No image selected · max ${MAX_UPLOAD_LABEL}`}
               </p>
               <FormMessage />
             </FormItem>
@@ -205,7 +221,6 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
               tabIndex={showPreview ? -1 : 0}
               onClick={() => setShowPreview(false)}
               onKeyDown={handleTabKeyDown}
-              disabled={disabled}
             >
               <Pencil className="size-4" />
               Edit
@@ -222,7 +237,6 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
               tabIndex={showPreview ? 0 : -1}
               onClick={() => setShowPreview(true)}
               onKeyDown={handleTabKeyDown}
-              disabled={disabled}
             >
               <Eye className="size-4" />
               Preview
@@ -235,7 +249,7 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
             hidden={showPreview}
             tabIndex={0}
           >
-            <Editor initialDoc={doc} onChange={handleChangeDoc} disabled={disabled} />
+            <Editor initialDoc={defaultValues.doc} onChange={handleChangeDoc} disabled={disabled} />
           </div>
           <div
             id="blog-preview-panel"
@@ -258,7 +272,7 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
           <FormField name="doc" control={form.control} render={() => <FormMessage />} />
         </div>
 
-        <div className="flex flex-col-reverse gap-4 border-t border-white/10 pt-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col-reverse gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             {!!id && (
               <Tooltip>
@@ -269,7 +283,7 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
                     size="icon"
                     aria-label="Delete post"
                     disabled={disabled}
-                    onClick={handleDelete}
+                    onClick={onDelete}
                   >
                     <Trash className="size-4" />
                   </Button>
@@ -290,7 +304,6 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
                         variant="outline"
                         size="icon"
                         aria-label={field.value ? "Make post visible" : "Hide post"}
-                        aria-pressed={!field.value}
                         disabled={disabled}
                         onClick={() => field.onChange(!field.value)}
                       >
@@ -314,8 +327,8 @@ export default function BlogForm({ id, defaultValues, onSubmit, onDelete, disabl
           </div>
 
           <Button type="submit" className="text-white" disabled={disabled}>
-            {disabled && <Loader2 className="size-4 animate-spin" />}
-            {disabled ? "Saving..." : id ? "Save Changes" : "Submit blog"}
+            {isSaving && <Loader2 className="size-4 animate-spin" />}
+            {isSaving ? "Saving..." : id ? "Save Changes" : "Submit blog"}
           </Button>
         </div>
       </form>

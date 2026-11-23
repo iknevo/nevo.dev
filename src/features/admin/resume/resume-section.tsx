@@ -1,13 +1,14 @@
 "use client";
 
 import { format } from "date-fns";
-import { ExternalLink, Upload, X } from "lucide-react";
-import { useRef, useState } from "react";
+import { ExternalLink, FileText, Loader2, X } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
 
-import { LoaderSmall } from "@/src/components/loader-small";
-import SectionTitle from "@/src/components/section-title";
 import { Button } from "@/src/components/ui/button";
+import { formatBytes } from "@/src/definitions/upload";
+import AdminSection, { AdminSectionLoading } from "@/src/features/admin/shared/admin-section";
+import FileDropzone from "@/src/features/admin/shared/file-dropzone";
 import { cn } from "@/src/lib/utils";
 
 import { useGetResume } from "./api/use-get-resume";
@@ -17,51 +18,22 @@ export default function ResumeSection() {
   const { data: resume, isLoading, isError, refetch } = useGetResume();
   const uploadMutation = useUploadResume();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.type !== "application/pdf") {
-        toast.error("Choose a PDF file to upload");
-        e.target.value = "";
-        return;
-      }
-      setSelectedFile(file);
-    }
-  };
-
-  const handleCancel = () => {
-    setSelectedFile(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
 
   const handleUpload = () => {
     if (!selectedFile) return;
     uploadMutation.mutate(selectedFile, {
-      onSuccess: () => {
-        setSelectedFile(null);
-        if (fileInputRef.current) {
-          fileInputRef.current.value = "";
-        }
-      },
+      onSuccess: () => setSelectedFile(null),
     });
   };
 
   return (
-    <div className="container pb-10">
-      <div className="mb-10 flex items-center justify-between">
-        <SectionTitle title="RESUME" className="mb-0" />
-      </div>
-
+    <AdminSection title="Resume">
       {isLoading ? (
-        <LoaderSmall className="py-20" />
+        <AdminSectionLoading />
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
-          <div className="dark space-y-5 rounded-lg border p-8">
-            <h3 className="text-lg font-semibold">Current Resume</h3>
+          <div className="dark space-y-5 rounded-lg border border-white/10 p-6 md:p-8">
+            <h3 className="text-lg font-semibold">Current resume</h3>
             {isError ? (
               <div className="space-y-3">
                 <p className="text-muted-foreground text-sm leading-relaxed">
@@ -110,10 +82,10 @@ export default function ResumeSection() {
             )}
           </div>
 
-          <div className="dark flex h-full flex-col space-y-5 rounded-lg border p-8">
+          <div className="dark flex h-full flex-col space-y-5 rounded-lg border border-white/10 p-6 md:p-8">
             <div className="space-y-2">
               <h3 className="text-lg font-semibold">
-                {resume?.url ? "Replace Current Resume" : "Upload Resume"}
+                {resume?.url ? "Replace current resume" : "Upload resume"}
               </h3>
               <p className="text-muted-foreground text-sm leading-relaxed">
                 {resume?.url
@@ -123,39 +95,37 @@ export default function ResumeSection() {
             </div>
 
             <div className="flex flex-1 flex-col gap-4">
-              <div className="flex-1">
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept=".pdf,application/pdf"
-                  onChange={handleFileChange}
+              <div className="flex-1 space-y-3">
+                <FileDropzone
+                  accept="application/pdf,.pdf"
+                  label="Drop a PDF or"
+                  hint="PDF"
                   aria-label="Choose resume PDF"
-                  className="block w-full"
+                  disabled={uploadMutation.isPending}
+                  onFile={setSelectedFile}
+                  onError={(message) => toast.error(message)}
                 />
 
-                <div className="text-muted-foreground mt-2 flex min-h-8 items-center gap-2 text-sm">
-                  {selectedFile ? (
-                    <>
-                      <span className="truncate">{selectedFile.name}</span>
-                      <span className="shrink-0 text-xs">
-                        ({(selectedFile.size / 1024).toFixed(0)} KB)
-                      </span>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon-sm"
-                        onClick={handleCancel}
-                        disabled={uploadMutation.isPending}
-                        aria-label="Remove selected file"
-                        className="text-muted-foreground ml-auto hover:text-white"
-                      >
-                        <X />
-                      </Button>
-                    </>
-                  ) : (
-                    <span>No file selected</span>
-                  )}
-                </div>
+                {selectedFile && (
+                  <div className="flex items-center gap-3 rounded-md border border-white/10 px-3 py-2 text-sm">
+                    <FileText className="text-muted-foreground size-4 shrink-0" />
+                    <span className="truncate">{selectedFile.name}</span>
+                    <span className="text-muted-foreground shrink-0 text-xs">
+                      {formatBytes(selectedFile.size)}
+                    </span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={() => setSelectedFile(null)}
+                      disabled={uploadMutation.isPending}
+                      aria-label="Remove selected file"
+                      className="text-muted-foreground ml-auto hover:text-white"
+                    >
+                      <X />
+                    </Button>
+                  </div>
+                )}
               </div>
 
               <Button
@@ -165,17 +135,17 @@ export default function ResumeSection() {
                 variant={!selectedFile ? "outline" : "default"}
                 className={cn("mt-auto w-full", selectedFile && "text-white")}
               >
-                {uploadMutation.isPending && <Upload className="size-4 animate-pulse" />}
+                {uploadMutation.isPending && <Loader2 className="animate-spin" />}
                 {uploadMutation.isPending
                   ? "Uploading..."
                   : resume?.url
-                    ? "Replace Resume"
-                    : "Upload Resume"}
+                    ? "Replace resume"
+                    : "Upload resume"}
               </Button>
             </div>
           </div>
         </div>
       )}
-    </div>
+    </AdminSection>
   );
 }

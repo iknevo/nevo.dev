@@ -41,7 +41,6 @@ export default function SortableItem({
             disabled={disabled}
             className="absolute -top-1 -left-1 z-10 cursor-grab touch-none rounded-full bg-black/50 p-1 text-white/40 transition-colors hover:text-white/70 disabled:cursor-not-allowed disabled:opacity-50"
             aria-label="Reorder item"
-            aria-grabbed={isDragging}
           >
             <GripVertical className="size-4" />
           </button>
@@ -61,7 +60,6 @@ export default function SortableItem({
           disabled={disabled}
           className="cursor-grab touch-none text-white/40 hover:text-white/70 disabled:cursor-not-allowed disabled:opacity-50"
           aria-label="Reorder item"
-          aria-grabbed={isDragging}
         >
           <GripVertical className="size-5" />
         </button>

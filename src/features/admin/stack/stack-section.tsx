@@ -21,9 +21,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 
 import AdminSectionButton from "@/src/components/admin-section-button";
-import { LoaderSmall } from "@/src/components/loader-small";
-import SectionTitle from "@/src/components/section-title";
-import { Button } from "@/src/components/ui/button";
+import AdminSection, {
+  AdminEmptyState,
+  AdminRefreshError,
+  AdminSectionError,
+  AdminSectionLoading,
+} from "@/src/features/admin/shared/admin-section";
 import { useSyncedState } from "@/src/hooks/useSyncedState";
 import { cn } from "@/src/lib/utils";
 
@@ -69,32 +72,6 @@ export default function StackSection() {
     })
   );
 
-  if (isLoading && localStack.length === 0)
-    return (
-      <div className="flex justify-center">
-        <LoaderSmall className="py-20" />
-      </div>
-    );
-
-  if (isError && localStack.length === 0) {
-    return (
-      <section>
-        <div className="container pb-10">
-          <div className="mb-10 flex items-center justify-between">
-            <SectionTitle title="STACK" className="mb-0" />
-            <AdminSectionButton onClick={onOpen}>New Skill</AdminSectionButton>
-          </div>
-          <div className="dark flex flex-col items-center gap-4 rounded-lg border border-dashed p-10 text-center">
-            <p className="text-muted-foreground">We couldn&apos;t load your stack.</p>
-            <Button variant="outline" onClick={() => refetch()}>
-              Try again
-            </Button>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   function handleDragEnd(type: string, event: DragEndEvent) {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
@@ -116,28 +93,32 @@ export default function StackSection() {
     reorder({ ids: reorderedIds });
   }
 
+  const action = <AdminSectionButton onClick={onOpen}>New skill</AdminSectionButton>;
+
+  if (isLoading && localStack.length === 0) {
+    return (
+      <AdminSection title="Stack" action={action}>
+        <AdminSectionLoading />
+      </AdminSection>
+    );
+  }
+
+  if (isError && localStack.length === 0) {
+    return (
+      <AdminSection title="Stack" action={action}>
+        <AdminSectionError message="We couldn't load your stack." onRetry={() => refetch()} />
+      </AdminSection>
+    );
+  }
+
   return (
-    <section id="my-stack">
-      <div className="container">
-        <div className="mb-10 flex items-center justify-between">
-          <SectionTitle title="STACK" className="mb-0" />
-          <AdminSectionButton onClick={onOpen}>New Skill</AdminSectionButton>
-        </div>
-
+    <AdminSection title="Stack" action={action} id="my-stack">
+      <div>
         {isError && (
-          <div className="dark mb-6 flex items-center justify-between gap-4 rounded-md border border-dashed px-4 py-3 text-sm">
-            <p className="text-muted-foreground">Couldn&apos;t refresh the stack.</p>
-            <Button variant="outline" size="sm" onClick={() => refetch()}>
-              Try again
-            </Button>
-          </div>
+          <AdminRefreshError message="Couldn't refresh the stack." onRetry={() => refetch()} />
         )}
 
-        {localStack.length === 0 && (
-          <p className="dark text-muted-foreground py-10 text-center text-3xl">
-            There&apos;s no stack added yet
-          </p>
-        )}
+        {localStack.length === 0 && <AdminEmptyState>No skills yet.</AdminEmptyState>}
 
         <div className="space-y-20">
           {localStack.map(({ type, items }) => (
@@ -205,6 +186,6 @@ export default function StackSection() {
           ))}
         </div>
       </div>
-    </section>
+    </AdminSection>
   );
 }

@@ -2,7 +2,7 @@
 
 import { ExternalLink, ImageUpscale } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 
 import { Button } from "@/src/components/ui/button";
 import {
@@ -13,7 +13,10 @@ import {
   DialogTrigger,
 } from "@/src/components/ui/dialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/src/components/ui/tooltip";
+import { formatBytes } from "@/src/definitions/upload";
 import { cn } from "@/src/lib/utils";
+
+import { useObjectUrl } from "./use-object-url";
 
 type Props = {
   value: string | File;
@@ -22,12 +25,6 @@ type Props = {
   className?: string;
 };
 
-function formatSize(bytes: number) {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-}
-
 function nameFromUrl(url: string) {
   return url.split("?")[0].split("/").filter(Boolean).pop() ?? "";
 }
@@ -35,22 +32,14 @@ function nameFromUrl(url: string) {
 export default function ImagePreviewModal({ value, fit = "cover", disabled, className }: Props) {
   const [open, setOpen] = useState(false);
   const isFile = value instanceof File;
-  const src = useMemo(() => {
-    if (value instanceof File) return value.size > 0 ? URL.createObjectURL(value) : null;
-    return value.trim() || null;
-  }, [value]);
-
-  useEffect(() => {
-    if (!src?.startsWith("blob:")) return;
-    return () => URL.revokeObjectURL(src);
-  }, [src]);
+  const src = useObjectUrl(value);
 
   if (!src) return null;
 
   const objectClassName = fit === "cover" ? "object-cover" : "object-contain";
   const alt = isFile ? value.name || "Selected image" : nameFromUrl(value) || "Current image";
   const detail = isFile
-    ? `${value.name || "selected file"} · ${formatSize(value.size)}`
+    ? `${value.name || "selected file"} · ${formatBytes(value.size)}`
     : nameFromUrl(value);
 
   return (
@@ -79,7 +68,7 @@ export default function ImagePreviewModal({ value, fit = "cover", disabled, clas
         <DialogTitle className="sr-only">{alt}</DialogTitle>
         <DialogDescription className="sr-only">{detail}</DialogDescription>
         <div className="group relative h-[60vh] max-h-[80vh] w-full overflow-hidden">
-          {isFile ? (
+          {isFile || src.startsWith("blob:") ? (
             // eslint-disable-next-line @next/next/no-img-element -- blob: object URLs are not handled by next/image
             <img
               src={src}
@@ -88,7 +77,7 @@ export default function ImagePreviewModal({ value, fit = "cover", disabled, clas
             />
           ) : (
             <Image
-              src={value}
+              src={src}
               alt={alt}
               fill
               sizes="(max-width: 639px) 100vw, 768px"

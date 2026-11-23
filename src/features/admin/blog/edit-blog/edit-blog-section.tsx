@@ -1,105 +1,115 @@
 "use client";
 
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/all";
-import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { z } from "zod";
+import { useState } from "react";
 
-import SectionTitle from "@/src/components/section-title";
 import { Button } from "@/src/components/ui/button";
-import { blogSchema } from "@/src/definitions/blog-validation";
+import { blogFormValues } from "@/src/definitions/blog-validation";
 import { useDeletePost } from "@/src/features/admin/blog/api/use-delete-post";
 import { useGetPost } from "@/src/features/admin/blog/api/use-get-post";
 import { useUpdatePost } from "@/src/features/admin/blog/api/use-update-post";
 import BlogForm from "@/src/features/admin/blog/blog-form";
+import AdminSection, {
+  AdminSectionError,
+  AdminSectionLoading,
+} from "@/src/features/admin/shared/admin-section";
+import { useUnsavedChangesWarning } from "@/src/features/admin/shared/use-unsaved-changes-warning";
 import { useConfirm } from "@/src/hooks/use-confirm";
-
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+import { ApiError } from "@/src/lib/api-error";
 
 interface Props {
   id: string;
 }
 
-type FormValues = z.input<typeof blogSchema>;
-
 export default function EditBlogSection({ id }: Props) {
   const router = useRouter();
-  const { data: post, isLoading, isError } = useGetPost(id, true);
+  const { data: post, isLoading, isError, error, refetch } = useGetPost(id, true);
+  const { mutateAsync: updatePost, isPending: isUpdating } = useUpdatePost(id);
+  const { mutateAsync: deletePost, isPending: isDeleting } = useDeletePost(id);
+  const [confirmDialog, confirm] = useConfirm();
+  const [isDirty, setIsDirty] = useState(false);
+  const busy = isUpdating || isDeleting;
+  useUnsavedChangesWarning(isDirty && !busy);
 
-  const { mutate: updatePost, isPending: isUpdating } = useUpdatePost(id);
-  const { mutate: deletePost, isPending: isDeleting } = useDeletePost(id);
-  const [ConfirmDialog, confirm] = useConfirm();
-  const disabled = isLoading || isUpdating || isDeleting;
-  const defaultValues = {
-    title: post?.title ?? "",
-    summary: post?.summary ?? "",
-    tags: post?.tags ?? [],
-    image: post?.image ?? "",
-    doc: post?.doc ?? "",
-    hide: post?.hide ?? false,
+  const leave = () => {
+    setIsDirty(false);
+    router.push("/admin/blog");
   };
 
-  const onSubmit = (values: FormValues) => {
-    updatePost(values, {
-      onSuccess: () => {
-        router.push("/admin/blog");
-      },
-    });
+  const onSubmit = async (values: blogFormValues) => {
+    try {
+      await updatePost(values);
+    } catch {
+      return;
+    }
+    leave();
+  };
+
+  const onCancel = async () => {
+    if (isDirty) {
+      const ok = await confirm({
+        title: "Discard changes?",
+        message: "You have unsaved changes. They'll be lost if you leave this page.",
+        confirmLabel: "Discard",
+      });
+      if (!ok) return;
+    }
+    leave();
   };
 
   const onDelete = async () => {
     const ok = await confirm({
-      title: "Are You Sure?",
-      message: "You are about to delete this blog post.",
+      title: `Delete "${post?.title ?? "this post"}"?`,
+      message: "The post and its cover image will be permanently removed.",
+      confirmLabel: "Delete",
     });
-    if (ok) {
-      deletePost(undefined, {
-        onSuccess: () => {
-          router.push("/admin/blog");
-        },
-      });
-    }
+    if (!ok) return;
+    await deletePost().then(leave, () => {});
   };
 
-  return (
-    <>
-      <ConfirmDialog />
-      <section>
-        <div className="container">
-          <div className="mb-10 flex items-center justify-between">
-            <SectionTitle title="Edit blog" className="mb-0" />
-            <Button
-              className="dark flex items-center justify-center text-lg font-semibold"
-              variant={"outline"}
-              onClick={() => router.back()}
-              disabled={disabled}
-            >
-              Cancel
-            </Button>
-          </div>
+  const isNotFound = error instanceof ApiError && error.status === 404;
 
-          {isLoading && !isError ? (
-            <div className="flex items-center justify-center">
-              <Loader2 className="text-primary mt-20 size-12 animate-spin" />
-            </div>
-          ) : isError ? (
-            <p className="dark text-muted-foreground py-10 text-center text-3xl">
-              Something went wrong or post not found
-            </p>
-          ) : (
-            <BlogForm
-              key={id}
-              id={id}
-              onSubmit={onSubmit}
-              onDelete={onDelete}
-              disabled={disabled}
-              defaultValues={defaultValues}
-            />
-          )}
-        </div>
-      </section>
-    </>
+  return (
+    <AdminSection
+      title="Edit blog"
+      action={
+        <Button
+          className="dark flex items-center justify-center text-lg font-semibold"
+          variant="outline"
+          onClick={onCancel}
+          disabled={busy}
+        >
+          Cancel
+        </Button>
+      }
+    >
+      {confirmDialog}
+      {isLoading ? (
+        <AdminSectionLoading />
+      ) : isError || !post ? (
+        <AdminSectionError
+          message={isNotFound ? "This post doesn't exist anymore." : "We couldn't load this post."}
+          onRetry={isNotFound ? () => router.push("/admin/blog") : () => refetch()}
+        />
+      ) : (
+        <BlogForm
+          key={id}
+          id={id}
+          onSubmit={onSubmit}
+          onDelete={onDelete}
+          onDirtyChange={setIsDirty}
+          disabled={busy}
+          isSaving={isUpdating}
+          defaultValues={{
+            title: post.title ?? "",
+            summary: post.summary ?? "",
+            tags: post.tags ?? [],
+            image: post.image ?? "",
+            doc: post.doc ?? "",
+            hide: post.hide ?? false,
+          }}
+        />
+      )}
+    </AdminSection>
   );
 }

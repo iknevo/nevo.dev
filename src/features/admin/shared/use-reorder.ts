@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
+import { toApiError } from "@/src/lib/api-error";
+
 type ReorderVariables = {
   ids: string[];
   type?: string;
@@ -25,10 +27,7 @@ export function useReorder(queryKey: unknown[]) {
         body: JSON.stringify(body),
       });
 
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.message || `Reorder failed (${res.status})`);
-      }
+      if (!res.ok) throw await toApiError(res);
 
       return res.json();
     },
@@ -39,7 +38,7 @@ export function useReorder(queryKey: unknown[]) {
       toast.error(err.message);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey: [resource] });
     },
   });
 }

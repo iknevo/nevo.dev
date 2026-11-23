@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
+import { toApiError } from "@/src/lib/api-error";
+
 type ResumeInfo = {
   url: string;
   updatedAt: string | null;
@@ -10,18 +12,7 @@ export const useGetResume = () => {
     queryKey: ["resume"],
     queryFn: async () => {
       const res = await fetch("/api/resume?info=true");
-
-      if (!res.ok) {
-        let message = `Failed to load resume (${res.status})`;
-        try {
-          const data = await res.json();
-          if (typeof data?.message === "string") message = data.message;
-        } catch {
-          // Keep the status-based message when the response is not JSON.
-        }
-        throw new Error(message);
-      }
-
+      if (!res.ok) throw await toApiError(res);
       return res.json();
     },
     retry: false,

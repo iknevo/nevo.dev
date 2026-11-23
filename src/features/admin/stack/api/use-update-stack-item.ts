@@ -3,41 +3,28 @@ import { InferResponseType } from "hono";
 import { toast } from "sonner";
 
 import { stackFormValues } from "@/src/definitions/stack-validations";
+import { toApiError } from "@/src/lib/api-error";
 import { api } from "@/src/lib/hono";
 
-type ResponseType = InferResponseType<(typeof api.stack)[":id"]["$patch"]>;
+import { toStackFormData } from "./stack-form-data";
+
+type ResponseType = InferResponseType<(typeof api.stack)[":id"]["$patch"], 200>;
 
 export function useUpdateStackItem(id?: string) {
   const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: async (values: stackFormValues): Promise<ResponseType> => {
-      const formData = new FormData();
-      formData.append("name", values.name);
-      formData.append("icon", values.icon);
-      formData.append("type", values.type);
-      formData.append("hide", String(values.hide));
-
+  return useMutation<ResponseType, Error, stackFormValues>({
+    mutationFn: async (values) => {
       const res = await fetch(`/api/stack/${id}`, {
         method: "PATCH",
-        body: formData,
+        body: toStackFormData(values),
       });
-
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.message || `Request failed (${res.status})`);
-      }
-      const data = await res.json();
-      return data;
+      if (!res.ok) throw await toApiError(res);
+      return res.json();
     },
-
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["stack"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["stack_item", id],
-      });
-      toast.success("Stack item Updated");
+      queryClient.invalidateQueries({ queryKey: ["stack_item"] });
+      queryClient.invalidateQueries({ queryKey: ["stack"] });
+      toast.success("Skill updated");
     },
     onError: (err) => {
       console.error(err);
