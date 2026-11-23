@@ -141,27 +141,22 @@ export default function ExperienceForm({
           </div>
         </FormSection>
 
-        <FormSection
-          title="Visibility"
-          description="Hidden experiences stay available here but are removed from the public site."
-        >
-          <Controller
-            name="hide"
-            control={form.control}
-            render={({ field }) => (
-              <Field orientation="horizontal" className="justify-between">
-                <FieldLabel htmlFor="experience-hide-switch">Hide experience</FieldLabel>
-                <Switch
-                  name={field.name}
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  id="experience-hide-switch"
-                  disabled={disabled}
-                />
-              </Field>
-            )}
-          />
-        </FormSection>
+        <Controller
+          name="hide"
+          control={form.control}
+          render={({ field }) => (
+            <Field orientation="horizontal" className="justify-between">
+              <FieldLabel htmlFor="experience-hide-switch">Hide experience</FieldLabel>
+              <Switch
+                name={field.name}
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                id="experience-hide-switch"
+                disabled={disabled}
+              />
+            </Field>
+          )}
+        />
       </form>
     </Form>
   );

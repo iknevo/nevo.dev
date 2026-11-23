@@ -188,7 +188,7 @@ export default function ProjectForm({
           />
         </FormSection>
 
-        <FormSection title="Features" description="What the project does, one item per line.">
+        <FormSection title="Features">
           <ListField
             form={form}
             name="features"
@@ -199,7 +199,7 @@ export default function ProjectForm({
           />
         </FormSection>
 
-        <FormSection title="Tech stack" description="Technologies used to build it.">
+        <FormSection title="Tech stack">
           <FormField
             name="techStack"
             control={form.control}
@@ -220,27 +220,22 @@ export default function ProjectForm({
           />
         </FormSection>
 
-        <FormSection
-          title="Visibility"
-          description="Hidden projects stay available here but are removed from the public site."
-        >
-          <Controller
-            name="hide"
-            control={form.control}
-            render={({ field }) => (
-              <Field orientation="horizontal" className="justify-between">
-                <FieldLabel htmlFor="project-hide-switch">Hide project</FieldLabel>
-                <Switch
-                  name={field.name}
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  id="project-hide-switch"
-                  disabled={disabled}
-                />
-              </Field>
-            )}
-          />
-        </FormSection>
+        <Controller
+          name="hide"
+          control={form.control}
+          render={({ field }) => (
+            <Field orientation="horizontal" className="justify-between">
+              <FieldLabel htmlFor="project-hide-switch">Hide project</FieldLabel>
+              <Switch
+                name={field.name}
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                id="project-hide-switch"
+                disabled={disabled}
+              />
+            </Field>
+          )}
+        />
       </form>
     </Form>
   );
