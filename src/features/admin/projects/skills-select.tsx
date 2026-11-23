@@ -1,22 +1,7 @@
 "use client";
 
-import {
-  DndContext,
-  type DragEndEvent,
-  DragOverlay,
-  KeyboardSensor,
-  PointerSensor,
-  closestCenter,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import {
-  SortableContext,
-  type SortingStrategy,
-  arrayMove,
-  sortableKeyboardCoordinates,
-  useSortable,
-} from "@dnd-kit/sortable";
+import { DndContext, DragOverlay } from "@dnd-kit/core";
+import { SortableContext, arrayMove, useSortable } from "@dnd-kit/sortable";
 import {
   Check,
   ChevronDown,
@@ -28,7 +13,7 @@ import {
   XIcon,
 } from "lucide-react";
 import Image from "next/image";
-import { type Ref, useEffect, useMemo, useState } from "react";
+import { type Ref, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { Badge } from "@/src/components/ui/badge";
@@ -40,6 +25,11 @@ import {
   PopoverTrigger,
 } from "@/src/components/ui/popover";
 import { PROJECT_CARD_SKILLS_COUNT, STACK_TYPE_OPTIONS } from "@/src/config/constants";
+import {
+  type DropSide,
+  keepInPlace,
+  useSortableDrag,
+} from "@/src/features/admin/shared/use-sortable-drag";
 import { useGetStack } from "@/src/features/admin/stack/api/use-get-stack";
 import { cn } from "@/src/lib/utils";
 
@@ -73,21 +63,6 @@ export function uniqueSkillNames(names: string[]) {
   });
 }
 
-function suppressNextContextMenu() {
-  const block = (event: Event) => {
-    event.preventDefault();
-    cleanup();
-  };
-  const cleanup = () => {
-    window.removeEventListener("contextmenu", block, true);
-    window.removeEventListener("mousedown", cleanup, true);
-  };
-  window.addEventListener("contextmenu", block, true);
-  window.addEventListener("mousedown", cleanup, true);
-}
-
-const keepInPlace: SortingStrategy = () => null;
-
 const chipClassName = "gap-1.5 rounded-sm py-1 pr-1 pl-0.5";
 const gripClassName =
   "text-muted-foreground inline-flex size-4 items-center justify-center rounded-xs";
@@ -111,7 +86,7 @@ function ChipContent({ name, skill }: ChipContentProps) {
 
 type SortableChipProps = ChipContentProps & {
   onCard: boolean;
-  dropSide: "before" | "after" | null;
+  dropSide: DropSide | null;
   disabled?: boolean;
   onRemove: () => void;
 };
@@ -195,12 +170,13 @@ export default function SkillsSelect({
   const { data, isLoading, isError, refetch } = useGetStack(true);
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [activeId, setActiveId] = useState<string | null>(null);
-  const [overId, setOverId] = useState<string | null>(null);
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
-  );
+  const { activeId, getDropSide, contextProps } = useSortableDrag({
+    ids: value,
+    onMove: (oldIndex, newIndex) => {
+      onChange(arrayMove(value, oldIndex, newIndex));
+      onBlur?.();
+    },
+  });
 
   const groups = useMemo(
     () =>
@@ -255,53 +231,6 @@ export default function SkillsSelect({
     onBlur?.();
   };
 
-  useEffect(() => {
-    if (!activeId) return;
-
-    const cancelDrag = () => {
-      document.dispatchEvent(new KeyboardEvent("keydown", { code: "Escape", bubbles: true }));
-    };
-
-    const handleMouseDown = (event: MouseEvent) => {
-      if (event.button !== 2) return;
-      event.preventDefault();
-      suppressNextContextMenu();
-      cancelDrag();
-    };
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
-      event.preventDefault();
-      event.stopPropagation();
-      cancelDrag();
-    };
-
-    window.addEventListener("mousedown", handleMouseDown, true);
-    window.addEventListener("keydown", handleKeyDown, true);
-    return () => {
-      window.removeEventListener("mousedown", handleMouseDown, true);
-      window.removeEventListener("keydown", handleKeyDown, true);
-    };
-  }, [activeId]);
-
-  const activeIndex = activeId ? value.indexOf(activeId) : -1;
-  const overIndex = overId ? value.indexOf(overId) : -1;
-
-  const resetDrag = () => {
-    setActiveId(null);
-    setOverId(null);
-  };
-
-  const handleDragEnd = ({ active, over }: DragEndEvent) => {
-    resetDrag();
-    if (!over || active.id === over.id) return;
-    const oldIndex = value.indexOf(String(active.id));
-    const newIndex = value.indexOf(String(over.id));
-    if (oldIndex === -1 || newIndex === -1) return;
-    onChange(arrayMove(value, oldIndex, newIndex));
-    onBlur?.();
-  };
-
   const handleOpenChange = (next: boolean) => {
     setOpen(next);
     if (!next) {
@@ -323,14 +252,7 @@ export default function SkillsSelect({
           {value.length === 0 && (
             <span className="text-muted-foreground px-1 text-sm">Select skills…</span>
           )}
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragStart={({ active }) => setActiveId(String(active.id))}
-            onDragOver={({ over }) => setOverId(over ? String(over.id) : null)}
-            onDragEnd={handleDragEnd}
-            onDragCancel={resetDrag}
-          >
+          <DndContext {...contextProps}>
             <SortableContext items={value} strategy={keepInPlace}>
               {value.map((name, index) => (
                 <SortableChip
@@ -338,13 +260,7 @@ export default function SkillsSelect({
                   name={name}
                   skill={skillsByKey.get(toKey(name))}
                   onCard={index < PROJECT_CARD_SKILLS_COUNT}
-                  dropSide={
-                    activeIndex === -1 || index !== overIndex || index === activeIndex
-                      ? null
-                      : overIndex > activeIndex
-                        ? "after"
-                        : "before"
-                  }
+                  dropSide={getDropSide(name)}
                   disabled={disabled}
                   onRemove={() => remove(name)}
                 />

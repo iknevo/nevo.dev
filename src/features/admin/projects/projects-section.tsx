@@ -1,5 +1,6 @@
 "use client";
 
+import DragCancel from "../shared/drag-cancel";
 import SortableItem from "../shared/sortable-item";
 import { useReorder } from "../shared/use-reorder";
 import {
@@ -87,6 +88,7 @@ export default function ProjectsSection() {
       {items.length === 0 && <AdminEmptyState>No projects yet.</AdminEmptyState>}
 
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <DragCancel />
         <SortableContext items={items.map((item) => item._id)} strategy={rectSortingStrategy}>
           <div className="grid grid-cols-1 items-start gap-10 md:grid-cols-2 md:gap-6.25 lg:grid-cols-4">
             {items.map((project) => (

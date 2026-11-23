@@ -1,5 +1,6 @@
 "use client";
 
+import DragCancel from "../shared/drag-cancel";
 import SortableItem from "../shared/sortable-item";
 import { useReorder } from "../shared/use-reorder";
 import {
@@ -94,6 +95,7 @@ export default function ExperienceSection() {
         {items.length === 0 && <AdminEmptyState>No experience yet.</AdminEmptyState>}
 
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <DragCancel />
           <SortableContext
             items={items.map((item) => item._id)}
             strategy={verticalListSortingStrategy}

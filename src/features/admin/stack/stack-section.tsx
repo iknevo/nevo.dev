@@ -1,5 +1,6 @@
 "use client";
 
+import DragCancel from "../shared/drag-cancel";
 import SortableItem from "../shared/sortable-item";
 import { useReorder } from "../shared/use-reorder";
 import {
@@ -134,6 +135,7 @@ export default function StackSection() {
                 collisionDetection={closestCenter}
                 onDragEnd={(event) => handleDragEnd(type, event)}
               >
+                <DragCancel />
                 <SortableContext
                   items={items.map((item) => item._id)}
                   strategy={rectSortingStrategy}
