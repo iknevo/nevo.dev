@@ -1,13 +1,3 @@
-import { create } from "zustand";
+import { createNewSheetStore } from "@/src/features/admin/shared/sheet-state";
 
-type NewExpState = {
-  isOpen: boolean;
-  onOpen: () => void;
-  onClose: () => void;
-};
-
-export const useNewExperience = create<NewExpState>((set) => ({
-  isOpen: false,
-  onOpen: () => set({ isOpen: true }),
-  onClose: () => set({ isOpen: false }),
-}));
+export const useNewExperience = createNewSheetStore();

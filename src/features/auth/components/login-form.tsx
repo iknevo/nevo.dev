@@ -30,7 +30,8 @@ export default function LoginForm() {
   const searchParams = useSearchParams();
   const loginMutation = useLogin();
   const forgotPasswordMutation = useForgetPassword();
-  const { isPending } = loginMutation;
+  const isLoggingIn = loginMutation.isPending || loginMutation.isSuccess;
+  const isBusy = isLoggingIn || forgotPasswordMutation.isPending;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(LoginFormSchema),
@@ -39,31 +40,25 @@ export default function LoginForm() {
       password: "",
     },
   });
+
   const handleSubmit = async (values: FormValues) => {
-    loginMutation.mutate(values, {
-      onSuccess: () => {
-        const redirectTo = getSafeAdminRedirect(searchParams.get("from"));
-        router.replace(redirectTo);
-      },
-    });
+    try {
+      await loginMutation.mutateAsync(values);
+    } catch {
+      return;
+    }
+    router.replace(getSafeAdminRedirect(searchParams.get("from")));
   };
+
   const handleForget = async () => {
     const isValid = await form.trigger("email");
     if (!isValid) {
-      return;
-    }
-    const email = form.getValues("email");
-    if (!email) {
-      form.setError("email", {});
+      form.setFocus("email");
       return;
     }
     forgotPasswordMutation.mutate(
-      { email },
-      {
-        onSuccess: ({ message }) => {
-          toast.success(message);
-        },
-      }
+      { email: form.getValues("email") },
+      { onSuccess: ({ message }) => toast.success(message) }
     );
   };
 
@@ -72,6 +67,7 @@ export default function LoginForm() {
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
         className="flex w-full flex-col gap-2 space-y-4 px-4 md:w-150 md:px-0"
+        noValidate
       >
         <FormField
           name="email"
@@ -86,7 +82,7 @@ export default function LoginForm() {
                 <Input
                   {...field}
                   className="md:py-6"
-                  disabled={isPending}
+                  disabled={isBusy}
                   placeholder="example@gmail.com"
                   autoComplete="email"
                 />
@@ -106,7 +102,7 @@ export default function LoginForm() {
               <FormControl>
                 <InputPassword
                   {...field}
-                  disabled={isPending}
+                  disabled={isBusy}
                   placeholder="password"
                   className="md:py-6"
                   autoComplete="current-password"
@@ -118,16 +114,18 @@ export default function LoginForm() {
         <button
           onClick={handleForget}
           type="button"
-          className="text-primary self-end font-semibold"
+          disabled={isBusy}
+          className="text-primary inline-flex items-center gap-2 self-end font-semibold disabled:opacity-50"
         >
+          {forgotPasswordMutation.isPending && <Loader2 className="size-4 animate-spin" />}
           Forgot Password?
         </button>
         <Button
           as="button"
-          disabled={isPending}
+          disabled={isBusy}
           className="cursor rounded-md text-white hover:text-black"
         >
-          {isPending ? <Loader2 className="animate-spin" /> : "Login"}
+          {isLoggingIn ? <Loader2 className="animate-spin" /> : "Login"}
         </Button>
       </form>
     </Form>

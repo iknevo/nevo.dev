@@ -1,4 +1,3 @@
-import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import status from "http-status";
 import { z } from "zod";
@@ -6,6 +5,7 @@ import { z } from "zod";
 import { experienceSchema } from "@/src/definitions/experience-validations";
 import dbConnect from "@/src/lib/db";
 import { authMiddleware, withHiddenAuth } from "@/src/lib/jwt";
+import { zValidator } from "@/src/lib/zod-wrapper";
 import { Experience } from "@/src/models/experience-model";
 
 async function bulkReorderExperience(ids: string[]) {
@@ -140,7 +140,7 @@ const app = new Hono()
         { sortIndex: { $gt: exp.sortIndex } },
         { $inc: { sortIndex: -1 } }
       );
-      return c.status(status.NO_CONTENT);
+      return c.body(null, status.NO_CONTENT);
     }
   );
 

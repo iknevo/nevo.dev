@@ -1,47 +1,44 @@
-import { z } from "zod";
+import { useState } from "react";
 
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/src/components/ui/sheet";
-import { expFormDefaults, experienceSchema } from "@/src/definitions/experience-validations";
+import { expFormDefaults, expFormValues } from "@/src/definitions/experience-validations";
+import FormSheet from "@/src/features/admin/shared/form-sheet";
 
 import { useCreateExperience } from "./api/use-create-experience";
 import ExperienceForm from "./experience-form";
 import { useNewExperience } from "./state/use-new-experience";
 
-type FormValues = z.input<typeof experienceSchema>;
+const FORM_ID = "new-experience-form";
 
 export const NewExperienceSheet = () => {
-  const { isOpen, onClose } = useNewExperience();
-  const { mutate: createExp, isPending } = useCreateExperience();
+  const { isOpen, openCount, onClose } = useNewExperience();
+  const { mutateAsync: createExperience, isPending } = useCreateExperience();
+  const [isDirty, setIsDirty] = useState(false);
 
-  const onSubmit = (values: FormValues) => {
-    createExp(values, {
-      onSuccess: () => {
-        onClose();
-      },
-    });
+  const onSubmit = async (values: expFormValues) => {
+    await createExperience(values);
+    setIsDirty(false);
+    onClose();
   };
 
   return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="dark space-y-4 sm:max-w-md">
-        <SheetHeader>
-          <SheetTitle>New Experience</SheetTitle>
-          <SheetDescription>Add a new experience</SheetDescription>
-        </SheetHeader>
-        {isOpen && (
-          <ExperienceForm
-            onSubmit={onSubmit}
-            disabled={isPending}
-            defaultValues={expFormDefaults}
-          />
-        )}
-      </SheetContent>
-    </Sheet>
+    <FormSheet
+      open={isOpen}
+      onClose={onClose}
+      title="New experience"
+      description="Add a role to your timeline."
+      formId={FORM_ID}
+      submitLabel="Create experience"
+      isSaving={isPending}
+      isDirty={isDirty}
+    >
+      <ExperienceForm
+        key={openCount}
+        formId={FORM_ID}
+        defaultValues={expFormDefaults}
+        onSubmit={(values) => onSubmit(values).catch(() => {})}
+        onDirtyChange={setIsDirty}
+        disabled={isPending}
+      />
+    </FormSheet>
   );
 };

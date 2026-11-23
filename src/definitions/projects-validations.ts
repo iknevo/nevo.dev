@@ -2,9 +2,13 @@ import { z } from "zod";
 
 export const projectSchema = z.object({
   name: z.string().trim().min(3, "Project's name is required"),
-  year: z.string().refine((val) => Number(val) >= 2000 && Number(val) <= new Date().getFullYear(), {
-    error: `Year must be between 2000 and ${new Date().getFullYear()}`,
-  }),
+  year: z.string().refine(
+    (val) => {
+      const year = Number(val);
+      return Number.isInteger(year) && year >= 2000 && year <= new Date().getFullYear();
+    },
+    { error: () => `Year must be between 2000 and ${new Date().getFullYear()}` }
+  ),
   liveUrl: z.url("Please enter a valid URL").or(z.literal("")),
   sourceCode: z.url("Please enter a valid URL").or(z.literal("")),
   description: z.string().trim().min(3, "Project's description is required"),

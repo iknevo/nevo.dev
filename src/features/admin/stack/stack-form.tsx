@@ -1,8 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Trash } from "lucide-react";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { Button } from "@/src/components/ui/button";
 import { Field, FieldLabel } from "@/src/components/ui/field";
 import {
   Form,
@@ -23,35 +22,48 @@ import {
 import { Switch } from "@/src/components/ui/switch";
 import { STACK } from "@/src/config/constants";
 import { stackFormValues, stackSchema } from "@/src/definitions/stack-validations";
+import { getUploadSizeError } from "@/src/definitions/upload";
+import FormSection from "@/src/features/admin/shared/form-section";
 import ImagePreviewModal from "@/src/features/admin/shared/image-preview-modal";
 
 type Props = {
-  id?: string;
-  defaultValues?: stackFormValues;
-  onSubmit: (values: stackFormValues) => void;
-  onDelete?: () => void;
+  formId: string;
+  defaultValues: stackFormValues;
+  onSubmit: (values: stackFormValues) => unknown;
+  onDirtyChange?: (isDirty: boolean) => void;
   disabled?: boolean;
 };
 
-export default function StackForm({ defaultValues, id, onSubmit, onDelete, disabled }: Props) {
+const TYPE_OPTIONS = [
+  { value: STACK.frontend, label: "Front-End" },
+  { value: STACK.backend, label: "Back-End" },
+  { value: STACK.mobile, label: "Mobile" },
+  { value: STACK.testing, label: "Testing" },
+  { value: STACK.tools, label: "Tools" },
+  { value: STACK.studying, label: "Studying" },
+];
+
+export default function StackForm({
+  formId,
+  defaultValues,
+  onSubmit,
+  onDirtyChange,
+  disabled,
+}: Props) {
   const form = useForm<stackFormValues>({
     resolver: zodResolver(stackSchema),
-    defaultValues: defaultValues,
+    defaultValues,
   });
-  const handleSubmit = (values: stackFormValues) => {
-    onSubmit(values);
-  };
-  const handleDelete = () => {
-    onDelete?.();
-  };
+  const { isDirty } = form.formState;
+
+  useEffect(() => {
+    onDirtyChange?.(isDirty);
+  }, [isDirty, onDirtyChange]);
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 pt-4">
-        <div className="space-y-4">
-          <h3 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
-            Skill details
-          </h3>
+      <form id={formId} onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" noValidate>
+        <FormSection title="Skill details">
           <FormField
             name="name"
             control={form.control}
@@ -59,8 +71,38 @@ export default function StackForm({ defaultValues, id, onSubmit, onDelete, disab
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input {...field} disabled={disabled} placeholder="e.g. HTML" />
+                  <Input {...field} disabled={disabled} placeholder="e.g. TypeScript" />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="type"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel>Category</FormLabel>
+                <Select
+                  name={field.name}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  disabled={disabled}
+                >
+                  <FormControl>
+                    <SelectTrigger className="w-full" aria-invalid={fieldState.invalid}>
+                      <SelectValue placeholder="Front-End" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {TYPE_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -79,7 +121,15 @@ export default function StackForm({ defaultValues, id, onSubmit, onDelete, disab
                       accept="image/*"
                       onChange={(e) => {
                         const file = e.target.files?.[0];
-                        field.onChange(file ?? field.value);
+                        if (!file) return;
+                        const sizeError = getUploadSizeError(file);
+                        if (sizeError) {
+                          e.target.value = "";
+                          form.setError("icon", { message: sizeError });
+                          return;
+                        }
+                        form.clearErrors("icon");
+                        field.onChange(file);
                       }}
                       name={field.name}
                       ref={field.ref}
@@ -97,88 +147,29 @@ export default function StackForm({ defaultValues, id, onSubmit, onDelete, disab
               </FormItem>
             )}
           />
+        </FormSection>
 
-          <FormField
-            name="type"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <FormItem>
-                <FormLabel>Type</FormLabel>
-                <FormControl>
-                  <Select
-                    name={field.name}
-                    value={field.value}
-                    onValueChange={field.onChange}
-                    disabled={disabled}
-                  >
-                    <SelectTrigger
-                      className="w-full"
-                      id="form-select-type"
-                      aria-invalid={fieldState.invalid}
-                    >
-                      <SelectValue placeholder="Front-End" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value={STACK.frontend}>Front-End</SelectItem>
-                      <SelectItem value={STACK.backend}>Back-End</SelectItem>
-                      <SelectItem value={STACK.mobile}>Mobile</SelectItem>
-                      <SelectItem value={STACK.testing}>Testing</SelectItem>
-                      <SelectItem value={STACK.tools}>Tools</SelectItem>
-                      <SelectItem value={STACK.studying}>Studying</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <div className="space-y-4 border-t border-white/10 pt-5">
-          <div>
-            <h3 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
-              Visibility
-            </h3>
-            <p className="text-muted-foreground mt-1 text-sm">
-              Hidden skills stay available here but are removed from the public site.
-            </p>
-          </div>
+        <FormSection
+          title="Visibility"
+          description="Hidden skills stay available here but are removed from the public site."
+        >
           <Controller
             name="hide"
             control={form.control}
             render={({ field }) => (
               <Field orientation="horizontal" className="justify-between">
-                <FieldLabel htmlFor="hide-switch">Hide skill</FieldLabel>
+                <FieldLabel htmlFor="stack-hide-switch">Hide skill</FieldLabel>
                 <Switch
                   name={field.name}
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  id="hide-switch"
+                  id="stack-hide-switch"
                   disabled={disabled}
                 />
               </Field>
             )}
           />
-        </div>
-
-        <div className="bg-background/95 sticky bottom-0 z-10 -mx-1 space-y-2 border-t border-white/10 py-4 backdrop-blur">
-          <Button className="text-foreground w-full" disabled={disabled}>
-            {id ? "Save Changes" : "Create Stack Item"}
-          </Button>
-
-          {!!id && (
-            <Button
-              className="text-foreground w-full"
-              type="button"
-              variant="outline"
-              disabled={disabled}
-              onClick={handleDelete}
-            >
-              <Trash className="size-4" />
-              <span>Delete Stack Item</span>
-            </Button>
-          )}
-        </div>
+        </FormSection>
       </form>
     </Form>
   );

@@ -1,15 +1,3 @@
-import { create } from "zustand";
+import { createEditSheetStore } from "@/src/features/admin/shared/sheet-state";
 
-type OpenProjectState = {
-  id?: string;
-  isOpen: boolean;
-  onOpen: (id: string) => void;
-  onClose: () => void;
-};
-
-export const useOpenProject = create<OpenProjectState>((set) => ({
-  id: undefined,
-  isOpen: false,
-  onOpen: (id: string) => set({ isOpen: true, id }),
-  onClose: () => set({ isOpen: false, id: undefined }),
-}));
+export const useOpenProject = createEditSheetStore();

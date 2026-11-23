@@ -2,12 +2,18 @@ import { z } from "zod";
 
 const monthYearPattern = /^(0[1-9]|1[0-2])\/\d{4}$/;
 
-const monthYearSchema = z.string().trim().regex(monthYearPattern, "Use the MM/YYYY format");
+const normalizeMonthYear = (value: string) => value.replace(/^(\d)\//, "0$1/");
+
+const monthYearSchema = z
+  .string()
+  .trim()
+  .transform(normalizeMonthYear)
+  .refine((value) => monthYearPattern.test(value), { message: "Use the MM/YYYY format" });
 
 const endDateSchema = z
   .string()
   .trim()
-  .transform((value) => (value.toLowerCase() === "present" ? "Present" : value))
+  .transform((value) => (value.toLowerCase() === "present" ? "Present" : normalizeMonthYear(value)))
   .refine((value) => value === "Present" || monthYearPattern.test(value), {
     message: "Use MM/YYYY or Present",
   });

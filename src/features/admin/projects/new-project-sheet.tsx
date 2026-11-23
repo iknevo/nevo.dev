@@ -1,47 +1,45 @@
-import { z } from "zod";
+import { useState } from "react";
 
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/src/components/ui/sheet";
-import { projectFormDefaults, projectSchema } from "@/src/definitions/projects-validations";
+import { projectFormDefaults, projectFormValues } from "@/src/definitions/projects-validations";
+import FormSheet from "@/src/features/admin/shared/form-sheet";
 
 import { useCreateProject } from "./api/use-create-project";
 import ProjectForm from "./project-form";
 import { useNewProject } from "./state/use-new-project";
 
-type FormValues = z.input<typeof projectSchema>;
+const FORM_ID = "new-project-form";
 
 export const NewProjectSheet = () => {
-  const { isOpen, onClose } = useNewProject();
-  const { mutate: createProject, isPending } = useCreateProject();
+  const { isOpen, openCount, onClose } = useNewProject();
+  const { mutateAsync: createProject, isPending } = useCreateProject();
+  const [isDirty, setIsDirty] = useState(false);
 
-  const onSubmit = (values: FormValues) => {
-    createProject(values, {
-      onSuccess: () => {
-        onClose();
-      },
-    });
+  const onSubmit = async (values: projectFormValues) => {
+    await createProject(values);
+    setIsDirty(false);
+    onClose();
   };
 
   return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="dark space-y-4 sm:max-w-md md:max-w-xl">
-        <SheetHeader>
-          <SheetTitle>New Project</SheetTitle>
-          <SheetDescription>Add a new project</SheetDescription>
-        </SheetHeader>
-        {isOpen && (
-          <ProjectForm
-            onSubmit={onSubmit}
-            disabled={isPending}
-            defaultValues={projectFormDefaults}
-          />
-        )}
-      </SheetContent>
-    </Sheet>
+    <FormSheet
+      open={isOpen}
+      onClose={onClose}
+      title="New project"
+      description="Add a project to your portfolio."
+      formId={FORM_ID}
+      submitLabel="Create project"
+      isSaving={isPending}
+      isDirty={isDirty}
+      size="lg"
+    >
+      <ProjectForm
+        key={openCount}
+        formId={FORM_ID}
+        defaultValues={projectFormDefaults}
+        onSubmit={(values) => onSubmit(values).catch(() => {})}
+        onDirtyChange={setIsDirty}
+        disabled={isPending}
+      />
+    </FormSheet>
   );
 };

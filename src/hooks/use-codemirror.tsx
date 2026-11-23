@@ -8,7 +8,6 @@ import {
   indentLess,
   indentMore,
 } from "@codemirror/commands";
-import { javascript } from "@codemirror/lang-javascript";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import {
   HighlightStyle,
@@ -19,7 +18,7 @@ import {
 import { languages } from "@codemirror/language-data";
 import { openSearchPanel } from "@codemirror/search";
 import { search } from "@codemirror/search";
-import { EditorState } from "@codemirror/state";
+import { Compartment, EditorState } from "@codemirror/state";
 import { oneDark } from "@codemirror/theme-one-dark";
 import {
   EditorView,
@@ -134,15 +133,18 @@ const darkPanelTheme = EditorView.theme({
 export function useCodemirror<T extends Element>({
   initialDoc,
   onChange,
-  disabled,
+  disabled = false,
 }: Props): [RefObject<T | null>, EditorView?] {
   const containerRef = useRef<T>(null);
-  const initialDocRef = useRef(initialDoc);
   const [editorView, setEditorView] = useState<EditorView>();
+  const initialDocRef = useRef(initialDoc);
+  const initialDisabledRef = useRef(disabled);
+  const onChangeRef = useRef(onChange);
+  const editableCompartment = useRef(new Compartment());
 
   useEffect(() => {
-    initialDocRef.current = initialDoc;
-  }, [initialDoc]);
+    onChangeRef.current = onChange;
+  }, [onChange]);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -179,7 +181,6 @@ export function useCodemirror<T extends Element>({
         syntaxHighlighting(highlighting),
         highlightActiveLine(),
         closeBrackets(),
-        javascript({ jsx: true, typescript: true }),
         markdown({
           base: markdownLanguage,
           codeLanguages: languages,
@@ -191,10 +192,10 @@ export function useCodemirror<T extends Element>({
         biggerFont,
         editorTheme,
         darkPanelTheme,
-        EditorView.editable.of(!disabled),
+        editableCompartment.current.of(editableExtensions(!initialDisabledRef.current)),
         EditorView.lineWrapping,
         EditorView.updateListener.of((update) => {
-          if (update.changes && onChange) onChange(update.state);
+          if (update.docChanged) onChangeRef.current?.(update.state);
         }),
       ],
     });
@@ -207,7 +208,17 @@ export function useCodemirror<T extends Element>({
     return () => {
       view.destroy();
     };
-  }, [containerRef, onChange, disabled]);
+  }, []);
+
+  useEffect(() => {
+    editorView?.dispatch({
+      effects: editableCompartment.current.reconfigure(editableExtensions(!disabled)),
+    });
+  }, [editorView, disabled]);
 
   return [containerRef, editorView];
+}
+
+function editableExtensions(editable: boolean) {
+  return [EditorView.editable.of(editable), EditorState.readOnly.of(!editable)];
 }

@@ -7,43 +7,22 @@ import { getSafeAdminRedirect } from "./lib/safe-redirect";
 export async function proxy(req: NextRequest) {
   const { pathname, searchParams } = req.nextUrl;
   const refreshToken = req.cookies.get("refreshToken")?.value;
-  if (pathname.startsWith("/auth") && refreshToken) {
-    const decoded = (await verifyRefreshToken(refreshToken)) as {
-      id: string;
-    };
-    if (decoded?.id) {
-      const redirectTo = getSafeAdminRedirect(searchParams.get("from"));
-      return NextResponse.redirect(new URL(redirectTo, req.url));
-    }
-  }
-  if (!pathname.startsWith("/admin")) {
-    return NextResponse.next();
-  }
-  if (!refreshToken) {
-    return redirectToLogin(req);
-  }
-  try {
-    const decoded = (await verifyRefreshToken(refreshToken)) as { id?: string };
-    if (!decoded?.id) {
-      return redirectToLogin(req);
-    }
-    const requestHeaders = new Headers(req.headers);
-    requestHeaders.set("x-user-id", decoded.id);
-    return NextResponse.next({
-      request: { headers: requestHeaders },
-    });
-  } catch (err) {
-    console.error("Invalid or expired refresh token:", err);
-    return redirectToLogin(req);
-  }
-}
+  const session = refreshToken ? await verifyRefreshToken(refreshToken) : null;
 
-function redirectToLogin(req: NextRequest) {
-  const loginUrl = new URL("/auth/login", req.url);
-  loginUrl.searchParams.set("from", getSafeAdminRedirect(req.nextUrl.pathname));
-  return NextResponse.redirect(loginUrl);
+  if (pathname === "/auth/login") {
+    if (!session?.id) return NextResponse.next();
+    return NextResponse.redirect(new URL(getSafeAdminRedirect(searchParams.get("from")), req.url));
+  }
+
+  if (!session?.id) {
+    const loginUrl = new URL("/auth/login", req.url);
+    loginUrl.searchParams.set("from", getSafeAdminRedirect(pathname));
+    return NextResponse.redirect(loginUrl);
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/auth/reset-password/:path*", "/auth/login"],
+  matcher: ["/admin/:path*", "/auth/login"],
 };

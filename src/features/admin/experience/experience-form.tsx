@@ -1,8 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Trash } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { Button } from "@/src/components/ui/button";
 import { Field, FieldLabel } from "@/src/components/ui/field";
 import {
   Form,
@@ -15,34 +14,49 @@ import {
 import { Input } from "@/src/components/ui/input";
 import { Switch } from "@/src/components/ui/switch";
 import { expFormValues, experienceSchema } from "@/src/definitions/experience-validations";
+import FormSection from "@/src/features/admin/shared/form-section";
 
 type Props = {
-  id?: string;
-  defaultValues?: expFormValues;
-  onSubmit: (values: expFormValues) => void;
-  onDelete?: () => void;
+  formId: string;
+  defaultValues: expFormValues;
+  onSubmit: (values: expFormValues) => unknown;
+  onDirtyChange?: (isDirty: boolean) => void;
   disabled?: boolean;
 };
 
-export default function ExperienceForm({ defaultValues, id, onSubmit, onDelete, disabled }: Props) {
+export default function ExperienceForm({
+  formId,
+  defaultValues,
+  onSubmit,
+  onDirtyChange,
+  disabled,
+}: Props) {
   const form = useForm<expFormValues>({
     resolver: zodResolver(experienceSchema),
-    defaultValues: defaultValues,
+    defaultValues,
   });
-  const handleSubmit = (values: expFormValues) => {
-    onSubmit(values);
-  };
-  const handleDelete = () => {
-    onDelete?.();
+  const { isDirty } = form.formState;
+  const [isCurrentRole, setIsCurrentRole] = useState(
+    defaultValues.endDate.toLowerCase() === "present"
+  );
+
+  useEffect(() => {
+    onDirtyChange?.(isDirty);
+  }, [isDirty, onDirtyChange]);
+
+  const setCurrentRole = (current: boolean) => {
+    setIsCurrentRole(current);
+    form.setValue("endDate", current ? "Present" : "", {
+      shouldDirty: true,
+      shouldValidate: current,
+    });
+    if (!current) setTimeout(() => form.setFocus("endDate"));
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 pt-4">
-        <div className="space-y-4">
-          <h3 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
-            Role details
-          </h3>
+      <form id={formId} onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" noValidate>
+        <FormSection title="Role details">
           <FormField
             name="title"
             control={form.control}
@@ -53,7 +67,7 @@ export default function ExperienceForm({ defaultValues, id, onSubmit, onDelete, 
                   <Input
                     {...field}
                     disabled={disabled}
-                    placeholder="e.g. Full-Stack Developer - Full time"
+                    placeholder="e.g. Full-Stack Developer · Full time"
                   />
                 </FormControl>
                 <FormMessage />
@@ -74,93 +88,80 @@ export default function ExperienceForm({ defaultValues, id, onSubmit, onDelete, 
               </FormItem>
             )}
           />
-        </div>
+        </FormSection>
 
-        <div className="space-y-4 border-t border-white/10 pt-5">
-          <div>
-            <h3 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
-              Timeline
-            </h3>
-            <p className="text-muted-foreground mt-1 text-sm">Use MM/YYYY or Present.</p>
-          </div>
-          <FormField
-            name="startDate"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Start Date</FormLabel>
-                <FormControl>
-                  <Input {...field} disabled={disabled} placeholder="MM/YYYY" inputMode="numeric" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="endDate"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>End Date</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    disabled={disabled}
-                    placeholder="MM/YYYY or Present"
-                    inputMode="text"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        <FormSection title="Timeline" description="Dates use the MM/YYYY format.">
+          <Field orientation="horizontal" className="justify-between">
+            <FieldLabel htmlFor="experience-current-switch">I currently work here</FieldLabel>
+            <Switch
+              id="experience-current-switch"
+              checked={isCurrentRole}
+              onCheckedChange={setCurrentRole}
+              disabled={disabled}
+            />
+          </Field>
 
-        <div className="space-y-4 border-t border-white/10 pt-5">
-          <div>
-            <h3 className="text-sm font-semibold tracking-wide text-white/80 uppercase">
-              Visibility
-            </h3>
-            <p className="text-muted-foreground mt-1 text-sm">
-              Hidden experiences stay available here but are removed from the public site.
-            </p>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <FormField
+              name="startDate"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Start date</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={disabled}
+                      placeholder="MM/YYYY"
+                      inputMode="numeric"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="endDate"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>End date</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={disabled || isCurrentRole}
+                      placeholder="MM/YYYY"
+                      inputMode="numeric"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
+        </FormSection>
+
+        <FormSection
+          title="Visibility"
+          description="Hidden experiences stay available here but are removed from the public site."
+        >
           <Controller
             name="hide"
             control={form.control}
             render={({ field }) => (
               <Field orientation="horizontal" className="justify-between">
-                <FieldLabel htmlFor="hide-switch">Hide experience</FieldLabel>
+                <FieldLabel htmlFor="experience-hide-switch">Hide experience</FieldLabel>
                 <Switch
                   name={field.name}
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  id="hide-switch"
+                  id="experience-hide-switch"
                   disabled={disabled}
                 />
               </Field>
             )}
           />
-        </div>
-
-        <div className="bg-background/95 sticky bottom-0 z-10 -mx-1 space-y-2 border-t border-white/10 py-4 backdrop-blur">
-          <Button className="text-foreground w-full" disabled={disabled}>
-            {id ? "Save Changes" : "Create Experience"}
-          </Button>
-
-          {!!id && (
-            <Button
-              className="text-foreground w-full"
-              type="button"
-              variant="outline"
-              disabled={disabled}
-              onClick={handleDelete}
-            >
-              <Trash className="size-4" />
-              <span>Delete Experience</span>
-            </Button>
-          )}
-        </div>
+        </FormSection>
       </form>
     </Form>
   );

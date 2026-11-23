@@ -1,4 +1,3 @@
-import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import status from "http-status";
 import mongoose from "mongoose";
@@ -9,9 +8,11 @@ import {
   deriveCloudinaryPublicId,
   destroyCloudinaryAsset,
   uploadToCloudinary,
+  withUploadRollback,
 } from "@/src/lib/cloudinary";
 import dbConnect from "@/src/lib/db";
 import { authMiddleware, withHiddenAuth } from "@/src/lib/jwt";
+import { zValidator } from "@/src/lib/zod-wrapper";
 import { Blog, blogType } from "@/src/models/blog-model";
 
 const app = new Hono()
@@ -85,7 +86,10 @@ const app = new Hono()
         path: err.path.join("."),
         message: err.message,
       }));
-      return c.json({ success: false, message: "Validation failed", errors }, status.BAD_REQUEST);
+      return c.json(
+        { success: false, message: errors[0]?.message ?? "Validation failed", errors },
+        status.BAD_REQUEST
+      );
     }
     const { data } = result;
     let imageUrl: string;
@@ -107,7 +111,10 @@ const app = new Hono()
       imagePublicId,
       hide: data.hide,
     };
-    const post = await Blog.create(newPost);
+    const post = await withUploadRollback(
+      data.image instanceof File ? imagePublicId : undefined,
+      () => Blog.create(newPost)
+    );
     if (!post) {
       return c.json({ message: "Error creating blog post!, Try again later" }, status.BAD_REQUEST);
     }
@@ -158,7 +165,10 @@ const app = new Hono()
           path: err.path.join("."),
           message: err.message,
         }));
-        return c.json({ success: false, message: "Validation failed", errors }, status.BAD_REQUEST);
+        return c.json(
+          { success: false, message: errors[0]?.message ?? "Validation failed", errors },
+          status.BAD_REQUEST
+        );
       }
       const { data } = result;
       const oldImageUrl = existingPost.image;
@@ -188,7 +198,9 @@ const app = new Hono()
         hide: data.hide,
       };
       Object.assign(existingPost, newPost);
-      await existingPost.save();
+      await withUploadRollback(data.image instanceof File ? imagePublicId : undefined, () =>
+        existingPost.save()
+      );
 
       if (oldImagePublicId && imageUrl !== oldImageUrl && oldImagePublicId !== imagePublicId) {
         await destroyCloudinaryAsset(oldImagePublicId);
@@ -241,7 +253,7 @@ const app = new Hono()
       if (publicId) {
         await destroyCloudinaryAsset(publicId);
       }
-      return c.status(status.NO_CONTENT);
+      return c.body(null, status.NO_CONTENT);
     }
   );
 

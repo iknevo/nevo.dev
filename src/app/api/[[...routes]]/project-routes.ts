@@ -1,4 +1,3 @@
-import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import status from "http-status";
 import mongoose from "mongoose";
@@ -9,9 +8,11 @@ import {
   deriveCloudinaryPublicId,
   destroyCloudinaryAsset,
   uploadToCloudinary,
+  withUploadRollback,
 } from "@/src/lib/cloudinary";
 import dbConnect from "@/src/lib/db";
 import { authMiddleware, withHiddenAuth } from "@/src/lib/jwt";
+import { zValidator } from "@/src/lib/zod-wrapper";
 import { Project, projectType } from "@/src/models/project-model";
 
 async function bulkReorderProjects(ids: string[]) {
@@ -116,7 +117,10 @@ const app = new Hono()
         path: err.path.join("."),
         message: err.message,
       }));
-      return c.json({ success: false, message: "Validation failed", errors }, status.BAD_REQUEST);
+      return c.json(
+        { success: false, message: errors[0]?.message ?? "Validation failed", errors },
+        status.BAD_REQUEST
+      );
     }
     const { data } = result;
     let thumbnailUrl: string;
@@ -146,7 +150,10 @@ const app = new Hono()
       sortIndex: data.sortIndex,
       hide: data.hide,
     };
-    const project = await Project.create(newProject);
+    const project = await withUploadRollback(
+      data.thumbnail instanceof File ? thumbnailPublicId : undefined,
+      () => Project.create(newProject)
+    );
     if (!project) {
       return c.json({ message: "Error creating project!, Try again later" }, status.BAD_REQUEST);
     }
@@ -205,7 +212,10 @@ const app = new Hono()
           path: err.path.join("."),
           message: err.message,
         }));
-        return c.json({ success: false, message: "Validation failed", errors }, status.BAD_REQUEST);
+        return c.json(
+          { success: false, message: errors[0]?.message ?? "Validation failed", errors },
+          status.BAD_REQUEST
+        );
       }
       const { data } = result;
       const oldThumbnailUrl = existingProject.thumbnail;
@@ -240,7 +250,9 @@ const app = new Hono()
         hide: data.hide,
       };
       Object.assign(existingProject, newProject);
-      await existingProject.save();
+      await withUploadRollback(data.thumbnail instanceof File ? thumbnailPublicId : undefined, () =>
+        existingProject.save()
+      );
 
       if (
         oldThumbnailPublicId &&
@@ -284,7 +296,7 @@ const app = new Hono()
         { sortIndex: { $gt: project.sortIndex } },
         { $inc: { sortIndex: -1 } }
       );
-      return c.status(status.NO_CONTENT);
+      return c.body(null, status.NO_CONTENT);
     }
   );
 

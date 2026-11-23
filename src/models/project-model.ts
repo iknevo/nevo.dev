@@ -1,5 +1,6 @@
 import { InferSchemaType, Model, Schema, model, models } from "mongoose";
-import slugify from "slugify";
+
+import { uniqueSlug } from "@/src/lib/slug";
 
 const projectSchema = new Schema(
   {
@@ -13,7 +14,10 @@ const projectSchema = new Schema(
       type: Number,
       required: [true, "A project must have a year"],
       min: 2000,
-      max: new Date().getFullYear(),
+      validate: {
+        validator: (year: number) => Number.isInteger(year) && year <= new Date().getFullYear(),
+        message: "Year can't be in the future",
+      },
     },
     liveUrl: {
       type: String,
@@ -59,11 +63,9 @@ projectSchema.index({ sortIndex: 1 });
 projectSchema.index({ hide: 1 });
 
 projectSchema.pre("save", async function (next) {
-  this.slug = slugify(this.name, {
-    replacement: "-",
-    lower: true,
-    trim: true,
-  });
+  if (this.isNew || !this.slug) {
+    this.slug = await uniqueSlug(this.constructor as Model<any>, this.name, this._id);
+  }
   next();
 });
 

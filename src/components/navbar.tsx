@@ -50,7 +50,7 @@ export default function Navbar() {
 
   const closeMenu = useCallback(() => {
     setIsMenuOpen(false);
-    menuButtonRef.current?.focus();
+    menuButtonRef.current?.focus({ preventScroll: true });
   }, []);
 
   useEffect(() => {

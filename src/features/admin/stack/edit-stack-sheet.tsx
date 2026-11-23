@@ -1,14 +1,10 @@
-import { Loader2 } from "lucide-react";
+import { useState } from "react";
 
-import { Button } from "@/src/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/src/components/ui/sheet";
 import { stackFormValues } from "@/src/definitions/stack-validations";
+import FormSheet, {
+  FormSheetError,
+  FormSheetLoading,
+} from "@/src/features/admin/shared/form-sheet";
 import { useConfirm } from "@/src/hooks/use-confirm";
 
 import { useDeleteStackItem } from "./api/use-delete-stack-item";
@@ -17,79 +13,73 @@ import { useUpdateStackItem } from "./api/use-update-stack-item";
 import StackForm from "./stack-form";
 import { useOpenStack } from "./state/use-open-stack";
 
+const FORM_ID = "edit-stack-form";
+
 export const EditStackSheet = () => {
   const { isOpen, onClose, id } = useOpenStack();
-  const {
-    data: stackItem,
-    isLoading: isLoadingStackItem,
-    isError: isStackItemError,
-    refetch: refetchStackItem,
-  } = useGetStackItem(id);
-  const { mutate: updateStackItem, isPending: isUpdatingStackItem } = useUpdateStackItem(id);
-  const { mutate: deleteStackItem, isPending: isDeletingStackItem } = useDeleteStackItem(id);
-  const [ConfirmDialog, confirm] = useConfirm();
-  const isDisabled = isLoadingStackItem || isUpdatingStackItem || isDeletingStackItem;
-  const defaultValues = {
-    name: stackItem?.name ?? "",
-    type: stackItem?.type ?? "frontend",
-    icon: stackItem?.icon ?? "",
-    hide: stackItem?.hide ?? false,
+  const { data: stackItem, isLoading, isError, refetch } = useGetStackItem(id, isOpen);
+  const { mutateAsync: updateStackItem, isPending: isSaving } = useUpdateStackItem(id);
+  const { mutateAsync: deleteStackItem, isPending: isDeleting } = useDeleteStackItem(id);
+  const [confirmDialog, confirm] = useConfirm();
+  const [isDirty, setIsDirty] = useState(false);
+
+  const close = () => {
+    setIsDirty(false);
+    onClose();
   };
 
-  const onSubmit = (values: stackFormValues) => {
-    updateStackItem(values, {
-      onSuccess: () => {
-        onClose();
-      },
-    });
+  const onSubmit = async (values: stackFormValues) => {
+    await updateStackItem(values);
+    close();
   };
 
   const onDelete = async () => {
     const ok = await confirm({
-      title: "Are You Sure?",
-      message: "You are about to delete this skill.",
+      title: `Delete "${stackItem?.name ?? "this skill"}"?`,
+      message: "The skill and its icon will be permanently removed.",
+      confirmLabel: "Delete",
     });
-    if (ok) {
-      deleteStackItem(undefined, {
-        onSuccess: () => {
-          onClose();
-        },
-      });
-    }
+    if (!ok) return;
+    await deleteStackItem().then(close, () => {});
   };
 
   return (
     <>
-      <ConfirmDialog />
-      <Sheet open={isOpen} onOpenChange={onClose}>
-        <SheetContent className="dark space-y-4 sm:max-w-md">
-          <SheetHeader>
-            <SheetTitle>Edit Stack Item</SheetTitle>
-            <SheetDescription>Edit OR Delete a skill</SheetDescription>
-          </SheetHeader>
-
-          {isLoadingStackItem ? (
-            <div className="flex items-center justify-center">
-              <Loader2 className="text-muted-foreground size-8 animate-spin" />
-            </div>
-          ) : isStackItemError || !stackItem ? (
-            <div className="flex flex-col items-center gap-4 py-8 text-center">
-              <p className="text-muted-foreground">We couldn&apos;t load this skill.</p>
-              <Button variant="outline" onClick={() => refetchStackItem()}>
-                Try again
-              </Button>
-            </div>
-          ) : (
-            <StackForm
-              id={id}
-              onSubmit={onSubmit}
-              onDelete={onDelete}
-              disabled={isDisabled}
-              defaultValues={defaultValues}
-            />
-          )}
-        </SheetContent>
-      </Sheet>
+      {confirmDialog}
+      <FormSheet
+        open={isOpen}
+        onClose={close}
+        title="Edit skill"
+        description={stackItem?.name ?? "Update the details or remove the skill."}
+        formId={FORM_ID}
+        submitLabel="Save changes"
+        isSaving={isSaving}
+        isDeleting={isDeleting}
+        isDirty={isDirty}
+        submitDisabled={!stackItem}
+        onDelete={stackItem ? onDelete : undefined}
+        deleteLabel="Delete skill"
+      >
+        {isLoading ? (
+          <FormSheetLoading />
+        ) : isError || !stackItem ? (
+          <FormSheetError message="We couldn't load this skill." onRetry={() => refetch()} />
+        ) : (
+          <StackForm
+            key={id}
+            formId={FORM_ID}
+            onSubmit={(values) => onSubmit(values).catch(() => {})}
+            onDirtyChange={setIsDirty}
+            disabled={isSaving || isDeleting}
+            defaultValues={{
+              name: stackItem.name ?? "",
+              type: stackItem.type ?? "frontend",
+              icon: stackItem.icon ?? "",
+              hide: stackItem.hide ?? false,
+            }}
+          />
+        )}
+      </FormSheet>
     </>
   );
 };

@@ -5,6 +5,7 @@ import {
   deriveCloudinaryPublicId,
   destroyCloudinaryAsset,
   uploadPdfToCloudinary,
+  withUploadRollback,
 } from "@/src/lib/cloudinary";
 import dbConnect from "@/src/lib/db";
 import { authMiddleware } from "@/src/lib/jwt";
@@ -56,10 +57,10 @@ const app = new Hono()
 
     const { url, publicId } = await uploadPdfToCloudinary(file, "resume");
 
-    const resume = await Resume.findOneAndUpdate(
-      {},
-      { url, publicId },
-      { upsert: true, new: true }
+    const resume = await withUploadRollback(
+      publicId,
+      () => Resume.findOneAndUpdate({}, { url, publicId }, { upsert: true, new: true }),
+      "raw"
     );
 
     const oldPublicId =
