@@ -35,10 +35,10 @@ Third argument (or position property in vars) controls placement:
 Examples:
 
 ```javascript
-tl.to(".a", { x: 100 }, 0);           // at 0
-tl.to(".b", { y: 50 }, "+=0.5");      // 0.5s after last end
-tl.to(".c", { opacity: 0 }, "<");     // same start as previous
-tl.to(".d", { scale: 2 }, "<0.2");    // 0.2s after previous start
+tl.to(".a", { x: 100 }, 0); // at 0
+tl.to(".b", { y: 50 }, "+=0.5"); // 0.5s after last end
+tl.to(".c", { opacity: 0 }, "<"); // same start as previous
+tl.to(".d", { scale: 2 }, "<0.2"); // 0.2s after previous start
 ```
 
 ## Timeline Defaults
@@ -66,7 +66,7 @@ tl.addLabel("intro", 0);
 tl.to(".a", { x: 100 }, "intro");
 tl.addLabel("outro", "+=0.5");
 tl.to(".b", { opacity: 0 }, "outro");
-tl.play("outro");  // start from "outro"
+tl.play("outro"); // start from "outro"
 tl.tweenFromTo("intro", "outro"); // pauses the timeline and returns a new Tween that animates the timeline's playhead from intro to outro with no ease.
 ```
 
