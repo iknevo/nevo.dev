@@ -1,9 +1,11 @@
 import "server-only";
 
 import { headers } from "next/headers";
+import { unstable_rethrow } from "next/navigation";
 import { cache } from "react";
 
 import { app } from "@/src/app/api/[[...routes]]/route";
+import type { ProfileValues } from "@/src/definitions/profile-validations";
 
 type ServerFetchOptions = {
   withCookies?: boolean;
@@ -36,4 +38,15 @@ export const getPost = cache(async (id: string, withHidden: boolean) => {
 export const getProject = cache(async (id: string) => {
   const { data } = await serverFetch(`/api/projects/${id}`);
   return data;
+});
+
+export const getProfile = cache(async (): Promise<ProfileValues | null> => {
+  try {
+    const { data } = await serverFetch("/api/profile");
+    return data;
+  } catch (error) {
+    unstable_rethrow(error);
+    console.error("Failed to load profile", error);
+    return null;
+  }
 });

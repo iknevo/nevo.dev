@@ -24,6 +24,7 @@ const navItems = [
   },
   { label: "BLOG", href: "/admin/blog", match: (p: string) => p.startsWith("/admin/blog") },
   { label: "RESUME", href: "/admin/resume", match: (p: string) => p === "/admin/resume" },
+  { label: "PROFILE", href: "/admin/profile", match: (p: string) => p === "/admin/profile" },
   {
     label: "PASSWORD",
     href: "/admin/update-password",

@@ -11,6 +11,7 @@ import { errorHandler } from "@/src/lib/error-handlers";
 import auth from "./auth-routes";
 import blog from "./blog-routes";
 import experience from "./experience-routes";
+import profile from "./profile-routes";
 import projects from "./project-routes";
 import resume from "./resume-routes";
 import stack from "./stack-routes";
@@ -57,7 +58,8 @@ const routes = app
   .route("/stack", stack)
   .route("/experience", experience)
   .route("/blog", blog)
-  .route("/resume", resume);
+  .route("/resume", resume)
+  .route("/profile", profile);
 
 app.onError(errorHandler);
 app.notFound((c) => {
