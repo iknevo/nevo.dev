@@ -24,4 +24,5 @@ export const env = {
     api_secret: getEnv("CLOUDINARY_API_SECRET"),
   },
   resendKey: getEnv("RESEND_API_KEY"),
+  githubToken: getEnv("GITHUB_TOKEN", false),
 };

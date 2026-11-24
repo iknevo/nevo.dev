@@ -1,6 +1,11 @@
+import GithubGraph from "@/src/components/github-graph";
 import { GENERAL_INFO } from "@/src/lib/data";
 
-export default async function Footer() {
+type Props = {
+  showGithubGraph?: boolean;
+};
+
+export default async function Footer({ showGithubGraph = false }: Props) {
   return (
     <footer className="pb-5 text-center" id="contact">
       <div className="container mx-auto">
@@ -12,9 +17,11 @@ export default async function Footer() {
           {GENERAL_INFO.email}
         </a>
 
+        {showGithubGraph && <GithubGraph />}
+
         <div className="">
           <a
-            href="https://github.com/iknevo"
+            href={`https://github.com/${GENERAL_INFO.github}`}
             target="_blank"
             rel="noreferrer noopener"
             className="leading-none text-white/80 hover:text-white hover:underline"

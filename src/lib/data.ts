@@ -1,6 +1,7 @@
 export const GENERAL_INFO = {
   email: "iknevo.dev@gmail.com",
   resume: "/resume",
+  github: "iknevo",
 };
 
 export const SOCIAL_LINKS = [

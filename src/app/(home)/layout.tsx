@@ -19,7 +19,7 @@ export default function Layout({ children }: Props) {
       <Navbar />
       <div className="flex min-h-screen flex-col">
         <main className="relative flex-1">{children}</main>
-        <Footer />
+        <Footer showGithubGraph />
       </div>
       <ScrollProgressIndicator />
       <Preloader />
