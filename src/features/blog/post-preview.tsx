@@ -10,7 +10,7 @@ import { LoaderSmall } from "@/src/components/loader-small";
 import TransitionLink from "@/src/components/transition-link";
 import { Badge } from "@/src/components/ui/badge";
 import { Skeleton } from "@/src/components/ui/skeleton";
-import { useGetPost } from "@/src/features/admin/blog/api/use-get-post";
+import { useGetPost } from "@/src/features/blog/api/use-get-post";
 import { useTrackPostView } from "@/src/features/blog/hooks/use-track-post-view";
 import Preview from "@/src/features/code-editor/preview";
 

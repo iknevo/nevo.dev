@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useRef } from "react";
 
 import TransitionLink from "@/src/components/transition-link";
-import { useGetProjects } from "@/src/features/admin/projects/api/use-get-projects";
+import { useGetProjects } from "@/src/features/projects/api/use-get-projects";
 
 interface Props {
   currentProjectId: string;

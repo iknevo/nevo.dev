@@ -9,7 +9,7 @@ import Project from "@/src/components/project";
 import ProjectImagePreview from "@/src/components/project-image-preview";
 import ProjectMobile from "@/src/components/project-mobile";
 import SectionTitle from "@/src/components/section-title";
-import { useGetProjects } from "@/src/features/admin/projects/api/use-get-projects";
+import { useGetProjects } from "@/src/features/projects/api/use-get-projects";
 
 import { LoaderSmall } from "./loader-small";
 

@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 
 import { LoaderSmall } from "@/src/components/loader-small";
 import TransitionLink from "@/src/components/transition-link";
-import { useGetPosts } from "@/src/features/admin/blog/api/use-get-posts";
+import { useGetPosts } from "@/src/features/blog/api/use-get-posts";
 
 import BlogPost from "./blog-post";
 
