@@ -106,6 +106,8 @@ export default function EditBlogSection({ id }: Props) {
             tags: post.tags ?? [],
             image: post.image ?? "",
             doc: post.doc ?? "",
+            externalUrl: post.externalUrl ?? "",
+            source: post.source ?? "",
             hide: post.hide ?? false,
           }}
         />

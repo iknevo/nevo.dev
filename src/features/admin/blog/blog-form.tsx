@@ -13,10 +13,17 @@ import {
   FormMessage,
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/src/components/ui/select";
 import { InputTags } from "@/src/components/ui/tags-input";
 import { Textarea } from "@/src/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/src/components/ui/tooltip";
-import { blogFormValues, blogSchema } from "@/src/definitions/blog-validation";
+import { BLOG_SOURCES, blogFormValues, blogSchema } from "@/src/definitions/blog-validation";
 import { MAX_UPLOAD_LABEL, formatBytes, getUploadSizeError } from "@/src/definitions/upload";
 import ImagePreviewModal from "@/src/features/admin/shared/image-preview-modal";
 import Editor from "@/src/features/code-editor/editor";
@@ -121,6 +128,56 @@ export default function BlogForm({
             </FormItem>
           )}
         />
+
+        <div className="grid gap-4 md:grid-cols-[1fr_200px]">
+          <FormField
+            name="externalUrl"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>External URL</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="url"
+                    disabled={disabled}
+                    placeholder="Leave empty for a post written here"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="source"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel>Published on</FormLabel>
+                <Select
+                  name={field.name}
+                  value={field.value || undefined}
+                  onValueChange={field.onChange}
+                  disabled={disabled}
+                >
+                  <FormControl>
+                    <SelectTrigger className="w-full" aria-invalid={fieldState.invalid}>
+                      <SelectValue placeholder="This site" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {BLOG_SOURCES.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           name="image"

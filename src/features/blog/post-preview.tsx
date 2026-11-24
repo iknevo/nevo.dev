@@ -3,7 +3,7 @@
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import ImageWithLightbox from "@/src/components/image-with-lightbox";
 import { LoaderSmall } from "@/src/components/loader-small";
@@ -22,7 +22,12 @@ export default function PostPreview({ id }: Props) {
   const isPreview = useSearchParams().get("preview") === "1";
   const { data: post, isLoading } = useGetPost(id, isPreview);
   const [loaded, setLoaded] = useState(false);
-  useTrackPostView(isPreview ? undefined : post?._id);
+  const externalUrl = isPreview ? undefined : post?.externalUrl;
+  useTrackPostView(isPreview || externalUrl ? undefined : post?._id);
+
+  useEffect(() => {
+    if (externalUrl) window.location.replace(externalUrl);
+  }, [externalUrl]);
 
   return (
     <section className="selection:!bg-primary mx-auto max-w-400 px-4 pt-4 pb-12 select-text sm:px-6 sm:pt-6 sm:pb-16 lg:px-16">

@@ -16,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .select("slug updatedAt")
       .sort({ sortIndex: 1 })
       .lean(),
-    Blog.find({ hide: { $ne: true } })
+    Blog.find({ hide: { $ne: true }, externalUrl: { $in: [null, ""] } })
       .select("slug updatedAt")
       .sort({ createdAt: -1 })
       .lean(),

@@ -78,6 +78,8 @@ const app = new Hono()
       doc,
       tags,
       image,
+      externalUrl: body.get("externalUrl") ?? "",
+      source: body.get("source") ?? "",
       hide,
     };
     const result = blogSchema.safeParse(parsedData);
@@ -107,6 +109,8 @@ const app = new Hono()
       summary: data.summary,
       tags: data.tags,
       doc: data.doc,
+      externalUrl: data.externalUrl || undefined,
+      source: data.externalUrl ? data.source || undefined : undefined,
       image: imageUrl,
       imagePublicId,
       hide: data.hide,
@@ -157,6 +161,8 @@ const app = new Hono()
         doc,
         tags,
         image,
+        externalUrl: body.get("externalUrl") ?? "",
+        source: body.get("source") ?? "",
         hide,
       };
       const result = blogSchema.safeParse(parsedData);
@@ -193,6 +199,8 @@ const app = new Hono()
         summary: data.summary,
         tags: data.tags,
         doc: data.doc,
+        externalUrl: data.externalUrl || undefined,
+        source: data.externalUrl ? data.source || undefined : undefined,
         image: imageUrl,
         imagePublicId,
         hide: data.hide,
