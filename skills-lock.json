@@ -1,0 +1,82 @@
+{
+  "version": 2,
+  "skills": {
+    "code-review": {
+      "source": "mattpocock/skills",
+      "commit": "abeeaf95660ba9e8b7c753eb38f441ca707a8823",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/code-review/SKILL.md",
+      "computedHash": "ce86b40a3d1648a0018b712f0c70704e6c2316b2a9b9e915ab116916a31273dc"
+    },
+    "codebase-design": {
+      "source": "mattpocock/skills",
+      "commit": "abeeaf95660ba9e8b7c753eb38f441ca707a8823",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/codebase-design/SKILL.md",
+      "computedHash": "d40f025dc1b0f2020663260f38f2bcb8d6ed3523afb11e5fda624b01238677e8"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "commit": "e4bb5d960d87126ff3b3a8af1a104b7db67560ba",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-design/SKILL.md",
+      "computedHash": "83485963700bcf11d5bf78118facb301676b69d918fee2e45a95e7f1a2840f6c"
+    },
+    "grill-me": {
+      "source": "mattpocock/skills",
+      "commit": "abeeaf95660ba9e8b7c753eb38f441ca707a8823",
+      "sourceType": "github",
+      "skillPath": "skills/productivity/grill-me/SKILL.md",
+      "computedHash": "ab1acb9fbd9eaee03da254abb8a8de228d1e7a07475fe959da4a5eefa34ea4b9"
+    },
+    "grill-with-docs": {
+      "source": "mattpocock/skills",
+      "commit": "abeeaf95660ba9e8b7c753eb38f441ca707a8823",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/grill-with-docs/SKILL.md",
+      "computedHash": "02e258f41d210f9b2e7cce9faf62b3c59e8fcebe5d2736369c3cd07d471324f8"
+    },
+    "gsap-core": {
+      "source": "greensock/gsap-skills",
+      "commit": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "sourceType": "github",
+      "skillPath": "skills/gsap-core/SKILL.md",
+      "computedHash": "dfc8ba849fa8b81c8cc60964ee2a5fa8db4b2a2611801cf549a5b267b8284fa5"
+    },
+    "gsap-performance": {
+      "source": "greensock/gsap-skills",
+      "commit": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "sourceType": "github",
+      "skillPath": "skills/gsap-performance/SKILL.md",
+      "computedHash": "4dd4382cad329927a248fbe55c426901f2bf4f5c598db6ef5ec38c19861b829f"
+    },
+    "gsap-plugins": {
+      "source": "greensock/gsap-skills",
+      "commit": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "sourceType": "github",
+      "skillPath": "skills/gsap-plugins/SKILL.md",
+      "computedHash": "328b52a98e9704c0349ba2cee23a6a92376c06b6b1fd3e60e5c20395b55e25e8"
+    },
+    "gsap-react": {
+      "source": "greensock/gsap-skills",
+      "commit": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "sourceType": "github",
+      "skillPath": "skills/gsap-react/SKILL.md",
+      "computedHash": "35fd08f2cbfc945f1a8cdd39e232882a19e27781a4043ee1bc71f65432f03389"
+    },
+    "gsap-scrolltrigger": {
+      "source": "greensock/gsap-skills",
+      "commit": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "sourceType": "github",
+      "skillPath": "skills/gsap-scrolltrigger/SKILL.md",
+      "computedHash": "c29c5a0fb1506a7f577fe68282eafc6df14b8d2b8ecd24f1f05836f5a0957b67"
+    },
+    "gsap-timeline": {
+      "source": "greensock/gsap-skills",
+      "commit": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "sourceType": "github",
+      "skillPath": "skills/gsap-timeline/SKILL.md",
+      "computedHash": "622140f48b7aa6bcf2f4d4c050b8fa20effa533688a1650854f5ffc1be169a0b"
+    }
+  }
+}
