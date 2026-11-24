@@ -5,11 +5,13 @@ import { logger } from "hono/logger";
 import { handle } from "hono/vercel";
 import status from "http-status";
 
+import { getClientIp } from "@/src/lib/client-ip";
 import { errorHandler } from "@/src/lib/error-handlers";
 
 import auth from "./auth-routes";
 import blog from "./blog-routes";
 import experience from "./experience-routes";
+import profile from "./profile-routes";
 import projects from "./project-routes";
 import resume from "./resume-routes";
 import stack from "./stack-routes";
@@ -41,10 +43,7 @@ app.use(
   rateLimiter({
     windowMs: 60 * 1000,
     limit: 60,
-    keyGenerator: (c) =>
-      c.req.header("x-forwarded-for")?.split(",")[0]?.trim() ??
-      c.req.header("x-real-ip") ??
-      "unknown",
+    keyGenerator: getClientIp,
     standardHeaders: "draft-7",
     message: { message: "Too many requests, please try again later." },
   })
@@ -59,7 +58,8 @@ const routes = app
   .route("/stack", stack)
   .route("/experience", experience)
   .route("/blog", blog)
-  .route("/resume", resume);
+  .route("/resume", resume)
+  .route("/profile", profile);
 
 app.onError(errorHandler);
 app.notFound((c) => {

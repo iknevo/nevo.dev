@@ -16,15 +16,13 @@ export const env = {
   databaseName: getEnv("DB_NAME", false) || "nevo",
   jwt: {
     secret: getEnv("JWT_SECRET"),
-    refreshSecret: getEnv("JWT_REFRESH_SECRET"),
-    refreshExpiresIn: +getEnv("JWT_REFRESH_EXPIRES_IN"),
-    accessExpiresIn: +getEnv("JWT_ACCESS_EXPIRES_IN"),
+    expiresInDays: +getEnv("JWT_EXPIRES_IN_DAYS"),
   },
   cloudinary: {
     cloud_name: getEnv("CLOUDINARY_CLOUD_NAME"),
     api_key: getEnv("CLOUDINARY_API_KEY"),
     api_secret: getEnv("CLOUDINARY_API_SECRET"),
   },
-  refreshCookiesMaxAge: 7 * 24 * 60 * 60, // 7 days
   resendKey: getEnv("RESEND_API_KEY"),
+  githubToken: getEnv("GITHUB_TOKEN", false),
 };

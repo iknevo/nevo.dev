@@ -1,13 +1,13 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { verifyRefreshToken } from "./lib/jwt";
+import { SESSION_COOKIE, verifySessionToken } from "./lib/jwt";
 import { getSafeAdminRedirect } from "./lib/safe-redirect";
 
 export async function proxy(req: NextRequest) {
   const { pathname, searchParams } = req.nextUrl;
-  const refreshToken = req.cookies.get("refreshToken")?.value;
-  const session = refreshToken ? await verifyRefreshToken(refreshToken) : null;
+  const token = req.cookies.get(SESSION_COOKIE)?.value;
+  const session = token ? await verifySessionToken(token) : null;
 
   if (pathname === "/auth/login") {
     if (!session?.id) return NextResponse.next();

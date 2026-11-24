@@ -24,6 +24,7 @@ const navItems = [
   },
   { label: "BLOG", href: "/admin/blog", match: (p: string) => p.startsWith("/admin/blog") },
   { label: "RESUME", href: "/admin/resume", match: (p: string) => p === "/admin/resume" },
+  { label: "PROFILE", href: "/admin/profile", match: (p: string) => p === "/admin/profile" },
   {
     label: "PASSWORD",
     href: "/admin/update-password",
@@ -37,13 +38,13 @@ export default function AdminNav() {
 
   return (
     <div className="py-5">
-      <ul className="mx-auto hidden max-w-xl items-center justify-between md:flex">
+      <ul className="mx-auto hidden w-fit max-w-full flex-wrap items-center justify-center gap-x-1 gap-y-3 md:flex lg:gap-x-2">
         {navItems.map((item) => (
           <li key={item.href}>
             <Link
               href={item.href}
               className={cn(
-                "rounded-sm px-2 py-2 text-xs font-semibold transition-all md:px-4 md:text-base",
+                "block rounded-sm px-2 py-2 text-sm font-semibold whitespace-nowrap transition-all lg:px-4 lg:text-base",
                 item.match(pathname) && "bg-primary"
               )}
             >

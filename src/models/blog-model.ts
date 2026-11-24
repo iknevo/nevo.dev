@@ -24,7 +24,18 @@ const blogSchema = new Schema(
     imagePublicId: String,
     doc: {
       type: String,
-      required: [true, "Blog's body is required"],
+      default: "",
+      validate: {
+        validator: function (this: { externalUrl?: string }, value: string) {
+          return Boolean(this.externalUrl) || Boolean(value?.trim());
+        },
+        message: "Blog's body is required",
+      },
+    },
+    externalUrl: { type: String, trim: true },
+    source: {
+      type: String,
+      enum: ["x", "devto", "medium", "youtube", "other"],
     },
     readingTime: String,
     slug: String,
@@ -56,8 +67,7 @@ blogSchema.pre("save", async function (next) {
 });
 
 blogSchema.pre("save", async function (next) {
-  const stats = readingTime(this.doc);
-  this.readingTime = stats.text;
+  this.readingTime = this.externalUrl ? undefined : readingTime(this.doc ?? "").text;
   next();
 });
 

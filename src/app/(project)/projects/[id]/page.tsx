@@ -1,8 +1,7 @@
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
 
 import ProjectDetails from "@/src/components/project-details";
-import { serverFetch } from "@/src/lib/server-api";
+import { getProject } from "@/src/lib/server-api";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -10,19 +9,13 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  if (!id) {
-    return {
-      title: "Project Not Found",
-    };
-  }
-
   try {
-    const { data } = await serverFetch(`/api/projects/${id}`);
+    const project = await getProject(id);
     return {
-      title: `${data.name}`,
-      description: `${data.description}`,
+      title: project.name,
+      description: project.description,
       alternates: {
-        canonical: `/projects/${id}`,
+        canonical: `/projects/${project.slug}`,
       },
     };
   } catch {
@@ -34,8 +27,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const { id } = await params;
-  if (!id) {
-    return notFound();
-  }
   return <ProjectDetails key={id} id={id} />;
 }

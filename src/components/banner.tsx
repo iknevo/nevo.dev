@@ -8,12 +8,17 @@ import { useEffect, useRef, useState } from "react";
 import { ButtonFill, buttonClasses } from "@/src/components/button";
 import Magnet from "@/src/components/magnet";
 import ShinyText from "@/src/components/shiny-text";
+import type { ProfileValues } from "@/src/definitions/profile-validations";
 
 import TransitionLink from "./transition-link";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-export default function Banner() {
+type Props = {
+  profile: ProfileValues | null;
+};
+
+export default function Banner({ profile }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const codeRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -68,6 +73,7 @@ export default function Banner() {
         ref={containerRef}
       >
         <div className="max-w-[544px] flex-col items-start justify-center self-center pt-12 max-lg:flex sm:pt-20 md:pt-0">
+          {profile && <ProfileStatus profile={profile} />}
           <h1
             className="banner-title slide-up-and-fade leading-[1]"
             style={{ fontSize: "clamp(2.8rem, 8vw, 5rem)" }}
@@ -126,5 +132,25 @@ export default function Banner() {
         </div>
       </div>
     </section>
+  );
+}
+
+function ProfileStatus({ profile }: { profile: ProfileValues }) {
+  const place = [profile.location, profile.timezone].filter(Boolean).join(" · ");
+  if (!profile.openToWork && !place) return null;
+
+  return (
+    <div className="slide-up-and-fade mb-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+      {profile.openToWork && (
+        <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-emerald-300">
+          <span className="relative flex size-2">
+            <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
+          </span>
+          {profile.note || "Open to work"}
+        </span>
+      )}
+      {place && <span className="text-white/60">{place}</span>}
+    </div>
   );
 }

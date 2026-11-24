@@ -1,6 +1,5 @@
 import { createHash } from "crypto";
 import { Hono } from "hono";
-import type { Context } from "hono";
 import { rateLimiter } from "hono-rate-limiter";
 import status from "http-status";
 import { z } from "zod";
@@ -12,24 +11,18 @@ import {
   PasswordResetSchema,
   PasswordUpdateSchema,
 } from "@/src/definitions/auth-validations";
+import { getClientIp } from "@/src/lib/client-ip";
 import dbConnect from "@/src/lib/db";
 import { sendPasswordResetEmail } from "@/src/lib/email";
-import type { AccessPayload } from "@/src/lib/jwt";
-import { authMiddleware, clearAuthCookies, sendTokens } from "@/src/lib/jwt";
+import { authMiddleware, clearSession, getSessionUser, sendSession } from "@/src/lib/jwt";
 import { zValidator } from "@/src/lib/zod-wrapper";
 import { User } from "@/src/models/user-model";
 
 type Env = {
   Variables: {
-    user: AccessPayload;
+    user: { id: string };
   };
 };
-
-function getClientIp(c: Context) {
-  return (
-    c.req.header("x-forwarded-for")?.split(",")[0]?.trim() ?? c.req.header("x-real-ip") ?? "unknown"
-  );
-}
 
 const loginRateLimit = rateLimiter({
   windowMs: 15 * 60 * 1000,
@@ -68,11 +61,13 @@ const app = new Hono<Env>()
     if (!user || !(await user.checkPassword(password, user.password))) {
       return c.json({ message: "Invalid email or password" }, status.FORBIDDEN);
     }
-    await sendTokens(c, user._id.toString());
+    await sendSession(c, user._id.toString(), user.tokenVersion ?? 0);
     return c.json({ message: "Welcome NEVO." }, status.OK);
   })
   .post("/logout", async (c) => {
-    clearAuthCookies(c);
+    const user = await getSessionUser(c);
+    if (user) await User.updateOne({ _id: user._id }, { $inc: { tokenVersion: 1 } });
+    clearSession(c);
     return c.json({ message: "Successfully logged out" }, status.OK);
   })
   .post(
@@ -157,7 +152,7 @@ const app = new Hono<Env>()
       user.passwordResetToken = undefined;
       user.passwordResetExpires = undefined;
       await user.save();
-      await sendTokens(c, user._id.toString());
+      await sendSession(c, user._id.toString(), user.tokenVersion ?? 0);
       return c.json(
         {
           success: true,
@@ -185,7 +180,7 @@ const app = new Hono<Env>()
       user.password = password;
       user.passwordConfirm = passwordConfirm;
       await user.save();
-      await sendTokens(c, user._id.toString());
+      await sendSession(c, user._id.toString(), user.tokenVersion ?? 0);
       return c.json(
         {
           success: true,

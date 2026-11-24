@@ -5,10 +5,10 @@ import FormSheet, {
   FormSheetError,
   FormSheetLoading,
 } from "@/src/features/admin/shared/form-sheet";
+import { useGetProject } from "@/src/features/projects/api/use-get-project";
 import { useConfirm } from "@/src/hooks/use-confirm";
 
 import { useDeleteProject } from "./api/use-delete-project";
-import { useGetProject } from "./api/use-get-project";
 import { useUpdateProject } from "./api/use-update-project";
 import ProjectForm from "./project-form";
 import { uniqueSkillNames } from "./skills-select";

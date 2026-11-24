@@ -27,10 +27,10 @@ import AdminSection, {
   AdminSectionError,
   AdminSectionLoading,
 } from "@/src/features/admin/shared/admin-section";
+import { useGetProjects } from "@/src/features/projects/api/use-get-projects";
 import { useSyncedState } from "@/src/hooks/useSyncedState";
 import { ProjectResponse } from "@/src/types";
 
-import { useGetProjects } from "./api/use-get-projects";
 import ProjectItem from "./project-item";
 import { useNewProject } from "./state/use-new-project";
 

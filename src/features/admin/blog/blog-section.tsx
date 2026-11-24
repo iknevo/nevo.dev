@@ -12,9 +12,8 @@ import AdminSection, {
   AdminSectionError,
   AdminSectionLoading,
 } from "@/src/features/admin/shared/admin-section";
+import { useGetPosts } from "@/src/features/blog/api/use-get-posts";
 import { cn } from "@/src/lib/utils";
-
-import { useGetPosts } from "./api/use-get-posts";
 
 export default function BlogSection() {
   const { data: posts, isLoading, isError, refetch } = useGetPosts(true);

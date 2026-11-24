@@ -9,173 +9,71 @@ import { env } from "@/src/config/env";
 import dbConnect from "@/src/lib/db";
 import { User } from "@/src/models/user-model";
 
-export interface AccessPayload extends JWTPayload {
+export const SESSION_COOKIE = "session";
+
+export interface SessionPayload extends JWTPayload {
   id: string;
+  v: number;
+  iat: number;
   exp: number;
-  [key: string]: any;
 }
 
-function sendAccessCookie(c: Context, token: string) {
-  setCookie(c, "accessToken", token, {
-    path: "/",
-    httpOnly: true,
-    secure: env.production,
-    sameSite: "Strict",
-  });
-}
-
-function sendRefreshCookie(c: Context, token: string) {
-  setCookie(c, "refreshToken", token, {
-    path: "/",
-    httpOnly: true,
-    secure: env.production,
-    sameSite: "Strict",
-    maxAge: env.refreshCookiesMaxAge,
-  });
-}
-
-async function generateAccessToken(id: string): Promise<string> {
-  const payload: AccessPayload = {
-    id,
-    iat: Math.floor(Date.now() / 1000),
-    exp: Math.floor(Date.now() / 1000) + 60 * env.jwt.accessExpiresIn,
-  };
-  return await sign(payload, env.jwt.secret, "HS256");
-}
-
-export async function generateRefreshToken(id: string): Promise<string> {
-  const payload: AccessPayload = {
-    id,
-    iat: Math.floor(Date.now() / 1000),
-    exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * env.jwt.refreshExpiresIn,
-  };
-  return await sign(payload, env.jwt.refreshSecret, "HS256");
-}
-
-const authCookieOptions = {
+const sessionCookieOptions = {
   path: "/",
   httpOnly: true,
   secure: env.production,
   sameSite: "Strict",
 } as const;
 
-export function clearAuthCookies(c: Context) {
-  deleteCookie(c, "accessToken", authCookieOptions);
-  deleteCookie(c, "refreshToken", authCookieOptions);
+export async function sendSession(c: Context, id: string, tokenVersion: number): Promise<void> {
+  const now = Math.floor(Date.now() / 1000);
+  const maxAge = 60 * 60 * 24 * env.jwt.expiresInDays;
+  const payload: SessionPayload = { id, v: tokenVersion, iat: now, exp: now + maxAge };
+  const token = await sign(payload, env.jwt.secret, "HS256");
+  setCookie(c, SESSION_COOKIE, token, { ...sessionCookieOptions, maxAge });
+}
+
+export function clearSession(c: Context) {
+  deleteCookie(c, SESSION_COOKIE, sessionCookieOptions);
+}
+
+export async function verifySessionToken(token: string): Promise<SessionPayload | null> {
+  try {
+    return (await verify(token, env.jwt.secret, "HS256")) as SessionPayload;
+  } catch {
+    return null;
+  }
+}
+
+export async function getSessionUser(c: Context) {
+  const token = getCookie(c, SESSION_COOKIE);
+  if (!token) return null;
+  const payload = await verifySessionToken(token);
+  if (!payload) return null;
+  await dbConnect();
+  const user = await User.findById(payload.id);
+  if (!user) return null;
+  if ((user.tokenVersion ?? 0) !== payload.v) return null;
+  if (user.changedPasswordAfter(payload.iat)) return null;
+  return user;
 }
 
 function unauthorized(c: Context) {
-  clearAuthCookies(c);
+  clearSession(c);
   return c.json({ success: false, message: "Unauthorized" }, status.UNAUTHORIZED);
 }
 
-export async function sendTokens(c: Context, id: string): Promise<void> {
-  const accessToken = await generateAccessToken(id);
-  const refreshToken = await generateRefreshToken(id);
-  sendAccessCookie(c, accessToken);
-  sendRefreshCookie(c, refreshToken);
-}
-
-export async function verifyAccessToken(token: string): Promise<AccessPayload | null> {
-  try {
-    return (await verify(token, env.jwt.secret, "HS256")) as AccessPayload;
-  } catch (err) {
-    console.error("Access token verification failed:", err instanceof Error ? err.message : err);
-    return null;
-  }
-}
-
-export async function verifyRefreshToken(token: string): Promise<AccessPayload | null> {
-  try {
-    return (await verify(token, env.jwt.refreshSecret, "HS256")) as AccessPayload;
-  } catch (err) {
-    console.error("Refresh token verification failed:", err instanceof Error ? err.message : err);
-    return null;
-  }
-}
-
-export const withHiddenAuth = createMiddleware(async (c, next) => {
-  const withHidden = c.req.query("withHidden") === "true";
-  if (!withHidden) {
-    return next();
-  }
-
-  const accessToken = getCookie(c, "accessToken");
-  const refreshToken = getCookie(c, "refreshToken");
-
-  if (accessToken) {
-    const payload = await verifyAccessToken(accessToken);
-    if (payload) {
-      await dbConnect();
-      const user = await User.findById(payload.id);
-      if (user && !user.changedPasswordAfter(payload.iat!)) {
-        c.set("user", { id: payload.id });
-        return next();
-      }
-    }
-  }
-
-  if (!refreshToken) {
-    return unauthorized(c);
-  }
-
-  const payload = await verifyRefreshToken(refreshToken);
-  if (!payload) {
-    return unauthorized(c);
-  }
-
-  await dbConnect();
-  const user = await User.findById(payload.id);
-  if (!user || user.changedPasswordAfter(payload.iat!)) {
-    return unauthorized(c);
-  }
-
-  c.set("user", { id: payload.id });
+export const authMiddleware = createMiddleware(async (c, next) => {
+  const user = await getSessionUser(c);
+  if (!user) return unauthorized(c);
+  c.set("user", { id: user._id.toString() });
   await next();
 });
 
-export const authMiddleware = createMiddleware(async (c, next) => {
-  const accessToken = getCookie(c, "accessToken");
-  const refreshToken = getCookie(c, "refreshToken");
-
-  // Try access token first
-  if (accessToken) {
-    const payload = await verifyAccessToken(accessToken);
-    if (payload) {
-      await dbConnect();
-      const user = await User.findById(payload.id);
-      if (user && !user.changedPasswordAfter(payload.iat!)) {
-        c.set("user", {
-          id: payload.id,
-          exp: payload.exp,
-        });
-        return next();
-      }
-    }
-  }
-
-  if (!refreshToken) {
-    return unauthorized(c);
-  }
-
-  const payload = await verifyRefreshToken(refreshToken);
-  if (!payload) {
-    return unauthorized(c);
-  }
-
-  await dbConnect();
-  const user = await User.findById(payload.id);
-  if (!user || user.changedPasswordAfter(payload.iat!)) {
-    return unauthorized(c);
-  }
-
-  const newAccessToken = await generateAccessToken(payload.id);
-  sendAccessCookie(c, newAccessToken);
-
-  c.set("user", {
-    id: payload.id,
-    exp: Math.floor(Date.now() / 1000) + 60 * env.jwt.accessExpiresIn,
-  });
-
+export const withHiddenAuth = createMiddleware(async (c, next) => {
+  if (c.req.query("withHidden") !== "true") return next();
+  const user = await getSessionUser(c);
+  if (!user) return unauthorized(c);
+  c.set("user", { id: user._id.toString() });
   await next();
 });

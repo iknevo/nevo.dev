@@ -6,7 +6,6 @@ import { useState } from "react";
 import { Button } from "@/src/components/ui/button";
 import { blogFormValues } from "@/src/definitions/blog-validation";
 import { useDeletePost } from "@/src/features/admin/blog/api/use-delete-post";
-import { useGetPost } from "@/src/features/admin/blog/api/use-get-post";
 import { useUpdatePost } from "@/src/features/admin/blog/api/use-update-post";
 import BlogForm from "@/src/features/admin/blog/blog-form";
 import AdminSection, {
@@ -14,6 +13,7 @@ import AdminSection, {
   AdminSectionLoading,
 } from "@/src/features/admin/shared/admin-section";
 import { useUnsavedChangesWarning } from "@/src/features/admin/shared/use-unsaved-changes-warning";
+import { useGetPost } from "@/src/features/blog/api/use-get-post";
 import { useConfirm } from "@/src/hooks/use-confirm";
 import { ApiError } from "@/src/lib/api-error";
 
@@ -106,6 +106,8 @@ export default function EditBlogSection({ id }: Props) {
             tags: post.tags ?? [],
             image: post.image ?? "",
             doc: post.doc ?? "",
+            externalUrl: post.externalUrl ?? "",
+            source: post.source ?? "",
             hide: post.hide ?? false,
           }}
         />

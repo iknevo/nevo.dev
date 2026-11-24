@@ -3,8 +3,8 @@ import "lenis/dist/lenis.css";
 import { ReactLenis } from "lenis/react";
 import type { Metadata } from "next";
 import { Anton, JetBrains_Mono, Josefin_Sans } from "next/font/google";
-import { headers } from "next/headers";
 
+import { env } from "@/src/config/env";
 import Providers from "@/src/providers/providers";
 import "@/src/styles/globals.css";
 
@@ -26,43 +26,33 @@ const anton = Anton({
   display: "swap",
 });
 
-export async function generateMetadata(): Promise<Metadata> {
-  const headersList = await headers();
-  const host = headersList.get("host") || "nevo.is-a.dev";
-  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
-  const baseUrl = `${protocol}://${host}`;
-
-  return {
-    title: {
-      template: "NEVO | %s",
-      default: "NEVO | Front-End Developer",
-    },
+export const metadata: Metadata = {
+  title: {
+    template: "NEVO | %s",
+    default: "NEVO | Front-End Developer",
+  },
+  description:
+    "Front-End developer building modern, responsive web applications and portfolios for the web. This is the personal portfolio of Ahmed (NEVO) Abdelhafiez.",
+  metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
+  openGraph: {
+    title: "NEVO | Front-End Developer",
     description:
-      "Front-End developer building modern, responsive web applications and portfolios for the web. This is the personal portfolio of Ahmed (NEVO) Abdelhafiez.",
-    metadataBase: new URL(baseUrl),
-    alternates: {
-      canonical: "/",
-    },
-    openGraph: {
-      title: "NEVO | Front-End Developer",
-      description:
-        "Front-End developer building modern, responsive web applications and portfolios for the web.",
-      url: "/",
-      siteName: "NEVO",
-      images: [
-        { url: "/og.png", width: 1200, height: 630, alt: "Ahmed Abdlehafiez Front-End developer" },
-      ],
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: "NEVO | Front-End Developer",
-      description:
-        "Front-End developer building modern, responsive web applications and portfolios for the web.",
-      images: ["/og.png"],
-    },
-  };
-}
+      "Front-End developer building modern, responsive web applications and portfolios for the web.",
+    url: "/",
+    siteName: "NEVO",
+    images: [
+      { url: "/og.png", width: 1200, height: 630, alt: "Ahmed Abdlehafiez Front-End developer" },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "NEVO | Front-End Developer",
+    description:
+      "Front-End developer building modern, responsive web applications and portfolios for the web.",
+    images: ["/og.png"],
+  },
+};
 
 export default function RootLayout({
   children,

@@ -6,6 +6,8 @@ export function toPostFormData(values: blogFormValues) {
   formData.append("summary", values.summary);
   formData.append("doc", values.doc);
   formData.append("image", values.image);
+  formData.append("externalUrl", values.externalUrl);
+  formData.append("source", values.source);
   formData.append("hide", String(values.hide));
   values.tags.forEach((tag) => {
     if (tag) formData.append("tags", tag);

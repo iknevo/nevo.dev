@@ -11,7 +11,7 @@ import { useLayoutEffect, useRef } from "react";
 import ImageWithLightbox from "@/src/components/image-with-lightbox";
 import TransitionLink from "@/src/components/transition-link";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/src/components/ui/tooltip";
-import { useGetProject } from "@/src/features/admin/projects/api/use-get-project";
+import { useGetProject } from "@/src/features/projects/api/use-get-project";
 
 import { LoaderSmall } from "./loader-small";
 import RelatedProjects from "./related-projects";
