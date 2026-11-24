@@ -32,10 +32,13 @@ gsap.registerPlugin(useGSAP); // register before running useGSAP or any GSAP cod
 
 const containerRef = useRef(null);
 
-useGSAP(() => {
-  gsap.to(".box", { x: 100 });
-  gsap.from(".item", { opacity: 0, stagger: 0.1 });
-}, { scope: containerRef });
+useGSAP(
+  () => {
+    gsap.to(".box", { x: 100 });
+    gsap.from(".item", { opacity: 0, stagger: 0.1 });
+  },
+  { scope: containerRef }
+);
 ```
 
 - ✅ Pass a **scope** (ref or element) so selectors like `.box` are scoped to that root.
@@ -51,13 +54,16 @@ Use **refs** so GSAP targets the actual DOM nodes after render. Do not rely on s
 By default, useGSAP() passes an empty dependency array to the internal useEffect()/useLayoutEffect() so that it doesn't get called on every render. The 2nd argument is optional; it can pass either a dependency array (like useEffect()) or a config object for more flexibility:
 
 ```javascript
-useGSAP(() => {
-		// gsap code here, just like in a useEffect()
-},{ 
-  dependencies: [endX], // dependency array (optional)
-  scope: container,     // scope selector text (optional, recommended)
-  revertOnUpdate: true  // causes the context to be reverted and the cleanup function to run every time the hook re-synchronizes (when any dependency changes)
-});
+useGSAP(
+  () => {
+    // gsap code here, just like in a useEffect()
+  },
+  {
+    dependencies: [endX], // dependency array (optional)
+    scope: container, // scope selector text (optional, recommended)
+    revertOnUpdate: true, // causes the context to be reverted and the cleanup function to run every time the hook re-synchronizes (when any dependency changes)
+  }
+);
 ```
 
 ## gsap.context() in useEffect (when useGSAP isn't used)
@@ -86,28 +92,31 @@ const container = useRef();
 const badRef = useRef();
 const goodRef = useRef();
 
-useGSAP((context, contextSafe) => {
-	// ✅ safe, created during execution
-	gsap.to(goodRef.current, { x: 100 });
+useGSAP(
+  (context, contextSafe) => {
+    // ✅ safe, created during execution
+    gsap.to(goodRef.current, { x: 100 });
 
-	// ❌ DANGER! This animation is created in an event handler that executes AFTER useGSAP() executes. It's not added to the context so it won't get cleaned up (reverted). The event listener isn't removed in cleanup function below either, so it persists between component renders (bad).
-	badRef.current.addEventListener('click', () => {
-		gsap.to(badRef.current, { y: 100 });
-	});
+    // ❌ DANGER! This animation is created in an event handler that executes AFTER useGSAP() executes. It's not added to the context so it won't get cleaned up (reverted). The event listener isn't removed in cleanup function below either, so it persists between component renders (bad).
+    badRef.current.addEventListener("click", () => {
+      gsap.to(badRef.current, { y: 100 });
+    });
 
-	// ✅ safe, wrapped in contextSafe() function
-	const onClickGood = contextSafe(() => {
-		gsap.to(goodRef.current, { rotation: 180 });
-	});
+    // ✅ safe, wrapped in contextSafe() function
+    const onClickGood = contextSafe(() => {
+      gsap.to(goodRef.current, { rotation: 180 });
+    });
 
-	goodRef.current.addEventListener('click', onClickGood);
+    goodRef.current.addEventListener("click", onClickGood);
 
-	// 👍 we remove the event listener in the cleanup function below.
-	return () => {
-		// <-- cleanup
-		goodRef.current.removeEventListener('click', onClickGood);
-	};
-},{ scope: container });
+    // 👍 we remove the event listener in the cleanup function below.
+    return () => {
+      // <-- cleanup
+      goodRef.current.removeEventListener("click", onClickGood);
+    };
+  },
+  { scope: container }
+);
 ```
 
 ## Server-Side Rendering (Next.js, etc.)
@@ -115,7 +124,7 @@ useGSAP((context, contextSafe) => {
 GSAP runs in the browser. Do not call gsap or ScrollTrigger during SSR.
 
 - Use **useGSAP** (or useEffect) so all GSAP code runs only on the client.
-- If GSAP is imported at top level, ensure the app does not execute gsap.* or ScrollTrigger.* during server render. Dynamic import inside useEffect is an option if tree-shaking or bundle size is a concern.
+- If GSAP is imported at top level, ensure the app does not execute gsap._ or ScrollTrigger._ during server render. Dynamic import inside useEffect is an option if tree-shaking or bundle size is a concern.
 
 ## Best practices
 
@@ -129,7 +138,6 @@ GSAP runs in the browser. Do not call gsap or ScrollTrigger during SSR.
 - ❌ Animate using selector strings that can match elements outside the current component unless a `scope` is defined in useGSAP or gsap.context() so only elements inside the component are affected.
 - ❌ Skip cleanup; always revert context or kill tweens/ScrollTriggers in the effect return to avoid leaks and updates on unmounted nodes.
 - ❌ Run GSAP or ScrollTrigger during SSR; keep all usage inside client-only lifecycle (e.g. useGSAP).
-
 
 ### Learn More
 
