@@ -35,6 +35,7 @@ const userSchema = new Schema({
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
+  tokenVersion: { type: Number, default: 0 },
 });
 
 userSchema.index({ passwordResetToken: 1 }, { sparse: true });

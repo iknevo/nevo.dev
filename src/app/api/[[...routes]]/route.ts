@@ -5,6 +5,7 @@ import { logger } from "hono/logger";
 import { handle } from "hono/vercel";
 import status from "http-status";
 
+import { getClientIp } from "@/src/lib/client-ip";
 import { errorHandler } from "@/src/lib/error-handlers";
 
 import auth from "./auth-routes";
@@ -41,10 +42,7 @@ app.use(
   rateLimiter({
     windowMs: 60 * 1000,
     limit: 60,
-    keyGenerator: (c) =>
-      c.req.header("x-forwarded-for")?.split(",")[0]?.trim() ??
-      c.req.header("x-real-ip") ??
-      "unknown",
+    keyGenerator: getClientIp,
     standardHeaders: "draft-7",
     message: { message: "Too many requests, please try again later." },
   })
