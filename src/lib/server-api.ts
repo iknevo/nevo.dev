@@ -1,6 +1,7 @@
 import "server-only";
 
 import { headers } from "next/headers";
+import { cache } from "react";
 
 import { app } from "@/src/app/api/[[...routes]]/route";
 
@@ -23,3 +24,16 @@ export async function serverFetch(path: string, { withCookies = false }: ServerF
   }
   return res.json();
 }
+
+export const getPost = cache(async (id: string, withHidden: boolean) => {
+  const { data } = await serverFetch(
+    withHidden ? `/api/blog/${id}?withHidden=true` : `/api/blog/${id}`,
+    { withCookies: withHidden }
+  );
+  return data;
+});
+
+export const getProject = cache(async (id: string) => {
+  const { data } = await serverFetch(`/api/projects/${id}`);
+  return data;
+});

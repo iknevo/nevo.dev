@@ -8,6 +8,7 @@ import Stack from "@/src/components/stack";
 
 export const metadata: Metadata = {
   title: "Front-End Developer",
+  alternates: { canonical: "/" },
 };
 
 export default function Home() {
