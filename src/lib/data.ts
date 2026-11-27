@@ -7,4 +7,5 @@ export const GENERAL_INFO = {
 export const SOCIAL_LINKS = [
   { name: "github", url: "https://github.com/iknevo" },
   { name: "linkedin", url: "https://www.linkedin.com/in/ahmed-abdelhafiez" },
+  { name: "nvim?", url: "https://ahmed-dev-nvim.vercel.app" },
 ];
